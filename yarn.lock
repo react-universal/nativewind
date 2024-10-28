@@ -7646,9 +7646,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@native-twin/compiler@workspace:*, @native-twin/compiler@workspace:packages/css-to-rn":
+"@native-twin/compiler@workspace:*, @native-twin/compiler@workspace:packages/compiler":
   version: 0.0.0-use.local
-  resolution: "@native-twin/compiler@workspace:packages/css-to-rn"
+  resolution: "@native-twin/compiler@workspace:packages/compiler"
   dependencies:
     "@babel/plugin-syntax-jsx": "npm:^7.23.3"
     "@babel/preset-typescript": "npm:7.23.3"
@@ -7894,12 +7894,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/metro@workspace:packages/metro"
   dependencies:
-    "@native-twin/babel": "workspace:*"
     "@native-twin/cli": "workspace:*"
     "@native-twin/compiler": "workspace:*"
-    "@native-twin/helpers": "workspace:*"
-    "@native-twin/language-service": "workspace:*"
-    "@native-twin/preset-tailwind": "workspace:*"
     effect: "npm:^3.10.0"
     jest: "npm:*"
   peerDependencies:

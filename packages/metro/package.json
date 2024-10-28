@@ -46,11 +46,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@native-twin/babel": "workspace:*",
     "@native-twin/compiler": "workspace:*",
-    "@native-twin/helpers": "workspace:*",
-    "@native-twin/language-service": "workspace:*",
-    "@native-twin/preset-tailwind": "workspace:*",
     "effect": "^3.10.0"
   },
   "peerDependencies": {
