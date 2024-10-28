@@ -1,5 +1,11 @@
 # @native-twin/builder
 
+## 7.0.0-next.2
+
+### Major Changes
+
+- [#144](https://github.com/react-universal/native-twin/pull/144) [`cffded6`](https://github.com/react-universal/native-twin/commit/cffded6ddcbb1dec4bb659c4af0981c1b0cbdd8a) Thanks [@chrisarts](https://github.com/chrisarts)! - Bundling packages
+
 ## 7.0.0-next.1
 
 ### Patch Changes

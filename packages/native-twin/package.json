@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/core",
-  "version": "7.0.0-next.1",
+  "version": "7.0.0-next.2",
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
     "tailwind",

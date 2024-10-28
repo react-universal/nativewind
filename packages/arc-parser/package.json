@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/arc-parser",
-  "version": "7.0.0-next.1",
+  "version": "7.0.0-next.2",
   "description": "Parser combinators library",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {

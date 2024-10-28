@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/styled",
-  "version": "7.0.0-next.1",
+  "version": "7.0.0-next.2",
   "description": "[DEPRECATED] Styled components for css in react native",
   "keywords": [
     "react-native",

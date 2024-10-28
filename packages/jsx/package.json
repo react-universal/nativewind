@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/jsx",
-  "version": "7.0.0-next.1",
+  "version": "7.0.0-next.2",
   "description": "Native Twin JSX runtime",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
