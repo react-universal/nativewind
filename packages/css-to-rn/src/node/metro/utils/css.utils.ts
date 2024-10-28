@@ -46,7 +46,7 @@ export const transformCSSExpo = async (
   // });
 
   const styles = wrapDevelopmentCSS({ src: code, filename, reactServer });
-  console.log('CODE: ', styles);
+  // console.log('CODE: ', styles);
   // Create a mock JS module that exports an empty object,
   // this ensures Metro dependency graph is correct.
   const jsModuleResults = await worker.transform(

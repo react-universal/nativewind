@@ -6,17 +6,17 @@ describe('TESTS', () => {
   pluginTester({
     plugin,
     pluginOptions: {
-      twinConfigPath: './tailwind.config.ts',
+      twinConfigPath: path.join(__dirname, './tailwind.config.ts'),
+      cssInput: 'globals.css',
     },
     title: 'Native Twin babel plugin',
     babelOptions: {
       plugins: ['@babel/plugin-syntax-jsx'],
-      cwd: path.join(__dirname),
     },
     tests: {
       'createElement by namespace require': {
         // skip: true,
-        // only: true,
+        only: true,
         codeFixture: path.join('./fixtures/namespace-require/code.js'),
         outputFixture: path.join('./fixtures/namespace-require/output.js'),
         babelOptions: {

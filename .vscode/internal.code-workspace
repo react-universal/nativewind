@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
     },
@@ -31,10 +35,6 @@
     {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
     },
     {
       "name": "📦 @lib/css",

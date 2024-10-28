@@ -9,7 +9,7 @@ import { createMockComponent, resetComponents, resetStyles } from '../testing-li
 const testID = 'native-twin-element';
 
 beforeAll(() => {
-  setup(defineConfig({ content: [], presets: [presetTailwind()] }));
+  setup(defineConfig({ content: [''], presets: [presetTailwind()] }));
 });
 
 beforeEach(() => {

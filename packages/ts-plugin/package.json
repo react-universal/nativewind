@@ -44,15 +44,5 @@
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
-  },
-  "nx": {
-    "includedScripts": [
-      "build",
-      "build:watch",
-      "clean",
-      "esbuild:build",
-      "lint",
-      "vscode:dev"
-    ]
   }
 }

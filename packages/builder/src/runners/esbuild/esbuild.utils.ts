@@ -44,9 +44,16 @@ export function getEsbuildConfig(
       resolveExtensions,
       external: extraExternals,
       logLevel: logs ?? 'silent',
-      minify: config.minify,
+      target: ['es2023', 'node18'],
+      supported: {
+        'async-generator': true,
+        'class-static-blocks': false,
+      },
+      tsconfig: 'tsconfig.build.json',
+      minify: true,
       sourcemap: true,
       color: true,
+      splitting: format === 'esm',
       bundle: true,
       entryNames: '[dir]/[name]',
       conditions: ['main', 'module', 'exports'],
@@ -59,14 +66,14 @@ export function getEsbuildConfig(
     };
 
     configs.push(sharedSettings);
-    if (config.reactNative) {
+    if (config.reactNative || config.platform === 'browser') {
       configs.push({
         ...sharedSettings,
         resolveExtensions: [
+          '.web.ts',
           '.web.js',
           '.web.cjs',
           '.web.jsx',
-          '.web.ts',
           '.web.tsx',
           '.web.mjs',
           ...resolveExtensions,

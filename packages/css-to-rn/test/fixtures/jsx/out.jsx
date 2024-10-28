@@ -69,7 +69,7 @@ export default function App() {
         value: "rgba(254,202,202,1)",
         _tag: "COMPILED"
       }],
-      selectors: ["&:first"],
+      selectors: ["first", "&:first"],
       precedence: 805437440,
       important: false,
       animations: [],
@@ -106,7 +106,7 @@ export default function App() {
           value: "rgba(254,202,202,1)",
           _tag: "COMPILED"
         }],
-        selectors: ["&:first"],
+        selectors: ["first", "&:first"],
         precedence: 805437440,
         important: false,
         animations: [],
@@ -131,7 +131,7 @@ export default function App() {
             value: "rgba(254,202,202,1)",
             _tag: "COMPILED"
           }],
-          selectors: ["&:first"],
+          selectors: ["first", "&:first"],
           precedence: 805437440,
           important: false,
           animations: [],

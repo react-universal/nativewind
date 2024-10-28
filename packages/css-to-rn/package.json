@@ -78,6 +78,7 @@
     "@effect/platform-node": "^0.64.4",
     "@effect/platform-node-shared": "^0.19.3",
     "@effect/printer-ansi": "^0.38.0",
+    "@effect/typeclass": "^0.29.0",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
@@ -88,7 +89,8 @@
     "fast-check": "^3.21.0",
     "jiti": "1.21.0",
     "js-beautify": "^1.15.1",
-    "micromatch": "4.0.5"
+    "micromatch": "4.0.5",
+    "sucrase": "^3.35.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",

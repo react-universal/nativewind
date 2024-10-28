@@ -85,6 +85,17 @@ export const bundlerExternals = [
   /^@testing-library\/*/,
   'metro-transform-worker',
 
+  // BABEL
+  '@babel/*',
+  '@babel/core',
+  '@babel/types',
+  '@babel/traverse',
+  '@babel/generate',
+  '@babel/template',
+  'to-regex-range',
+  'braces',
+  'micromatch',
+
   // REACT
   'react',
   'react-is',

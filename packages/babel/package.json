@@ -63,9 +63,6 @@
     "@types/babel__helper-module-imports": "^7.18.3",
     "babel-plugin-tester": "^11.0.4"
   },
-  "peerDependencies": {
-    "react-native-reanimated": "*"
-  },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*",
     "jest": "*"
