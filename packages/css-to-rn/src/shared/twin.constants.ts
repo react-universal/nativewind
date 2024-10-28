@@ -16,3 +16,5 @@ export const TWIN_CSS_FILES = [
 ];
 
 export const DEFAULT_TWIN_INPUT_CSS_FILE = 'twin.in.css';
+
+export const BABEL_JSX_PLUGIN_IMPORT_RUNTIME = ['createTwinElement', '@native-twin/jsx'] as const;

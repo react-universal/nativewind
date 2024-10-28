@@ -1,35 +1,26 @@
 // @ts-noCheck
-import { useState } from 'react';
+import './global.css';
 import { Text, View } from 'react-native';
-import 'globals.css';
+import { setup } from '@native-twin/core';
+import tailwindConfig from './tailwind.config';
 
-const ChildProp = () => {
+setup(tailwindConfig);
+export default function App() {
   return (
-    <View className='first:bg-blue-600'>
+    <View className='bg-blue-800 flex-1 items-center justify-center first:bg-green'>
       <View
         className={`
-          group
-          flex-[2] items-center justify-center
-          bg-blue-800 hover:bg-red-600
+          w-[80vw] h-[20vh] rounded-full justify-center items-center
+          last:bg-purple border-1 border-white
+          ${true && 'h-[50vh]'}
         `}
       >
-        <Text className=''>Text1</Text>
-      </View>
-      <View className=''>
-        <Text className=''>Text2</Text>
+        <Text>asd</Text>
+        <View>
+          <Text>asdsad2</Text>
+        </View>
       </View>
     </View>
   );
-};
+}
 
-const Button = () => {
-  return (
-    <View className='bg-black last:text-lg odd:text-gray-200 even:text-yellow-200'>
-      <Text className='font-medium'>Text1</Text>
-      <Text className='font-bold'>Text2</Text>
-      <Text className={`${true ? 'text-medium' : 'text-bold'}`}>Text3</Text>
-    </View>
-  );
-};
-
-export { ChildProp };

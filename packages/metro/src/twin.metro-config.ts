@@ -24,6 +24,7 @@ export function withNativeTwin(
     originalGetTransformerOptions,
     projectRoot: transformerOptions.projectRoot,
     twinConfigPath: transformerOptions.twinConfigPath,
+    inputCSS: transformerOptions.inputCSS,
   });
   return {
     ...twinMetroConfig,
@@ -53,8 +54,8 @@ const getDefaultConfig = (
   const twin = new NativeTwinManager(
     nativeTwinConfig.configPath ?? 'tailwind.config.ts',
     projectRoot,
-    inputCSS,
     'native',
+    inputCSS,
   );
 
   const originalResolver = metroConfig.resolver.resolveRequest;

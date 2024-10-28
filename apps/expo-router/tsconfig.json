@@ -21,6 +21,8 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.json",
-    "wdyr.js"
+    "wdyr.js",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
   ]
 }

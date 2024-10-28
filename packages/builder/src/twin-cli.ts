@@ -6,8 +6,8 @@ import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import pkg from '../package.json';
 import * as CliConfigs from './config/cli.config';
-import { makeRollupLayer } from './rollup';
-import { builderRunner } from './services/Builder.service';
+import { buildCommandHandler } from './runners/build.program';
+import { BuilderConfig } from './services/Builder.service';
 import { TwinLogger } from './utils/logger';
 
 const twinCli = CliCommand.make('twin-cli', CliConfigs.CommandConfig).pipe(
@@ -15,8 +15,13 @@ const twinCli = CliCommand.make('twin-cli', CliConfigs.CommandConfig).pipe(
 );
 
 const twinBuild = CliCommand.make('build', CliConfigs.CliBuildOptions).pipe(
-  CliCommand.withHandler(() => builderRunner),
-  CliCommand.provide((x) => makeRollupLayer(x)),
+  CliCommand.withHandler(() => buildCommandHandler),
+  CliCommand.provide((x) =>
+    BuilderConfig.Live({
+      configFile: x.configFile,
+      watch: x.watch,
+    }),
+  ),
 );
 
 const run = twinCli.pipe(
@@ -32,8 +37,4 @@ Effect.suspend(() => run(process.argv)).pipe(
   Effect.provide(NodeContext.layer),
   Logger.withMinimumLogLevel(LogLevel.All),
   NodeRuntime.runMain,
-  // Effect.runFork,
-  // Fiber.await,
-  // Effect.map((x) => x),
-  // Effect.runPromise,
 );

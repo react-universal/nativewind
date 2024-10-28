@@ -1,15 +1,12 @@
 {
+  "$schema": "../../node_modules/@native-twin/cli/twin.schema.json",
   "platform": "node",
   "reactNative": false,
   "minify": false,
   "types": true,
   "vscode": false,
-  "external": [
-    "metro-transform-worker"
-  ],
   "logs": false,
   "entries": [
-    "./src",
-    "./src/transformer/babel.transformer.ts"
+    "./src"
   ]
 }

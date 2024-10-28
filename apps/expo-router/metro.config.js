@@ -5,7 +5,9 @@ const path = require('path');
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(__dirname, '../..');
 
-const config = getDefaultConfig(projectRoot);
+const config = getDefaultConfig(projectRoot, {
+  isCSSEnabled: true,
+});
 config.watchFolders = [workspaceRoot];
 
 config.resolver.nodeModulesPaths = [
@@ -20,5 +22,5 @@ config.resolver.nodeModulesPaths = [
 
 module.exports = withNativeTwin(config, {
   configPath: path.join(__dirname, 'tailwind.config.ts'),
-  inputCSS: 'globals.css'
+  inputCSS: 'globals.css',
 });

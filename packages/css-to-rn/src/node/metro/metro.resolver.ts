@@ -26,6 +26,7 @@ export const twinMetroRequestResolver = (
     const platformInput = twinConfig.getPlatformInput();
 
     if ('filePath' in resolved && resolved.filePath === platformInput) {
+      console.log('INPUT_FILE_FOUND: ', resolved);
       return {
         ...resolved,
         filePath: path.resolve(platformOutput),
@@ -42,6 +43,7 @@ export const twinGetTransformerOptions =
     originalGetTransformerOptions: GetTransformOptions;
     twinConfigPath: string;
     projectRoot: string;
+    inputCSS: string;
   }) =>
   (...[entryPoints, options, getDeps]: Parameters<GetTransformOptions>) => {
     const platform = options.platform ?? 'native';
@@ -50,7 +52,12 @@ export const twinGetTransformerOptions =
     const mainLayer = makeBabelLayer.pipe(
       Layer.provideMerge(TwinFSService.Live),
       Layer.provideMerge(
-        NativeTwinServiceNode.Live(config.twinConfigPath, config.projectRoot, platform),
+        NativeTwinServiceNode.Live(
+          config.twinConfigPath,
+          config.projectRoot,
+          platform,
+          config.inputCSS,
+        ),
       ),
       Layer.provideMerge(twinLoggerLayer),
     );

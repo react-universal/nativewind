@@ -5,8 +5,8 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
     },
     {
       "name": "📦 @lib/metro",
@@ -17,16 +17,24 @@
       "path": "../packages/css-to-rn"
     },
     {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
+      "name": "expo-router",
+      "path": "../apps/expo-router"
     },
     {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
     {
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
+    },
+    {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
     },
     {
       "name": "📦 @lib/css",
@@ -53,10 +61,6 @@
       "path": "../packages/preset-tailwind"
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
-    },
-    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },
@@ -71,10 +75,6 @@
     {
       "name": "expo-app",
       "path": "../apps/expo-app"
-    },
-    {
-      "name": "expo-router",
-      "path": "../apps/expo-router"
     },
     {
       "name": "next-pages-example",

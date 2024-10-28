@@ -1,10 +1,10 @@
 import * as Context from 'effect/Context';
 import * as Layer from 'effect/Layer';
-import type { CompilerConfig } from '../babel.types';
+import type { CompilerInput } from '../babel.types';
 
 export class BuildConfig extends Context.Tag('babel/compiler/config')<
   BuildConfig,
-  CompilerConfig
+  CompilerInput
 >() {}
 
-export const makeBabelConfig = (input: CompilerConfig) => Layer.succeed(BuildConfig, input);
+export const makeBabelConfig = (input: CompilerInput) => Layer.succeed(BuildConfig, input);

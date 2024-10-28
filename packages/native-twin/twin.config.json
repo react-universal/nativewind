@@ -1,4 +1,5 @@
 {
+  "$schema": "../../node_modules/@native-twin/cli/twin.schema.json",
   "platform": "browser",
   "reactNative": false,
   "minify": false,

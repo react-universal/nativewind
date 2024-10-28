@@ -11,10 +11,15 @@ export class NativeTwinServiceNode extends Context.Tag('node/twin/service')<
   NativeTwinServiceNode,
   NativeTwinManager
 >() {
-  static Live = (twinConfigPath: string, projectRoot: string, platform = 'native') => {
+  static Live = (
+    twinConfigPath: string,
+    projectRoot: string,
+    platform = 'native',
+    inputCSS = '',
+  ) => {
     return Layer.succeed(
       NativeTwinServiceNode,
-      new NativeTwinManager(twinConfigPath, projectRoot, platform),
+      new NativeTwinManager(twinConfigPath, projectRoot, platform, inputCSS),
     );
   };
 }

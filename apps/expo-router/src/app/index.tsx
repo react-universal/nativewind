@@ -72,4 +72,4 @@ function HomeScreen() {
   );
 }
 
-export { HomeScreen };
+export default HomeScreen;

@@ -14,7 +14,7 @@ export interface NativeTwinTransformerOpts extends JsTransformerConfig {
   transformerPath?: string;
   originalTransformerPath?: string;
   allowedFiles: string[];
-  tailwindConfigPath: string;
+  twinConfigPath: string;
   outputDir: string;
   inputCSS: string;
   outputCSS: string;

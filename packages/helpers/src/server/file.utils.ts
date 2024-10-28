@@ -23,3 +23,8 @@ export const toBufferThenString = compose(ensureBuffer, bufferToString);
 export function pathToHtmlSafeName(path: string) {
   return path.replace(/[^a-zA-Z0-9_]/g, '_');
 }
+
+const newlineRegex = /\r\n?|\n|\u2028|\u2029/g;
+
+export const countLines = (string: string) =>
+  (string.match(newlineRegex) || []).length + 1;

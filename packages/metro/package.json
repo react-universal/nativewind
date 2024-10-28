@@ -46,44 +46,20 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@effect/cli": "^0.48.3",
-    "@effect/platform": "^0.69.3",
-    "@effect/platform-node": "^0.64.4",
-    "@effect/platform-node-shared": "^0.19.3",
-    "@effect/printer-ansi": "^0.38.0",
     "@native-twin/babel": "workspace:*",
     "@native-twin/compiler": "workspace:*",
-    "@native-twin/core": "workspace:*",
-    "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/language-service": "workspace:*",
-    "code-block-writer": "^13.0.1",
-    "effect": "^3.10.0",
-    "fast-check": "^3.21.0",
-    "jiti": "1.21.0",
-    "js-beautify": "^1.15.1"
-  },
-  "devDependencies": {
-    "@babel/traverse": "^7.24.0",
-    "@babel/types": "^7.24.0",
-    "@native-twin/cli": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "@native-twin/styled": "workspace:*",
-    "@types/connect": "3.4.38",
-    "@types/css-tree": "^2.3.8",
-    "@types/micromatch": "^4.0.4",
-    "@types/shelljs": "^0",
-    "ast-pretty-print": "^2.0.1",
-    "chokidar": "^3.6.0",
-    "metro-react-native-babel-preset": "^0.77.0",
-    "micromatch": "4.0.5"
+    "effect": "^3.10.0"
   },
   "peerDependencies": {
-    "react": ">=18",
+    "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

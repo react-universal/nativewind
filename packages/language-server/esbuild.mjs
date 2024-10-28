@@ -7,17 +7,17 @@ const args = minimist(process.argv.slice(2), {
 });
 
 console.log('- Preparing');
-const ctxBIN = await esbuild.context({
-  entryPoints: ['./src/index.ts'],
-  bundle: true,
-  outfile: 'bin/native-twin-language-server',
-  external: ['vscode'],
-  format: 'cjs',
-  logLevel: 'info',
-  platform: 'node',
-  sourcemap: 'both',
-  minify: true,
-});
+// const ctxBIN = await esbuild.context({
+//   entryPoints: ['./src/index.ts'],
+//   bundle: true,
+//   outfile: 'bin/native-twin-language-server',
+//   external: ['vscode'],
+//   format: 'cjs',
+//   logLevel: 'info',
+//   platform: 'node',
+//   sourcemap: 'both',
+//   minify: true,
+// });
 
 const ctxServer = await esbuild.context({
   entryPoints: ['./src/index.ts'],
@@ -32,15 +32,15 @@ const ctxServer = await esbuild.context({
 });
 
 console.log('- Building');
-await ctxBIN.rebuild();
+// await ctxBIN.rebuild();
 await ctxServer.rebuild();
 
 if (args.watch) {
   console.log('- Watching');
-  await ctxBIN.watch();
+  // await ctxBIN.watch();
   await ctxServer.watch();
 } else {
   console.log('- Cleaning up');
-  await ctxBIN.dispose();
+  // await ctxBIN.dispose();
   await ctxServer.dispose();
 }

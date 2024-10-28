@@ -13,8 +13,27 @@ const scopeText = pipe(
 );
 const fiberText = Ansi.combine(Ansi.white)(Ansi.bgWhiteBright);
 const messageConfig = Ansi.color(AnsiColor.white);
+const dashes = Doc.text(Array.from({ length: 32 - 2 }, () => '-').join(''));
 
-const render = (doc: Doc.AnsiDoc): string => Doc.render(doc, { style: 'compact' });
+const createDashes = (size: number) =>
+  Doc.vcat([
+    Doc.spaces(size + 2).pipe(Doc.annotate(Ansi.underlined)),
+    Doc.hcat([
+      Doc.vbar,
+      Doc.vbar,
+      Doc.text(Array.from({ length: size - 2 }, () => '-').join('')),
+      Doc.vbar,
+      Doc.vbar,
+    ]).pipe(Doc.annotate(Ansi.underlined)),
+  ]);
+
+const hr = Doc.hcat([Doc.vbar, dashes, Doc.vbar]);
+
+const printKeyValuePair = <A>(first: Doc.Doc<A>, sec: Doc.Doc<A>, size = 15) => {
+  return Doc.hsep([Doc.fillBreak(first, size), Doc.text('::'), sec]);
+};
+
+const render = (doc: Doc.AnsiDoc): string => Doc.render(doc, { style: 'pretty' });
 
 const getMessageColor = (logLevel: LogLevel.LogLevel) => {
   switch (logLevel) {
@@ -72,5 +91,15 @@ const TwinCustomLogger = Logger.make((options) => {
       return;
   }
 });
+
+export const loggerUtils = {
+  scopeText,
+  getMessageColor,
+  createDashes,
+  render,
+  dashes,
+  hr,
+  printKeyValuePair,
+};
 
 export const TwinLogger = Logger.replace(Logger.defaultLogger, TwinCustomLogger);

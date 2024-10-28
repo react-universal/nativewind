@@ -18,7 +18,7 @@
 # ESLint
 lint-results/
 
-**build/
+**/build/
 **dist/
 
 **.next/

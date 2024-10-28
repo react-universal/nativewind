@@ -1,3 +1,5 @@
+declare const __DEV__: boolean;
+
 export interface WarningEventMap {
   TW_INVALID_CLASS: string;
   TW_INVALID_CSS: string;
@@ -8,7 +10,7 @@ export function warn<Code extends keyof WarningEventMap>(
   code: Code,
   detail: WarningEventMap[Code],
 ): void {
-  if (__DEV__) {
+  if (typeof __DEV__ !== 'undefined' && __DEV__) {
     if (typeof dispatchEvent == 'function' && typeof CustomEvent === 'function') {
       // Browser
       const event = new CustomEvent('warning', {

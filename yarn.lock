@@ -7607,21 +7607,13 @@ __metadata:
   resolution: "@native-twin/babel@workspace:packages/babel"
   dependencies:
     "@babel/helper-module-imports": "npm:^7.22.15"
-    "@babel/plugin-syntax-jsx": "npm:^7.23.3"
-    "@babel/preset-typescript": "npm:7.23.3"
-    "@babel/traverse": "npm:^7.24.0"
-    "@babel/types": "npm:^7.24.0"
     "@native-twin/cli": "workspace:*"
     "@native-twin/compiler": "workspace:*"
-    "@native-twin/core": "workspace:*"
-    "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
-    "@native-twin/preset-tailwind": "workspace:*"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
     babel-plugin-tester: "npm:^11.0.4"
     effect: "npm:^3.10.0"
     jest: "npm:*"
-    metro-react-native-babel-preset: "npm:^0.77.0"
   peerDependencies:
     react-native-reanimated: "*"
   dependenciesMeta:
@@ -7643,10 +7635,13 @@ __metadata:
     "@effect/platform-node": "npm:^0.64.4"
     "@rollup/plugin-typescript": "npm:^12.1.0"
     "@types/fs-extra": "npm:11.0.4"
+    "@types/lodash.merge": "npm:^4.6.9"
     effect: "npm:^3.10.0"
     esbuild: "npm:0.21.5"
+    esbuild-plugin-d.ts: "npm:^1.3.1"
     fs-extra: "npm:11.2.0"
     gzip-size: "npm:^7.0.0"
+    lodash.merge: "npm:4.6.2"
     minimist: "npm:^1.2.8"
     rollup-plugin-preserve-directives: "npm:^0.4.0"
     sucrase: "npm:^3.35.0"
@@ -7664,7 +7659,12 @@ __metadata:
     "@babel/preset-typescript": "npm:7.23.3"
     "@babel/traverse": "npm:^7.24.0"
     "@babel/types": "npm:^7.24.0"
+    "@effect/cli": "npm:^0.48.3"
     "@effect/language-service": "npm:^0.2.0"
+    "@effect/platform": "npm:^0.69.3"
+    "@effect/platform-node": "npm:^0.64.4"
+    "@effect/platform-node-shared": "npm:^0.19.3"
+    "@effect/printer-ansi": "npm:^0.38.0"
     "@native-twin/cli": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
@@ -7672,12 +7672,19 @@ __metadata:
     "@native-twin/jsx": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
+    "@types/connect": "npm:3.4.38"
+    "@types/css-tree": "npm:^2.3.8"
     "@types/js-beautify": "npm:^1"
+    "@types/micromatch": "npm:^4.0.4"
     babel-plugin-tester: "npm:^11.0.4"
     better-docs: "npm:*"
+    code-block-writer: "npm:^13.0.1"
+    effect: "npm:^3.10.0"
+    fast-check: "npm:^3.21.0"
     jest: "npm:*"
+    jiti: "npm:1.21.0"
     js-beautify: "npm:^1.15.1"
-    metro-react-native-babel-preset: "npm:^0.77.0"
+    micromatch: "npm:4.0.5"
   dependenciesMeta:
     "@native-twin/cli":
       optional: true
@@ -7888,41 +7895,21 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/metro@workspace:packages/metro"
   dependencies:
-    "@babel/traverse": "npm:^7.24.0"
-    "@babel/types": "npm:^7.24.0"
-    "@effect/cli": "npm:^0.48.3"
-    "@effect/platform": "npm:^0.69.3"
-    "@effect/platform-node": "npm:^0.64.4"
-    "@effect/platform-node-shared": "npm:^0.19.3"
-    "@effect/printer-ansi": "npm:^0.38.0"
     "@native-twin/babel": "workspace:*"
     "@native-twin/cli": "workspace:*"
     "@native-twin/compiler": "workspace:*"
-    "@native-twin/core": "workspace:*"
-    "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     "@native-twin/language-service": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
-    "@native-twin/styled": "workspace:*"
-    "@types/connect": "npm:3.4.38"
-    "@types/css-tree": "npm:^2.3.8"
-    "@types/micromatch": "npm:^4.0.4"
-    "@types/shelljs": "npm:^0"
-    ast-pretty-print: "npm:^2.0.1"
-    chokidar: "npm:^3.6.0"
-    code-block-writer: "npm:^13.0.1"
     effect: "npm:^3.10.0"
-    fast-check: "npm:^3.21.0"
     jest: "npm:*"
-    jiti: "npm:1.21.0"
-    js-beautify: "npm:^1.15.1"
-    metro-react-native-babel-preset: "npm:^0.77.0"
-    micromatch: "npm:4.0.5"
   peerDependencies:
-    react: ">=18"
+    react: "*"
     react-native: "*"
     react-native-safe-area-context: "*"
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -10214,16 +10201,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/glob@npm:~7.2.0":
-  version: 7.2.0
-  resolution: "@types/glob@npm:7.2.0"
-  dependencies:
-    "@types/minimatch": "npm:*"
-    "@types/node": "npm:*"
-  checksum: 10/6ae717fedfdfdad25f3d5a568323926c64f52ef35897bcac8aca8e19bc50c0bd84630bbd063e5d52078b2137d8e7d3c26eabebd1a2f03ff350fff8a91e79fc19
-  languageName: node
-  linkType: hard
-
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.8
   resolution: "@types/graceful-fs@npm:4.1.8"
@@ -10360,6 +10337,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash.merge@npm:^4.6.9":
+  version: 4.6.9
+  resolution: "@types/lodash.merge@npm:4.6.9"
+  dependencies:
+    "@types/lodash": "npm:*"
+  checksum: 10/d0dd6654547c9d8d905184d14aa5c2a37a1ed1c3204f5ab20b7d591a05f34859ef09d3b72c065e94ca1989abf9109eb8230f67c4d64a5768b1d65b9ed8baf8e7
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.17.12
+  resolution: "@types/lodash@npm:4.17.12"
+  checksum: 10/3d829f97c0ea713135e6eb48e983feffb315f4cf228d03654ca8a328e3fecd03005bf7dd30bf411f4306967c610d96738d441588283a41456815f2ce1fd7044c
+  languageName: node
+  linkType: hard
+
 "@types/markdown-it@npm:^14.1.2":
   version: 14.1.2
   resolution: "@types/markdown-it@npm:14.1.2"
@@ -10386,7 +10379,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/minimatch@npm:*, @types/minimatch@npm:^5.1.2":
+"@types/minimatch@npm:^5.1.2":
   version: 5.1.2
   resolution: "@types/minimatch@npm:5.1.2"
   checksum: 10/94db5060d20df2b80d77b74dd384df3115f01889b5b6c40fa2dfa27cfc03a68fb0ff7c1f2a0366070263eb2e9d6bfd8c87111d4bc3ae93c3f291297c1bf56c85
@@ -10556,16 +10549,6 @@ __metadata:
   version: 7.5.8
   resolution: "@types/semver@npm:7.5.8"
   checksum: 10/3496808818ddb36deabfe4974fd343a78101fa242c4690044ccdc3b95dcf8785b494f5d628f2f47f38a702f8db9c53c67f47d7818f2be1b79f2efb09692e1178
-  languageName: node
-  linkType: hard
-
-"@types/shelljs@npm:^0":
-  version: 0.8.15
-  resolution: "@types/shelljs@npm:0.8.15"
-  dependencies:
-    "@types/glob": "npm:~7.2.0"
-    "@types/node": "npm:*"
-  checksum: 10/1f756acc24441239687a0ffb4de908175380968ded1f9be697374ef09637c999634858a2f212e2f8ff65a48663d54b8b6e3449962dca086e08d1ab725596e802
   languageName: node
   linkType: hard
 
@@ -11802,7 +11785,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-styles@npm:^3.0.0, ansi-styles@npm:^3.2.0, ansi-styles@npm:^3.2.1":
+"ansi-styles@npm:^3.2.0, ansi-styles@npm:^3.2.1":
   version: 3.2.1
   resolution: "ansi-styles@npm:3.2.1"
   dependencies:
@@ -12141,16 +12124,6 @@ __metadata:
   version: 5.0.0
   resolution: "ast-module-types@npm:5.0.0"
   checksum: 10/188a0c331929962c7ea0d9174b31393d31b0f9d5cc3bb3ad1dcb6f94c611eddfff10194104f247f1cba03f0bb9a2b5c757e619f5a5940333f60b8a12a7db244d
-  languageName: node
-  linkType: hard
-
-"ast-pretty-print@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "ast-pretty-print@npm:2.0.1"
-  dependencies:
-    pretty-format-ast: "npm:^1.0.1"
-    pretty-format2: "npm:^2.0.3"
-  checksum: 10/341d6a9dece7ba7054fa7544353b48dc6750c0d40c989b7344023622c23f45b9b023c5563f2760284e17c3d67903c4c40d84bedf04065e54cdc8b27553460b9e
   languageName: node
   linkType: hard
 
@@ -15571,6 +15544,20 @@ __metadata:
   peerDependencies:
     typescript: "*"
   checksum: 10/364c71f25e80bc9b0e73cbd74535b7bb650374c115ed6e9040485380dc4d8696f4868a47da963e271dcd67ee29444515ab047cf117ff1967ea0460e6524d26e8
+  languageName: node
+  linkType: hard
+
+"esbuild-plugin-d.ts@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "esbuild-plugin-d.ts@npm:1.3.1"
+  dependencies:
+    chalk: "npm:4.1.2"
+    dts-bundle-generator: "npm:^9.5.1"
+    lodash.merge: "npm:^4.6.2"
+    type-fest: "npm:^4.26.1"
+  peerDependencies:
+    typescript: "*"
+  checksum: 10/0172762a3ae6c9124efd37832ea9581ea4abf95c358976cbe24ad4d345e01f4ee8e99cbc617181fc55e8a2325d5eeb1206d7431b518c96d3140a581a3bd9e4e9
   languageName: node
   linkType: hard
 
@@ -20605,7 +20592,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.merge@npm:^4.6.2":
+"lodash.merge@npm:4.6.2, lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: 10/d0ea2dd0097e6201be083865d50c3fb54fbfbdb247d9cc5950e086c991f448b7ab0cdab0d57eacccb43473d3f2acd21e134db39f22dac2d6c9ba6bf26978e3d6
@@ -22036,7 +22023,6 @@ __metadata:
     "@welldone-software/why-did-you-render": "npm:^8.0.3"
     better-docs: "npm:^2.7.3"
     chai: "npm:4.3.7"
-    chalk: "npm:^5.3.0"
     concurrently: "npm:^7.6.0"
     effect: "npm:^3.10.0"
     eslint: "npm:^8.57.0"
@@ -22051,6 +22037,7 @@ __metadata:
     glob: "npm:^8.1.0"
     jest: "npm:^29.7.0"
     jest-expo: "npm:^51.0.3"
+    metro-react-native-babel-preset: "npm:^0.77.0"
     mocha: "npm:^10.2.0"
     prettier: "npm:^3.2.5"
     react-test-renderer: "npm:18.2.0"
@@ -23571,24 +23558,6 @@ __metadata:
   version: 5.6.0
   resolution: "pretty-bytes@npm:5.6.0"
   checksum: 10/9c082500d1e93434b5b291bd651662936b8bd6204ec9fa17d563116a192d6d86b98f6d328526b4e8d783c07d5499e2614a807520249692da9ec81564b2f439cd
-  languageName: node
-  linkType: hard
-
-"pretty-format-ast@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "pretty-format-ast@npm:1.0.1"
-  dependencies:
-    pretty-format2: "npm:^2.0.3"
-  checksum: 10/29746ae504674a6a973a36fae66e5ec8b99b73fad82ae0dd39c30f0673a394a51ffe17e11226e47d363858505ac331fd129bbcf0dcaa1feee9ff7fe65f65601c
-  languageName: node
-  linkType: hard
-
-"pretty-format2@npm:^2.0.3":
-  version: 2.0.4
-  resolution: "pretty-format2@npm:2.0.4"
-  dependencies:
-    ansi-styles: "npm:^3.0.0"
-  checksum: 10/063992fe7f84fb11817cfa600693c5f19e087f115bfe607f10f793beff3e42d5c90c219ee7c16b098ce6e2879c9ff4eedbf62576f70afd79a174dde775a25678
   languageName: node
   linkType: hard
 
@@ -27519,6 +27488,13 @@ __metadata:
   version: 3.13.1
   resolution: "type-fest@npm:3.13.1"
   checksum: 10/9a8a2359ada34c9b3affcaf3a8f73ee14c52779e89950db337ce66fb74c3399776c697c99f2532e9b16e10e61cfdba3b1c19daffb93b338b742f0acd0117ce12
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^4.26.1":
+  version: 4.26.1
+  resolution: "type-fest@npm:4.26.1"
+  checksum: 10/b82676194f80af228cb852e320d2ea8381c89d667d2e4d9f2bdfc8f254bccc039c7741a90c53617a4de0c9fdca8265ed18eb0888cd628f391c5c381c33a9f94b
   languageName: node
   linkType: hard
 

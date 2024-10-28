@@ -6,13 +6,12 @@
     "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "universal-expo",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
@@ -28,14 +27,20 @@
       }
     },
     "web": {
+      "bundler": "metro",
+      "output": "static",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "expo-router",
       [
         "expo-build-properties"
       ],
-      "expo-font",
-      "expo-router"
-    ]
+      "expo-font"
+    ],
+    "experiments": {
+      "tsconfigPaths": true,
+      "typedRoutes": true
+    }
   }
 }

@@ -77,9 +77,12 @@ export type {
   VariantClassToken,
   /** @category — CSS parsers */
   VariantToken,
+  /** @category — CSS parsers */
   ArbitrarySegmentToken,
+  /** @category — CSS parsers */
   ColorModifierToken,
-  SegmentToken
+  /** @category — CSS parsers */
+  SegmentToken,
 } from './tailwind/tailwind.types';
 
 // CSS FEATURES
@@ -204,4 +207,7 @@ export {
   normalize,
 } from './transforms/interleave';
 
-export { CSS_COLORS } from './css/css.constants';
+export {
+  /** @category — CSS constants */
+  CSS_COLORS,
+} from './css/css.constants';

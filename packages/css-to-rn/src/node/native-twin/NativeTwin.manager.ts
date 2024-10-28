@@ -4,7 +4,7 @@ import * as Option from 'effect/Option';
 import micromatch from 'micromatch';
 import path from 'node:path';
 import type { TailwindConfig } from '@native-twin/core';
-import { defineConfig, setup } from '@native-twin/core';
+import { defineConfig, createTailwind } from '@native-twin/core';
 import { CompilerContext } from '@native-twin/css/jsx';
 import { TWIN_CSS_FILES } from '../../shared';
 import { maybeLoadJS } from '../utils';
@@ -16,26 +16,54 @@ import {
 } from './twin.utils.node';
 
 export class NativeTwinManager {
-  readonly tw: InternalTwFn;
-  readonly config: TailwindConfig<InternalTwinConfig>;
+  private readonly __tw: InternalTwFn;
+  private readonly twWeb: InternalTwFn;
+  private readonly nativeConfig: TailwindConfig<InternalTwinConfig>;
+  private readonly webConfig: TailwindConfig<InternalTwinConfig>;
+
   readonly preflight: Preflight;
   readonly platformOutputs: string[];
   readonly outputDir: string;
+  readonly twinConfigPath: string;
+  readonly projectRoot: string;
+  readonly platform: string;
+  readonly inputCSS: string;
   constructor(
-    readonly twinConfigPath: string,
-    readonly projectRoot: string,
-    readonly inputCSS: string,
-    readonly platform = 'native',
+    twinConfigPath: string,
+    projectRoot: string,
+    platform: string,
+    inputCSS: string,
   ) {
-    this.config = this.getUserTwinConfig({ platform, twinConfigPath });
-    this.tw = setup(this.config, createVirtualSheet());
-    this.preflight = {};
+    this.twinConfigPath = twinConfigPath;
+    this.projectRoot = projectRoot;
+    this.platform = platform;
+    this.inputCSS = inputCSS;
+    this.nativeConfig = this.getUserTwinConfig({ platform: 'native', twinConfigPath });
+    this.webConfig = this.getUserTwinConfig({ platform: 'web', twinConfigPath });
+    // this.config = this.getUserTwinConfig({ platform, twinConfigPath });
+    this.__tw = createTailwind(this.config, createVirtualSheet());
+    this.twWeb = createTailwind(this.webConfig, createVirtualSheet());
+    this.preflight = this.webConfig.preflight;
     this.outputDir = getTwinCacheDir();
     this.platformOutputs = TWIN_CSS_FILES.map((x) => path.join(this.outputDir, x));
   }
 
   get sheetTarget() {
     return this.tw.target;
+  }
+
+  get tw() {
+    if (this.platform === 'web') {
+      return this.twWeb;
+    }
+    return this.__tw;
+  }
+
+  get config(): TailwindConfig<InternalTwinConfig> {
+    if (this.platform === 'web') {
+      return this.webConfig;
+    }
+    return this.nativeConfig;
   }
 
   get baseRem() {
@@ -88,26 +116,22 @@ export class NativeTwinManager {
 
   getUserTwinConfig(params: {
     twinConfigPath: string;
-    platform: string;
+    platform: TailwindConfig['mode'];
   }): TailwindConfig<InternalTwinConfig> {
-    return Option.getOrElse(
-      Option.map(
-        Option.flatMap(getTwinConfigPath(this.projectRoot, params.twinConfigPath), (x) =>
-          maybeLoadJS<TailwindConfig<InternalTwinConfig>>(x),
-        ),
-        (x) =>
-          defineConfig({
-            ...x,
-            mode: params.platform === 'web' ? 'web' : x.mode,
-            root: { rem: x.root.rem ?? 16 },
-          }),
-      ),
-      () =>
+    return getTwinConfigPath(this.projectRoot, params.twinConfigPath).pipe(
+      Option.flatMap((x) => maybeLoadJS<TailwindConfig<InternalTwinConfig>>(x)),
+      Option.map((x) => ({
+        ...x,
+        mode: params.platform,
+        root: { rem: x.root.rem ?? 16 },
+      })),
+      Option.getOrElse(() =>
         defineConfig({
           content: [],
-          mode: params.platform === 'web' ? 'web' : 'native',
+          mode: params.platform,
           root: { rem: 16 },
         }),
+      ),
     );
   }
 }

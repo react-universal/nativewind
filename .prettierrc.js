@@ -13,6 +13,7 @@ module.exports = {
     '["decorators", { "decoratorsBeforeExport": true }]',
     'typescript',
     'jsx',
+    'importAttributes'
   ],
   importOrder: [
     '^(.*)\.css$',

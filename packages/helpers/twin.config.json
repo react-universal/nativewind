@@ -1,5 +1,6 @@
 {
   "$schema": "../../node_modules/@native-twin/cli/twin.schema.json",
+  "runner": "esbuild",
   "platform": "node",
   "reactNative": false,
   "minify": false,

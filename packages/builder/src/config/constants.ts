@@ -1,4 +1,4 @@
-export const tsupExternals = [
+export const bundlerExternals = [
   // VSCODE
   'vscode',
   'monaco-editor',
@@ -28,6 +28,7 @@ export const tsupExternals = [
   'lightningcss',
   '@testing-library/react-native',
   /^@testing-library\/*/,
+  'metro-transform-worker',
 
   // REACT
   'react',
