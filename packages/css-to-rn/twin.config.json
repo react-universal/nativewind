@@ -5,11 +5,6 @@
   "minify": false,
   "types": true,
   "vscode": false,
-  "external": [
-    "metro-transform-worker"
-  ],
-  "logs": false,
-  "entries": [
-    "./src"
-  ]
+  "runner": "esbuild",
+  "logs": false
 }

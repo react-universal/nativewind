@@ -6,7 +6,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import { defineConfig, Options } from 'tsup';
 import { CliConfigFile } from '../config/config.types';
-import { bundlerExternals } from '../config/constants';
+import { buildExternals } from '../config/constants';
 import { TypescriptService } from '../ts/twin.types';
 
 const MainNodeContext = NodeCommandExecutor.layer.pipe(
@@ -22,7 +22,7 @@ export const getTsUpConfig = (configFile: CliConfigFile, watch: boolean): Option
     format: ['cjs', 'esm'],
     experimentalDts: false,
     dts: false,
-    external: [...bundlerExternals, ...configFile.external],
+    external: [...buildExternals, ...configFile.external],
     legacyOutput: true,
     clean: false,
     metafile: false,

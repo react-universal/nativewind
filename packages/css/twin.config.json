@@ -3,6 +3,7 @@
   "platform": "browser",
   "reactNative": false,
   "minify": false,
+  "runner": "esbuild",
   "types": true,
   "vscode": false,
   "logs": false,

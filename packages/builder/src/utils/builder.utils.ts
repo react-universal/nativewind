@@ -4,6 +4,7 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Record from 'effect/Record';
+import fs from 'node:fs';
 
 interface IPackageJson {
   exports: string | Record<string, Record<string, string>>;
@@ -57,5 +58,6 @@ const getExportsFromPackage = (libPackage: IPackageJson) =>
         };
       }),
       RA.dedupe,
+      RA.filter((x) => fs.existsSync(x.in)),
     );
   });

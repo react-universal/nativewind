@@ -4,6 +4,7 @@
   "reactNative": false,
   "minify": false,
   "types": true,
+  "runner": "esbuild",
   "logs": false,
   "vscode": false,
   "entries": [

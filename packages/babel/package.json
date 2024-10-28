@@ -29,18 +29,17 @@
       "require": "./plugin.js"
     }
   },
-  "main": "./build/index",
-  "module": "./build/esm/index",
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
-    "jsx-babel",
-    "services",
     "src",
     "babel.js",
     "native-twin.d.ts",
-    "plugin.json",
+    "plugin.js",
+    "babel-test.js",
     "CHANGELOG.md",
     "README.md"
   ],
