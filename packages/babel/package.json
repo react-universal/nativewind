@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/babel",
-  "version": "7.0.0-next.1",
+  "version": "7.0.0-next.2",
   "description": "Native Twin babel plugin",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
