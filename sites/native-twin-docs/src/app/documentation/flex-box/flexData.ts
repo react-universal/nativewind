@@ -2,7 +2,17 @@ export const dataFlex = [
   {
     title: 'Flex',
     text: 'Use flex-initial to allow a flex item to shrink but not grow, taking into account its initial size:',
-    code: '',
+    code: `<div class="flex">
+  <div class="flex-none w-14 ...">
+    01
+  </div>
+  <div class="flex-initial w-64 ...">
+    02
+  </div>
+  <div class="flex-initial w-32 ...">
+    03
+  </div>
+</div>`,
   },
   {
     title: 'Flex-1',
