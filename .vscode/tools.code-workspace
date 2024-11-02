@@ -17,44 +17,12 @@
       "path": "../packages/language-server"
     },
     {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
+    },
+    {
       "name": "twin.run",
       "path": "../sites/twin.run"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/dev-tools",
-      "path": "../packages/dev-tools"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/dev-tools-web",
-      "path": "../packages/dev-tools/webui"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/preset-tailwind",
-      "path": "../packages/preset-tailwind"
-    },
-    {
-      "name": "@apps/expo",
-      "path": "../apps/expo-app"
     }
   ],
   "settings": {
@@ -106,7 +74,8 @@
       "expo-app",
       "next-pages-example",
       "next-app-dir",
-      "docs-site"
+      "docs-site",
+      "twin.run"
     ]
   }
 }

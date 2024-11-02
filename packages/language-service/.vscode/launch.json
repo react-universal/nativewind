@@ -12,6 +12,9 @@
         "group": "",
         "order": 1
       },
+      "cascadeTerminateToConfigurations": [
+        "build:tsc:watch"
+      ],
       "preLaunchTask": {
         "type": "npm",
         "script": "build:tsc:watch"

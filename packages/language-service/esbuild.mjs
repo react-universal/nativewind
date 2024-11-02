@@ -6,10 +6,11 @@ const args = minimist(process.argv.slice(2), {
 });
 
 const ctxServer = await esbuild.context({
-  entryPoints: ['./src/index.ts'],
+  entryPoints: ['./src/index.ts', './src/browser.ts'],
   bundle: true,
   outdir: 'build',
   external: ['vscode'],
+  tsconfig: 'tsconfig.build.json',
   format: 'cjs',
   logLevel: 'info',
   platform: 'node',

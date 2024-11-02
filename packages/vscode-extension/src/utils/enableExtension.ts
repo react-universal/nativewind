@@ -1,11 +1,7 @@
 import * as vscode from 'vscode';
-import {
-  DOCUMENT_SELECTORS,
-  configurationSection,
-  pluginId,
-  typeScriptExtensionId,
-} from '../extension/extension.constants';
-import { Logger, State, NativeTwinPluginConfiguration } from '../types';
+import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import { Constants } from '@native-twin/language-service';
+import { Logger, State } from '../types';
 
 export async function __enableExtension(context: vscode.ExtensionContext, log: Logger) {
   const state: State = { hasConfigFile: undefined };
@@ -46,11 +42,14 @@ export async function __enableExtension(context: vscode.ExtensionContext, log: L
   };
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(`${configurationSection}.restart`, (...args) => {
-      state.hasConfigFile = undefined;
-      listener();
-      console.log('ARGS: ', args);
-    }),
+    vscode.commands.registerCommand(
+      `${Constants.configurationSection}.restart`,
+      (...args) => {
+        state.hasConfigFile = undefined;
+        listener();
+        console.log('ARGS: ', args);
+      },
+    ),
   );
 
   const api = await activateTypescriptPlugin(log);
@@ -75,7 +74,7 @@ export async function __enableExtension(context: vscode.ExtensionContext, log: L
   };
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(`${configurationSection}.className`, () => {
+    vscode.commands.registerCommand(`${Constants.configurationSection}.className`, () => {
       replaceClassNameStrings();
     }),
   );
@@ -134,7 +133,7 @@ export async function __enableExtension(context: vscode.ExtensionContext, log: L
   log('COMMANDS: ' + JSON.stringify(await vscode.commands.getCommands(true), null, 2));
   context.subscriptions.push(
     vscode.languages.registerCompletionItemProvider(
-      DOCUMENT_SELECTORS,
+      Constants.DOCUMENT_SELECTORS,
       {
         provideCompletionItems(document, position, token, context) {
           log('DOC: ' + JSON.stringify({ document, position, token, context }, null, 2));
@@ -153,10 +152,10 @@ export async function __enableExtension(context: vscode.ExtensionContext, log: L
 }
 
 async function activateTypescriptPlugin(log: Logger) {
-  const extension = vscode.extensions.getExtension(typeScriptExtensionId);
+  const extension = vscode.extensions.getExtension(Constants.typeScriptExtensionId);
   if (!extension) {
     log(
-      `Extension ${typeScriptExtensionId} not found. No IntelliSense will be provided.`,
+      `Extension ${Constants.typeScriptExtensionId} not found. No IntelliSense will be provided.`,
     );
     return;
   }
@@ -170,7 +169,7 @@ async function activateTypescriptPlugin(log: Logger) {
 
   if (!api) {
     log(
-      `Extension ${typeScriptExtensionId} did not export an API. No IntelliSense will be provided.`,
+      `Extension ${Constants.typeScriptExtensionId} did not export an API. No IntelliSense will be provided.`,
     );
     return;
   }
@@ -187,7 +186,7 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
     );
 
     if (state.hasConfigFile) {
-      log(`Configuring ${pluginId} using: ${JSON.stringify(config, null, 2)}`);
+      log(`Configuring ${Constants.pluginId} using: ${JSON.stringify(config, null, 2)}`);
     } else {
       config.enable = false;
     }
@@ -197,15 +196,14 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
     );
   }
 
-  api.configurePlugin(pluginId, config);
+  api.configurePlugin(Constants.pluginId, config);
 }
 
 function getConfiguration(): NativeTwinPluginConfiguration {
-  const config = vscode.workspace.getConfiguration(configurationSection);
+  const config = vscode.workspace.getConfiguration(Constants.configurationSection);
   const outConfig: NativeTwinPluginConfiguration = {
-    tags: ['tw', 'apply', 'css', 'variants'],
+    functions: ['tw', 'apply', 'css', 'style', 'styled', 'variants', 'createVariants'],
     attributes: ['tw', 'class', 'className', 'variants'],
-    styles: ['style', 'styled', 'variants'],
     debug: false,
     enable: true,
     trace: {
@@ -213,16 +211,12 @@ function getConfiguration(): NativeTwinPluginConfiguration {
     },
   };
 
-  withConfigValue<string[]>(config, 'tags', (tags) => {
-    outConfig.tags = tags;
+  withConfigValue<string[]>(config, 'functions', (tags) => {
+    outConfig.functions = tags;
   });
 
   withConfigValue<string[]>(config, 'attributes', (attributes) => {
     outConfig.attributes = attributes;
-  });
-
-  withConfigValue<string[]>(config, 'styles', (styles) => {
-    outConfig.styles = styles;
   });
 
   withConfigValue<boolean>(config, 'debug', (debug) => {

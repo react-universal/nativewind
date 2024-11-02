@@ -4,7 +4,7 @@
   "reactNative": false,
   "minify": false,
   "types": true,
-  "vscode": false,
+  "vscode": true,
   "entries": [
     "./src"
   ]

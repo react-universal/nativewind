@@ -1,11 +1,11 @@
 import path from 'path';
 import * as vscode from 'vscode';
 import { LanguageClient } from 'vscode-languageclient/node';
-import { extensionName } from '../../extension/extension.constants';
 import { TestDocument } from './TestDocument.model';
+import { Constants } from '@native-twin/language-service';
 
 class ExtensionTestHandler {
-  readonly extensionName = extensionName;
+  readonly extensionName = Constants.extensionName;
   readonly extension: vscode.Extension<LanguageClient>;
   running = false;
 

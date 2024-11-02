@@ -3,9 +3,6 @@ import * as Option from 'effect/Option';
 
 export interface KeyMap<K, V> extends Map<K, V> {}
 
-// export const KeyMap: KeyMap<K, V> = Map<K, V>;
-// const KeyMapProto =
-
 export const get = dual<
   <K1>(key: K1) => <K, V>(self: KeyMap<K, V>) => Option.Option<V>,
   <K, V, K1 extends K>(self: KeyMap<K, V>, key: K1) => Option.Option<V>

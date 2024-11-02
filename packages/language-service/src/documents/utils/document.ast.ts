@@ -1,6 +1,7 @@
 import { parse } from '@babel/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
+import type { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
 
 const matchVariantsObject = (
   properties: t.ObjectExpression['properties'],
@@ -51,10 +52,7 @@ const templateExpressionMatcher = (
 
 export const getDocumentLanguageLocations = (
   code: string,
-  config: {
-    tags: string[];
-    attributes: string[];
-  },
+  config: NativeTwinPluginConfiguration,
 ) => {
   const sourceLocations: t.SourceLocation[] = [];
   try {
@@ -67,10 +65,10 @@ export const getDocumentLanguageLocations = (
     if (parsed) {
       traverse(parsed, {
         CallExpression: (path) => {
-          sourceLocations.push(...callExpressionMatcher(path, config.tags));
+          sourceLocations.push(...callExpressionMatcher(path, config.functions));
         },
         TaggedTemplateExpression: (path) => {
-          if (t.isIdentifier(path.node.tag) && config.tags.includes(path.node.tag.name)) {
+          if (t.isIdentifier(path.node.tag) && config.functions.includes(path.node.tag.name)) {
             sourceLocations.push(...templateExpressionMatcher(path.node.quasi.quasis));
           }
         },

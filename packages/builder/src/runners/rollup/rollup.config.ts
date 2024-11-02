@@ -75,9 +75,9 @@ export const createRollupConfig = (
             exclude: [...testPatterns],
             tsconfig: 'tsconfig.build.json',
             compilerOptions: {
-              sourceMap: true,
+              // sourceMap: true,
               declarationDir: outDir,
-              declarationMap: true,
+              // declarationMap: true,
               removeComments: false,
               declaration: true,
               outDir: outDir,
@@ -90,10 +90,10 @@ export const createRollupConfig = (
           // Using preserveModules disables bundling and the creation of chunks,
           // leading to a result that is a mirror of the input module graph.
           preserveModules: true,
+          dynamicImportInCjs: true,
           esModule: 'if-default-prop',
           interop: 'compat',
           sourcemap,
-          generatedCode: 'es5',
           // Hoisting transitive imports adds bare imports in modules,
           // which can make imports by JS runtimes slightly faster,
           // but makes the generated code harder to follow.

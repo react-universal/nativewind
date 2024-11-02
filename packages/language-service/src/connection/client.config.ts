@@ -2,7 +2,7 @@ import * as Context from 'effect/Context';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode';
-import { NativeTwinPluginConfiguration } from '../types/extension.types';
+import { NativeTwinPluginConfiguration } from '../utils/constants.utils';
 import { DEFAULT_PLUGIN_CONFIG } from '../utils/constants.utils';
 
 export class ConfigManager {

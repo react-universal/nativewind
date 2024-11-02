@@ -73,24 +73,6 @@
     "vsc-lfs.fileFilters": [
       ".js"
     ],
-    "files.exclude": {
-      "**/.git": true,
-      "**/.svn": true,
-      "**/.hg": true,
-      "**/CVS": true,
-      "**/.DS_Store": true,
-      "**/Thumbs.db": true,
-      ".turbo": true,
-      "**/CHANGELOG.md": false,
-      "**/jest.config.js": false,
-      "**/LICENSE": true,
-      "**/babel.config.js": false,
-      "**/build": false,
-      "**/turbo.json": false,
-      "**/.eslintrc.json": false,
-      "**/.eslintignore": true,
-      "**/README.md": true
-    },
     "search.exclude": {
       "**/node_modules": true,
       "**/*.code-search": true,

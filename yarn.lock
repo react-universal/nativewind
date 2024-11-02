@@ -21879,7 +21879,9 @@ __metadata:
   resolution: "native-twin-vscode@workspace:packages/vscode-extension"
   dependencies:
     "@native-twin/cli": "workspace:*"
+    "@native-twin/helpers": "workspace:*"
     "@native-twin/language-server": "workspace:*"
+    "@native-twin/language-service": "workspace:*"
     "@types/vscode": "npm:^1.89.0"
     "@vscode/test-cli": "npm:^0.0.9"
     "@vscode/test-electron": "npm:^2.4.0"

@@ -42,7 +42,7 @@ out
 # TypeScript cache
 *.tsbuildinfo
 
-.nx/cache
+.nx/
 *.vsix
 # Turborepo
 .turbo

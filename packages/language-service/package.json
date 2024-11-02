@@ -17,31 +17,33 @@
     ".": {
       "types": "./build/index.d.ts",
       "import": "./build/esm/index.js",
-      "require": "./build/index.js"
+      "require": "./build/index.js",
+      "default": "./build/index.js"
     },
     "./browser": {
       "types": "./build/browser.d.ts",
       "import": "./build/esm/browser.js",
-      "require": "./build/browser.js"
+      "require": "./build/browser.js",
+      "default": "./build/browser.js"
     },
     "./package.json": "./package.json"
   },
   "main": "./build/index.js",
-  "module": "./build/esm/index.js",
+  "module": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "LICENSE",
     "README.md",
     "CHANGELOG.md",
+    "extension",
     "build",
     "src",
     "browser"
   ],
   "scripts": {
     "build": "twin build",
-    "build:esbuild:watch": "node esbuild.mjs --watch",
-    "build:tsc:watch": "tsc -p tsconfig.build.json --watch",
-    "build:watch": "twin build -w",
+    "build:tsc": "tsc -p tsconfig.build.json",
+    "build:tsc:watch": "twin build -w",
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "echo \"Non tests\"",

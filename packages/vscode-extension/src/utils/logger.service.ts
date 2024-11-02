@@ -1,8 +1,12 @@
+import * as Ansi from '@effect/printer-ansi/Ansi';
+import * as Doc from '@effect/printer/Doc';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
+import * as Predicate from 'effect/Predicate';
+import { inspect } from 'util';
 import * as vscode from 'vscode';
-import { extensionChannelName } from '../extension/extension.constants';
+import { Constants, loggerUtils } from '@native-twin/language-service';
 
 /**
  * @domain `Client`
@@ -14,32 +18,72 @@ export const ClientCustomLogger = Logger.replaceScoped(
   Effect.gen(function* () {
     const channel = yield* Effect.acquireRelease(
       Effect.sync(() =>
-        vscode.window.createOutputChannel(extensionChannelName, { log: true }),
-      ),
-      (channel) =>
-        Effect.sync(() => {
-          channel.clear();
-          return channel.dispose();
+        vscode.window.createOutputChannel(Constants.extensionChannelName, {
+          log: true,
         }),
+      ),
+      (channel) => Effect.sync(() => channel.dispose()),
     );
+    channel.replace('');
 
     return Logger.make((options) => {
-      const message = Logger.logfmtLogger.log(options);
+      let message = '';
+      if (typeof options.message === 'string') {
+        message = options.message;
+      }
+      if (Array.isArray(options.message)) {
+        message = options.message.map((x) => inspect(x)).join(' ');
+      }
+      if (Predicate.isRecord(options.message)) {
+        message = inspect(options.message, false, null, false);
+      }
 
       switch (options.logLevel) {
         case LogLevel.Trace:
-          return channel.trace(message);
+          channel.trace(`${message}`);
+          break;
         case LogLevel.Debug:
-          return channel.debug(message);
+          channel.debug(message);
+          break;
         case LogLevel.Warning:
-          return channel.warn(message);
+          channel.warn(message);
+          break;
         case LogLevel.Error:
         case LogLevel.Fatal:
-          return channel.error(message);
+          channel.error(message);
+          break;
         default:
-          return channel.info(message);
-        // return channel.info(message);
+          channel.info(message);
+          break;
       }
     });
   }),
 );
+
+export const formatLogMessage = (options: {
+  logLevel: LogLevel.LogLevel;
+  message: any;
+}) => {
+  const msgFactory: Doc.Doc<Ansi.Ansi>[] = [];
+
+  if (typeof options.message === 'string') {
+    msgFactory.push(
+      Doc.text(options.message).pipe(Doc.annotate(loggerUtils.messageConfig)),
+    );
+  }
+  if (Array.isArray(options.message)) {
+    msgFactory.push(
+      Doc.text(options.message.join(' ')).pipe(Doc.annotate(loggerUtils.messageConfig)),
+    );
+  }
+
+  const doc = Doc.hsep([
+    Doc.text(`[Twin Language Client]`).pipe(
+      Doc.annotate(loggerUtils.scopeTextConfig),
+      Doc.annotate(loggerUtils.getMessageColor(options.logLevel)),
+    ),
+    // Doc.text(`{${fiberId}}`).pipe(Doc.annotate(fiberText)),
+    ...msgFactory,
+  ]);
+  return loggerUtils.render(doc.pipe(Doc.unAnnotate));
+};

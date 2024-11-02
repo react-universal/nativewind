@@ -14,7 +14,7 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "main": "./build/index.js",
-  "module": "./build/esm/index.js",
+  "module": "./build/index.js",
   "types": "./build/index.d.ts",
   "bin": {
     "native-twin-language-server": "./bin/native-twin-language-server"
@@ -29,10 +29,9 @@
     "plugin-parser"
   ],
   "scripts": {
-    "build": "twin build",
+    "build": "node ./esbuild.mjs",
     "build:tsc": "tsc -p tsconfig.build.json",
-    "build:tsc:watch": "tsc -p tsconfig.build.json --watch",
-    "build:watch": "node esbuild.mjs --watch",
+    "build:tsc:watch": "tsc -p tsconfig.cjs.json --watch",
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "echo \"No tests\"",
@@ -71,15 +70,5 @@
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
-  },
-  "nx": {
-    "includedScripts": [
-      "build",
-      "build:watch",
-      "clean",
-      "esbuild:build",
-      "lint",
-      "vscode:dev"
-    ]
   }
 }

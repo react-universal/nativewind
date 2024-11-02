@@ -1,7 +1,7 @@
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import { ConnectionService } from '../connection/connection.service';
+import { ConnectionService } from '@native-twin/language-service';
 import { inspect } from 'util';
 
 // export const loggerLayer = (connection: Connection) =>

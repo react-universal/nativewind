@@ -9,6 +9,7 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "declarationMap": true,
     "strict": true,
     "noEmit": false,
     "outDir": "build",
@@ -19,9 +20,8 @@
     ".vscode-test",
     "build",
     "ts-extension",
-    "project-fixture"
-  ],
-  "include": [
-    "src/**/*"
+    "project-fixture",
+    "esbuild.js",
+    "jest.config.js"
   ]
 }

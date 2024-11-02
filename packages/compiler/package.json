@@ -39,13 +39,13 @@
       "default": "./build/esm/node/babel/index.js"
     },
     "./metro.babel.transformer": {
-      "types": "./build/node/metro/transformers/metro.babel.transformer.js",
+      "types": "./build/node/metro/transformers/metro.babel.transformer.d.ts",
       "import": "./build/esm/node/metro/transformers/metro.babel.transformer.js",
       "require": "./build/node/metro/transformers/metro.babel.transformer.js",
       "default": "./build/esm/node/metro/transformers/metro.babel.transformer.js"
     },
     "./metro.transformer": {
-      "types": "./build/node/metro/transformers/metro.transformer.js",
+      "types": "./build/node/metro/transformers/metro.transformer.d.ts",
       "import": "./build/esm/node/metro/transformers/metro.transformer.js",
       "require": "./build/node/metro/transformers/metro.transformer.js",
       "default": "./build/esm/node/metro/transformers/metro.transformer.js"

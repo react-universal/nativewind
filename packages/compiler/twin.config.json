@@ -5,6 +5,5 @@
   "minify": false,
   "types": true,
   "vscode": false,
-  "runner": "esbuild",
   "logs": false
 }

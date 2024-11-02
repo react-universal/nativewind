@@ -2,7 +2,7 @@ import * as ReadOnlyArray from 'effect/Array';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
-import { TwinDocument } from '../../documents/models/twin-document.model';
+import { TwinLSPDocument } from '../../documents/models/twin-document.model';
 import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
 import { TemplateTokenWithText } from '../../native-twin/models/template-token.model';
 import { isSameRange } from '../../utils/vscode.utils';
@@ -36,7 +36,7 @@ const createRegionEntriesExtractor =
   };
 
 export const diagnosticTokensToDiagnosticItems = (
-  document: TwinDocument,
+  document: TwinLSPDocument,
   twinService: NativeTwinManagerService['Type'],
 ): VscodeDiagnosticItem[] => {
   const getRange = bodyLocToRange(document);
@@ -116,7 +116,7 @@ const regionDescriptions = (data: DiagnosticToken[], uri: string) => {
 };
 
 const bodyLocToRange =
-  (document: TwinDocument) => (bodyLoc: TemplateTokenWithText['bodyLoc']) =>
+  (document: TwinLSPDocument) => (bodyLoc: TemplateTokenWithText['bodyLoc']) =>
     vscode.Range.create(
       document.offsetToPosition(bodyLoc.start),
       document.offsetToPosition(bodyLoc.end),

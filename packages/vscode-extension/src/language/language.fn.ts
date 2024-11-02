@@ -7,10 +7,7 @@ import {
   ProvideDocumentColorsSignature,
 } from 'vscode-languageclient';
 import { CSS_COLORS } from '@native-twin/css';
-import {
-  DOCUMENT_SELECTORS,
-  configurationSection,
-} from '../extension/extension.constants';
+import { Constants } from '@native-twin/language-service';
 
 const colorNames = Object.keys(CSS_COLORS);
 
@@ -82,14 +79,14 @@ export const getDefaultLanguageClientOptions = (data: {
   workspaceRoot: vscode.WorkspaceFolder | undefined;
 }): LanguageClientOptions => {
   return {
-    documentSelector: DOCUMENT_SELECTORS,
+    documentSelector: Constants.DOCUMENT_SELECTORS,
 
     markdown: {
       isTrusted: true,
       supportHtml: true,
     },
     initializationOptions: {
-      ...vscode.workspace.getConfiguration(configurationSection),
+      ...vscode.workspace.getConfiguration(Constants.configurationSection),
       ...data,
       capabilities: {
         completion: {

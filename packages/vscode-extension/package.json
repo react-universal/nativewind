@@ -1,12 +1,14 @@
 {
   "name": "native-twin-vscode",
+  "displayName": "Native Twin LSP",
   "version": "1.0.0",
   "private": true,
   "description": "Native Twin vscode extension.",
   "categories": [
     "Programming Languages",
     "Linters",
-    "Snippets"
+    "Snippets",
+    "Other"
   ],
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -22,15 +24,16 @@
   "publisher": "native-twin",
   "main": "./build/extension.js",
   "scripts": {
-    "build": "yarn clean && yarn build:tsc",
-    "build:tsc": "tsc -b",
-    "build:tsc:watch": "tsc -b -w",
+    "build": "node ./esbuild.js",
+    "build:tsc": "tsc -p tsconfig.json",
+    "build:tsc:watch": "tsc -p tsconfig.json --watch",
+    "build:watch": "tsc -p tsconfig.json --watch",
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
     "vsc-test": "vscode-test --watch",
     "vsc:test": "sh ./scripts/e2e.sh",
     "vscode:dev": "tsc -b -w",
-    "vscode:prepublish": "node ./esbuild.mjs"
+    "vscode:prepublish": "node ./esbuild.js"
   },
   "contributes": {
     "commands": [
@@ -41,6 +44,31 @@
       {
         "command": "nativeTwin.className",
         "title": "Native Twin: Replace className strings"
+      },
+      {
+        "command": "nativeTwin.workspaceInit",
+        "title": "Setup Workspace",
+        "category": "Native Twin"
+      },
+      {
+        "command": "nativeTwin.init",
+        "title": "Create Files",
+        "category": "Native Twin"
+      },
+      {
+        "command": "nativeTwin.reset",
+        "title": "Delete Files",
+        "category": "Native Twin"
+      },
+      {
+        "command": "nativeTwin.deleteFile",
+        "title": "Delete \"file.txt\"",
+        "category": "Native Twin"
+      },
+      {
+        "command": "nativeTwin.addFile",
+        "title": "Add \"file.txt\"",
+        "category": "Native Twin"
       }
     ],
     "configuration": [
@@ -49,20 +77,22 @@
         "title": "Native Twin Configuration",
         "type": "object",
         "properties": {
-          "nativeTwin.tags": {
+          "nativeTwin.functions": {
             "type": "array",
-            "description": "List of template tags to enable Native Twin intellisense in.",
+            "scope": "window",
+            "description": "List of template tags or functions to enable Native Twin intellisense in.",
             "items": {
               "type": "string",
-              "description": "Tag name."
+              "description": "Function/Tag name."
             },
             "default": [
               "tw",
+              "cx",
+              "tx",
               "apply",
               "css",
               "variants",
               "styled",
-              "tx",
               "style",
               "createVariants"
             ]
@@ -70,35 +100,26 @@
           "nativeTwin.attributes": {
             "type": "array",
             "description": "List of html/jsx attributes to enable Native Twin intellisense in.",
+            "scope": "window",
             "items": {
               "type": "string",
               "description": "Attribute name."
             },
             "default": [
               "className",
-              "class"
-            ]
-          },
-          "nativeTwin.styles": {
-            "type": "array",
-            "description": "List of style/styled functions to enable Native Twin intellisense in.",
-            "items": {
-              "type": "string",
-              "description": "Style function name."
-            },
-            "default": [
-              "style",
-              "styled",
-              "variants"
+              "class",
+              "tw"
             ]
           },
           "nativeTwin.debug": {
             "type": "boolean",
+            "scope": "window",
             "description": "Enable/disable additional debug information.",
             "default": false
           },
           "nativeTwin.enable": {
             "type": "boolean",
+            "scope": "window",
             "default": true,
             "markdownDescription": "Controls whether Native Twin intellisense is enabled or not."
           },
@@ -118,7 +139,7 @@
     ],
     "grammars": [
       {
-        "language": "Log",
+        "language": "log",
         "scopeName": "code.log",
         "path": "./src/syntaxes/log.tmLanguage"
       }
@@ -135,19 +156,47 @@
         "configuration": "./log.configuration.json",
         "mimetypes": [
           "log",
+          "twinLog",
           "text/log",
           "text/x-log",
           "text/x-code-output",
           "x-code-output"
         ]
       }
-    ]
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "nativeTwin.init",
+          "when": "workbenchState == workspace"
+        },
+        {
+          "command": "nativeTwin.reset",
+          "when": "workbenchState == workspace"
+        },
+        {
+          "command": "nativeTwin.deleteFile",
+          "when": "workbenchState == workspace"
+        },
+        {
+          "command": "nativeTwin.addFile",
+          "when": "workbenchState == workspace"
+        },
+        {
+          "command": "nativeTwin.workspaceInit",
+          "when": "workbenchState != workspace"
+        }
+      ]
+    }
   },
   "activationEvents": [
-    "onStartupFinished"
+    "onStartupFinished",
+    "onFileSystem:native-twin"
   ],
   "dependencies": {
+    "@native-twin/helpers": "workspace:*",
     "@native-twin/language-server": "workspace:*",
+    "@native-twin/language-service": "workspace:*",
     "effect": "^3.10.0",
     "vscode-languageclient": "^9.0.1"
   },
@@ -166,5 +215,9 @@
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
-  }
+  },
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ]
 }

@@ -1,12 +1,51 @@
-export * from './documents/documents.service';
-export * from './documents/utils/document.ast';
-export * from './documents/models/twin-document.model';
-export * from './native-twin/native-twin.service';
-export * from './utils/constants.utils';
-export * from './utils/load-js';
-export * from './native-twin/models/TwinSheetEntry.model';
-export * from './native-twin/models/template-token.model';
-export * from './native-twin/utils/native-twin.utils';
-export * from './native-twin/parser.types';
-export * from './native-twin/native-twin.types';
-export * from './native-twin/native-twin.parser';
+import * as Constants from './utils/constants.utils';
+
+/** Language Service */
+export { filterTokensFromRules } from './language/utils/completions.maps';
+export {
+  LanguageServiceLive,
+  createLanguageService,
+  getCompletionsForTokens,
+  getCompletionsAtPosition,
+  getDocumentationMarkdown,
+  LanguageDocumentation,
+  LanguageCompletions,
+  LanguageDiagnostics,
+  getCompletionEntryDetailsDisplayParts,
+  getDocumentHighLightsProgram,
+} from './language';
+
+/** Documents Service */
+export { DocumentsService, TwinLSPDocument } from './documents';
+
+/** Twin Services */
+export {
+  NativeTwinManagerService,
+  TemplateTokenData,
+  TemplateTokenWithText,
+  parseTemplate,
+} from './native-twin';
+export type { TwinRuleCompletion } from './native-twin';
+
+/** Connection Service */
+export {
+  ConfigManagerService,
+  ConnectionService,
+  initializeConnection,
+} from './connection';
+
+/** Vscode Client */
+export {
+  getDocumentLanguageLocations,
+  LanguageCompiler,
+  LanguageInput,
+} from './extension';
+
+/** Logger */
+export { createLspLogger, loggerUtils } from './utils/lsp.logger.service';
+
+export { DEFAULT_PLUGIN_CONFIG } from './utils/constants.utils';
+
+export type { NativeTwinPluginConfiguration } from './utils/constants.utils';
+
+export { Constants };

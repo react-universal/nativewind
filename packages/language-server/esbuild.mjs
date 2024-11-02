@@ -19,28 +19,27 @@ console.log('- Preparing');
 //   minify: true,
 // });
 
-const ctxServer = await esbuild.context({
+const context = await esbuild.context({
   entryPoints: ['./src/index.ts'],
   bundle: true,
   outdir: 'build',
   external: ['vscode'],
   format: 'cjs',
   logLevel: 'silent',
+  metafile: true,
   platform: 'node',
   sourcemap: true,
   minify: true,
 });
-
 console.log('- Building');
-// await ctxBIN.rebuild();
-await ctxServer.rebuild();
+await context.rebuild();
 
 if (args.watch) {
   console.log('- Watching');
-  // await ctxBIN.watch();
-  await ctxServer.watch();
+  await context.watch().then(() => {
+    console.log('WATCH_FINALIZE');
+  });
 } else {
   console.log('- Cleaning up');
-  // await ctxBIN.dispose();
-  await ctxServer.dispose();
+  await context.dispose();
 }

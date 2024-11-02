@@ -10,12 +10,14 @@
         "reveal": "never"
       },
       "problemMatcher": [
-        "$tsc"
+        "$tsc",
+        "$esbuild"
       ]
     },
     {
       "type": "npm",
       "script": "build:tsc:watch",
+      "label": "npm: build:tsc:watch",
       "isBackground": true,
       "group": {
         "kind": "build",
@@ -25,9 +27,7 @@
         "panel": "dedicated",
         "reveal": "never"
       },
-      "problemMatcher": [
-        "$tsc-watch",
-      ]
+      "problemMatcher": "$tsc-watch"
     }
   ]
 }

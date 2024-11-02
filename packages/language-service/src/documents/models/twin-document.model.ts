@@ -1,15 +1,19 @@
+import type * as t from '@babel/types';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
+import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
-import type * as VSCDocument from 'vscode-languageserver-textdocument';
+import * as VSCDocument from 'vscode-languageserver-textdocument';
+import * as vscode from 'vscode-languageserver-types';
 import type { TemplateTokenWithText } from '../../native-twin/models/template-token.model';
+import { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
 import { getDocumentLanguageLocations } from '../utils/document.ast';
 import { DocumentLanguageRegion } from './language-region.model';
 
 export abstract class DocumentClass implements Equal.Equal {
   constructor(
     readonly textDocument: VSCDocument.TextDocument,
-    readonly config: { tags: string[]; attributes: string[] },
+    readonly config: NativeTwinPluginConfiguration,
   ) {}
   abstract offsetToPosition(offset: number): VSCDocument.Position;
   abstract positionToOffset(position: VSCDocument.Position): number;
@@ -32,11 +36,8 @@ export abstract class DocumentClass implements Equal.Equal {
   }
 }
 
-export class TwinDocument extends DocumentClass {
-  constructor(
-    document: VSCDocument.TextDocument,
-    config: { tags: string[]; attributes: string[] },
-  ) {
+export class TwinLSPDocument extends DocumentClass {
+  constructor(document: VSCDocument.TextDocument, config: NativeTwinPluginConfiguration) {
     super(document, config);
   }
 
@@ -82,5 +83,49 @@ export class TwinDocument extends DocumentClass {
       start: realStart,
       end: realEnd,
     };
+  }
+}
+
+interface TwinTokenLocation {
+  _tag: 'TwinTokenLocation';
+  range: vscode.Range;
+  offset: {
+    start: number;
+    end: number;
+  };
+  text: string;
+}
+
+export class TwinLspDocument {
+  constructor(readonly document: VSCDocument.TextDocument) {}
+  getLanguageRegions(config: NativeTwinPluginConfiguration) {
+    return getDocumentLanguageLocations(this.document.getText(), config);
+  }
+  babelLocationToVscode(location: t.SourceLocation) {
+    const range = vscode.Range.create(
+      this.document.positionAt(location.start.index),
+      this.document.positionAt(location.end.index),
+    );
+    const start = this.document.offsetAt(range.start);
+    const end = this.document.offsetAt(range.end);
+    const text = this.document.getText(range);
+    return {
+      text,
+      range,
+      offset: {
+        start,
+        end,
+      },
+    };
+  }
+  isPositionAtOffset(bounds: TwinTokenLocation['offset'], offset: number) {
+    return offset >= bounds.start && offset <= bounds.end;
+  }
+
+  findTokenLocationAt(position: vscode.Position, config: NativeTwinPluginConfiguration) {
+    const regions = this.getLanguageRegions(config);
+    const ranges = regions.map((x) => this.babelLocationToVscode(x));
+    const positionOffset = this.document.offsetAt(position);
+    return RA.findFirst(ranges, (x) => this.isPositionAtOffset(x.offset, positionOffset));
   }
 }

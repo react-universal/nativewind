@@ -6,7 +6,9 @@ import * as Scope from 'effect/Scope';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as vscode from 'vscode';
-import { ExtensionContext } from './extension.service';
+import { Constants } from '@native-twin/language-service';
+import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import { VscodeContext } from './extension.service';
 
 export const executeCommand = (command: string, ...args: Array<any>) =>
   thenable(() => vscode.commands.executeCommand(command, ...args));
@@ -16,7 +18,7 @@ export const registerCommand = <R, E, A>(
   f: (...args: Array<any>) => Effect.Effect<A, E, R>,
 ) => {
   return Effect.gen(function* () {
-    const context = yield* ExtensionContext;
+    const context = yield* VscodeContext;
     const runtime = yield* Effect.runtime<R>();
     const run = Runtime.runFork(runtime);
 
@@ -70,9 +72,13 @@ export const listenForkEvent = <A, R>(
   f: (data: A) => Effect.Effect<void, never, R>,
 ) => Effect.forkScoped(listenDisposableEvent(event, f));
 
+export interface ConfigValue<Section extends string, A> {
+  section: Section;
+  value: A;
+}
 export interface ConfigRef<Section extends string, A> {
   readonly get: Effect.Effect<A>;
-  readonly changes: Stream.Stream<{ section: Section; value: A }>;
+  readonly changes: Stream.Stream<ConfigValue<Section, A>>;
 }
 
 /**
@@ -115,19 +121,16 @@ export const extensionConfig = <Section extends string, A>(
  * The main difference with extensionConfig its you need to provide a default value
  */
 export const extensionConfigValue = <Section extends string, A>(
-  namespace: string,
   key: Section,
   defaultValue: A,
 ): Effect.Effect<ConfigRef<Section, A>, never, Scope.Scope> =>
   Effect.gen(function* () {
-    const get = () => vscode.workspace.getConfiguration(namespace).get<A>(key);
+    const get = () =>
+      vscode.workspace.getConfiguration(Constants.configurationSection).get<A>(key);
     const ref = yield* SubscriptionRef.make(get() ?? defaultValue);
 
     yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {
-      const affected = _.affectsConfiguration(
-        `nativeTwin.${key}`,
-        vscode.window.activeTextEditor?.document.uri,
-      );
+      const affected = _.affectsConfiguration(`nativeTwin.${key}`);
       console.log('AFFECTED: ', affected, key);
       if (affected) {
         return SubscriptionRef.set(ref, get() ?? defaultValue);
@@ -138,12 +141,46 @@ export const extensionConfigValue = <Section extends string, A>(
     return {
       get: SubscriptionRef.get(ref),
       changes: Stream.changes(ref.changes).pipe(
-        Stream.map((x) => {
+        Stream.map((x): ConfigValue<Section, A> => {
           return {
             section: key,
             value: x,
           };
         }),
       ),
+    };
+  });
+
+export interface ExtensionConfigRef {
+  readonly get: Effect.Effect<NativeTwinPluginConfiguration>;
+  readonly changes: Stream.Stream<NativeTwinPluginConfiguration>;
+}
+/**
+ *
+ * @description Subscribe to a section value for the plugin using its namespace
+ * the default namespace its `nativeTwin` \n
+ * The main difference with extensionConfig its you need to provide a default value
+ */
+export const extensionConfigState = (
+  defaultValue: NativeTwinPluginConfiguration,
+): Effect.Effect<ExtensionConfigRef, never, Scope.Scope> =>
+  Effect.gen(function* () {
+    const get = () =>
+      vscode.workspace.getConfiguration(
+        Constants.configurationSection,
+      ) as unknown as NativeTwinPluginConfiguration;
+    const ref = yield* SubscriptionRef.make(get() ?? defaultValue);
+
+    yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {
+      const affected = _.affectsConfiguration(`nativeTwin`);
+      if (affected) {
+        return SubscriptionRef.set(ref, get() ?? defaultValue);
+      }
+      return Effect.void;
+    });
+
+    return {
+      get: SubscriptionRef.get(ref),
+      changes: Stream.changes(ref.changes),
     };
   });

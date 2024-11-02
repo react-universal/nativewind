@@ -4,7 +4,7 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { asArray } from '@native-twin/helpers';
-import { TwinDocument } from '../../documents/models/twin-document.model';
+import { TwinLSPDocument } from '../../documents/models/twin-document.model';
 import { TemplateTokenData } from '../../native-twin/models/template-token.model';
 import { TwinStore, TwinRuleCompletion } from '../../native-twin/native-twin.types';
 import { VscodeCompletionItem } from '../models/completion.model';
@@ -44,7 +44,7 @@ export const getAllCompletionRules = (
 export const completionRulesToEntries = (
   flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,
   ruleCompletions: ReadonlyArray<TwinRuleCompletion>,
-  document: TwinDocument,
+  document: TwinLSPDocument,
 ) => {
   const filtered = filterTokensFromRules(flattenTemplateTokens, ruleCompletions);
   return ReadonlyArray.flatMap(filtered, (suggestion) => {
@@ -71,7 +71,7 @@ export const completionRulesToEntries = (
 };
 
 /** File private */
-const filterTokensFromRules = (
+export const filterTokensFromRules = (
   flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,
   ruleCompletions: ReadonlyArray<TwinRuleCompletion>,
 ) => {

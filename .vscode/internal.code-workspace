@@ -5,6 +5,22 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/compiler",
+      "path": "../packages/compiler"
+    },
+    {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/language-service",
+      "path": "../packages/language-service"
+    },
+    {
+      "name": "📦 @lib/language-server",
+      "path": "../packages/language-server"
+    },
+    {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
     },
@@ -15,14 +31,6 @@
     {
       "name": "📦 @lib/metro",
       "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/compiler",
-      "path": "../packages/css-to-rn"
-    },
-    {
-      "name": "expo-router",
-      "path": "../apps/expo-router"
     },
     {
       "name": "📦 @lib/native-twin",
@@ -49,10 +57,6 @@
       "path": "../packages/dev-tools"
     },
     {
-      "name": "📦 @lib/language-service",
-      "path": "../packages/language-service"
-    },
-    {
       "name": "📦 @lib/arc-parser",
       "path": "../packages/arc-parser"
     },
@@ -61,12 +65,8 @@
       "path": "../packages/preset-tailwind"
     },
     {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @lib/language-server",
-      "path": "../packages/language-server"
+      "name": "expo-router",
+      "path": "../apps/expo-router"
     },
     {
       "name": "twin.run",

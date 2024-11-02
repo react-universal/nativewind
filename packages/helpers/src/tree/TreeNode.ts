@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as Array from 'effect/Array';
-import { pipe } from 'effect/Function';
 
 export class TreeNode<T> {
   // MARK: Properties
@@ -20,7 +19,9 @@ export class TreeNode<T> {
   constructor(value: T, parent: TreeNode<T> | null = null) {
     this.value = value;
     this.children = [];
-    this.parent = parent;
+    if (parent) {
+      this.parent = parent;
+    }
   }
 
   // MARK: Accessors
@@ -44,9 +45,9 @@ export class TreeNode<T> {
     return this.getTreeString(this);
   }
 
-  addChild(value: T) {
-    const newNode = new TreeNode(value);
-    this.children = pipe(this.children, Array.append(newNode));
+  addChild(value: T, _parent: TreeNode<T> | null = null) {
+    const newNode = new TreeNode(value, _parent ?? this);
+    this.children.push(newNode);
     return newNode;
   }
 

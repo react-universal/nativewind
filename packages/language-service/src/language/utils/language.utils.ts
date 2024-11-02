@@ -6,7 +6,7 @@ import { pipe } from 'effect/Function';
 import * as vscode from 'vscode-languageserver-types';
 import { asArray } from '@native-twin/helpers';
 import { DocumentLanguageRegion } from '../../documents/models/language-region.model';
-import { TwinDocument } from '../../documents/models/twin-document.model';
+import { TwinLSPDocument } from '../../documents/models/twin-document.model';
 import {
   TemplateTokenData,
   TemplateTokenWithText,
@@ -108,7 +108,7 @@ export const getFlattenTemplateToken = (
 };
 
 export const getRangeFromTokensAtPosition = (
-  document: TwinDocument,
+  document: TwinLSPDocument,
   nodeAtPosition: DocumentLanguageRegion,
   templateTokens: TemplateTokenWithText[],
 ) => {

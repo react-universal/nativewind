@@ -10,12 +10,14 @@
         "reveal": "never"
       },
       "problemMatcher": [
-        "$tsc"
+        "$tsc",
+        "$esbuild"
       ]
     },
     {
       "type": "npm",
       "script": "build:tsc:watch",
+      "label": "npm: build:tsc:watch",
       "isBackground": true,
       "group": {
         "kind": "build",
@@ -26,7 +28,21 @@
         "reveal": "never"
       },
       "problemMatcher": [
-        "$tsc-watch",
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "."
+          }
+        }
       ]
     }
   ]

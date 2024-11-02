@@ -1,3 +1,4 @@
+import { createVirtualSheet } from '@native-twin/css';
 import * as Context from 'effect/Context';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
@@ -11,10 +12,10 @@ import {
   setup,
   tx,
 } from '@native-twin/core';
-import { createVirtualSheet } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
 import { requireJS } from '../utils/load-js';
+import { createStyledContext } from '../utils/sheet.utils';
 import {
   InternalTwFn,
   InternalTwinConfig,
@@ -57,6 +58,14 @@ export class NativeTwinManager {
       context: this.context,
       tw: this.tw,
     });
+  }
+
+  getCompilerContext() {
+    return createStyledContext(this.userConfig.root.rem);
+  }
+
+  getTwinRules() {
+    return this.completions.twinRules;
   }
 
   private getContext() {

@@ -14,13 +14,11 @@ import {
   createDocumentsLayer,
   createLanguageService,
   LanguageServiceLive,
-  Constants,
   ConnectionService,
   ConfigManagerService,
   initializeConnection,
 } from '@native-twin/language-service/browser';
-
-const pluginConfig = Constants.DEFAULT_PLUGIN_CONFIG;
+import { ManagedRuntime } from 'effect';
 
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
 const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScope);
@@ -28,7 +26,7 @@ const connection = createConnection(messageReader, messageWriter);
 export const documentsHandler = new TextDocuments(TextDocument);
 
 const ConnectionLayer = ConnectionService.make(connection);
-const DocumentsLayer = createDocumentsLayer(pluginConfig, documentsHandler);
+const DocumentsLayer = createDocumentsLayer(documentsHandler);
 const MainLive = Layer.mergeAll(ConnectionLayer, LanguageServiceLive).pipe(
   Layer.provideMerge(DocumentsLayer),
   Layer.provideMerge(NativeTwinManagerService.Live),
@@ -41,14 +39,14 @@ const program = Effect.gen(function* () {
   const configService = yield* ConfigManagerService;
   const nativeTwinManager = yield* NativeTwinManagerService;
   const languageService = yield* createLanguageService;
-
+  const Runtime = ManagedRuntime.make(MainLive)
   Connection.onInitialize(async (...args) => {
     const init = initializeConnection(...args, nativeTwinManager, configService);
     return init;
   });
 
   Connection.onCompletion(async (...args) => {
-    const completions = await Effect.runPromise(
+    const completions = await Runtime.runPromise(
       languageService.completions.getCompletionsAtPosition(...args),
     );
     console.log('COMPLETIONS: ', completions);
@@ -60,7 +58,7 @@ const program = Effect.gen(function* () {
   });
 
   Connection.onCompletionResolve(async (...args) =>
-    Effect.runPromise(languageService.completions.getCompletionEntryDetails(...args)),
+    Runtime.runPromise(languageService.completions.getCompletionEntryDetails(...args)),
   );
 
   Connection.onHover(async (...args) =>
