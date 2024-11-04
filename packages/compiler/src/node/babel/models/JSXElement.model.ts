@@ -54,6 +54,7 @@ interface JSXElementNodeInit {
   twin: TwinNode.NativeTwinServiceNode['Type'];
 }
 export class JSXElementNode implements Equal.Equal {
+  readonly _tag = 'JSXElementNode';
   readonly leave: TreeNode<JSXElementTree>;
   readonly order: number;
   readonly filename: string;

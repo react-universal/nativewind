@@ -46,71 +46,6 @@ export const makeFileSystem = Effect.gen(function* () {
 
       const registry = yield* createCompilerRegistry(params.trees);
       return yield* getNativeStylesJSOutput(registry, params.platform);
-
-      // const registry = yield* createCompilerRegistry(params.trees);
-      // const jsOutput = pipe(
-      //   HashMap.values(registry),
-      //   RA.fromIterable,
-      //   RA.map((node) => {
-      //     const { leave } = getJSXCompiledTreeRuntime(
-      //       node,
-      //       pipe(
-      //         node.parentID,
-      //         Option.flatMap((x) => HashMap.get(registry, x)),
-      //       ),
-      //     );
-      //     const stringEntries = entriesToComponentData(
-      //       node.id,
-      //       getRawSheet(leave.entries),
-      //     );
-      //     const astProps = runtimeEntriesToAst(stringEntries);
-      //     return {
-      //       stringEntries,
-      //       astProps,
-      //       node,
-      //     };
-      //   }),
-      //   RA.map((x) => {
-      //     const writer = new CodeBlockWriter();
-      //     return writer
-      //       .newLine()
-      //       .indent(1)
-      //       .write(`['${x.node.id}']: `)
-      //       .writeLine(x.stringEntries)
-      //       .toString();
-      //   }),
-      //   (x) => {
-      //     const writer = new CodeBlockWriter();
-      //     return writer
-      //       .write(`export const globalSheets = `)
-      //       .block(() => {
-      //         writer.writeLine(`${x.join()}`);
-      //       })
-      //       .toString();
-      //   },
-      //   (stringStyles) => {
-      //     const writer = new CodeBlockWriter();
-
-      //     writer.write(`const StyleSheet = require('@native-twin/jsx').StyleSheet;`);
-      //     writer.writeLine(`const setup = require('@native-twin/core').setup;`);
-      //     writer.newLine();
-      //     let importTwinPath = path.relative(
-      //       path.dirname(twin.getPlatformOutput(params.platform)),
-      //       twin.twinConfigPath,
-      //     );
-      //     if (!importTwinPath.startsWith('.')) {
-      //       importTwinPath = `./${importTwinPath}`;
-      //     }
-      //     writer.writeLine(`const twinConfig = require('${importTwinPath}');`);
-
-      //     writer.writeLine(`setup(twinConfig);`);
-      //     writer.write(stringStyles);
-      //     // writer.write(stringStyles.replaceAll("require('@native-twin/jsx').", ''));
-      //     return writer.toString();
-      //   },
-      // );
-
-      // return jsOutput;
     });
   };
 
@@ -244,3 +179,68 @@ export class TwinFSService extends Context.Tag('metro/fs/service')<
     Layer.provideMerge(FSLive),
   );
 }
+
+// const registry = yield* createCompilerRegistry(params.trees);
+// const jsOutput = pipe(
+//   HashMap.values(registry),
+//   RA.fromIterable,
+//   RA.map((node) => {
+//     const { leave } = getJSXCompiledTreeRuntime(
+//       node,
+//       pipe(
+//         node.parentID,
+//         Option.flatMap((x) => HashMap.get(registry, x)),
+//       ),
+//     );
+//     const stringEntries = entriesToComponentData(
+//       node.id,
+//       getRawSheet(leave.entries),
+//     );
+//     const astProps = runtimeEntriesToAst(stringEntries);
+//     return {
+//       stringEntries,
+//       astProps,
+//       node,
+//     };
+//   }),
+//   RA.map((x) => {
+//     const writer = new CodeBlockWriter();
+//     return writer
+//       .newLine()
+//       .indent(1)
+//       .write(`['${x.node.id}']: `)
+//       .writeLine(x.stringEntries)
+//       .toString();
+//   }),
+//   (x) => {
+//     const writer = new CodeBlockWriter();
+//     return writer
+//       .write(`export const globalSheets = `)
+//       .block(() => {
+//         writer.writeLine(`${x.join()}`);
+//       })
+//       .toString();
+//   },
+//   (stringStyles) => {
+//     const writer = new CodeBlockWriter();
+
+//     writer.write(`const StyleSheet = require('@native-twin/jsx').StyleSheet;`);
+//     writer.writeLine(`const setup = require('@native-twin/core').setup;`);
+//     writer.newLine();
+//     let importTwinPath = path.relative(
+//       path.dirname(twin.getPlatformOutput(params.platform)),
+//       twin.twinConfigPath,
+//     );
+//     if (!importTwinPath.startsWith('.')) {
+//       importTwinPath = `./${importTwinPath}`;
+//     }
+//     writer.writeLine(`const twinConfig = require('${importTwinPath}');`);
+
+//     writer.writeLine(`setup(twinConfig);`);
+//     writer.write(stringStyles);
+//     // writer.write(stringStyles.replaceAll("require('@native-twin/jsx').", ''));
+//     return writer.toString();
+//   },
+// );
+
+// return jsOutput;

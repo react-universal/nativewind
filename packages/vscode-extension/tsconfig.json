@@ -1,12 +1,13 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "target": "ES2020",
     "lib": ["ES2022"],
     "types": ["mocha"],
     "sourceMap": true,
+    "declaration": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "declarationMap": true,
@@ -19,7 +20,6 @@
     "node_modules",
     ".vscode-test",
     "build",
-    "ts-extension",
     "project-fixture",
     "esbuild.js",
     "jest.config.js"

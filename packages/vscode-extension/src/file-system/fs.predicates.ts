@@ -2,6 +2,7 @@ import * as Equal from 'effect/Equal';
 import * as Equivalence from 'effect/Equivalence';
 import { pipe } from 'effect/Function';
 import * as Predicate from 'effect/Predicate';
+import * as vscode from 'vscode';
 import type { TreeNode } from '@native-twin/helpers/tree';
 import {
   VirtualDirectory,
@@ -37,3 +38,9 @@ export const isSameEntry = pipe(
 const virtualEntryEQ = Equal.equivalence<VirtualEntryType>();
 
 export const isSameVirtualFile = Equivalence.combine(virtualEntryEQ, isSameEntry);
+
+export const vscodePatternEquivalence = Equivalence.make<vscode.RelativePattern>(
+  (a, b) => {
+    return a.base === b.base && a.pattern === b.pattern;
+  },
+);

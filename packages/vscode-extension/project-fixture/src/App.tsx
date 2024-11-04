@@ -1,15 +1,15 @@
 // @ts-nocheck
 import { createVariants } from '@native-twin/core';
-  
-export const Component = () => {
+
+export const Composssssnent = () => {
   return (
     <div>
       <div className={`bg-rose-700 bg-blue text(sm md:gray)`} />
       <div className={`bg-blue`} />
     </div>
-  );
-};
-   
+  ); 
+}; 
+  
 createVariants({
   base: 'bg-blue-200 bg-red-500 bg-black translate-x-2',
   variants: {

@@ -49,3 +49,4 @@ export { DEFAULT_PLUGIN_CONFIG } from './utils/constants.utils';
 export type { NativeTwinPluginConfiguration } from './utils/constants.utils';
 
 export { Constants };
+export { ExtensionConfigSchema } from './schemas';

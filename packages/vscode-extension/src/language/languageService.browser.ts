@@ -4,7 +4,7 @@ import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions } from 'vscode-languageclient/browser';
-import { Constants, DEFAULT_PLUGIN_CONFIG } from '@native-twin/language-service';
+import { Constants } from '@native-twin/language-service';
 import { VscodeContext } from '../extension/extension.service';
 import {
   extensionConfigValue,
@@ -21,112 +21,111 @@ import { createFileWatchers, getColorDecoration, getConfigFiles } from './langua
 
 // import TwinWorker from './twin.worker.js';
 
+const make = Effect.gen(function* () {
+  const extensionCtx = yield* VscodeContext;
+  const workspace = vscode.workspace.workspaceFolders;
+
+  const tsconfigFiles = yield* thenable(() =>
+    vscode.workspace.findFiles('**tsconfig.json', '', 1),
+  );
+
+  const fileEvents = yield* createFileWatchers;
+
+  // const serverConfig: ServerOptions = {
+  //   run: {
+  //     module: path.resolve(__dirname, './native-twin.server'),
+  //     transport: TransportKind.ipc,
+  //   },
+  //   debug: {
+  //     module: path.resolve(__dirname, './native-twin.server'),
+  //     transport: TransportKind.ipc,
+  //   },
+  // };
+
+  const configFiles = yield* getConfigFiles;
+  const colorDecorationType = yield* getColorDecoration;
+  extensionCtx.subscriptions.push(colorDecorationType);
+
+  const clientConfig: LanguageClientOptions = {
+    ...getDefaultLanguageClientOptions({
+      tsConfigFiles: tsconfigFiles ?? [],
+      twinConfigFile: configFiles.at(0),
+      workspaceRoot: workspace?.at(0),
+    }),
+    synchronize: {
+      fileEvents: fileEvents,
+      configurationSection: Constants.configurationSection,
+    },
+    errorHandler: {
+      error: onLanguageClientError,
+      closed: onLanguageClientClosed,
+    },
+    middleware: {
+      provideDocumentColors: async (document, token, next) =>
+        onProvideDocumentColors(document, token, next, colorDecorationType),
+    },
+  };
+
+  const client = yield* Effect.acquireRelease(
+    Effect.sync(
+      () =>
+        new LanguageClient(
+          'native-twin-vscode',
+          Constants.extensionServerChannelName,
+          clientConfig,
+          new Worker(
+            vscode.Uri.joinPath(extensionCtx.extensionUri, 'twin.worker.js').toString(
+              true,
+            ),
+          ),
+        ),
+    ),
+    (x) =>
+      Effect.promise(() => x.dispose()).pipe(
+        Effect.flatMap(() => Effect.logDebug('Language Client Disposed')),
+      ),
+  );
+
+  yield* Effect.promise(() => client.start()).pipe(
+    Effect.andThen(Effect.log('Language client started!')),
+  );
+
+  client.onRequest('nativeTwinInitialized', () => {
+    return { t: true };
+  });
+
+  yield* registerCommand(`${Constants.configurationSection}.restart`, () =>
+    Effect.gen(function* () {
+      yield* Effect.promise(() => client.stop());
+      yield* Effect.promise(() => client.start());
+      yield* Effect.logInfo('Client restarted');
+    }),
+  );
+
+  const functionsConfig = yield* extensionConfigValue(
+    'functions',
+    Constants.DEFAULT_PLUGIN_CONFIG.functions,
+  );
+  const debugConfig = yield* extensionConfigValue(
+    'debug',
+    Constants.DEFAULT_PLUGIN_CONFIG.debug,
+  );
+
+  yield* functionsConfig.changes.pipe(
+    Stream.runForEach((x) => Effect.log('FUNCTIONS: ', x)),
+    Effect.fork,
+  );
+  yield* debugConfig.changes.pipe(
+    Stream.runForEach((x) => Effect.log('DEBUG: ', x)),
+    Effect.fork,
+  );
+
+  return client;
+});
+
 export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext')<
   LanguageClientContext,
   LanguageClient
 >() {
-  static Live = Layer.scoped(
-    LanguageClientContext,
-    Effect.gen(function* () {
-      const extensionCtx = yield* VscodeContext;
-      const workspace = vscode.workspace.workspaceFolders;
-
-      const tsconfigFiles = yield* thenable(() =>
-        vscode.workspace.findFiles('**tsconfig.json', '', 1),
-      );
-
-      const fileEvents = yield* createFileWatchers;
-
-      // const serverConfig: ServerOptions = {
-      //   run: {
-      //     module: path.resolve(__dirname, './native-twin.server'),
-      //     transport: TransportKind.ipc,
-      //   },
-      //   debug: {
-      //     module: path.resolve(__dirname, './native-twin.server'),
-      //     transport: TransportKind.ipc,
-      //   },
-      // };
-
-      const configFiles = yield* getConfigFiles;
-      const colorDecorationType = yield* getColorDecoration;
-      extensionCtx.subscriptions.push(colorDecorationType);
-
-      const clientConfig: LanguageClientOptions = {
-        ...getDefaultLanguageClientOptions({
-          tsConfigFiles: tsconfigFiles ?? [],
-          twinConfigFile: configFiles.at(0),
-          workspaceRoot: workspace?.at(0),
-        }),
-        synchronize: {
-          fileEvents: fileEvents,
-          configurationSection: Constants.configurationSection,
-        },
-        errorHandler: {
-          error: onLanguageClientError,
-          closed: onLanguageClientClosed,
-        },
-        middleware: {
-          provideDocumentColors: async (document, token, next) =>
-            onProvideDocumentColors(document, token, next, colorDecorationType),
-        },
-      };
-
-      const client = yield* Effect.acquireRelease(
-        Effect.sync(
-          () =>
-            new LanguageClient(
-              'native-twin-vscode',
-              Constants.extensionServerChannelName,
-              clientConfig,
-              new Worker(
-                vscode.Uri.joinPath(extensionCtx.extensionUri, 'twin.worker.js').toString(
-                  true,
-                ),
-              ),
-            ),
-        ),
-        (x) =>
-          Effect.promise(() => x.dispose()).pipe(
-            Effect.flatMap(() => Effect.logDebug('Language Client Disposed')),
-          ),
-      );
-
-      yield* Effect.promise(() => client.start()).pipe(
-        Effect.andThen(Effect.log('Language client started!')),
-      );
-
-      client.onRequest('nativeTwinInitialized', () => {
-        return { t: true };
-      });
-
-      yield* registerCommand(`${Constants.configurationSection}.restart`, () =>
-        Effect.gen(function* () {
-          yield* Effect.promise(() => client.stop());
-          yield* Effect.promise(() => client.start());
-          yield* Effect.logInfo('Client restarted');
-        }),
-      );
-
-      const functionsConfig = yield* extensionConfigValue(
-        'functions',
-        DEFAULT_PLUGIN_CONFIG.functions,
-      );
-      const debugConfig = yield* extensionConfigValue(
-        'debug',
-        DEFAULT_PLUGIN_CONFIG.debug,
-      );
-
-      yield* functionsConfig.changes.pipe(
-        Stream.runForEach((x) => Effect.log('FUNCTIONS: ', x)),
-        Effect.fork,
-      );
-      yield* debugConfig.changes.pipe(
-        Stream.runForEach((x) => Effect.log('DEBUG: ', x)),
-        Effect.fork,
-      );
-
-      return client;
-    }),
-  );
+  static Live = Layer.scoped(LanguageClientContext, make);
 }

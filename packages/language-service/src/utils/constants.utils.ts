@@ -47,13 +47,13 @@ export const DEFAULT_TWIN_CONFIG = {
 } as InternalTwinConfig;
 
 export const DEFAULT_PLUGIN_CONFIG = {
-  attributes: ['tw', 'class', 'className', 'variants'],
+  jsxAttributes: ['tw', 'class', 'className', 'variants'],
   functions: ['tw', 'apply', 'css', 'variants', 'style', 'styled', 'createVariants'],
   debug: false,
   enable: true,
   trace: {
     server: 'off',
-  },
+  } as const,
 };
 
 export type NativeTwinPluginConfiguration = typeof DEFAULT_PLUGIN_CONFIG;

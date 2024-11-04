@@ -75,7 +75,7 @@ export const getDocumentLanguageLocations = (
         JSXAttribute: (path) => {
           if (
             t.isJSXIdentifier(path.node.name) &&
-            config.attributes.includes(path.node.name.name) &&
+            config.jsxAttributes.includes(path.node.name.name) &&
             path.node.value
           ) {
             if (t.isStringLiteral(path.node.value)) {

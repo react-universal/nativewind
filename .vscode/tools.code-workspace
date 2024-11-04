@@ -17,6 +17,10 @@
       "path": "../packages/language-server"
     },
     {
+      "name": "📦 @lib/compiler",
+      "path": "../packages/compiler"
+    },
+    {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
     },

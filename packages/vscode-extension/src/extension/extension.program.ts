@@ -2,13 +2,9 @@ import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';
 import * as Layer from 'effect/Layer';
 import * as Scope from 'effect/Scope';
-import { ConfigManagerService } from '@native-twin/language-service';
-import { LanguageClientContext } from '../language';
 import { VscodeContext } from './extension.service';
 
-export const launchExtension = <E>(
-  layer: Layer.Layer<LanguageClientContext | ConfigManagerService, E, VscodeContext>,
-) => {
+export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext>) => {
   return Effect.gen(function* () {
     const context = yield* VscodeContext;
     const scope = yield* Scope.make();

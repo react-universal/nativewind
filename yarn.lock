@@ -21879,6 +21879,7 @@ __metadata:
   resolution: "native-twin-vscode@workspace:packages/vscode-extension"
   dependencies:
     "@native-twin/cli": "workspace:*"
+    "@native-twin/compiler": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     "@native-twin/language-server": "workspace:*"
     "@native-twin/language-service": "workspace:*"

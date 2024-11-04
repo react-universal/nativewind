@@ -8,6 +8,7 @@ import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as vscode from 'vscode';
 import { Constants } from '@native-twin/language-service';
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import { ConfigRef, ConfigValue, Emitter } from './extension.models';
 import { VscodeContext } from './extension.service';
 
 export const executeCommand = (command: string, ...args: Array<any>) =>
@@ -25,7 +26,7 @@ export const registerCommand = <R, E, A>(
     context.subscriptions.push(
       vscode.commands.registerCommand(command, (...args) =>
         f(...args).pipe(
-          Effect.catchAllCause(Effect.log),
+          Effect.catchAllCause(Effect.logError),
           Effect.annotateLogs({ command }),
           run,
         ),
@@ -71,15 +72,6 @@ export const listenForkEvent = <A, R>(
   event: vscode.Event<A>,
   f: (data: A) => Effect.Effect<void, never, R>,
 ) => Effect.forkScoped(listenDisposableEvent(event, f));
-
-export interface ConfigValue<Section extends string, A> {
-  section: Section;
-  value: A;
-}
-export interface ConfigRef<Section extends string, A> {
-  readonly get: Effect.Effect<A>;
-  readonly changes: Stream.Stream<ConfigValue<Section, A>>;
-}
 
 /**
  *
@@ -184,3 +176,42 @@ export const extensionConfigState = (
       changes: Stream.changes(ref.changes),
     };
   });
+
+export const runWithToken = <R>(runtime: Runtime.Runtime<R>) => {
+  const runCallback = Runtime.runCallback(runtime);
+  return <E, A>(effect: Effect.Effect<A, E, R>, token: vscode.CancellationToken) =>
+    new Promise<A | undefined>((resolve) => {
+      const cancel = runCallback(effect, {
+        onExit: (exit) => {
+          tokenDispose.dispose();
+
+          if (exit._tag === 'Success') {
+            resolve(exit.value);
+          } else {
+            resolve(undefined);
+          }
+        },
+      });
+      const tokenDispose = token.onCancellationRequested(() => {
+        cancel();
+      });
+    });
+};
+export const runWithTokenDefault = runWithToken(Runtime.defaultRuntime);
+
+export const emitter = <A>() =>
+  Effect.gen(function* () {
+    const emitter = new vscode.EventEmitter<A>();
+    yield* Effect.addFinalizer(() => Effect.sync(() => emitter.dispose()));
+    const fire = (data: A) => Effect.sync(() => emitter.fire(data));
+    return {
+      event: emitter.event,
+      fire,
+    } as Emitter<A>;
+  });
+
+export const emitterOptional = <A>() =>
+  Effect.map(emitter<A | null | undefined | void>(), (emitter) => ({
+    ...emitter,
+    fire: (data: Option.Option<A>) => emitter.fire(Option.getOrUndefined(data)),
+  }));

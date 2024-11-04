@@ -8,9 +8,10 @@ import * as vscode from 'vscode';
 import { asArray } from '@native-twin/helpers';
 import {
   parseTemplate,
-  ConfigManagerService,
   TemplateTokenWithText,
+  Constants,
 } from '@native-twin/language-service';
+import { extensionConfigState } from '../../extension/extension.utils';
 import { TwinTextDocument } from '../models/TwinTextDocument.model';
 
 const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) =>
@@ -19,15 +20,16 @@ const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) =
 export class VscodeHightLightsProvider extends Context.Tag(
   'vscode/client/VscodeHightLightsProvider',
 )<VscodeHightLightsProvider, vscode.DocumentHighlightProvider>() {
-  static Live = Layer.effect(
+  static Live = Layer.scoped(
     VscodeHightLightsProvider,
     Effect.gen(function* () {
-      const config = yield* ConfigManagerService;
+      const { get } = yield* extensionConfigState(Constants.DEFAULT_PLUGIN_CONFIG);
+      const config = yield* get;
       return {
         async provideDocumentHighlights(document, position, _token) {
           const twinDocument = new TwinTextDocument(document);
           const cursorOffset = twinDocument.document.offsetAt(position);
-          const foundToken = twinDocument.findTokenLocationAt(position, config.config);
+          const foundToken = twinDocument.findTokenLocationAt(position, config);
 
           const highlights = pipe(
             Option.map(foundToken, (x) => {

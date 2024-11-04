@@ -6,8 +6,10 @@ import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import type { Tree } from '@native-twin/helpers/tree';
+import type { CompilerInput } from '../babel.types';
 import type { JSXElementNode, JSXElementTree, RuntimeTreeNode } from '../models';
-import { BabelCompiler, BuildConfig } from '../services';
+import { BabelCompiler } from '../services/BabelCompiler.service';
+import { BuildConfig } from '../services/BuildConfig.service';
 import { entriesToComponentData } from '../utils/code.utils';
 import { addJsxAttribute, addJsxExpressionAttribute } from '../utils/jsx.utils';
 import {
@@ -21,7 +23,7 @@ export const compileReactCode = Effect.gen(function* () {
   const input = yield* BuildConfig;
 
   return yield* Effect.Do.pipe(
-    Effect.let('input', () => input),
+    Effect.let('input', (): CompilerInput => input),
     Effect.bind('ast', ({ input }) => babel.getAST(input.code, input.filename)),
     Effect.bind('trees', ({ ast, input }) =>
       babel.getJSXElementTrees(ast, input.filename),

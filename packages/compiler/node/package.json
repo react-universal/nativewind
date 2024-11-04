@@ -1,0 +1,5 @@
+{
+  "main": "../build/node/index.js",
+  "module": "../build/esm/node/index.js",
+  "types": "../build/node/index.d.ts"
+}

@@ -1,2 +1,2 @@
 export { VscodeCompletionsProvider } from './services/Completions.service';
-export { LanguageClientContext } from './services/LanguageClient.service';
+export { LanguageClientLive } from './services/LanguageClient.service';
