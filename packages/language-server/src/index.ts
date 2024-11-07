@@ -4,41 +4,55 @@ import * as Iterable from 'effect/Iterable';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
 import * as String from 'effect/String';
 import { inspect } from 'util';
-import {
-  NativeTwinManagerService,
-  DocumentsService,
-  ConnectionService,
-  initializeConnection,
-  ConfigManagerService,
-  createLanguageService,
-  getDocumentHighLightsProgram,
-} from '@native-twin/language-service';
+import * as LanguageService from '@native-twin/language-service';
 import { LspMainLive } from './lsp.layer';
 
 const program = Effect.gen(function* () {
-  const connectionService = yield* ConnectionService;
-  const Connection = connectionService;
-  const configService = yield* ConfigManagerService;
-  const documentService = yield* DocumentsService;
-  const nativeTwinManager = yield* NativeTwinManagerService;
-  const languageService = yield* createLanguageService;
+  const Connection = yield* LanguageService.ConnectionService;
+  const configService = yield* LanguageService.ConfigManagerService;
+  const documentService = yield* LanguageService.DocumentsService;
+  const nativeTwinManager = yield* LanguageService.NativeTwinManagerService;
+  const languageService = yield* LanguageService.createLanguageService;
 
   const Runtime = ManagedRuntime.make(LspMainLive);
 
   Connection.onInitialize(async (...args) =>
-    initializeConnection(...args, nativeTwinManager, configService),
+    LanguageService.initializeConnection(...args, nativeTwinManager, configService),
   );
 
   Connection.onCompletion(async (...args) =>
-    Runtime.runPromise(
-      languageService.completions.getCompletionsAtPosition(...args).pipe(
+    languageService.completions
+      .getCompletionsAtPosition(...args)
+      .pipe(
         Effect.andThen((items) => ({
           isIncomplete: true,
           items,
         })),
-      ),
-    ),
+      )
+      .pipe(Runtime.runPromise),
   );
+
+  Connection.onCompletionResolve(async (...args) =>
+    languageService.completions
+      .getCompletionEntryDetails(...args)
+      .pipe(Runtime.runPromise),
+  );
+
+  Connection.onHover(async (...args) =>
+    languageService.documentation.getHover(...args).pipe(Effect.runPromise),
+  );
+
+  Connection.languages.diagnostics.on(async (...args) =>
+    languageService.diagnostics.getDocumentDiagnostics(...args).pipe(Effect.runPromise),
+  );
+
+  Connection.onDocumentColor(async (...params) =>
+    languageService.documentation.getDocumentColors(...params).pipe(Effect.runPromise),
+  );
+
+  Connection.onDocumentHighlight(async (...args) => {
+    return LanguageService.getDocumentHighLightsProgram(...args).pipe(Runtime.runPromise);
+  });
 
   Connection.onDidChangeConfiguration((config) => {
     Connection.console.debug(`Configuration changes received: `);
@@ -59,35 +73,13 @@ const program = Effect.gen(function* () {
       }),
       String.linesIterator,
       Iterable.map(String.padStart(5)),
-      Iterable.forEach((x) => {
-        Connection.console.debug(x);
-      }),
+      Iterable.forEach((x) => Connection.console.debug(x)),
     );
   });
-
-  Connection.onCompletionResolve(async (...args) =>
-    Runtime.runPromise(languageService.completions.getCompletionEntryDetails(...args)),
-  );
-
-  Connection.onHover(async (...args) =>
-    Effect.runPromise(languageService.documentation.getHover(...args)),
-  );
 
   Connection.onShutdown(() => {
     Connection.console.log('shootDown');
     Connection.dispose();
-  });
-
-  Connection.languages.diagnostics.on(async (...args) =>
-    Effect.runPromise(languageService.diagnostics.getDocumentDiagnostics(...args)),
-  );
-
-  Connection.onDocumentColor(async (...params) =>
-    Effect.runPromise(languageService.documentation.getDocumentColors(...params)),
-  );
-
-  Connection.onDocumentHighlight(async (...args) => {
-    return Runtime.runPromise(getDocumentHighLightsProgram(...args));
   });
 
   Connection.listen();

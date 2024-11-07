@@ -43,6 +43,12 @@
         "icon": "$(refresh)"
       },
       {
+        "command": "nativeTwin.openTwinRegion",
+        "title": "Show File Region",
+        "category": "Native Twin",
+        "icon": "$(eye)"
+      },
+      {
         "command": "nativeTwin.workspaceInit",
         "title": "Setup Workspace",
         "category": "Native Twin",

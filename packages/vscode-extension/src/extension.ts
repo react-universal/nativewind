@@ -4,10 +4,9 @@ import * as vscode from 'vscode';
 import { NativeTwinManagerService } from '@native-twin/language-service';
 import { launchExtension } from './extension/extension.program';
 import { VscodeContext } from './extension/extension.service';
-import { LanguageClientLive } from './language';
-import { VscodeHightLightsProvider } from './language/services/DocumentHighLights.service';
+import { LanguageClientLive, VscodeHightLightsProvider } from './language';
+import { TwinTreeDataFilesProvider } from './tree-data-providers';
 import { ClientCustomLogger } from './utils/logger.service';
-import { TwinTreeDataFilesProvider } from './vscode-tree/TwinTreeView.provider';
 
 const MainLive = Layer.mergeAll(LanguageClientLive, TwinTreeDataFilesProvider).pipe(
   Layer.provide(VscodeHightLightsProvider.Live),

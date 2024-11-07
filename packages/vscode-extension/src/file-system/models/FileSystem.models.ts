@@ -85,13 +85,6 @@ export type VirtualEntryTreeNode<T extends VirtualEntryType> = TreeNode<T>;
 
 export const createVirtualEntryID = (uri: vscode.Uri) => new VirtualFSEntryID(uri);
 
-// export type TwinVirtualEntry = Data.TaggedEnum<{
-//   Error: { readonly error: string };
-//   VirtualFile: { readonly value: VirtualFile };
-//   VirtualDirectory: { readonly value: VirtualDirectory };
-// }>;
-// export const TwinVirtualEntry = Data.taggedEnum<TwinVirtualEntry>();
-
 export interface VirtualFileWriteOptions {
   readonly create: boolean;
   readonly overwrite: boolean;

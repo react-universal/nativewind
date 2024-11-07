@@ -3,8 +3,8 @@ import * as Option from 'effect/Option';
 import * as ScopedRef from 'effect/ScopedRef';
 import * as vscode from 'vscode';
 import { NativeTwinManagerService } from '@native-twin/language-service';
-import { TreeDataProvider } from '../VscodeTree.models';
-import { treeDataProvider } from '../VscodeTree.provider';
+import { TreeDataProvider } from '../models/VscodeTree.models';
+import { makeTreeDataProvider } from '../tree.utils';
 
 class TreeInfoNode {
   readonly _tag = 'TreeInfoNode';
@@ -16,7 +16,7 @@ class TreeInfoNode {
 
 type VscodeTreeNode = TreeInfoNode;
 
-export const StylesTreeProviderLive = treeDataProvider<VscodeTreeNode>(
+export const StylesTreeProviderLive = makeTreeDataProvider<VscodeTreeNode>(
   'nativeTwin-styles',
 )((refresh) => {
   return Effect.gen(function* () {

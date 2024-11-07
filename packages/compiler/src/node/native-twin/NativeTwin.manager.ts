@@ -5,12 +5,14 @@ import micromatch from 'micromatch';
 import path from 'node:path';
 import type { TailwindConfig } from '@native-twin/core';
 import { defineConfig, createTailwind } from '@native-twin/core';
-import { CompilerContext } from '@native-twin/css/jsx';
+import { CompilerContext, RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { TWIN_CSS_FILES } from '../../shared';
+import { JSXMappedAttribute } from '../babel';
 import { maybeLoadJS } from '../utils';
 import type { InternalTwFn, InternalTwinConfig } from './twin.types';
 import {
   createTwinCSSFiles,
+  getElementEntries,
   getTwinCacheDir,
   getTwinConfigPath,
 } from './twin.utils.node';
@@ -86,6 +88,10 @@ export class NativeTwinManager {
       RA.map(this.allowedPathsGlob, (x) => micromatch.scan(x)),
       (x) => x.base,
     );
+  }
+
+  getJSXElementEntries(runtimeData: JSXMappedAttribute[]): RuntimeComponentEntry[] {
+    return getElementEntries(runtimeData, this.tw, this.context);
   }
 
   createCSSInput() {

@@ -9,8 +9,6 @@ import {
   type RuntimeComponentEntry,
 } from '@native-twin/css/jsx';
 import type { TreeNode } from '@native-twin/helpers/tree';
-import * as TwinNode from '../../native-twin';
-import { getElementEntries } from '../../native-twin/twin.utils.node';
 import { getJSXElementAttrs, getJSXElementName } from '../utils/jsx.utils';
 import type { JSXElementTree, JSXMappedAttribute } from './jsx.models';
 
@@ -51,7 +49,7 @@ interface JSXElementNodeInit {
   order: number;
   filename: string;
   runtimeData: JSXMappedAttribute[];
-  twin: TwinNode.NativeTwinServiceNode['Type'];
+  entries: RuntimeComponentEntry[];
 }
 export class JSXElementNode implements Equal.Equal {
   readonly _tag = 'JSXElementNode';
@@ -62,14 +60,14 @@ export class JSXElementNode implements Equal.Equal {
   readonly runtimeData: JSXMappedAttribute[];
   readonly entries: RuntimeComponentEntry[];
   readonly childEntries: ChildsSheet;
-  constructor({ filename, leave, order, runtimeData, twin }: JSXElementNodeInit) {
+  constructor({ filename, leave, order, runtimeData, entries }: JSXElementNodeInit) {
     this.leave = leave;
     this.filename = filename;
     this.order = order;
     this.runtimeData = runtimeData;
     // this.id = `${jsxElementHash(leave.value.babelNode, filename)}`;
     this.id = leave.value.uid;
-    this.entries = pipe(getElementEntries(this.runtimeData, twin.tw, twin.context));
+    this.entries = entries;
     this.childEntries = getChildRuntimeEntries(this.entries);
   }
 

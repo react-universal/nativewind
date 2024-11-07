@@ -13,6 +13,7 @@ import {
 } from '../../../shared';
 import { NativeTwinServiceNode } from '../../native-twin';
 import { JSXElementNode, JSXElementTree, type JSXMappedAttribute } from '../models';
+import { jsxTreeNodeToJSXElementNode } from './babel.transform';
 import { getJSXElementAttrs, getJSXElementName } from './jsx.utils';
 
 /**
@@ -152,15 +153,10 @@ export const extractSheetsFromTree = (tree: Tree<JSXElementTree>, fileName: stri
     const fileSheet = RA.empty<[string, JSXElementNode]>();
 
     tree.traverse((leave) => {
-      const { value } = leave;
       const runtimeData = extractMappedAttributes(leave.value.babelNode);
-      const model = new JSXElementNode({
-        leave,
-        order: value.order,
-        filename: fileName,
-        runtimeData,
-        twin,
-      });
+      const entries = twin.getJSXElementEntries(runtimeData);
+      const model = jsxTreeNodeToJSXElementNode(leave, entries, fileName);
+
       fileSheet.push([model.id, model]);
     }, 'breadthFirst');
 

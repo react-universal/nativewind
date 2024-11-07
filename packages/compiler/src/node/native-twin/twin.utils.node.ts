@@ -52,7 +52,7 @@ export const resolveTwinConfigPath = (rootDir: string, twinConfigPath?: string) 
     );
     return resolvedFile;
   });
-  
+
 export const getTwinConfigPath = (rootDir: string, twinConfigPath = '') =>
   Option.map(
     Option.orElse(
@@ -162,43 +162,40 @@ export const getElementEntries = (
   twin: RuntimeTW,
   ctx: CompilerContext,
 ): RuntimeComponentEntry[] => {
-  return pipe(
-    props,
-    RA.map(({ value, prop, target }): RuntimeComponentEntry => {
-      let classNames = '';
-      let templateExpression: null | string = null;
-      if (t.isStringLiteral(value)) {
-        classNames = value.value;
-      } else {
-        const cooked = templateLiteralToStringLike(value);
-        classNames = cooked.strings;
-        templateExpression = generate(cooked.expressions).code;
-      }
+  return RA.map(props, ({ value, prop, target }): RuntimeComponentEntry => {
+    let classNames = '';
+    let templateExpression: null | string = null;
+    if (t.isStringLiteral(value)) {
+      classNames = value.value;
+    } else {
+      const cooked = templateLiteralToStringLike(value);
+      classNames = cooked.strings;
+      templateExpression = generate(cooked.expressions).code;
+    }
 
-      const entries = twin(classNames);
-      const runtimeEntries = pipe(
-        entries,
-        RA.dedupeWith((a, b) => a.className === b.className),
+    const entries = twin(classNames);
+    const runtimeEntries = pipe(
+      entries,
+      RA.dedupeWith((a, b) => a.className === b.className),
 
-        RA.map((x) => compileSheetEntry(x, ctx)),
-        sortSheetEntries,
-      );
+      RA.map((x) => compileSheetEntry(x, ctx)),
+      sortSheetEntries,
+    );
 
-      return {
-        classNames,
-        prop,
-        target,
-        templateLiteral: templateExpression,
-        entries: runtimeEntries,
-        templateEntries: [],
-        // childEntries: pipe(
-        //   runtimeEntries,
-        //   RA.filter((x) => isChildEntry(x)),
-        // ),
-        rawSheet: getGroupedEntries(runtimeEntries),
-      };
-    }),
-  );
+    return {
+      classNames,
+      prop,
+      target,
+      templateLiteral: templateExpression,
+      entries: runtimeEntries,
+      templateEntries: [],
+      // childEntries: pipe(
+      //   runtimeEntries,
+      //   RA.filter((x) => isChildEntry(x)),
+      // ),
+      rawSheet: getGroupedEntries(runtimeEntries),
+    };
+  });
 };
 
 export const loadUserTwinConfigFile = (
