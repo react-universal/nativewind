@@ -1,13 +1,14 @@
 import * as ReadOnlyArray from 'effect/Array';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
+import * as Record from 'effect/Record';
 import * as vscode from 'vscode-languageserver-types';
 import { TwinLSPDocument } from '../../documents/models/twin-document.model';
 import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
 import { TemplateTokenWithText } from '../../native-twin/models/template-token.model';
+import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
 import { isSameRange } from '../../utils/vscode.utils';
 import { DIAGNOSTIC_ERROR_KIND, VscodeDiagnosticItem } from '../models/diagnostic.model';
-import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
 
 const createRegionEntriesExtractor =
   (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>
@@ -102,7 +103,7 @@ export const diagnosticTokenToVscode = (
   });
 };
 
-const regionDescriptions = (data: DiagnosticToken[], uri: string) => {
+export const regionDescriptions = (data: DiagnosticToken[], uri: string) => {
   return pipe(
     data,
     ReadOnlyArray.map((x) => {
@@ -115,7 +116,7 @@ const regionDescriptions = (data: DiagnosticToken[], uri: string) => {
   );
 };
 
-const bodyLocToRange =
+export const bodyLocToRange =
   (document: TwinLSPDocument) => (bodyLoc: TemplateTokenWithText['bodyLoc']) =>
     vscode.Range.create(
       document.offsetToPosition(bodyLoc.start),
@@ -127,3 +128,14 @@ export const isSameClassName = (a: TwinSheetEntry, b: TwinSheetEntry) =>
 
 const isSameDeclarationProp = (a: TwinSheetEntry, b: TwinSheetEntry) =>
   a.declarationProp === b.declarationProp && a.selector === b.selector;
+
+export const getEntriesDuplicates = <A extends string>(
+  entries: TwinSheetEntry[],
+  by: (x: TwinSheetEntry) => A,
+) =>
+  pipe(
+    ReadOnlyArray.groupBy(entries, by),
+    Record.filter((x) => x.length > 1),
+    Record.values,
+    ReadOnlyArray.flatten,
+  );

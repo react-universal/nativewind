@@ -1,5 +1,5 @@
 import { sheetEntriesToCss } from '@native-twin/css';
-import { defineConfig, setup, tx, matchThemeColor, matchThemeValue } from '../src';
+import { defineConfig, setup, tx, cx, matchThemeColor, matchThemeValue } from '../src';
 
 setup(
   defineConfig({

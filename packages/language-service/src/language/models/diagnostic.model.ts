@@ -1,4 +1,6 @@
+import * as RA from 'effect/Array';
 import * as Equal from 'effect/Equal';
+import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
 // import { toHyphenCase } from '@native-twin/helpers';
@@ -13,6 +15,7 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
   readonly source: string;
   readonly severity: vscode.DiagnosticSeverity;
   readonly tags: vscode.DiagnosticTag[];
+  readonly codeDescription?: vscode.CodeDescription | undefined;
   // codeDescription: vscode.CodeDescription | undefined;
   constructor(data: {
     range: vscode.Range;
@@ -27,7 +30,7 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
     this.range = data.range;
     this.relatedInformation = data.relatedInfo;
     this.code = this.getSourceCode(data.kind, data.entries);
-    this.source = meta.code;
+    this.source = meta.source;
     this.severity = vscode.DiagnosticSeverity.Warning;
     this.tags = [];
   }
@@ -40,11 +43,18 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
     //   href: `https://developer.mozilla.org/en-US/docs/Web/CSS/${toHyphenCase(declarationProp)}`,
     // };
     if (kind === 'DUPLICATED_CLASS_NAME') {
-      return entries.map((x) => x.entry.className).join(', ');
+      return pipe(
+        RA.map(entries, (x) => x.entry.className),
+        RA.dedupe,
+        RA.join(', '),
+      );
     }
-    const declarationProp = entries.flatMap((x) => x.declarationProp).join(', ');
 
-    return declarationProp;
+    return pipe(
+      RA.map(entries, (x) => x.declarationProp),
+      RA.dedupe,
+      RA.join(', '),
+    );
   }
 
   [Equal.symbol](that: unknown): boolean {
@@ -64,11 +74,13 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
 export const DIAGNOSTIC_ERROR_KIND = {
   DUPLICATED_DECLARATION: {
     code: 'DUPLICATED_DECLARATION',
+    source: 'Native Twin',
     message: 'Duplicated CSS Declaration',
     description: 'You are using a css declaration that modifies the same css prop',
   },
   DUPLICATED_CLASS_NAME: {
     code: 'DUPLICATED_CLASSNAME',
+    source: 'Native Twin',
     message: 'Duplicated ClassName',
     description: 'You are using the same css classes',
   },

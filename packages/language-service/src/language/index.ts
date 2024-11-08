@@ -27,7 +27,7 @@ export const LanguageServiceLive = Layer.mergeAll(
   LanguageDiagnostics.Live,
 ).pipe(Layer.provideMerge(NativeTwinManagerService.Live));
 
-export * from './programs';
+export * as languagePrograms from './programs';
 export { getCompletionsForTokens } from './utils/completion.pipes';
 export { getDocumentationMarkdown } from './utils/language.utils';
 export { LanguageDocumentation, LanguageCompletions, LanguageDiagnostics };

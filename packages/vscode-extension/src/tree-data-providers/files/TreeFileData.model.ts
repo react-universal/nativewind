@@ -32,10 +32,9 @@ export class TwinFileTreeNode {
 
   getChilds(config: NativeTwinPluginConfiguration): FileTwinRegionTreeNode[] {
     if (this._childs.length > 0) return this._childs;
+    const regions = this.twinDocument.getLanguageRegions(config);
     return pipe(
-      RA.map(this.twinDocument.getLanguageRegions(config), (location) =>
-        this.twinDocument.babelLocationToVscode(location),
-      ),
+      RA.map(regions, (region) => this.twinDocument.babelLocationToVscode(region)),
       RA.map((region) => new FileTwinRegionTreeNode(this, region)),
       RA.dedupeWith((a, b) => a.id === b.id),
     );

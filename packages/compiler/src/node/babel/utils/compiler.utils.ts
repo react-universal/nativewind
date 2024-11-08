@@ -18,6 +18,8 @@ export const getBabelAST = (code: string, filename: string) => {
     plugins: ['jsx', 'typescript'],
     sourceType: 'module',
     errorRecovery: true,
+    startLine: 0,
+    startColumn: 1,
     tokens: false,
     ranges: true,
   });

@@ -1,14 +1,16 @@
 import type * as t from '@babel/types';
+import * as RA from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver-types';
+import { babelExtractors } from '@native-twin/compiler/babel';
 import type { TemplateTokenWithText } from '../../native-twin/models/template-token.model';
 import { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
-import { getDocumentLanguageLocations } from '../utils/document.ast';
 import { DocumentLanguageRegion } from './language-region.model';
+
+const quotesRegex = /^['"`].*['"`]$/g;
 
 export abstract class DocumentClass implements Equal.Equal {
   constructor(
@@ -54,16 +56,18 @@ export class TwinLSPDocument extends DocumentClass {
   }
 
   getLanguageRegions() {
-    return getDocumentLanguageLocations(this.getText(undefined), this.config).map((x) =>
-      DocumentLanguageRegion.create(this.textDocument, x),
+    const regions = babelExtractors.extractLanguageRegions(
+      this.getText(undefined),
+      this.config,
     );
+    return RA.map(regions, (x) => this.getRegionAt(x));
   }
 
   getTemplateAtPosition(position: VSCDocument.Position) {
     const positionOffset = this.positionToOffset(position);
     return Option.fromNullable(
       this.getLanguageRegions().find(
-        (x) => positionOffset >= x.offset.start && positionOffset <= x.offset.end,
+        (x) => positionOffset >= x.startOffset && positionOffset <= x.endOffset,
       ),
     );
   }
@@ -84,48 +88,31 @@ export class TwinLSPDocument extends DocumentClass {
       end: realEnd,
     };
   }
-}
 
-interface TwinTokenLocation {
-  _tag: 'TwinTokenLocation';
-  range: vscode.Range;
-  offset: {
-    start: number;
-    end: number;
-  };
-  text: string;
-}
-
-export class TwinLspDocument {
-  constructor(readonly document: VSCDocument.TextDocument) {}
-  getLanguageRegions(config: NativeTwinPluginConfiguration) {
-    return getDocumentLanguageLocations(this.document.getText(), config);
-  }
-  babelLocationToVscode(location: t.SourceLocation) {
-    const range = vscode.Range.create(
-      this.document.positionAt(location.start.index),
-      this.document.positionAt(location.end.index),
+  babelLocationToRange(location: t.SourceLocation): vscode.Range {
+    const vscodeStart = this.offsetToPosition(location.start.index);
+    const startPosition = vscode.Position.create(
+      location.start.line,
+      location.start.column,
     );
-    const start = this.document.offsetAt(range.start);
-    const end = this.document.offsetAt(range.end);
-    const text = this.document.getText(range);
-    return {
-      text,
-      range,
-      offset: {
-        start,
-        end,
-      },
-    };
-  }
-  isPositionAtOffset(bounds: TwinTokenLocation['offset'], offset: number) {
-    return offset >= bounds.start && offset <= bounds.end;
+    const endPosition = vscode.Position.create(location.end.line, location.end.column);
+
+    const range = vscode.Range.create(startPosition, endPosition);
+    const text = this.getText(range);
+    console.log(vscodeStart);
+    if (quotesRegex.test(text)) {
+      startPosition.character += 1;
+      endPosition.character -= 1;
+      return vscode.Range.create(startPosition, endPosition);
+    }
+    return range;
   }
 
-  findTokenLocationAt(position: vscode.Position, config: NativeTwinPluginConfiguration) {
-    const regions = this.getLanguageRegions(config);
-    const ranges = regions.map((x) => this.babelLocationToVscode(x));
-    const positionOffset = this.document.offsetAt(position);
-    return RA.findFirst(ranges, (x) => this.isPositionAtOffset(x.offset, positionOffset));
+  private getRegionAt(location: t.SourceLocation) {
+    let range = this.babelLocationToRange(location);
+    const text = this.getText(range);
+    const startOffset = this.positionToOffset(range.start);
+    const endOffset = this.positionToOffset(range.end);
+    return new DocumentLanguageRegion(range, startOffset, endOffset, text);
   }
 }

@@ -2,7 +2,8 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import type * as vscode from 'vscode-languageserver';
+// import * as KeyMap from '@native-twin/helpers/KeyMap';
+import * as vscode from 'vscode-languageserver';
 import { DocumentsService } from '../documents/documents.service';
 import { NativeTwinManagerService } from '../native-twin/native-twin.service';
 import { VscodeDiagnosticItem } from './models/diagnostic.model';
@@ -29,18 +30,22 @@ export class LanguageDiagnostics extends Context.Tag('lsp/diagnostics')<
     Effect.gen(function* () {
       const twinService = yield* NativeTwinManagerService;
       const documentsHandler = yield* DocumentsService;
+      // const diagnosticsCache = KeyMap.make<vscode.URI,Diagnos();
       return {
         getDocumentDiagnostics(params) {
           return Effect.gen(function* () {
-            const document = documentsHandler.getDocument(params.textDocument.uri);
+            const document = documentsHandler
+              .getDocument(params.textDocument.uri)
+              .pipe(Option.getOrThrow);
 
-            const diagnosticItems = Option.map(document, (doc) =>
-              diagnosticTokensToDiagnosticItems(doc, twinService),
+            const diagnosticItems = diagnosticTokensToDiagnosticItems(
+              document,
+              twinService,
             );
 
             return {
               kind: 'full',
-              items: Option.getOrElse(diagnosticItems, (): VscodeDiagnosticItem[] => []),
+              items: diagnosticItems,
             } satisfies vscode.DocumentDiagnosticReport;
           });
         },

@@ -5,17 +5,16 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode';
-import { asArray } from '@native-twin/helpers';
+// import { asArray } from '@native-twin/helpers';
 import {
-  parseTemplate,
-  TemplateTokenWithText,
+  parseTemplate, // TemplateTokenWithText,
   Constants,
 } from '@native-twin/language-service';
 import { extensionConfigState } from '../../extension/extension.utils';
 import { TwinTextDocument } from '../models/TwinTextDocument.model';
 
-const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) =>
-  RA.findFirst(nodes, (x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end);
+// const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) =>
+//   RA.findFirst(nodes, (x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end);
 
 export class VscodeHightLightsProvider extends Context.Tag(
   'vscode/client/VscodeHightLightsProvider',
@@ -28,15 +27,16 @@ export class VscodeHightLightsProvider extends Context.Tag(
       return {
         async provideDocumentHighlights(document, position, _token) {
           const twinDocument = new TwinTextDocument(document);
-          const cursorOffset = twinDocument.document.offsetAt(position);
+          // const cursorOffset = twinDocument.document.offsetAt(position);
           const foundToken = twinDocument.findTokenLocationAt(position, config);
 
           const highlights = pipe(
             Option.map(foundToken, (x) => {
               return parseTemplate(x.text, x.offset.start);
             }),
-            Option.flatMap((tokens) => getParsedNodeAtOffset(tokens, cursorOffset)),
-            Option.map(
+            // Option.flatMap((tokens) => getParsedNodeAtOffset(tokens, cursorOffset)),
+            Option.getOrElse(() => []),
+            RA.map(
               (node): vscode.DocumentHighlight => ({
                 range: new vscode.Range(
                   document.positionAt(node.bodyLoc.start),
@@ -45,10 +45,10 @@ export class VscodeHightLightsProvider extends Context.Tag(
                 kind: vscode.DocumentHighlightKind.Text,
               }),
             ),
-            Option.map(asArray),
+            // Option.map(asArray),
           );
 
-          return Option.getOrUndefined(highlights);
+          return highlights;
         },
       };
     }),

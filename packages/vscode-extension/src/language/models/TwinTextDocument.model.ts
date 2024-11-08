@@ -2,10 +2,8 @@ import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import * as vscode from 'vscode';
-import {
-  getDocumentLanguageLocations,
-  type NativeTwinPluginConfiguration,
-} from '@native-twin/language-service';
+import { babelExtractors } from '@native-twin/compiler/babel';
+import { type NativeTwinPluginConfiguration } from '@native-twin/language-service';
 
 interface TwinTextDocumentShape {
   document: vscode.TextDocument;
@@ -32,7 +30,7 @@ export class TwinTextDocument implements TwinTextDocumentShape {
   }
 
   getLanguageRegions(config: NativeTwinPluginConfiguration) {
-    return getDocumentLanguageLocations(this.document.getText(), config);
+    return babelExtractors.extractLanguageRegions(this.document.getText(), config);
   }
 
   babelLocationToVscode(location: t.SourceLocation) {

@@ -71,8 +71,8 @@ export const getTwinTextDocumentByUri = (
   ).pipe(Option.getOrThrow);
   const twinDocument = new TwinTextDocument(vsDocument);
 
-  const languageRanges = RA.map(twinDocument.getLanguageRegions(config), (location) => {
-    return twinDocument.babelLocationToVscode(location);
+  const languageRanges = RA.map(twinDocument.getLanguageRegions(config), (region) => {
+    return twinDocument.babelLocationToVscode(region);
   });
 
   return {

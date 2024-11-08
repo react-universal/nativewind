@@ -6,13 +6,12 @@ export {
   LanguageServiceLive,
   createLanguageService,
   getCompletionsForTokens,
-  getCompletionsAtPosition,
+  languagePrograms,
   getDocumentationMarkdown,
   LanguageDocumentation,
   LanguageCompletions,
   LanguageDiagnostics,
   getCompletionEntryDetailsDisplayParts,
-  getDocumentHighLightsProgram,
 } from './language';
 
 /** Documents Service */

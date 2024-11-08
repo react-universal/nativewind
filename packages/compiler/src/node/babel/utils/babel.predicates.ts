@@ -9,6 +9,14 @@ export const isJSXElement: Predicate.Predicate<t.JSXElement> = pipe(
   Predicate.mapInput((node: t.Node) => node),
 );
 
+export const isIdentifier: Predicate.Refinement<t.Node, t.Identifier> = (
+  node: t.Node,
+): node is t.Identifier => t.isIdentifier(node);
+
+export const isObjectExpression: Predicate.Refinement<t.Node, t.ObjectExpression> = (
+  node: t.Node,
+): node is t.ObjectExpression => t.isObjectExpression(node);
+
 export const isJSXElementNode: Predicate.Refinement<t.Node, t.JSXElement> = (
   node: t.Node,
 ): node is t.JSXElement => t.isJSXElement(node);

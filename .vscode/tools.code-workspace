@@ -21,6 +21,10 @@
       "path": "../packages/compiler"
     },
     {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
     },

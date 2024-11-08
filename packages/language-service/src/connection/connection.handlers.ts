@@ -51,6 +51,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
       colorProvider: true,
       hoverProvider: true,
       documentHighlightProvider: false,
+      codeActionProvider: true,
       workspaceSymbolProvider: {
         resolveProvider: true,
       },

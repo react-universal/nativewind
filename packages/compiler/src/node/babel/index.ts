@@ -24,6 +24,7 @@ import { BabelCompiler } from './services/BabelCompiler.service';
 import { BuildConfig, makeBabelConfig } from './services/BuildConfig.service';
 import { ReactCompilerService } from './services/ReactBabel.service';
 import { JSXImportPluginContext } from './services/TwinBabelPlugin.service';
+import * as babelExtractors from './utils/extractLanguageRegions';
 
 const makeBabelLayer = ReactCompilerService.Live.pipe(
   Layer.provideMerge(BabelCompiler.Live),
@@ -35,6 +36,7 @@ export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from '../../shared/twin.constants';
 export { jsxTreeNodeToJSXElementNode } from './utils/babel.transform';
 
 export {
+  babelExtractors,
   BabelCompiler,
   ReactCompilerService,
   BuildConfig,

@@ -35,12 +35,12 @@ export class TemplateTokenWithText implements Equal.Equal {
   ) {
     this.templateStarts = templateStarts;
     this.loc = {
-      end: token.end,
       start: token.start,
+      end: token.end,
     };
     this.bodyLoc = {
-      end: token.end + templateStarts,
       start: token.start + templateStarts,
+      end: token.end + templateStarts,
     };
     this.text = text;
     this.token = token;
@@ -68,9 +68,8 @@ export class TemplateTokenData implements Equal.Equal {
   ) {}
 
   getSheetEntries(tw: RuntimeTW) {
-    if (this._entries) {
-      return this._entries;
-    }
+    if (this._entries) this._entries;
+
     this._entries = tw(`${this.token.text}`).map(
       (x) => new TwinSheetEntry(x, this.token),
     );
