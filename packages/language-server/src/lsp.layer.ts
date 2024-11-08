@@ -5,20 +5,16 @@ import {
   ConfigManagerService,
   ConnectionService,
   DocumentsService,
-  LanguageServiceLive,
+  NativeTwinManagerService,
 } from '@native-twin/language-service';
 import { LoggerLive } from './services/logger.service';
 
 const documentsHandler = new vscode.TextDocuments(TextDocument);
 const connectionHandler = vscode.createConnection();
 
-const vscodeLive = LoggerLive.pipe(
+export const LspMainLive = LoggerLive.pipe(
   Layer.provideMerge(ConnectionService.make(connectionHandler)),
-)
-  .pipe(Layer.provideMerge(DocumentsService.make(documentsHandler)))
-  .pipe(Layer.provideMerge(ConfigManagerService.Live));
-
-export const LspMainLive = vscodeLive.pipe(
-  Layer.provideMerge(LanguageServiceLive),
-  Layer.provideMerge(vscodeLive),
+  Layer.provideMerge(DocumentsService.make(documentsHandler)),
+  Layer.provideMerge(ConfigManagerService.Live),
+  Layer.provideMerge(NativeTwinManagerService.Live),
 );

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /// <reference lib="WebWorker" />
+import { ManagedRuntime } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import { TextDocument } from 'vscode-languageserver-textdocument';
@@ -13,13 +14,11 @@ import {
   NativeTwinManagerService,
   createDocumentsLayer,
   DocumentsService,
-  createLanguageService,
-  LanguageServiceLive,
   ConnectionService,
   ConfigManagerService,
   initializeConnection,
+  languagePrograms,
 } from '@native-twin/language-service/browser';
-import { ManagedRuntime } from 'effect';
 
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
 const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScope);
@@ -28,7 +27,7 @@ export const documentsHandler = new TextDocuments(TextDocument);
 
 const ConnectionLayer = ConnectionService.make(connection);
 const DocumentsLayer = createDocumentsLayer(documentsHandler);
-const MainLive = Layer.mergeAll(ConnectionLayer, LanguageServiceLive).pipe(
+const MainLive = Layer.mergeAll(ConnectionLayer).pipe(
   Layer.provideMerge(DocumentsLayer),
   Layer.provideMerge(NativeTwinManagerService.Live),
   Layer.provideMerge(ConfigManagerService.Live),
@@ -40,7 +39,6 @@ const program = Effect.gen(function* () {
   const configService = yield* ConfigManagerService;
   yield* DocumentsService;
   const nativeTwinManager = yield* NativeTwinManagerService;
-  const languageService = yield* createLanguageService;
   const Runtime = ManagedRuntime.make(MainLive);
 
   Connection.onInitialize(async (...args) => {
@@ -50,7 +48,7 @@ const program = Effect.gen(function* () {
 
   Connection.onCompletion(async (...args) => {
     const completions = await Runtime.runPromise(
-      languageService.completions.getCompletionsAtPosition(...args),
+      languagePrograms.getCompletionsAtPosition(...args),
     );
     console.log('COMPLETIONS: ', completions);
 
@@ -61,19 +59,19 @@ const program = Effect.gen(function* () {
   });
 
   Connection.onCompletionResolve(async (...args) =>
-    Runtime.runPromise(languageService.completions.getCompletionEntryDetails(...args)),
+    Runtime.runPromise(languagePrograms.getCompletionEntryDetails(...args)),
   );
 
   Connection.onHover(async (...args) =>
-    Effect.runPromise(languageService.documentation.getHover(...args)),
+    Runtime.runPromise(languagePrograms.getHoverDetails(...args)),
   );
 
   Connection.onDocumentColor(async (...params) =>
-    Effect.runPromise(languageService.documentation.getDocumentColors(...params)),
+    Runtime.runPromise(languagePrograms.getDocumentColors(...params)),
   );
 
   Connection.languages.diagnostics.on(async (...args) =>
-    Effect.runPromise(languageService.diagnostics.getDocumentDiagnostics(...args)),
+    Runtime.runPromise(languagePrograms.getDocumentDiagnosticsProgram(...args)),
   );
 
   // documentsHandler.listen(connection);

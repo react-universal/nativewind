@@ -3,14 +3,9 @@ import * as Constants from './utils/constants.utils';
 /** Language Service */
 export { filterTokensFromRules } from './language/utils/completions.maps';
 export {
-  LanguageServiceLive,
-  createLanguageService,
   getCompletionsForTokens,
   languagePrograms,
   getDocumentationMarkdown,
-  LanguageDocumentation,
-  LanguageCompletions,
-  LanguageDiagnostics,
   getCompletionEntryDetailsDisplayParts,
 } from './language';
 

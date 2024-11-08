@@ -1,6 +1,5 @@
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
-// import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver';
 import { DocumentsService } from '../../documents';

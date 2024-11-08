@@ -7,7 +7,6 @@ import { inspect } from 'util';
 import {
   ConnectionService,
   ConfigManagerService,
-  createLanguageService,
   NativeTwinManagerService,
   DocumentsService,
   initializeConnection,
@@ -20,7 +19,6 @@ const program = Effect.gen(function* () {
   const configService = yield* ConfigManagerService;
   const documentService = yield* DocumentsService;
   const nativeTwinManager = yield* NativeTwinManagerService;
-  const languageService = yield* createLanguageService;
 
   const Runtime = ManagedRuntime.make(LspMainLive);
 
@@ -29,7 +27,7 @@ const program = Effect.gen(function* () {
   );
 
   Connection.onCompletion(async (...args) =>
-    languageService.completions
+    languagePrograms
       .getCompletionsAtPosition(...args)
       .pipe(
         Effect.andThen((items) => ({
@@ -41,13 +39,11 @@ const program = Effect.gen(function* () {
   );
 
   Connection.onCompletionResolve(async (...args) =>
-    languageService.completions
-      .getCompletionEntryDetails(...args)
-      .pipe(Runtime.runPromise),
+    languagePrograms.getCompletionEntryDetails(...args).pipe(Runtime.runPromise),
   );
 
   Connection.onHover(async (...args) =>
-    languageService.documentation.getHover(...args).pipe(Effect.runPromise),
+    languagePrograms.getHoverDetails(...args).pipe(Runtime.runPromise),
   );
 
   Connection.languages.diagnostics.on(async (...args) =>
@@ -55,7 +51,7 @@ const program = Effect.gen(function* () {
   );
 
   Connection.onDocumentColor(async (...params) =>
-    languageService.documentation.getDocumentColors(...params).pipe(Effect.runPromise),
+    languagePrograms.getDocumentColors(...params).pipe(Runtime.runPromise),
   );
 
   Connection.onDocumentHighlight(async (...args) => {
