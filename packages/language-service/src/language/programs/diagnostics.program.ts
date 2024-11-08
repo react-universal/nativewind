@@ -36,7 +36,6 @@ export const getDocumentDiagnosticsProgram = (
 
     const diagnosticItems = results.flatMap((x) => x.diagnostics);
 
-    console.log(results, diagnosticItems);
     return {
       kind: 'full',
       items: diagnosticItems,

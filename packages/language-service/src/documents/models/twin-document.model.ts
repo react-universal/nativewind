@@ -90,7 +90,6 @@ export class TwinLSPDocument extends DocumentClass {
   }
 
   babelLocationToRange(location: t.SourceLocation): vscode.Range {
-    const vscodeStart = this.offsetToPosition(location.start.index);
     const startPosition = vscode.Position.create(
       location.start.line,
       location.start.column,
@@ -99,7 +98,7 @@ export class TwinLSPDocument extends DocumentClass {
 
     const range = vscode.Range.create(startPosition, endPosition);
     const text = this.getText(range);
-    console.log(vscodeStart);
+
     if (quotesRegex.test(text)) {
       startPosition.character += 1;
       endPosition.character -= 1;
