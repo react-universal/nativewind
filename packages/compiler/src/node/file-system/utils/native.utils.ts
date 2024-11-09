@@ -1,9 +1,10 @@
 import * as t from '@babel/types';
 import * as Path from '@effect/platform/Path';
 import CodeBlockWriter from 'code-block-writer';
-import { Effect, Stream } from 'effect';
+import * as Effect from 'effect/Effect';
 import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
+import * as Stream from 'effect/Stream';
 import { js_beautify } from 'js-beautify';
 import { getRawSheet } from '@native-twin/css/jsx';
 import type { JSXElementNode } from '../../babel/models';

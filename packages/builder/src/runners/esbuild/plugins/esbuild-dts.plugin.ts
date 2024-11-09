@@ -1,8 +1,9 @@
 import * as Ansi from '@effect/printer-ansi/Ansi';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
-import { Array, pipe } from 'effect';
+import { pipe } from 'effect/Function';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
+import * as Array from 'effect/Array';
 import { PartialMessage, Plugin } from 'esbuild';
 import { existsSync, lstatSync } from 'node:fs';
 import { resolve } from 'node:path';

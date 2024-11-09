@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /// <reference lib="WebWorker" />
-import { ManagedRuntime } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   BrowserMessageReader,
