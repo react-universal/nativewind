@@ -12,7 +12,6 @@ import {
 } from 'vscode-languageserver/browser.js';
 import {
   NativeTwinManagerService,
-  createDocumentsLayer,
   DocumentsService,
   ConnectionService,
   ConfigManagerService,
@@ -26,7 +25,7 @@ const connection = createConnection(messageReader, messageWriter);
 export const documentsHandler = new TextDocuments(TextDocument);
 
 const ConnectionLayer = ConnectionService.make(connection);
-const DocumentsLayer = createDocumentsLayer(documentsHandler);
+const DocumentsLayer = DocumentsService.make(documentsHandler);
 const MainLive = Layer.mergeAll(ConnectionLayer).pipe(
   Layer.provideMerge(DocumentsLayer),
   Layer.provideMerge(NativeTwinManagerService.Live),

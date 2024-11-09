@@ -37,7 +37,7 @@ const make = (handler: TextDocuments<TextDocument>) =>
     };
   });
 
-export const createDocumentsLayer = (handler: TextDocuments<TextDocument>) => {
+const createDocumentsLayer = (handler: TextDocuments<TextDocument>) => {
   return Layer.scoped(DocumentsService, make(handler));
 };
 
