@@ -21,7 +21,7 @@ import {
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
 const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScope);
 const connection = createConnection(messageReader, messageWriter);
-export const documentsHandler = new TextDocuments(TextDocument);
+const documentsHandler = new TextDocuments(TextDocument);
 
 const ConnectionLayer = ConnectionService.make(connection);
 const DocumentsLayer = DocumentsService.make(documentsHandler);

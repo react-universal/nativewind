@@ -84,6 +84,7 @@
       "next-app-dir",
       "docs-site",
       "twin.run"
-    ]
+    ],
+    "findUnusedExports.detectCircularImports": true
   }
 }

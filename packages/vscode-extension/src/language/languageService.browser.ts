@@ -117,9 +117,9 @@ const make = Effect.gen(function* () {
   return client;
 });
 
-export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext')<
-  LanguageClientContext,
+export class LanguageClientContextBrowser extends Ctx.Tag('vscode/LanguageClientContext')<
+  LanguageClientContextBrowser,
   LanguageClient
 >() {
-  static Live = Layer.scoped(LanguageClientContext, make);
+  static Live = Layer.scoped(LanguageClientContextBrowser, make);
 }

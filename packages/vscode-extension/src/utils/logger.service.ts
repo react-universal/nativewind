@@ -1,12 +1,10 @@
-import * as Ansi from '@effect/printer-ansi/Ansi';
-import * as Doc from '@effect/printer/Doc';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as Predicate from 'effect/Predicate';
 import { inspect } from 'util';
 import * as vscode from 'vscode';
-import { Constants, loggerUtils } from '@native-twin/language-service';
+import { Constants } from '@native-twin/language-service';
 
 /**
  * @domain `Client`
@@ -60,30 +58,30 @@ export const ClientCustomLogger = Logger.replaceScoped(
   }),
 );
 
-export const formatLogMessage = (options: {
-  logLevel: LogLevel.LogLevel;
-  message: any;
-}) => {
-  const msgFactory: Doc.Doc<Ansi.Ansi>[] = [];
+// export const formatLogMessage = (options: {
+//   logLevel: LogLevel.LogLevel;
+//   message: any;
+// }) => {
+//   const msgFactory: Doc.Doc<Ansi.Ansi>[] = [];
 
-  if (typeof options.message === 'string') {
-    msgFactory.push(
-      Doc.text(options.message).pipe(Doc.annotate(loggerUtils.messageConfig)),
-    );
-  }
-  if (Array.isArray(options.message)) {
-    msgFactory.push(
-      Doc.text(options.message.join(' ')).pipe(Doc.annotate(loggerUtils.messageConfig)),
-    );
-  }
+//   if (typeof options.message === 'string') {
+//     msgFactory.push(
+//       Doc.text(options.message).pipe(Doc.annotate(loggerUtils.messageConfig)),
+//     );
+//   }
+//   if (Array.isArray(options.message)) {
+//     msgFactory.push(
+//       Doc.text(options.message.join(' ')).pipe(Doc.annotate(loggerUtils.messageConfig)),
+//     );
+//   }
 
-  const doc = Doc.hsep([
-    Doc.text(`[Twin Language Client]`).pipe(
-      Doc.annotate(loggerUtils.scopeTextConfig),
-      Doc.annotate(loggerUtils.getMessageColor(options.logLevel)),
-    ),
-    // Doc.text(`{${fiberId}}`).pipe(Doc.annotate(fiberText)),
-    ...msgFactory,
-  ]);
-  return loggerUtils.render(doc.pipe(Doc.unAnnotate));
-};
+//   const doc = Doc.hsep([
+//     Doc.text(`[Twin Language Client]`).pipe(
+//       Doc.annotate(loggerUtils.scopeTextConfig),
+//       Doc.annotate(loggerUtils.getMessageColor(options.logLevel)),
+//     ),
+//     // Doc.text(`{${fiberId}}`).pipe(Doc.annotate(fiberText)),
+//     ...msgFactory,
+//   ]);
+//   return loggerUtils.render(doc.pipe(Doc.unAnnotate));
+// };

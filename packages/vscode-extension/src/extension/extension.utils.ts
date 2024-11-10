@@ -1,4 +1,3 @@
-import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Runtime from 'effect/Runtime';
@@ -8,7 +7,7 @@ import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as vscode from 'vscode';
 import { Constants } from '@native-twin/language-service';
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
-import { ConfigRef, ConfigValue, Emitter } from './extension.models';
+import { ConfigRef, ConfigValue, Emitter, ExtensionConfigRef } from './extension.models';
 import { VscodeContext } from './extension.service';
 
 export const executeCommand = (command: string, ...args: Array<any>) =>
@@ -41,13 +40,13 @@ export const thenable = <A>(f: () => Thenable<A>) => {
   });
 };
 
-export const disposable = <A>(
-  f: () => Thenable<A | undefined>,
-): Effect.Effect<A, Cause.NoSuchElementException> => {
-  return thenable(f).pipe(Effect.flatMap(Effect.fromNullable));
-};
+// const disposable = <A>(
+//   f: () => Thenable<A | undefined>,
+// ): Effect.Effect<A, Cause.NoSuchElementException> => {
+//   return thenable(f).pipe(Effect.flatMap(Effect.fromNullable));
+// };
 
-export const listenDisposableEvent = <A, R>(
+const listenDisposableEvent = <A, R>(
   event: vscode.Event<A>,
   f: (data: A) => Effect.Effect<void, never, R>,
 ): Effect.Effect<never, never, R> => {
@@ -78,33 +77,33 @@ export const listenForkEvent = <A, R>(
  * @description Subscribe to a section value for the plugin using its namespace
  * the default namespace its `nativeTwin`
  */
-export const extensionConfig = <Section extends string, A>(
-  namespace: string,
-  setting: Section,
-): Effect.Effect<ConfigRef<Section, Option.Option<A>>, never, Scope.Scope> =>
-  Effect.gen(function* () {
-    const get = () => vscode.workspace.getConfiguration(namespace).get<A>(setting);
-    const ref = yield* SubscriptionRef.make<Option.Option<A>>(Option.fromNullable(get()));
-    yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {
-      const affected = _.affectsConfiguration(setting);
-      if (!affected) {
-        return Effect.void;
-      }
-      return SubscriptionRef.set(ref, Option.fromNullable(get()));
-    });
+// export const extensionConfig = <Section extends string, A>(
+//   namespace: string,
+//   setting: Section,
+// ): Effect.Effect<ConfigRef<Section, Option.Option<A>>, never, Scope.Scope> =>
+//   Effect.gen(function* () {
+//     const get = () => vscode.workspace.getConfiguration(namespace).get<A>(setting);
+//     const ref = yield* SubscriptionRef.make<Option.Option<A>>(Option.fromNullable(get()));
+//     yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {
+//       const affected = _.affectsConfiguration(setting);
+//       if (!affected) {
+//         return Effect.void;
+//       }
+//       return SubscriptionRef.set(ref, Option.fromNullable(get()));
+//     });
 
-    return {
-      get: SubscriptionRef.get(ref),
-      changes: Stream.changes(ref.changes).pipe(
-        Stream.map((x) => {
-          return {
-            value: x,
-            section: setting,
-          };
-        }),
-      ),
-    };
-  });
+//     return {
+//       get: SubscriptionRef.get(ref),
+//       changes: Stream.changes(ref.changes).pipe(
+//         Stream.map((x) => {
+//           return {
+//             value: x,
+//             section: setting,
+//           };
+//         }),
+//       ),
+//     };
+//   });
 
 /**
  *
@@ -143,10 +142,6 @@ export const extensionConfigValue = <Section extends string, A>(
     };
   });
 
-export interface ExtensionConfigRef {
-  readonly get: Effect.Effect<NativeTwinPluginConfiguration>;
-  readonly changes: Stream.Stream<NativeTwinPluginConfiguration>;
-}
 /**
  *
  * @description Subscribe to a section value for the plugin using its namespace
@@ -177,7 +172,7 @@ export const extensionConfigState = (
     };
   });
 
-export const runWithToken = <R>(runtime: Runtime.Runtime<R>) => {
+const runWithToken = <R>(runtime: Runtime.Runtime<R>) => {
   const runCallback = Runtime.runCallback(runtime);
   return <E, A>(effect: Effect.Effect<A, E, R>, token: vscode.CancellationToken) =>
     new Promise<A | undefined>((resolve) => {
@@ -199,7 +194,7 @@ export const runWithToken = <R>(runtime: Runtime.Runtime<R>) => {
 };
 export const runWithTokenDefault = runWithToken(Runtime.defaultRuntime);
 
-export const emitter = <A>() =>
+const emitter = <A>() =>
   Effect.gen(function* () {
     const emitter = new vscode.EventEmitter<A>();
     yield* Effect.addFinalizer(() => Effect.sync(() => emitter.dispose()));
