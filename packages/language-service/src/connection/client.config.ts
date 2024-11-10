@@ -5,7 +5,7 @@ import type * as vscode from 'vscode';
 import { NativeTwinPluginConfiguration } from '../utils/constants.utils';
 import { DEFAULT_PLUGIN_CONFIG } from '../utils/constants.utils';
 
-export class ConfigManager {
+export class _____ConfigManager {
   tsconfig: Option.Option<vscode.Uri>;
   twinConfigFile: Option.Option<vscode.Uri>;
   workspaceRoot: Option.Option<vscode.WorkspaceFolder>;
@@ -35,13 +35,13 @@ export class ConfigManager {
   }
 }
 
-export class ConfigManagerService extends Context.Tag('ConfigManagerService')<
-  ConfigManagerService,
-  ConfigManager
+export class ____ConfigManagerService extends Context.Tag('ConfigManagerService')<
+  ____ConfigManagerService,
+  _____ConfigManager
 >() {
   static Live = Layer.succeed(
-    ConfigManagerService,
-    new ConfigManager({
+    ____ConfigManagerService,
+    new _____ConfigManager({
       config: DEFAULT_PLUGIN_CONFIG,
       tsconfig: Option.none(),
       twinConfigFile: Option.none(),

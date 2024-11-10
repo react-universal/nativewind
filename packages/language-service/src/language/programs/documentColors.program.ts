@@ -14,10 +14,9 @@ export const getDocumentColors = (
   return Effect.gen(function* () {
     const documentsHandler = yield* DocumentsService;
     const twinService = yield* NativeTwinManagerService;
+    const document = yield* documentsHandler.getDocument(params.textDocument.uri);
 
-    return Option.map(documentsHandler.getDocument(params.textDocument.uri), (x) =>
-      getDocumentTemplatesColors(twinService, x),
-    ).pipe(
+    return Option.map(document, (x) => getDocumentTemplatesColors(twinService, x)).pipe(
       Option.match({
         onSome: (result): vscode.ColorInformation[] => result,
         onNone: () => [],

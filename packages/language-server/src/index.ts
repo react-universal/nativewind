@@ -1,30 +1,17 @@
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
-import * as Iterable from 'effect/Iterable';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import * as String from 'effect/String';
-import { inspect } from 'util';
 import {
   ConnectionService,
-  ConfigManagerService,
-  NativeTwinManagerService,
   DocumentsService,
-  initializeConnection,
   languagePrograms,
 } from '@native-twin/language-service';
 import { LspMainLive } from './lsp.layer';
 
+const Runtime = ManagedRuntime.make(LspMainLive);
+
 const program = Effect.gen(function* () {
   const Connection = yield* ConnectionService;
-  const configService = yield* ConfigManagerService;
   const documentService = yield* DocumentsService;
-  const nativeTwinManager = yield* NativeTwinManagerService;
-
-  const Runtime = ManagedRuntime.make(LspMainLive);
-
-  Connection.onInitialize(async (...args) =>
-    initializeConnection(...args, nativeTwinManager, configService),
-  );
 
   Connection.onCompletion(async (...args) =>
     languagePrograms
@@ -70,29 +57,6 @@ const program = Effect.gen(function* () {
     return undefined;
   });
 
-  Connection.onDidChangeConfiguration((config) => {
-    Connection.console.debug(`Configuration changes received: `);
-    if ('nativeTwin' in config.settings) {
-      configService.onUpdateConfig({
-        ...configService,
-        config: {
-          ...configService.config,
-          ...config.settings['nativeTwin'],
-        },
-      });
-    }
-    pipe(
-      inspect(config, {
-        depth: null,
-        sorted: true,
-        compact: true,
-      }),
-      String.linesIterator,
-      Iterable.map(String.padStart(5)),
-      Iterable.forEach((x) => Connection.console.debug(x)),
-    );
-  });
-
   Connection.onShutdown(() => {
     Connection.console.log('shootDown');
     Connection.dispose();
@@ -111,6 +75,4 @@ const program = Effect.gen(function* () {
   });
 });
 
-const runnable = Effect.provide(program, LspMainLive);
-
-Effect.runFork(runnable);
+Runtime.runFork(program);

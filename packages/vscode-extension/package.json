@@ -102,19 +102,6 @@
               "tw"
             ]
           },
-          "nativeTwin.configPath": {
-            "type": [
-              "object",
-              "string"
-            ],
-            "required": false,
-            "description": "List of html/jsx attributes to enable Native Twin intellisense in.",
-            "scope": "window",
-            "items": {
-              "type": "string",
-              "description": "Attribute name."
-            }
-          },
           "nativeTwin.debug": {
             "type": "boolean",
             "scope": "window",

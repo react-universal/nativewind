@@ -17,11 +17,10 @@ export const getCompletionsAtPosition = (
   Effect.gen(function* () {
     const documentsHandler = yield* DocumentsService;
     const twinService = yield* NativeTwinManagerService;
+    const document = yield* documentsHandler.getDocument(params.textDocument.uri);
 
     const extracted = Option.Do.pipe(
-      Option.bind('document', () =>
-        documentsHandler.getDocument(params.textDocument.uri),
-      ),
+      Option.bind('document', () => document),
       Option.let('cursorOffset', ({ document }) =>
         document.positionToOffset(params.position),
       ),

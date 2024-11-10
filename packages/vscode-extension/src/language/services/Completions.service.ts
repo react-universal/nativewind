@@ -8,10 +8,11 @@ import * as vscode from 'vscode';
 import {
   getCompletionsForTokens,
   parseTemplate,
-  ConfigManagerService,
   NativeTwinManagerService,
   TemplateTokenWithText,
+  DEFAULT_PLUGIN_CONFIG,
 } from '@native-twin/language-service';
+import { extensionConfigState } from '../../extension/extension.utils';
 import { completionRulesToVscodeCompletionItems } from '../mappers/completion.mappers';
 import { TwinTextDocument } from '../models/TwinTextDocument.model';
 
@@ -25,14 +26,16 @@ export class VscodeCompletionsProvider extends Context.Tag(
   static Live = Layer.effect(
     VscodeCompletionsProvider,
     Effect.gen(function* () {
-      const config = yield* ConfigManagerService;
+      const config = yield* extensionConfigState(DEFAULT_PLUGIN_CONFIG).pipe(
+        Effect.flatMap((x) => x.get),
+      );
       const twin = yield* NativeTwinManagerService;
 
       return {
         async provideCompletionItems(document, position, _token, _context) {
           const twinDocument = new TwinTextDocument(document);
           const cursorOffset = twinDocument.document.offsetAt(position);
-          const foundToken = twinDocument.findTokenLocationAt(position, config.config);
+          const foundToken = twinDocument.findTokenLocationAt(position, config);
 
           const completions: vscode.CompletionItem[] = pipe(
             Option.map(foundToken, (x) => {

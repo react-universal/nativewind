@@ -11,7 +11,8 @@
         "tx",
         "style",
         "createVariants",
-        "lol2"
+        "lol2",
+        "lol3"
     ],
     "editor.suggest.showColors": true,
     "markdown.trace.server": "verbose",

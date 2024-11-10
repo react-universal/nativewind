@@ -1,33 +1,27 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver';
-import { NativeTwinManagerService } from '../native-twin/native-twin.service';
-import { ConfigManagerService } from './client.config';
+// import { NativeTwinManagerService } from '../native-twin/native-twin.service';
 
 export const initializeConnection = (
   params: vscode.InitializeParams,
   _token: vscode.CancellationToken,
   _workDoneProgress: vscode.WorkDoneProgressReporter,
   _resultProgress: vscode.ResultProgressReporter<never> | undefined,
-  manager: NativeTwinManagerService['Type'],
-  configManager: ConfigManagerService['Type'],
+  // manager: NativeTwinManagerService['Type'],
 ) => {
   const configOptions = params.initializationOptions;
 
   if (configOptions) {
-    const twinConfigFile = Option.fromNullable<vscode.URI>(
-      configOptions?.twinConfigFile?.path,
-    );
-    Option.map(twinConfigFile, (x) => {
-      manager.loadUserFile(x);
-    });
+    // const twinConfigFile = Option.fromNullable<vscode.URI>(
+    //   configOptions?.twinConfigFile?.path,
+    // );
+    // Option.map(twinConfigFile, (x) => {
+    //   manager.loadUserFile(x);
+    // });
   }
 
   const capabilities = getClientCapabilities(params.capabilities);
-  configManager.onUpdateConfig({
-    config: configOptions,
-    ...configOptions,
-  });
   return capabilities;
 };
 

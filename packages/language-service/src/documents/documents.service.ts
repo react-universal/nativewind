@@ -2,9 +2,10 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
+import * as Stream from 'effect/Stream';
 import type { Connection, TextDocuments } from 'vscode-languageserver';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
-import { ConfigManagerService } from '../connection';
+import { LSPConfigService } from '../config';
 import { TwinLSPDocument } from './models/twin-document.model';
 
 export interface DocumentsServiceShape {
@@ -13,22 +14,29 @@ export interface DocumentsServiceShape {
   setupConnection(connection: Connection): void;
 }
 
-const getDocument =
-  (handler: TextDocuments<TextDocument>, config: ConfigManagerService['Type']) =>
-  (uri: string): Option.Option<TwinLSPDocument> =>
-    Option.map(
-      Option.fromNullable(handler.get(uri)),
-      (x) => new TwinLSPDocument(x, config.config),
-    );
-
 const setupConnection =
   (handler: TextDocuments<TextDocument>) => (connection: Connection) =>
     handler.listen(connection);
 
 const make = (handler: TextDocuments<TextDocument>) =>
   Effect.gen(function* () {
-    const config = yield* ConfigManagerService;
-    const acquireDocument = getDocument(handler, config);
+    const config = yield* LSPConfigService;
+
+    yield* config.changes.pipe(
+      Stream.runForEach((x) => {
+        return Effect.log('dsfsdf', x);
+      }),
+      Effect.fork,
+    );
+
+    const acquireDocument = (uri: string) =>
+      Effect.gen(function* () {
+        const currentConfig = yield* config.get;
+        return Option.map(
+          Option.fromNullable(handler.get(uri)),
+          (x) => new TwinLSPDocument(x, currentConfig.vscode),
+        );
+      });
 
     return {
       handler,
@@ -43,7 +51,7 @@ const createDocumentsLayer = (handler: TextDocuments<TextDocument>) => {
 
 export class DocumentsService extends Context.Tag('language-service/documents')<
   DocumentsService,
-  DocumentsServiceShape
+  Effect.Effect.Success<ReturnType<typeof make>>
 >() {
   static make = createDocumentsLayer;
 }

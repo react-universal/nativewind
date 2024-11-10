@@ -8,7 +8,7 @@ function HomeScreen() {
   const [active, setActive] = useState(true);
   // return <View className='bg-red-300 flex-1' />;
 
-  return (
+  return ( 
     <View className='flex-1 first:bg-red-200'>
       <View className={`flex-1 items-center justify-center group first:bg-red-100`}>
         <View className='shadow-xl bg-red-300 rounded-2xl p-2 group-focus:bg-green-500 first:bg-purple-200'>

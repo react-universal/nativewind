@@ -9,6 +9,8 @@ export {
   getCompletionEntryDetailsDisplayParts,
 } from './language';
 
+export { LSPConfigService } from './config/LSPConfig.service';
+
 /** Documents Service */
 export { DocumentsService, TwinLSPDocument } from './documents';
 
@@ -23,7 +25,6 @@ export type { TwinRuleCompletion } from './native-twin';
 
 /** Connection Service */
 export {
-  ConfigManagerService,
   ConnectionService,
   initializeConnection,
 } from './connection';

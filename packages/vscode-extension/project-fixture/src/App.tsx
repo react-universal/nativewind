@@ -1,17 +1,17 @@
-// @ts-nocheck
+import * as React from 'react';
 import { createVariants } from '@native-twin/core';
 
-// export const Composssssnent = () => {
-//   return (
-//     <div>
-//       <div className={`bg-rose-700 bg-blue bg-black text(sm md:gray)`} />
-//       {/* <div className={`bg-blue`} /> */}
-//     </div>
-//   ); 
-// };
+export const Composssssnent = () => {
+  return (
+    <div>
+      <div className={`bg-rose-700 bg-blue bg-black text(sm md:gray)`} />
+      {/* <div className={`bg-blue`} /> */}
+    </div>
+  ); 
+};
 
 createVariants({
-  base: 'bg-blue-200 bg-red-500 bg-black translate-x-2',
+  base: 'bg-blue-200 bg-red-500 bg-black text(xl sm:xl) translate-x-2',
   variants: {
     variant: {
       primary: `bg-pink-200 bg-red`,
@@ -19,5 +19,3 @@ createVariants({
     },
   },
 });
-
-lol2`bg-gray-100`;

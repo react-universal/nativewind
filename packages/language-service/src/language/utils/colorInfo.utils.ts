@@ -6,11 +6,11 @@ import type * as vscode from 'vscode-languageserver';
 import { Range, Color } from 'vscode-languageserver-types';
 import { TwinLSPDocument } from '../../documents/models/twin-document.model';
 import { TemplateTokenData } from '../../native-twin/models/template-token.model';
-import { NativeTwinManager } from '../../native-twin/native-twin.service';
+import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
 
 export const getDocumentTemplatesColors = (
-  twinService: NativeTwinManager,
+  twinService: NativeTwinManagerService['Type'],
   twinDocument: TwinLSPDocument,
 ) =>
   pipe(
@@ -24,7 +24,7 @@ export const getDocumentTemplatesColors = (
 /** File private */
 const templateTokenToColorInfo = (
   templateNode: TemplateTokenData,
-  twinService: NativeTwinManager,
+  twinService: NativeTwinManagerService['Type'],
   twinDocument: TwinLSPDocument,
 ): vscode.ColorInformation[] => {
   const range = Range.create(

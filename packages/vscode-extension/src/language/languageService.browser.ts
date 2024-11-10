@@ -9,7 +9,6 @@ import { VscodeContext } from '../extension/extension.service';
 import {
   extensionConfigValue,
   registerCommand,
-  thenable,
 } from '../extension/extension.utils';
 import {
   getDefaultLanguageClientOptions,
@@ -24,10 +23,6 @@ import { createFileWatchers, getColorDecoration, getConfigFiles } from './langua
 const make = Effect.gen(function* () {
   const extensionCtx = yield* VscodeContext;
   const workspace = vscode.workspace.workspaceFolders;
-
-  const tsconfigFiles = yield* thenable(() =>
-    vscode.workspace.findFiles('**tsconfig.json', '', 1),
-  );
 
   const fileEvents = yield* createFileWatchers;
 
@@ -48,9 +43,8 @@ const make = Effect.gen(function* () {
 
   const clientConfig: LanguageClientOptions = {
     ...getDefaultLanguageClientOptions({
-      tsConfigFiles: tsconfigFiles ?? [],
-      twinConfigFile: configFiles.at(0),
-      workspaceRoot: workspace?.at(0),
+      twinConfigFile: configFiles.at(0)?.path,
+      workspaceRoot: workspace?.at(0)?.uri.path,
     }),
     synchronize: {
       fileEvents: fileEvents,

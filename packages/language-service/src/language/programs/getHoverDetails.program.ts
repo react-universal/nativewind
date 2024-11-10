@@ -18,7 +18,7 @@ export const getHoverDetails = (
     const twinService = yield* NativeTwinManagerService;
     const documentsHandler = yield* DocumentsService;
     const context = twinService.getCompilerContext();
-    const extracted = documentsHandler.getDocument(params.textDocument.uri);
+    const extracted = yield* documentsHandler.getDocument(params.textDocument.uri);
 
     const hoverEntry = Option.Do.pipe(
       Option.bind('document', () => extracted),
@@ -71,7 +71,7 @@ export const getHoverDetails = (
       }),
       Option.map(({ tokenAtPosition }) => {
         const cx = twinService.cx`${tokenAtPosition.text}`;
-        const entries = twinService.tx`${[cx]}`;
+        const entries = twinService.tw(`${cx}`);
         const sheet = {
           rn: getSheetEntryStyles(entries, context),
           css: sheetEntriesToCss(entries),

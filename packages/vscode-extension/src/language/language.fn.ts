@@ -1,3 +1,4 @@
+import { CSS_COLORS } from '@native-twin/css';
 import * as vscode from 'vscode';
 import {
   CloseAction,
@@ -6,7 +7,6 @@ import {
   LanguageClientOptions,
   ProvideDocumentColorsSignature,
 } from 'vscode-languageclient';
-import { CSS_COLORS } from '@native-twin/css';
 import { Constants } from '@native-twin/language-service';
 
 const colorNames = Object.keys(CSS_COLORS);
@@ -74,9 +74,8 @@ export const onProvideDocumentColors = async (
 };
 
 export const getDefaultLanguageClientOptions = (data: {
-  tsConfigFiles: vscode.Uri[];
-  twinConfigFile: vscode.Uri | undefined;
-  workspaceRoot: vscode.WorkspaceFolder | undefined;
+  twinConfigFile: string | undefined;
+  workspaceRoot: string | undefined;
 }): LanguageClientOptions => {
   return {
     documentSelector: Constants.DOCUMENT_SELECTORS,

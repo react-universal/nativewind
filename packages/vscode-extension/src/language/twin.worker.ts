@@ -10,12 +10,11 @@ import {
   createConnection,
   TextDocuments,
 } from 'vscode-languageserver/browser.js';
+import { LSPConfigService } from '@native-twin/language-service';
 import {
   NativeTwinManagerService,
   DocumentsService,
   ConnectionService,
-  ConfigManagerService,
-  initializeConnection,
   languagePrograms,
 } from '@native-twin/language-service/browser';
 
@@ -26,24 +25,21 @@ export const documentsHandler = new TextDocuments(TextDocument);
 
 const ConnectionLayer = ConnectionService.make(connection);
 const DocumentsLayer = DocumentsService.make(documentsHandler);
-const MainLive = Layer.mergeAll(ConnectionLayer).pipe(
+
+const MainLive = Layer.empty.pipe(
   Layer.provideMerge(DocumentsLayer),
+  Layer.provideMerge(LSPConfigService.Live),
   Layer.provideMerge(NativeTwinManagerService.Live),
-  Layer.provideMerge(ConfigManagerService.Live),
+  Layer.provideMerge(ConnectionLayer),
+  // Layer.provideMerge(ConfigManagerService.Live),
 );
 
 const program = Effect.gen(function* () {
   const connectionService = yield* ConnectionService;
   const Connection = connectionService;
-  const configService = yield* ConfigManagerService;
   yield* DocumentsService;
-  const nativeTwinManager = yield* NativeTwinManagerService;
+  yield* LSPConfigService;
   const Runtime = ManagedRuntime.make(MainLive);
-
-  Connection.onInitialize(async (...args) => {
-    const init = initializeConnection(...args, nativeTwinManager, configService);
-    return init;
-  });
 
   Connection.onCompletion(async (...args) => {
     const completions = await Runtime.runPromise(

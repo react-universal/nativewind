@@ -11,7 +11,7 @@ import {
 } from 'vscode-languageclient/node';
 import { NativeTwinManagerService, Constants } from '@native-twin/language-service';
 import { VscodeContext } from '../../extension/extension.service';
-import { registerCommand, thenable } from '../../extension/extension.utils';
+import { registerCommand } from '../../extension/extension.utils';
 import {
   getDefaultLanguageClientOptions,
   onLanguageClientClosed,
@@ -29,7 +29,6 @@ export const LanguageClientLive = Effect.gen(function* () {
   const twin = yield* NativeTwinManagerService;
   const extensionCtx = yield* VscodeContext;
   const { provideDocumentHighlights } = yield* VscodeHightLightsProvider;
-  const workspace = vscode.workspace.workspaceFolders;
 
   const highLightsProviders = Constants.DOCUMENT_SELECTORS.map((x) =>
     vscode.languages.registerDocumentHighlightProvider(
@@ -44,10 +43,6 @@ export const LanguageClientLive = Effect.gen(function* () {
   );
 
   extensionCtx.subscriptions.push(...highLightsProviders);
-
-  const tsconfigFiles = yield* thenable(() =>
-    vscode.workspace.findFiles('**tsconfig.json', '', 1),
-  );
 
   const fileEvents = yield* createFileWatchers;
 
@@ -71,9 +66,8 @@ export const LanguageClientLive = Effect.gen(function* () {
 
   const clientConfig: LanguageClientOptions = {
     ...getDefaultLanguageClientOptions({
-      tsConfigFiles: tsconfigFiles ?? [],
-      twinConfigFile: configFiles.at(0),
-      workspaceRoot: workspace?.at(0),
+      twinConfigFile: twin.configFile,
+      workspaceRoot: twin.configFileRoot,
     }),
     synchronize: {
       fileEvents: fileEvents,

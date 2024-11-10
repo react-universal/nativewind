@@ -1,10 +1,14 @@
 import * as Ansi from '@effect/printer-ansi/Ansi';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
 import * as AnsiColor from '@effect/printer-ansi/Color';
+import * as Array from 'effect/Array';
 import * as FiberId from 'effect/FiberId';
 import { apply, pipe } from 'effect/Function';
+import * as Iterable from 'effect/Iterable';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
+import * as String from 'effect/String';
+import { inspect } from 'util';
 
 const scopeTextConfig = pipe(
   Ansi.combine(Ansi.bgBlue),
@@ -74,9 +78,22 @@ export const createLspLogger = (scope: string) =>
     }
   });
 
+const logFormat = (x: any) =>
+  pipe(
+    inspect(x, {
+      depth: null,
+      sorted: true,
+      compact: true,
+    }),
+    String.linesIterator,
+    Iterable.map(String.padStart(5)),
+    Array.fromIterable,
+  );
+
 export const loggerUtils = {
   getMessageColor,
   render,
+  logFormat,
   messageConfig,
   scopeTextConfig,
 };

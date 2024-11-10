@@ -1,7 +1,8 @@
-import * as ReadOnlyArray from 'effect/Array';
+import * as RA from 'effect/Array';
+import * as Equivalence from 'effect/Equivalence';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import * as Record from 'effect/Record';
+// import * as Record from 'effect/Record';
 import * as vscode from 'vscode-languageserver-types';
 import { TwinLSPDocument } from '../../documents/models/twin-document.model';
 import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
@@ -13,27 +14,25 @@ import { DIAGNOSTIC_ERROR_KIND, VscodeDiagnosticItem } from '../models/diagnosti
 const createRegionEntriesExtractor =
   (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>
   () => {
-    return ReadOnlyArray.filterMap(
-      (x: TwinSheetEntry): Option.Option<DiagnosticToken> => {
-        if (isSameClassName(entry, x)) {
-          return Option.some({
-            kind: 'DUPLICATED_CLASS_NAME',
-            node: x,
-            range: getRange(x.token.bodyLoc),
-            uri: uri,
-          });
-        }
-        if (isSameDeclarationProp(entry, x)) {
-          return Option.some({
-            kind: 'DUPLICATED_DECLARATION',
-            node: x,
-            range: getRange(x.token.bodyLoc),
-            uri: uri,
-          });
-        }
-        return Option.none();
-      },
-    );
+    return RA.filterMap((x: TwinSheetEntry): Option.Option<DiagnosticToken> => {
+      if (isSameEntryClassName(entry, x)) {
+        return Option.some({
+          kind: 'DUPLICATED_CLASS_NAME',
+          node: x,
+          range: getRange(x.token.bodyLoc),
+          uri: uri,
+        });
+      }
+      if (isSameDeclarationProp(entry, x)) {
+        return Option.some({
+          kind: 'DUPLICATED_DECLARATION',
+          node: x,
+          range: getRange(x.token.bodyLoc),
+          uri: uri,
+        });
+      }
+      return Option.none();
+    });
   };
 
 export const diagnosticTokensToDiagnosticItems = (
@@ -43,12 +42,12 @@ export const diagnosticTokensToDiagnosticItems = (
   const getRange = bodyLocToRange(document);
   return pipe(
     document.getLanguageRegions(),
-    ReadOnlyArray.flatMap((region) => {
+    RA.flatMap((region) => {
       const regionEntries = region.getFullSheetEntries(twinService.tw);
       const generateExtractor = flip(createRegionEntriesExtractor)();
       return pipe(
         regionEntries,
-        ReadOnlyArray.map((regionNode) => {
+        RA.map((regionNode) => {
           const range = getRange(regionNode.token.bodyLoc);
           const duplicates = generateExtractor(
             regionNode,
@@ -60,8 +59,8 @@ export const diagnosticTokensToDiagnosticItems = (
           const relatedInfo = regionDescriptions(duplicates, document.uri);
           return pipe(
             duplicates,
-            ReadOnlyArray.filter((x) => !isSameRange(x.range, range)),
-            ReadOnlyArray.map(
+            RA.filter((x) => !isSameRange(x.range, range)),
+            RA.map(
               ({ kind, node }) =>
                 new VscodeDiagnosticItem({
                   range,
@@ -72,13 +71,13 @@ export const diagnosticTokensToDiagnosticItems = (
                   relatedInfo: relatedInfo.filter((x) => x.kind === kind),
                 }),
             ),
-            ReadOnlyArray.filterMap((x) => (x === null ? Option.none() : Option.some(x))),
+            RA.filterMap((x) => (x === null ? Option.none() : Option.some(x))),
           );
         }),
       );
     }),
-    ReadOnlyArray.flatten,
-    ReadOnlyArray.dedupe,
+    RA.flatten,
+    RA.dedupe,
   );
 };
 
@@ -106,7 +105,7 @@ export const diagnosticTokenToVscode = (
 export const regionDescriptions = (data: DiagnosticToken[], uri: string) => {
   return pipe(
     data,
-    ReadOnlyArray.map((x) => {
+    RA.map((x) => {
       return {
         kind: x.kind,
         location: vscode.Location.create(uri, x.range),
@@ -123,19 +122,33 @@ export const bodyLocToRange =
       document.offsetToPosition(bodyLoc.end),
     );
 
-export const isSameClassName = (a: TwinSheetEntry, b: TwinSheetEntry) =>
-  a.entry.className === b.entry.className;
-
-const isSameDeclarationProp = (a: TwinSheetEntry, b: TwinSheetEntry) =>
-  a.declarationProp === b.declarationProp && a.selector === b.selector;
-
-export const getEntriesDuplicates = <A extends string>(
-  entries: TwinSheetEntry[],
-  by: (x: TwinSheetEntry) => A,
-) =>
-  pipe(
-    ReadOnlyArray.groupBy(entries, by),
-    Record.filter((x) => x.length > 1),
-    Record.values,
-    ReadOnlyArray.flatten,
+export const twinSheetEntryGroupByDuplicates = (entries: TwinSheetEntry[]) => {
+  if (!RA.isNonEmptyArray(entries)) return [];
+  return pipe(
+    RA.groupWith(entries, isSameTwinSheetEntryDeclaration),
+    RA.filter((x) => x.length > 1),
+    // RA.flatten,
   );
+};
+
+const isSameDeclarationProp = Equivalence.make<TwinSheetEntry>(
+  (a, b) => a.declarationProp === b.declarationProp,
+);
+
+const isSameEntryClassName = Equivalence.make<TwinSheetEntry>(
+  (a, b) => a.entry.className === b.entry.className,
+);
+
+const isSameEntrySelectors = Equivalence.make<TwinSheetEntry>(
+  (a, b) => a.entry.selectors.join('') === b.entry.selectors.join(''),
+);
+
+export const twinEntryClassNameEquivalence = Equivalence.combine(
+  isSameEntryClassName,
+  isSameEntrySelectors,
+);
+
+export const isSameTwinSheetEntryDeclaration = Equivalence.combine(
+  isSameDeclarationProp,
+  isSameEntrySelectors,
+);

@@ -11,9 +11,9 @@ export const getDocumentHighLightsProgram = (
 ): Effect.Effect<vscode.DocumentHighlight[], never, DocumentsService> =>
   Effect.gen(function* () {
     const documentsHandler = yield* DocumentsService;
-    const document = documentsHandler
+    const document = yield* documentsHandler
       .getDocument(params.textDocument.uri)
-      .pipe(Option.getOrNull);
+      .pipe(Effect.map(Option.getOrNull));
 
     if (!document) return [];
 

@@ -1,9 +1,11 @@
+import { pipe } from 'effect';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver';
 import { DocumentsService } from '../../documents';
 import { NativeTwinManagerService } from '../../native-twin';
+import { isSameRange } from '../../utils/vscode.utils';
 import { TwinDiagnosticHandler } from '../models/diagnostic.cache';
 
 export const getDocumentDiagnosticsProgram = (
@@ -17,9 +19,9 @@ export const getDocumentDiagnosticsProgram = (
   return Effect.gen(function* () {
     const twinService = yield* NativeTwinManagerService;
     const documentsHandler = yield* DocumentsService;
-    const document = documentsHandler
+    const document = yield* documentsHandler
       .getDocument(params.textDocument.uri)
-      .pipe(Option.getOrThrow);
+      .pipe(Effect.map(Option.getOrThrow));
 
     const regions = document.getLanguageRegions();
 
@@ -33,7 +35,10 @@ export const getDocumentDiagnosticsProgram = (
         ),
     );
 
-    const diagnosticItems = results.flatMap((x) => x.diagnostics);
+    const diagnosticItems = pipe(
+      results.flatMap((x) => x.diagnostics),
+      RA.dedupeWith((a, b) => isSameRange(a.range, b.range)),
+    );
 
     return {
       kind: 'full',
