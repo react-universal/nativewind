@@ -6,8 +6,8 @@ import * as vscode from 'vscode-languageserver';
 import { DocumentsService } from '../../documents';
 import { NativeTwinManagerService } from '../../native-twin';
 import { isSameRange } from '../../utils/vscode.utils';
-import { TwinDiagnosticHandler } from '../models/diagnostic.cache';
-import { TwinDiagnosticCodes } from '../models/diagnostic.model';
+import { TwinDiagnosticHandler } from '../../models/language/diagnostic.cache';
+import { TwinDiagnosticCodes } from '../../models/language/diagnostic.model';
 
 export const getDocumentDiagnosticsProgram = (
   params: vscode.DocumentDiagnosticParams,

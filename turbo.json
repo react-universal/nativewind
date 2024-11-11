@@ -16,6 +16,10 @@
         "dist/**"
       ]
     },
+    "build:tsc:watch": {
+      "persistent": true,
+      "cache": false
+    },
     "dev-tools:dev": {
       "cache": false,
       "persistent": true,

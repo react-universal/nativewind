@@ -4,10 +4,10 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { asArray } from '@native-twin/helpers';
-import { TwinLSPDocument } from '../../documents/models/twin-document.model';
-import { TemplateTokenData } from '../../native-twin/models/template-token.model';
+import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
+import { VscodeCompletionItem } from '../../models/language/completion.model';
+import { TemplateTokenData } from '../../models/twin/template-token.model';
 import { TwinStore, TwinRuleCompletion } from '../../native-twin/native-twin.types';
-import { VscodeCompletionItem } from '../models/completion.model';
 import { compareTwinRuleWithClassName } from './completion.ap';
 import { getDocumentationMarkdown } from './language.utils';
 

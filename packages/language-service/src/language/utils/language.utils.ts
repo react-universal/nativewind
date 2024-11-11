@@ -5,12 +5,12 @@ import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as vscode from 'vscode-languageserver-types';
 import { asArray } from '@native-twin/helpers';
-import { DocumentLanguageRegion } from '../../documents/models/language-region.model';
-import { TwinLSPDocument } from '../../documents/models/twin-document.model';
+import { DocumentLanguageRegion } from '../../models/documents/LanguageRegion.model';
+import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
 import {
   TemplateTokenData,
   TemplateTokenWithText,
-} from '../../native-twin/models/template-token.model';
+} from '../../models/twin/template-token.model';
 import { TwinRuleCompletion, TwinRuleParts } from '../../native-twin/native-twin.types';
 import { variantTokenToString } from '../../native-twin/utils/native-twin.utils';
 

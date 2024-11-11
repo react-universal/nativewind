@@ -4,7 +4,7 @@ import type * as vscode from 'vscode-languageserver';
 import { Range } from 'vscode-languageserver-types';
 import { DocumentsService } from '../../documents';
 import { NativeTwinManagerService } from '../../native-twin';
-import { VscodeCompletionItem } from '../models/completion.model';
+import { VscodeCompletionItem } from '../../models/language/completion.model';
 import { getCompletionsForTokens } from '../utils/completion.pipes';
 import * as Completions from '../utils/completions.maps';
 

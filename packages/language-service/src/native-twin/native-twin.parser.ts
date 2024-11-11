@@ -1,12 +1,12 @@
-import * as P from '@native-twin/arc-parser';
 import {
   ArbitraryToken,
   ClassNameToken,
   VariantClassToken,
   VariantToken,
 } from '@native-twin/css';
+import * as P from '@native-twin/arc-parser';
 import * as TwParser from '@native-twin/css/tailwind-parser';
-import { TemplateTokenWithText } from './models/template-token.model';
+import { TemplateTokenWithText } from '../models/twin/template-token.model';
 import { LocatedGroupToken, LocatedParser, TemplateToken } from './parser.types';
 import { addTextToParsedRules } from './utils/native-twin.utils';
 

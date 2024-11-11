@@ -4,8 +4,8 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { Range, Color } from 'vscode-languageserver-types';
-import { TwinLSPDocument } from '../../documents/models/twin-document.model';
-import { TemplateTokenData } from '../../native-twin/models/template-token.model';
+import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
+import { TemplateTokenData } from '../../models/twin/template-token.model';
 import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
 

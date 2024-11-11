@@ -3,12 +3,15 @@ import * as Equivalence from 'effect/Equivalence';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
-import { TwinLSPDocument } from '../../documents/models/twin-document.model';
-import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
-import { TemplateTokenWithText } from '../../native-twin/models/template-token.model';
+import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
+import {
+  TwinDiagnosticCodes,
+  VscodeDiagnosticItem,
+} from '../../models/language/diagnostic.model';
+import { TemplateTokenWithText } from '../../models/twin/template-token.model';
+import { TwinSheetEntry } from '../../models/twin/TwinSheetEntry.model';
 import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
 import { isSameRange } from '../../utils/vscode.utils';
-import { TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/diagnostic.model';
 
 const createRegionEntriesExtractor =
   (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>

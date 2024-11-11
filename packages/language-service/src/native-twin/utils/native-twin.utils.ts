@@ -1,12 +1,15 @@
+import type { TWScreenValueConfig, VariantClassToken } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as Record from 'effect/Record';
 import type { __Theme__ } from '@native-twin/core';
-import type { TWScreenValueConfig, VariantClassToken } from '@native-twin/css';
 import { ColorsRecord, asArray, toColorValue } from '@native-twin/helpers';
-import { TemplateTokenWithText, TemplateTokenData } from '../models/template-token.model';
+import {
+  TemplateTokenWithText,
+  TemplateTokenData,
+} from '../../models/twin/template-token.model';
 import { createRuleClassNames, createRuleCompositions } from '../native-twin.rules';
 import {
   TwinRuleCompletion,

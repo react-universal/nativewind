@@ -4,7 +4,7 @@ import * as vscode from 'vscode-languageserver-types';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
-} from '../utils/language.utils';
+} from '../../language/utils/language.utils';
 import { TwinRuleCompletion, TwinVariantCompletion } from '../../native-twin/native-twin.types';
 
 export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal {

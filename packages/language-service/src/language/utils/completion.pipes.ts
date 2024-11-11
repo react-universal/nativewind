@@ -3,7 +3,7 @@ import { pipe } from 'effect/Function';
 import {
   TemplateTokenData,
   TemplateTokenWithText,
-} from '../../native-twin/models/template-token.model';
+} from '../../models/twin/template-token.model';
 import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
 import { getFlattenTemplateToken } from './language.utils';

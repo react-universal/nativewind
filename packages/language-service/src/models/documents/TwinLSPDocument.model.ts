@@ -6,9 +6,9 @@ import * as Option from 'effect/Option';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver-types';
 import { babelExtractors } from '@native-twin/compiler/babel';
-import type { TemplateTokenWithText } from '../../native-twin/models/template-token.model';
 import { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
-import { DocumentLanguageRegion } from './language-region.model';
+import type { TemplateTokenWithText } from '../twin/template-token.model';
+import { DocumentLanguageRegion } from './LanguageRegion.model';
 
 const quotesRegex = /^['"`].*['"`]$/g;
 

@@ -4,15 +4,16 @@ import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver';
 import { DiagnosticRelatedInformation } from 'vscode-languageserver-types';
-import { DocumentLanguageRegion, TwinLSPDocument } from '../../documents';
-import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
+import { DocumentLanguageRegion } from '../documents/LanguageRegion.model';
+import { TwinLSPDocument } from '../documents/TwinLSPDocument.model';
+import { TwinSheetEntry } from '../twin/TwinSheetEntry.model';
 import { isSameRange } from '../../utils/vscode.utils';
 import {
   bodyLocToRange,
   isSameTwinSheetEntryDeclaration,
   twinEntryClassNameEquivalence,
   twinSheetEntryGroupByDuplicates,
-} from '../utils/diagnostic';
+} from '../../language/utils/diagnostic';
 import { TwinDiagnosticCodes, VscodeDiagnosticItem } from './diagnostic.model';
 
 export class TwinDiagnosticHandler implements Equal.Equal {
