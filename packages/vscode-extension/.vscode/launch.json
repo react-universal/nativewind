@@ -7,7 +7,7 @@
       "configurations": [
         "Launch Extension",
         "Build language service",
-        "Launch Extension Server"
+        "Build Extension Server"
       ],
       "stopAll": true,
       "presentation": {
@@ -15,7 +15,7 @@
         "group": "tools",
         "order": 1
       },
-      "preLaunchTask": "npm: build:tsc:watch"
+      "preLaunchTask": "Build vscode"
     }
   ],
   "configurations": [

@@ -1,16 +1,16 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver';
-import { DocumentsService } from '../../services/LSPDocuments.service';
+import { LSPDocumentsService } from '../services/LSPDocuments.service';
 
 export const getDocumentHighLightsProgram = (
   params: vscode.DocumentHighlightParams,
   _token: vscode.CancellationToken,
   _workDone: vscode.WorkDoneProgressReporter,
   _resultProgress: vscode.ResultProgressReporter<vscode.DocumentHighlight[]> | undefined,
-): Effect.Effect<vscode.DocumentHighlight[], never, DocumentsService> =>
+): Effect.Effect<vscode.DocumentHighlight[], never, LSPDocumentsService> =>
   Effect.gen(function* () {
-    const documentsHandler = yield* DocumentsService;
+    const documentsHandler = yield* LSPDocumentsService;
     const document = yield* documentsHandler
       .getDocument(params.textDocument.uri)
       .pipe(Effect.map(Option.getOrNull));

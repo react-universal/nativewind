@@ -6,9 +6,9 @@ import {
 } from '@native-twin/css';
 import * as P from '@native-twin/arc-parser';
 import * as TwParser from '@native-twin/css/tailwind-parser';
-import { TemplateTokenWithText } from '../models/twin/template-token.model';
-import { LocatedGroupToken, LocatedParser, TemplateToken } from './parser.types';
-import { addTextToParsedRules } from './utils/native-twin.utils';
+import { TemplateTokenWithText } from '../../models/twin/template-token.model';
+import { LocatedGroupToken, LocatedParser, TemplateToken } from '../../models/twin/parser.types';
+import { addTextToParsedRules } from './native-twin.utils';
 
 const mapWithLocation = <A extends object>(
   x: P.ParserState<A, any>,

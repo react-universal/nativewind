@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Extension Server",
+      "name": "Build Extension Server",
       "type": "node",
       "request": "attach",
       "sourceMaps": true,
@@ -11,10 +11,7 @@
         "group": "",
         "order": 1
       },
-      "preLaunchTask": {
-        "type": "npm",
-        "script": "build:tsc:watch"
-      },
+      "preLaunchTask": "Build watch language server",
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"
       ]

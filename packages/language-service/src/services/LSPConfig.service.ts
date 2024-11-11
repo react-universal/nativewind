@@ -4,14 +4,14 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import { getClientCapabilities } from '../connection/connection.handlers';
-import { NativeTwinManagerService } from '../native-twin';
-import { LSPConnectionService } from './LSPConnection.service';
+import { NativeTwinManagerService } from './NativeTwinManager.service';
+import { getClientCapabilities } from '../utils/connection.utils';
 import {
   DEFAULT_PLUGIN_CONFIG,
   NativeTwinPluginConfiguration,
 } from '../utils/constants.utils';
 import { loggerUtils } from '../utils/lsp.logger.service';
+import { LSPConnectionService } from './LSPConnection.service';
 
 interface VscodeLSPConfig {
   twinConfigFile: Option.Option<string>;
@@ -30,13 +30,13 @@ const make = Effect.gen(function* () {
     vscode: DEFAULT_PLUGIN_CONFIG,
   });
 
-  // const requestType = new RequestType1<string, string, string>('hola', ParameterStructures.auto);
+  // const requestType = new RequestType1<string, string, string>('hello', ParameterStructures.auto);
 
   Connection.onDidChangeWatchedFiles(async (params) => {
     console.log('WATCHED_FILES_CHANGE: ', params);
   });
 
-  Connection.onRequest('hola', (params) => {
+  Connection.onRequest('hello', (params) => {
     return Effect.runPromise(
       Effect.tap(Effect.succeed('RESPONSE'), (x) => {
         return Effect.log('Hello from LSP: ', x, params);

@@ -7,7 +7,7 @@ import { asArray } from '@native-twin/helpers';
 import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
 import { VscodeCompletionItem } from '../../models/language/completion.model';
 import { TemplateTokenData } from '../../models/twin/template-token.model';
-import { TwinStore, TwinRuleCompletion } from '../../native-twin/native-twin.types';
+import { TwinStore, TwinRuleCompletion } from '../../models/twin/native-twin.types';
 import { compareTwinRuleWithClassName } from './completion.ap';
 import { getDocumentationMarkdown } from './language.utils';
 

@@ -16,13 +16,10 @@
     },
     {
       "type": "npm",
+      "label": "Build watch language server",
       "script": "build:tsc:watch",
-      "label": "npm: build:tsc:watch",
       "isBackground": true,
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "group": "build",
       "presentation": {
         "panel": "dedicated",
         "reveal": "never"

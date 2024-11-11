@@ -1,9 +1,9 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
-import { NativeTwinManagerService } from '../../native-twin';
-import { DocumentsService } from '../../services/LSPDocuments.service';
-import { getDocumentTemplatesColors } from '../utils/colorInfo.utils';
+import { LSPDocumentsService } from '../services/LSPDocuments.service';
+import { NativeTwinManagerService } from '../services/NativeTwinManager.service';
+import { getDocumentTemplatesColors } from '../utils/language/colorInfo.utils';
 
 export const getDocumentColors = (
   params: vscode.DocumentColorParams,
@@ -12,7 +12,7 @@ export const getDocumentColors = (
   _resultProgress: vscode.ResultProgressReporter<vscode.ColorInformation[]> | undefined,
 ) => {
   return Effect.gen(function* () {
-    const documentsHandler = yield* DocumentsService;
+    const documentsHandler = yield* LSPDocumentsService;
     const twinService = yield* NativeTwinManagerService;
     const document = yield* documentsHandler.getDocument(params.textDocument.uri);
 

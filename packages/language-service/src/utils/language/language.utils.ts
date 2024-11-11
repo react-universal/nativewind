@@ -11,8 +11,8 @@ import {
   TemplateTokenData,
   TemplateTokenWithText,
 } from '../../models/twin/template-token.model';
-import { TwinRuleCompletion, TwinRuleParts } from '../../native-twin/native-twin.types';
-import { variantTokenToString } from '../../native-twin/utils/native-twin.utils';
+import { TwinRuleCompletion, TwinRuleParts } from '../../models/twin/native-twin.types';
+import { variantTokenToString } from '../twin/native-twin.utils';
 
 export const getCompletionTokenKind = ({
   rule,

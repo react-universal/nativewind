@@ -12,13 +12,7 @@
         "group": "",
         "order": 1
       },
-      "cascadeTerminateToConfigurations": [
-        "build:tsc:watch"
-      ],
-      "preLaunchTask": {
-        "type": "npm",
-        "script": "build:tsc:watch"
-      },
+      "preLaunchTask": "Build watch language service",
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"
       ]

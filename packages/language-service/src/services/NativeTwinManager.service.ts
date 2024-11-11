@@ -16,18 +16,18 @@ import {
   tx,
 } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
-import { requireJS } from '../utils/load-js';
-import { createStyledContext } from '../utils/sheet.utils';
-import {
+import type {
   InternalTwFn,
   InternalTwinConfig,
   InternalTwinThemeContext,
   TwinStore,
   TwinRuleCompletion,
   TwinVariantCompletion,
-} from '../native-twin/native-twin.types';
-import { createTwinStore } from '../native-twin/utils/native-twin.utils';
+} from '../models/twin/native-twin.types';
+import { createTwinStore } from '../utils/twin/native-twin.utils';
+import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
+import { requireJS } from '../utils/load-js';
+import { createStyledContext } from '../utils/sheet.utils';
 
 export class NativeTwinManager {
   tw: InternalTwFn;

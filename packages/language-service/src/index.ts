@@ -1,26 +1,28 @@
 import * as Constants from './utils/constants.utils';
 
 /** Documents Service */
-export { DocumentsService } from './services/LSPDocuments.service';
+export { LSPDocumentsService } from './services/LSPDocuments.service';
 
 /** Language Service */
-export { filterTokensFromRules } from './language/utils/completions.maps';
+export { filterTokensFromRules } from './utils/language/completions.maps';
+export { getCompletionsForTokens } from './utils/language/completion.pipes';
 export {
-  getCompletionsForTokens,
-  languagePrograms,
   getDocumentationMarkdown,
   getCompletionEntryDetailsDisplayParts,
-} from './language';
+} from './utils/language/language.utils';
+export { languagePrograms } from './programs';
+
 export { TemplateTokenData } from './models/twin/template-token.model';
 export { LSPConfigService } from './services/LSPConfig.service';
 export { TemplateTokenWithText } from './models/twin/template-token.model';
 
 /** Twin Services */
-export { NativeTwinManagerService, parseTemplate } from './native-twin';
-export type { TwinRuleCompletion } from './native-twin';
+export { NativeTwinManagerService } from './services/NativeTwinManager.service';
+export { parseTemplate } from './utils/twin/native-twin.parser';
+export type { TwinRuleCompletion } from './models/twin/native-twin.types';
 
 /** Connection Service */
-export { LSPConnectionService as ConnectionService } from './services/LSPConnection.service';
+export { LSPConnectionService } from './services/LSPConnection.service';
 
 /** Vscode Client */
 export {

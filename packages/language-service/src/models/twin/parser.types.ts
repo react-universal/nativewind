@@ -5,7 +5,7 @@ import type {
   VariantClassToken,
   VariantToken,
 } from '@native-twin/css';
-import { TemplateTokenWithText } from '../models/twin/template-token.model';
+import type { TemplateTokenWithText } from './template-token.model';
 
 export type LocatedParser<A extends object> = {
   start: number;

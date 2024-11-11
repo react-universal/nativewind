@@ -1,15 +1,15 @@
+import { cornerMap, directionMap, TWScreenValueConfig } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import type { RuleMeta } from '@native-twin/core';
-import { cornerMap, directionMap, TWScreenValueConfig } from '@native-twin/css';
 import { ColorsRecord, asArray } from '@native-twin/helpers';
-import { DEFAULT_RULE_META } from '../utils/constants.utils';
+import { DEFAULT_RULE_META } from '../constants.utils';
 import {
   InternalNativeTwinRule,
   TwinRuleParts,
   TwinRuleCompletion,
-} from './native-twin.types';
+} from '../../models/twin/native-twin.types';
 
 export function getRuleParts(rule: InternalNativeTwinRule): TwinRuleParts {
   const pattern = rule[0];

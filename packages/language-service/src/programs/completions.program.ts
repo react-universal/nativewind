@@ -2,11 +2,11 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { Range } from 'vscode-languageserver-types';
-import { DocumentsService } from '../../services/LSPDocuments.service';
-import { NativeTwinManagerService } from '../../native-twin';
-import { VscodeCompletionItem } from '../../models/language/completion.model';
-import { getCompletionsForTokens } from '../utils/completion.pipes';
-import * as Completions from '../utils/completions.maps';
+import { VscodeCompletionItem } from '../models/language/completion.model';
+import { NativeTwinManagerService } from '../services/NativeTwinManager.service';
+import { LSPDocumentsService } from '../services/LSPDocuments.service';
+import { getCompletionsForTokens } from '../utils/language/completion.pipes';
+import * as Completions from '../utils/language/completions.maps';
 
 export const getCompletionsAtPosition = (
   params: vscode.CompletionParams,
@@ -15,7 +15,7 @@ export const getCompletionsAtPosition = (
   _resultProgress: vscode.ResultProgressReporter<vscode.CompletionItem[]> | undefined,
 ) =>
   Effect.gen(function* () {
-    const documentsHandler = yield* DocumentsService;
+    const documentsHandler = yield* LSPDocumentsService;
     const twinService = yield* NativeTwinManagerService;
     const document = yield* documentsHandler.getDocument(params.textDocument.uri);
 

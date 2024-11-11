@@ -17,33 +17,14 @@
     {
       "type": "npm",
       "script": "build:tsc:watch",
-      "label": "npm: build:tsc:watch",
+      "label": "Build watch language service",
       "isBackground": true,
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "group": "build",
       "presentation": {
         "panel": "dedicated",
         "reveal": "never"
       },
-      "problemMatcher": [
-        {
-          "pattern": [
-            {
-              "regexp": ".",
-              "file": 1,
-              "location": 2,
-              "message": 3
-            }
-          ],
-          "background": {
-            "activeOnStart": true,
-            "beginsPattern": ".",
-            "endsPattern": "."
-          }
-        }
-      ]
+      "problemMatcher": ["$rollup-ts-watch"]
     }
   ]
 }

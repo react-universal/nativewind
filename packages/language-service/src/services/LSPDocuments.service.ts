@@ -44,11 +44,11 @@ const make = (handler: TextDocuments<TextDocument>) => {
   });
 };
 
-export class DocumentsService extends Context.Tag('language-service/documents')<
-  DocumentsService,
+export class LSPDocumentsService extends Context.Tag('language-service/documents')<
+  LSPDocumentsService,
   Effect.Effect.Success<ReturnType<typeof make>>
 >() {
   static make = (handler: TextDocuments<TextDocument>) => {
-    return Layer.scoped(DocumentsService, make(handler));
+    return Layer.scoped(LSPDocumentsService, make(handler));
   };
 }

@@ -4,9 +4,9 @@ import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
-import { NativeTwinManagerService } from '../../native-twin';
-import { getSheetEntryStyles } from '../../utils/sheet.utils';
-import * as Completions from '../utils/completions.maps';
+import { NativeTwinManagerService } from '../services/NativeTwinManager.service';
+import * as Completions from '../utils/language/completions.maps';
+import { getSheetEntryStyles } from '../utils/sheet.utils';
 
 export const getCompletionEntryDetails = (
   entry: vscode.CompletionItem,

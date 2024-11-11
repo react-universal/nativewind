@@ -3,11 +3,11 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver';
-import { TwinDiagnosticHandler } from '../../models/language/diagnostic.cache';
-import { TwinDiagnosticCodes } from '../../models/language/diagnostic.model';
-import { NativeTwinManagerService } from '../../native-twin';
-import { DocumentsService } from '../../services/LSPDocuments.service';
-import { isSameRange } from '../../utils/vscode.utils';
+import { TwinDiagnosticHandler } from '../models/language/diagnostic.cache';
+import { TwinDiagnosticCodes } from '../models/language/diagnostic.model';
+import { LSPDocumentsService } from '../services/LSPDocuments.service';
+import { NativeTwinManagerService } from '../services/NativeTwinManager.service';
+import { isSameRange } from '../utils/vscode.utils';
 
 export const getDocumentDiagnosticsProgram = (
   params: vscode.DocumentDiagnosticParams,
@@ -19,7 +19,7 @@ export const getDocumentDiagnosticsProgram = (
 ) => {
   return Effect.gen(function* () {
     const twinService = yield* NativeTwinManagerService;
-    const documentsHandler = yield* DocumentsService;
+    const documentsHandler = yield* LSPDocumentsService;
     const document = yield* documentsHandler
       .getDocument(params.textDocument.uri)
       .pipe(Effect.map(Option.getOrThrow));

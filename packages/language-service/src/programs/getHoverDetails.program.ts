@@ -3,10 +3,10 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver';
-import { NativeTwinManagerService } from '../../native-twin';
-import { DocumentsService } from '../../services/LSPDocuments.service';
-import { getSheetEntryStyles } from '../../utils/sheet.utils';
-import { completionRuleToQuickInfo } from '../utils/quickInfo.utils';
+import { LSPDocumentsService } from '../services/LSPDocuments.service';
+import { NativeTwinManagerService } from '../services/NativeTwinManager.service';
+import { completionRuleToQuickInfo } from '../utils/language/quickInfo.utils';
+import { getSheetEntryStyles } from '../utils/sheet.utils';
 
 export const getHoverDetails = (
   params: vscode.HoverParams,
@@ -16,7 +16,7 @@ export const getHoverDetails = (
 ) => {
   return Effect.gen(function* () {
     const twinService = yield* NativeTwinManagerService;
-    const documentsHandler = yield* DocumentsService;
+    const documentsHandler = yield* LSPDocumentsService;
     const context = twinService.getCompilerContext();
     const extracted = yield* documentsHandler.getDocument(params.textDocument.uri);
 

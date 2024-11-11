@@ -8,10 +8,10 @@ import {
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
 } from '../../models/language/diagnostic.model';
-import { TemplateTokenWithText } from '../../models/twin/template-token.model';
 import { TwinSheetEntry } from '../../models/twin/TwinSheetEntry.model';
+import { TemplateTokenWithText } from '../../models/twin/template-token.model';
 import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
-import { isSameRange } from '../../utils/vscode.utils';
+import { isSameRange } from '../vscode.utils';
 
 const createRegionEntriesExtractor =
   (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>

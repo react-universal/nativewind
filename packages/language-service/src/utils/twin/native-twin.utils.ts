@@ -10,7 +10,7 @@ import {
   TemplateTokenWithText,
   TemplateTokenData,
 } from '../../models/twin/template-token.model';
-import { createRuleClassNames, createRuleCompositions } from '../native-twin.rules';
+import { createRuleClassNames, createRuleCompositions } from './native-twin.rules';
 import {
   TwinRuleCompletion,
   TwinVariantCompletion,
@@ -18,8 +18,8 @@ import {
   InternalTwinConfig,
   InternalTwinThemeContext,
   TwinStore,
-} from '../native-twin.types';
-import { LocatedParser, TemplateToken } from '../parser.types';
+} from '../../models/twin/native-twin.types';
+import { LocatedParser, TemplateToken } from '../../models/twin/parser.types';
 
 export const createTwinStore = (nativeTwinHandler: {
   tw: InternalTwFn;

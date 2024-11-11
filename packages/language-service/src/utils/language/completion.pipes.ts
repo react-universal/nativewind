@@ -4,8 +4,8 @@ import {
   TemplateTokenData,
   TemplateTokenWithText,
 } from '../../models/twin/template-token.model';
+import { TwinRuleCompletion } from '../../models/twin/native-twin.types';
 import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
-import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
 import { getFlattenTemplateToken } from './language.utils';
 
 export const getCompletionsForTokens = (

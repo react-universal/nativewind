@@ -106,7 +106,7 @@ export const LanguageClientLive = Effect.gen(function* () {
   );
 
   const response = yield* Effect.tryPromise({
-    try: () => languageClient.sendRequest<string>('hola', { params: 'asdasd' }),
+    try: () => languageClient.sendRequest<string>('hello', { params: 'hello_response' }),
     catch(error) {
       console.error('ERROR_sendRequest_hole', error);
     },

@@ -1,8 +1,8 @@
 import * as Effect from 'effect/Effect';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
 import {
-  ConnectionService,
-  DocumentsService,
+  LSPConnectionService,
+  LSPDocumentsService,
   languagePrograms,
 } from '@native-twin/language-service';
 import { LspMainLive } from './lsp.layer';
@@ -10,8 +10,8 @@ import { LspMainLive } from './lsp.layer';
 const Runtime = ManagedRuntime.make(LspMainLive);
 
 const program = Effect.gen(function* () {
-  const Connection = yield* ConnectionService;
-  const documentService = yield* DocumentsService;
+  const Connection = yield* LSPConnectionService;
+  const documentService = yield* LSPDocumentsService;
 
   Connection.onCompletion(async (...args) =>
     languagePrograms
