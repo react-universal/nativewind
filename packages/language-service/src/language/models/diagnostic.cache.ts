@@ -7,14 +7,13 @@ import { DiagnosticRelatedInformation } from 'vscode-languageserver-types';
 import { DocumentLanguageRegion, TwinLSPDocument } from '../../documents';
 import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
 import { isSameRange } from '../../utils/vscode.utils';
-// import { isSameRange } from '../../utils/vscode.utils';
 import {
   bodyLocToRange,
   isSameTwinSheetEntryDeclaration,
   twinEntryClassNameEquivalence,
   twinSheetEntryGroupByDuplicates,
 } from '../utils/diagnostic';
-import { DIAGNOSTIC_ERROR_KIND, VscodeDiagnosticItem } from './diagnostic.model';
+import { TwinDiagnosticCodes, VscodeDiagnosticItem } from './diagnostic.model';
 
 export class TwinDiagnosticHandler implements Equal.Equal {
   constructor(
@@ -46,7 +45,7 @@ export class TwinDiagnosticHandler implements Equal.Equal {
       );
       return new VscodeDiagnosticItem({
         entries: flattenEntries,
-        kind: 'DUPLICATED_DECLARATION',
+        code: TwinDiagnosticCodes.DuplicatedDeclaration,
         range,
         relatedInfo,
         text: entry.token.text,
@@ -63,7 +62,7 @@ export class TwinDiagnosticHandler implements Equal.Equal {
       const range = toRange(entry.token.bodyLoc);
       return new VscodeDiagnosticItem({
         entries: flattenEntries,
-        kind: 'DUPLICATED_CLASS_NAME',
+        code: TwinDiagnosticCodes.DuplicatedClassName,
         range: range,
         relatedInfo: flattenEntries.map((x): DiagnosticRelatedInformation => {
           const otherRange = toRange(x.token.bodyLoc);
@@ -109,7 +108,7 @@ export class TwinDiagnosticHandler implements Equal.Equal {
     RA.forEach(this.entries, (aEntry, ai) => {
       const currentEntryRange = toRange(aEntry.token.bodyLoc);
       const relatedInfo: DiagnosticRelatedInformation[] = [];
-      let diagnostic: keyof DIAGNOSTIC_ERROR_KIND | null = null;
+      let diagnosticKind: TwinDiagnosticCodes = TwinDiagnosticCodes.None;
       const entries: TwinSheetEntry[] = [];
 
       RA.forEach(this.entries, (bEntry, bi) => {
@@ -121,7 +120,7 @@ export class TwinDiagnosticHandler implements Equal.Equal {
             location: vscode.Location.create(this.document.uri, duplicatedTokenRange),
             message: bEntry.token.text,
           });
-          diagnostic = 'DUPLICATED_DECLARATION';
+          diagnosticKind = TwinDiagnosticCodes.DuplicatedDeclaration;
           entries.push(bEntry);
           return;
         }
@@ -131,16 +130,16 @@ export class TwinDiagnosticHandler implements Equal.Equal {
             location: vscode.Location.create(this.document.uri, duplicatedTokenRange),
             message: bEntry.token.text,
           });
-          diagnostic = 'DUPLICATED_CLASS_NAME';
+          diagnosticKind = TwinDiagnosticCodes.DuplicatedClassName;
           entries.push(bEntry);
           return;
         }
       });
-      if (diagnostic !== null) {
+      if (diagnosticKind !== null) {
         diagnostics.push(
           new VscodeDiagnosticItem({
             entries,
-            kind: diagnostic,
+            code: diagnosticKind,
             range: currentEntryRange,
             relatedInfo: RA.dedupeWith(relatedInfo, (a, b) => a.message === b.message),
             text: aEntry.token.text,

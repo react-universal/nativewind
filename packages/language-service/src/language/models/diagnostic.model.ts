@@ -1,9 +1,8 @@
-import * as RA from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
-// import { toHyphenCase } from '@native-twin/helpers';
 import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
+import { diagnosticProviderSource } from '../../utils/constants.utils';
 import { isSameRange } from '../../utils/vscode.utils';
 
 export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
@@ -15,38 +14,29 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
   readonly severity: vscode.DiagnosticSeverity;
   readonly tags: vscode.DiagnosticTag[];
   readonly codeDescription?: vscode.CodeDescription | undefined;
-  // codeDescription: vscode.CodeDescription | undefined;
+
   constructor(data: {
     range: vscode.Range;
-    kind: keyof typeof DIAGNOSTIC_ERROR_KIND;
+    code: TwinDiagnosticCodes;
     entries: TwinSheetEntry[];
     uri: string;
     text: string;
     relatedInfo: vscode.DiagnosticRelatedInformation[];
+    message?: string;
   }) {
-    const meta = DIAGNOSTIC_ERROR_KIND[data.kind];
-    this.message = `${meta.message} - '${data.text}'`;
+    this.code = data.code;
+    this.message = data.message
+      ? data.message
+      : `${this.getDiagnosticMessage(data.code)} - '${data.text}'`;
     this.range = data.range;
     this.relatedInformation = data.relatedInfo;
-    this.code = this.getSourceCode(data.kind, data.entries);
-    this.source = meta.source;
+    this.source = diagnosticProviderSource;
     this.severity = vscode.DiagnosticSeverity.Warning;
     this.tags = [];
   }
 
-  private getSourceCode(
-    kind: keyof typeof DIAGNOSTIC_ERROR_KIND,
-    entries: TwinSheetEntry[],
-  ) {
-    // this.codeDescription = {
-    //   href: `https://developer.mozilla.org/en-US/docs/Web/CSS/${toHyphenCase(declarationProp)}`,
-    // };
-    if (kind === 'DUPLICATED_CLASS_NAME') {
-      return RA.join(RA.dedupe(RA.map(entries, (x) => x.entry.className)), ', ');
-    }
-
-    return RA.join(RA.dedupe(RA.map(entries, (x) => x.declarationProp)), ', ');
-  }
+  //   return RA.join(RA.dedupe(RA.map(entries, (x) => x.declarationProp)), ', ');
+  // }
 
   [Equal.symbol](that: unknown): boolean {
     return (
@@ -60,21 +50,21 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
   [Hash.symbol](): number {
     return Hash.array([this.message, this.code]);
   }
+
+  private getDiagnosticMessage(code: TwinDiagnosticCodes) {
+    switch (code) {
+      case TwinDiagnosticCodes.None:
+        return '';
+      case TwinDiagnosticCodes.DuplicatedDeclaration:
+        return 'Duplicated NativeTwin Utility';
+      case TwinDiagnosticCodes.DuplicatedClassName:
+        return 'Duplicated NativeTwin ClassName';
+    }
+  }
 }
 
-export const DIAGNOSTIC_ERROR_KIND = {
-  DUPLICATED_DECLARATION: {
-    code: 'DUPLICATED_DECLARATION',
-    source: 'Native Twin',
-    message: 'Duplicated NativeTwin Utility',
-    description: 'You are using various ClassNames that modifies the same style prop',
-  },
-  DUPLICATED_CLASS_NAME: {
-    code: 'DUPLICATED_CLASSNAME',
-    source: 'Native Twin',
-    message: 'Duplicated NativeTwin ClassName',
-    description: 'You have duplicated ClassName utilities',
-  },
-};
-
-export type DIAGNOSTIC_ERROR_KIND = typeof DIAGNOSTIC_ERROR_KIND;
+export enum TwinDiagnosticCodes {
+  None = '000',
+  DuplicatedDeclaration = '001',
+  DuplicatedClassName = '002',
+}

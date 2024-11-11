@@ -1,7 +1,7 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import path from 'path';
+import path from 'node:path';
 import * as vscode from 'vscode';
 import {
   TransportKind,
@@ -41,10 +41,11 @@ export const LanguageClientLive = Effect.gen(function* () {
       },
     ),
   );
-
   extensionCtx.subscriptions.push(...highLightsProviders);
 
   const fileEvents = yield* createFileWatchers;
+
+  const debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };
 
   const serverConfig: ServerOptions = {
     run: {
@@ -54,6 +55,7 @@ export const LanguageClientLive = Effect.gen(function* () {
     debug: {
       module: extensionCtx.asAbsolutePath(path.join('build', 'servers', 'lsp.node.js')),
       transport: TransportKind.ipc,
+      options: debugOptions,
     },
   };
 
@@ -102,6 +104,15 @@ export const LanguageClientLive = Effect.gen(function* () {
         Effect.flatMap(() => Effect.logDebug('Language Client Disposed')),
       ),
   );
+
+  const response = yield* Effect.tryPromise({
+    try: () => languageClient.sendRequest<string>('hola', { params: 'asdasd' }),
+    catch(error) {
+      console.error('ERROR_sendRequest_hole', error);
+    },
+  });
+
+  console.log('SERVER_RESPONSE: ', response);
 
   yield* Effect.promise(() => languageClient.start()).pipe(
     Effect.andThen(Effect.log('Language client started!')),

@@ -53,8 +53,19 @@ const program = Effect.gen(function* () {
     return [];
   });
 
-  Connection.onCodeAction((_params, _token, _workDone) => {
-    return undefined;
+  Connection.onCodeAction(async (params, _token, _workDone) => {
+    const data = await languagePrograms
+      .twinCodeActionsProgram(params)
+      .pipe(Runtime.runPromise);
+
+    return data;
+  });
+
+  Connection.onCodeActionResolve(async (params) => {
+    // console.log('PARAMS: ', params);
+    return {
+      ...params,
+    };
   });
 
   Connection.onShutdown(() => {

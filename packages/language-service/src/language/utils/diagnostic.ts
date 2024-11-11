@@ -2,14 +2,13 @@ import * as RA from 'effect/Array';
 import * as Equivalence from 'effect/Equivalence';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-// import * as Record from 'effect/Record';
 import * as vscode from 'vscode-languageserver-types';
 import { TwinLSPDocument } from '../../documents/models/twin-document.model';
 import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
 import { TemplateTokenWithText } from '../../native-twin/models/template-token.model';
 import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
 import { isSameRange } from '../../utils/vscode.utils';
-import { DIAGNOSTIC_ERROR_KIND, VscodeDiagnosticItem } from '../models/diagnostic.model';
+import { TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/diagnostic.model';
 
 const createRegionEntriesExtractor =
   (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>
@@ -17,7 +16,7 @@ const createRegionEntriesExtractor =
     return RA.filterMap((x: TwinSheetEntry): Option.Option<DiagnosticToken> => {
       if (isSameEntryClassName(entry, x)) {
         return Option.some({
-          kind: 'DUPLICATED_CLASS_NAME',
+          kind: TwinDiagnosticCodes.DuplicatedClassName,
           node: x,
           range: getRange(x.token.bodyLoc),
           uri: uri,
@@ -25,7 +24,7 @@ const createRegionEntriesExtractor =
       }
       if (isSameDeclarationProp(entry, x)) {
         return Option.some({
-          kind: 'DUPLICATED_DECLARATION',
+          kind: TwinDiagnosticCodes.DuplicatedDeclaration,
           node: x,
           range: getRange(x.token.bodyLoc),
           uri: uri,
@@ -64,7 +63,7 @@ export const diagnosticTokensToDiagnosticItems = (
               ({ kind, node }) =>
                 new VscodeDiagnosticItem({
                   range,
-                  kind: kind,
+                  code: kind,
                   entries: [node],
                   uri: document.uri,
                   text: node.token.text,
@@ -82,7 +81,7 @@ export const diagnosticTokensToDiagnosticItems = (
 };
 
 interface DiagnosticToken {
-  kind: keyof typeof DIAGNOSTIC_ERROR_KIND;
+  kind: TwinDiagnosticCodes;
   node: TwinSheetEntry;
   range: vscode.Range;
   uri: string;
@@ -94,7 +93,7 @@ export const diagnosticTokenToVscode = (
 ) => {
   return new VscodeDiagnosticItem({
     range,
-    kind: kind,
+    code: kind,
     entries: [node],
     uri: uri,
     text: node.token.text,

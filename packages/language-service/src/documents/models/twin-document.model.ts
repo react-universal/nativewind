@@ -12,47 +12,14 @@ import { DocumentLanguageRegion } from './language-region.model';
 
 const quotesRegex = /^['"`].*['"`]$/g;
 
-export abstract class DocumentClass implements Equal.Equal {
+export class TwinLSPDocument implements Equal.Equal {
   constructor(
     readonly textDocument: VSCDocument.TextDocument,
     readonly config: NativeTwinPluginConfiguration,
   ) {}
-  abstract offsetToPosition(offset: number): VSCDocument.Position;
-  abstract positionToOffset(position: VSCDocument.Position): number;
-  abstract getText(range: VSCDocument.Range | undefined): string;
 
   get uri() {
     return this.textDocument.uri;
-  }
-
-  [Equal.symbol](that: unknown) {
-    return (
-      that instanceof DocumentClass &&
-      this.textDocument.version === that.textDocument.version &&
-      this.textDocument.uri === that.textDocument.uri
-    );
-  }
-
-  [Hash.symbol](): number {
-    return Hash.combine(Hash.hash(this.textDocument.uri))(this.textDocument.version);
-  }
-}
-
-export class TwinLSPDocument extends DocumentClass {
-  constructor(document: VSCDocument.TextDocument, config: NativeTwinPluginConfiguration) {
-    super(document, config);
-  }
-
-  offsetToPosition(offset: number) {
-    return this.textDocument.positionAt(offset);
-  }
-
-  positionToOffset(position: VSCDocument.Position) {
-    return this.textDocument.offsetAt(position);
-  }
-
-  getText(range: VSCDocument.Range | undefined = undefined) {
-    return this.textDocument.getText(range);
   }
 
   getLanguageRegions() {
@@ -70,6 +37,18 @@ export class TwinLSPDocument extends DocumentClass {
         (x) => positionOffset >= x.startOffset && positionOffset <= x.endOffset,
       ),
     );
+  }
+
+  getText(range?: VSCDocument.Range) {
+    return this.textDocument.getText(range);
+  }
+
+  positionToOffset(position: VSCDocument.Position) {
+    return this.textDocument.offsetAt(position);
+  }
+
+  offsetToPosition(offset: number) {
+    return this.textDocument.positionAt(offset);
   }
 
   getRangeAtPosition(
@@ -107,6 +86,20 @@ export class TwinLSPDocument extends DocumentClass {
     return range;
   }
 
+  // MARK: Equality protocol
+  [Equal.symbol](that: unknown) {
+    return (
+      that instanceof TwinLSPDocument &&
+      this.textDocument.version === that.textDocument.version &&
+      this.textDocument.uri === that.textDocument.uri
+    );
+  }
+
+  [Hash.symbol](): number {
+    return Hash.combine(Hash.hash(this.textDocument.uri))(this.textDocument.version);
+  }
+
+  // MARK: Private methods
   private getRegionAt(location: t.SourceLocation) {
     let range = this.babelLocationToRange(location);
     const text = this.getText(range);

@@ -80,9 +80,9 @@ export const getFlattenTemplateToken = (
         );
       }
 
-      if (item.token.type === 'VARIANT') {
-        console.log(base, item);
-      }
+      // if (item.token.type === 'VARIANT') {
+      //   console.log(base, item);
+      // }
 
       if (item.token.type === 'VARIANT_CLASS') {
         const className = `${variantTokenToString(item.token)}${base.token.value.n}-${item.token.value[1].value.n}`;

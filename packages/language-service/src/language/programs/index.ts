@@ -4,3 +4,4 @@ export * from './documentColors.program';
 export * from './documentHighlight.program';
 export * from './getHoverDetails.program';
 export * from './resolveCompletion.program';
+export * from './twinCodeActions.program';

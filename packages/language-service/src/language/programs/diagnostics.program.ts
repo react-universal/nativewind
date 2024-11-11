@@ -7,6 +7,7 @@ import { DocumentsService } from '../../documents';
 import { NativeTwinManagerService } from '../../native-twin';
 import { isSameRange } from '../../utils/vscode.utils';
 import { TwinDiagnosticHandler } from '../models/diagnostic.cache';
+import { TwinDiagnosticCodes } from '../models/diagnostic.model';
 
 export const getDocumentDiagnosticsProgram = (
   params: vscode.DocumentDiagnosticParams,
@@ -42,7 +43,7 @@ export const getDocumentDiagnosticsProgram = (
 
     return {
       kind: 'full',
-      items: diagnosticItems,
+      items: diagnosticItems.filter((x) => x.code !== TwinDiagnosticCodes.None),
     } satisfies vscode.DocumentDiagnosticReport;
   });
 };

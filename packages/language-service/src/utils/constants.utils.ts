@@ -65,3 +65,4 @@ const publisher = 'native-twin';
 export const extensionChannelName = 'Native Twin Language Client';
 export const extensionServerChannelName = 'Native Twin Language Server';
 export const extensionName = `${publisher}.${packageName}`;
+export const diagnosticProviderSource = 'NativeTwin';

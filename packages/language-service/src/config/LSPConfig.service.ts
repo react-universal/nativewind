@@ -29,6 +29,20 @@ const make = Effect.gen(function* () {
     vscode: DEFAULT_PLUGIN_CONFIG,
   });
 
+  // const requestType = new RequestType1<string, string, string>('hola', ParameterStructures.auto);
+
+  Connection.onDidChangeWatchedFiles(async (params) => {
+    console.log('WATCHED_FILES_CHANGE: ', params);
+  });
+
+  Connection.onRequest('hola', (params) => {
+    return Effect.runPromise(
+      Effect.tap(Effect.succeed('RESPONSE'), (x) => {
+        return Effect.log('Hello from LSP: ', x, params);
+      }),
+    );
+  });
+
   const updateConfig = (changes: any) =>
     Effect.gen(function* () {
       if (!Predicate.isRecord(changes)) return;
@@ -80,7 +94,12 @@ const make = Effect.gen(function* () {
       );
     }
 
+    console.debug('onInitialize CALLED');
     return capabilities;
+  });
+
+  Connection.onInitialized(() => {
+    console.debug('onInitialized CALLED');
   });
 
   return {
@@ -95,6 +114,6 @@ export class LSPConfigService extends Context.Tag('vscode/lsp/config')<
 >() {
   static Live = Layer.scoped(
     LSPConfigService,
-    make.pipe(Effect.tap(() => Effect.log('Initialized LSPConfig'))),
+    make.pipe(Effect.tap(() => Effect.logDebug('[LAYERS] Initialized LSPConfig Layer'))),
   );
 }

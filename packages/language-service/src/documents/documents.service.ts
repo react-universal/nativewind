@@ -14,18 +14,12 @@ export interface DocumentsServiceShape {
   setupConnection(connection: Connection): void;
 }
 
-const setupConnection =
-  (handler: TextDocuments<TextDocument>) => (connection: Connection) =>
-    handler.listen(connection);
-
-const make = (handler: TextDocuments<TextDocument>) =>
-  Effect.gen(function* () {
+const make = (handler: TextDocuments<TextDocument>) => {
+  return Effect.gen(function* () {
     const config = yield* LSPConfigService;
 
     yield* config.changes.pipe(
-      Stream.runForEach((x) => {
-        return Effect.log('dsfsdf', x);
-      }),
+      Stream.runForEach((x) => Effect.log('STREAM_CHANGES: ', x)),
       Effect.fork,
     );
 
@@ -43,15 +37,18 @@ const make = (handler: TextDocuments<TextDocument>) =>
       getDocument: acquireDocument,
       setupConnection: setupConnection(handler),
     };
-  });
 
-const createDocumentsLayer = (handler: TextDocuments<TextDocument>) => {
-  return Layer.scoped(DocumentsService, make(handler));
+    function setupConnection(handler: TextDocuments<TextDocument>) {
+      return (connection: Connection) => handler.listen(connection);
+    }
+  });
 };
 
 export class DocumentsService extends Context.Tag('language-service/documents')<
   DocumentsService,
   Effect.Effect.Success<ReturnType<typeof make>>
 >() {
-  static make = createDocumentsLayer;
+  static make = (handler: TextDocuments<TextDocument>) => {
+    return Layer.scoped(DocumentsService, make(handler));
+  };
 }

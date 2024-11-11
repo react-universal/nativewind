@@ -1,6 +1,7 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver';
+
 // import { NativeTwinManagerService } from '../native-twin/native-twin.service';
 
 export const initializeConnection = (
@@ -41,7 +42,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
   };
   const result: vscode.InitializeResult = {
     capabilities: {
-      textDocumentSync: 2,
+      textDocumentSync: vscode.TextDocumentSyncKind.Full,
       colorProvider: true,
       hoverProvider: true,
       documentHighlightProvider: false,
@@ -60,6 +61,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
       workspace: {
         workspaceFolders: {
           supported: setup.hasConfigurationCapability,
+          changeNotifications: setup.hasConfigurationCapability,
         },
       },
       diagnosticProvider: {
