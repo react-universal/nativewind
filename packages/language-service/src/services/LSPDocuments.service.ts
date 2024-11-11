@@ -5,8 +5,8 @@ import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import type { Connection, TextDocuments } from 'vscode-languageserver';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
-import { LSPConfigService } from '../config';
 import { TwinLSPDocument } from '../models/documents/TwinLSPDocument.model';
+import { LSPConfigService } from './LSPConfig.service';
 
 export interface DocumentsServiceShape {
   handler: TextDocuments<TextDocument>;

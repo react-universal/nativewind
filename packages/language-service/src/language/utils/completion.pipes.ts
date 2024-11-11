@@ -4,7 +4,7 @@ import {
   TemplateTokenData,
   TemplateTokenWithText,
 } from '../../models/twin/template-token.model';
-import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
+import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
 import { getFlattenTemplateToken } from './language.utils';
 

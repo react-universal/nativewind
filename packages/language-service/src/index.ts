@@ -1,5 +1,8 @@
 import * as Constants from './utils/constants.utils';
 
+/** Documents Service */
+export { DocumentsService } from './services/LSPDocuments.service';
+
 /** Language Service */
 export { filterTokensFromRules } from './language/utils/completions.maps';
 export {
@@ -9,17 +12,15 @@ export {
   getCompletionEntryDetailsDisplayParts,
 } from './language';
 export { TemplateTokenData } from './models/twin/template-token.model';
-export { LSPConfigService } from './config/LSPConfig.service';
+export { LSPConfigService } from './services/LSPConfig.service';
 export { TemplateTokenWithText } from './models/twin/template-token.model';
-/** Documents Service */
-export { DocumentsService } from './documents';
 
 /** Twin Services */
 export { NativeTwinManagerService, parseTemplate } from './native-twin';
 export type { TwinRuleCompletion } from './native-twin';
 
 /** Connection Service */
-export { ConnectionService, initializeConnection } from './connection';
+export { LSPConnectionService as ConnectionService } from './services/LSPConnection.service';
 
 /** Vscode Client */
 export {

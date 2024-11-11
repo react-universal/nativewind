@@ -26,8 +26,8 @@ import {
   TwinStore,
   TwinRuleCompletion,
   TwinVariantCompletion,
-} from './native-twin.types';
-import { createTwinStore } from './utils/native-twin.utils';
+} from '../native-twin/native-twin.types';
+import { createTwinStore } from '../native-twin/utils/native-twin.utils';
 
 export class NativeTwinManager {
   tw: InternalTwFn;

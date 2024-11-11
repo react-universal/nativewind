@@ -3,8 +3,8 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver';
-import { DocumentsService } from '../../documents';
 import { NativeTwinManagerService } from '../../native-twin';
+import { DocumentsService } from '../../services/LSPDocuments.service';
 import { getSheetEntryStyles } from '../../utils/sheet.utils';
 import { completionRuleToQuickInfo } from '../utils/quickInfo.utils';
 

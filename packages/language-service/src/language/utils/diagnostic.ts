@@ -10,7 +10,7 @@ import {
 } from '../../models/language/diagnostic.model';
 import { TemplateTokenWithText } from '../../models/twin/template-token.model';
 import { TwinSheetEntry } from '../../models/twin/TwinSheetEntry.model';
-import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
+import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
 import { isSameRange } from '../../utils/vscode.utils';
 
 const createRegionEntriesExtractor =

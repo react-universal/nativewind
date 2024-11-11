@@ -6,7 +6,7 @@ import type * as vscode from 'vscode-languageserver';
 import { Range, Color } from 'vscode-languageserver-types';
 import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
 import { TemplateTokenData } from '../../models/twin/template-token.model';
-import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
+import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
 
 export const getDocumentTemplatesColors = (

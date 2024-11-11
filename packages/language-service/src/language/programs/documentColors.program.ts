@@ -1,8 +1,8 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
-import { DocumentsService } from '../../documents';
 import { NativeTwinManagerService } from '../../native-twin';
+import { DocumentsService } from '../../services/LSPDocuments.service';
 import { getDocumentTemplatesColors } from '../utils/colorInfo.utils';
 
 export const getDocumentColors = (

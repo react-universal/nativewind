@@ -4,8 +4,9 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import { ConnectionService, getClientCapabilities } from '../connection';
+import { getClientCapabilities } from '../connection/connection.handlers';
 import { NativeTwinManagerService } from '../native-twin';
+import { LSPConnectionService } from './LSPConnection.service';
 import {
   DEFAULT_PLUGIN_CONFIG,
   NativeTwinPluginConfiguration,
@@ -20,7 +21,7 @@ interface VscodeLSPConfig {
 }
 
 const make = Effect.gen(function* () {
-  const Connection = yield* ConnectionService;
+  const Connection = yield* LSPConnectionService;
   const twin = yield* NativeTwinManagerService;
   const ref = yield* SubscriptionRef.make<VscodeLSPConfig>({
     workspaceRoot: Option.none(),

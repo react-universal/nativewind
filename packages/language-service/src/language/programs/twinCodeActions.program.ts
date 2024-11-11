@@ -4,7 +4,7 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
 import { asArray } from '@native-twin/helpers';
-import { DocumentsService } from '../../documents';
+import { DocumentsService } from '../../services/LSPDocuments.service';
 import { DocumentLanguageRegion } from '../../models/documents/LanguageRegion.model';
 import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
 import { diagnosticProviderSource } from '../../utils/constants.utils';
