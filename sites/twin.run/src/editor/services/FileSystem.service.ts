@@ -1,11 +1,11 @@
+import { GetPackageTypings } from '@/utils/twin.schemas';
+import { TwinTyping } from '@/utils/twin.schemas';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as monaco from 'monaco-editor';
-import { GetPackageTypings } from '@/utils/twin.schemas';
-import { TwinTyping } from '@/utils/twin.schemas';
 
 interface RegisteredTyping {
   disposable: monaco.IDisposable;

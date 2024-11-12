@@ -5,7 +5,7 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "WebWorker"],
-    "jsx": "react-jsx",
+    "jsx": "react",
     "moduleResolution": "Bundler",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -24,6 +24,5 @@
       "@/*": ["src/*"]
     }
   },
-  "exclude": ["src/editor/content"],
   "include": ["src", "vite.config.ts", "tailwind.config.ts"]
 }

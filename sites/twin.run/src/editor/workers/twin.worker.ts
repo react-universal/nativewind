@@ -12,36 +12,34 @@ import {
 } from 'vscode-languageserver/browser.js';
 import {
   NativeTwinManagerService,
-  createDocumentsLayer,
-  ConnectionService,
+  LSPDocumentsService,
+  LSPConnectionService,
   languagePrograms,
-  ConfigManagerService,
-  initializeConnection,
+  LSPConfigService,
 } from '@native-twin/language-service/browser';
 
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
 const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScope);
-const connection = createConnection(messageReader, messageWriter);
+const connectionHandler = createConnection(messageReader, messageWriter);
 export const documentsHandler = new TextDocuments(TextDocument);
 
-const ConnectionLayer = ConnectionService.make(connection);
-const DocumentsLayer = createDocumentsLayer(documentsHandler);
-const MainLive = Layer.mergeAll(ConnectionLayer).pipe(
-  Layer.provideMerge(DocumentsLayer),
+// const ConnectionLayer = ConnectionService.make(connection);
+// const DocumentsLayer = DocumentsService.make(documentsHandler);
+export const LspMainLive = LSPDocumentsService.make(documentsHandler).pipe(
+  Layer.provideMerge(LSPConfigService.Live),
   Layer.provideMerge(NativeTwinManagerService.Live),
-  Layer.provideMerge(ConfigManagerService.Live),
+  Layer.provideMerge(LSPConnectionService.make(connectionHandler)),
 );
 
 const program = Effect.gen(function* () {
-  const connectionService = yield* ConnectionService;
+  const connectionService = yield* LSPConnectionService;
   const Connection = connectionService;
-  const configService = yield* ConfigManagerService;
-  const nativeTwinManager = yield* NativeTwinManagerService;
-  const Runtime = ManagedRuntime.make(MainLive);
-  Connection.onInitialize(async (...args) => {
-    const init = initializeConnection(...args, nativeTwinManager, configService);
-    return init;
-  });
+  // const configService = yield* ConfigManagerService;
+  const Runtime = ManagedRuntime.make(LspMainLive);
+  // Connection.onInitialize(async (...args) => {
+  //   const init = initializeConnection(...args, nativeTwinManager, configService);
+  //   return init;
+  // });
 
   Connection.onCompletion(async (...args) => {
     const completions = await Runtime.runPromise(
@@ -54,6 +52,8 @@ const program = Effect.gen(function* () {
       items: completions,
     };
   });
+
+  Connection.onCodeAction(() => undefined);
 
   Connection.onCompletionResolve(async (...args) =>
     Runtime.runPromise(languagePrograms.getCompletionEntryDetails(...args)),
@@ -71,10 +71,10 @@ const program = Effect.gen(function* () {
     Runtime.runPromise(languagePrograms.getDocumentDiagnosticsProgram(...args)),
   );
 
-  documentsHandler.listen(connection);
-  connection.listen();
+  documentsHandler.listen(connectionHandler);
+  connectionHandler.listen();
 });
 
-const runnable = Effect.provide(program, MainLive);
+const runnable = Effect.provide(program, LspMainLive);
 
 Effect.runFork(runnable);

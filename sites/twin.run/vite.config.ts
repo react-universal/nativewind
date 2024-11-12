@@ -1,11 +1,11 @@
 import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 import vsixPlugin from '@codingame/monaco-vscode-rollup-vsix-plugin';
 import assetsJSON from '@entur/vite-plugin-assets-json';
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import react from '@vitejs/plugin-react';
 // import fs from 'fs';
 import path from 'path';
 import { defineConfig } from 'vite';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
@@ -35,10 +35,10 @@ export default defineConfig({
       plugins: [
         // @ts-expect-error
         importMetaUrlPlugin,
-        NodeGlobalsPolyfillPlugin({
-          buffer: true,
-          process: true,
-        }),
+        // NodeGlobalsPolyfillPlugin({
+        //   buffer: true,
+        //   process: true,
+        // }),
       ],
     },
   },
@@ -48,6 +48,13 @@ export default defineConfig({
   },
 
   plugins: [
+    nodePolyfills({
+      include: ['path', 'buffer', 'process'],
+      globals: {
+        Buffer: true,
+        process: true,
+      },
+    }),
     tsconfigPaths(),
     react(),
     vsixPlugin(),

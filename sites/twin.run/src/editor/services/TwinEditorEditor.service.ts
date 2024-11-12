@@ -10,7 +10,7 @@ import {
 } from 'monaco-editor-wrapper';
 import { ITextModel } from 'vscode/vscode/vs/editor/common/model';
 import { IStandaloneCodeEditor } from 'vscode/vscode/vs/editor/standalone/browser/standaloneCodeEditor';
-import { LanguageClientService } from './Language.layer';
+import { LanguageClientService } from './Language.Service';
 
 export class TwinEditorService extends Context.Tag('TwinEditorContext')<
   TwinEditorService,
@@ -77,6 +77,12 @@ const registerTwinLanguages = Effect.sync(() => {
     mimetypes: ['plain/text', 'text/html'],
   });
   monaco.languages.register({
+    id: 'css',
+    extensions: ['.css'],
+    aliases: ['css', 'CSS'],
+    mimetypes: ['plain/text', 'text/css'],
+  });
+  monaco.languages.register({
     id: 'json',
     extensions: ['.json'],
     aliases: ['json'],
@@ -85,7 +91,7 @@ const registerTwinLanguages = Effect.sync(() => {
 
   monaco.languages.register({
     id: 'markdown',
-    extensions: ['.md', '.mdx'],
+    extensions: ['.md', '.mdx', '.MD'],
     aliases: ['md', 'MD', 'mdx'],
     mimetypes: ['plain/text', 'text/markdown'],
   });

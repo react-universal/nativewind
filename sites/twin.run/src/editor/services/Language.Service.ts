@@ -1,19 +1,19 @@
 import { updateUserConfiguration } from '@codingame/monaco-vscode-configuration-service-override';
+import typingsWorker from '@/editor/workers/typings.worker?worker&url';
+import { GetPackageTypings } from '@/utils/twin.schemas';
+import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
+import * as EffectWorker from '@effect/platform/Worker';
+import { WorkerError } from '@effect/platform/WorkerError';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { identity, pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
+import { ParseError } from 'effect/ParseResult';
 import * as Stream from 'effect/Stream';
 import { UserConfig } from 'monaco-editor-wrapper';
-import { TwinEditorConfigService } from './Editor.config';
-import { FileSystemService } from './FileSystem.layer';
-import typingsWorker from '@/lsp/workers/typings.worker?worker&url';
-import { GetPackageTypings } from '@/utils/twin.schemas';
-import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
-import * as EffectWorker from '@effect/platform/Worker';
-import { WorkerError } from '@effect/platform/WorkerError';
-import { ParseError } from 'effect/ParseResult';
+import { TwinEditorConfigService } from './EditorConfig.service';
+import { FileSystemService } from './FileSystem.service';
 
 const typingsWorkerLayer = BrowserWorker.layer(
   () => new globalThis.Worker(typingsWorker, { type: 'module' }),
@@ -34,9 +34,12 @@ export class LanguageClientService extends Context.Tag(
     LanguageClientService,
     Effect.gen(function* () {
       const { config, vscodeConfig } = yield* TwinEditorConfigService;
+
       const fileSystem = yield* FileSystemService;
 
       updateUserConfiguration(vscodeConfig);
+
+      // extensionCtx.subscriptions.push(...highLightsProviders);
 
       return {
         config: Effect.succeed(config),

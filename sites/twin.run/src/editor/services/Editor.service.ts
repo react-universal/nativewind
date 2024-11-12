@@ -1,8 +1,8 @@
-import * as monaco from 'monaco-editor';
 import '@codingame/monaco-vscode-standalone-typescript-language-features';
+import * as monaco from 'monaco-editor';
 import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
-import { FileManager } from './FileManager';
-import { globalEditorConfig } from './EditorConfig.service';
+import { globalEditorConfig } from '../config/editorConfig';
+import { FileManager } from '../models/FileManager';
 
 export const createEditorService = () => {
   const wrapper = new MonacoEditorLanguageClientWrapper();

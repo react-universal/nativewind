@@ -1,7 +1,7 @@
 import * as Constants from './utils/constants.utils';
 
 /** Documents Service */
-export { LSPDocumentsService as DocumentsService } from './services/LSPDocuments.service';
+export { LSPDocumentsService } from './services/LSPDocuments.service';
 
 /** Twin Services */
 export { NativeTwinManagerService } from './services/NativeTwinManager.service';
@@ -16,6 +16,7 @@ export {
 export { languagePrograms } from './programs';
 
 /** Connection Service */
-export { LSPConnectionService as ConnectionService } from './services/LSPConnection.service';
+export { LSPConnectionService } from './services/LSPConnection.service';
+export { LSPConfigService } from './services/LSPConfig.service';
 
 export { Constants };

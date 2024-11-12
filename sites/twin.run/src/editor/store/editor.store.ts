@@ -1,6 +1,6 @@
 import { createStore } from '@native-twin/helpers';
 import { useSyncExternalStore } from 'react';
-import { createEditorService } from '@/editor/Editor.service';
+import { createEditorService } from '@/editor/services/Editor.service';
 
 export const startEditor = async () => {
   const editorService = createEditorService();

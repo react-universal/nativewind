@@ -2,7 +2,8 @@ import { sheetEntriesToCss } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import * as vscode from 'vscode-languageserver';
+import type * as vscode from 'vscode-languageserver';
+import { Range } from 'vscode-languageserver-types';
 import { LSPDocumentsService } from '../services/LSPDocuments.service';
 import { NativeTwinManagerService } from '../services/NativeTwinManager.service';
 import { completionRuleToQuickInfo } from '../utils/language/quickInfo.utils';
@@ -39,7 +40,7 @@ export const getHoverDetails = (
             cursorOffset >= x.token.bodyLoc.start && cursorOffset <= x.token.bodyLoc.end,
         ).pipe(
           Option.map((x): { range: vscode.Range; text: string } => ({
-            range: vscode.Range.create(
+            range: Range.create(
               document.offsetToPosition(x.token.bodyLoc.start),
               document.offsetToPosition(x.token.bodyLoc.end),
             ),
@@ -57,7 +58,7 @@ export const getHoverDetails = (
                 cursorOffset <= token.value.base.bodyLoc.end
               ) {
                 return Option.some({
-                  range: vscode.Range.create(
+                  range: Range.create(
                     document.offsetToPosition(flattenCompletions.bodyLoc.start),
                     document.offsetToPosition(flattenCompletions.bodyLoc.end),
                   ),

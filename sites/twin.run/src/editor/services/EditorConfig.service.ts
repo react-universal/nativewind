@@ -1,20 +1,20 @@
 import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
 import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
-import * as Context from 'effect/Context';
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import * as monaco from 'monaco-editor';
-import { UserConfig, WrapperConfig, LanguageClientConfig } from 'monaco-editor-wrapper';
-import { Constants } from '@native-twin/language-service/browser';
 import userConfig from '@/editor/config/user/configuration.json?raw';
 import twinConfigRaw from '@/editor/content/tailwind.config?raw';
-import workerUrl from '@/lsp/workers/twin.worker?worker&url';
+import workerUrl from '@/editor/workers/twin.worker?worker&url';
 import {
   getColorDecoration,
   onLanguageClientClosed,
   onLanguageClientError,
   onProvideDocumentColors,
 } from '@/utils/languageClient.utils';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as monaco from 'monaco-editor';
+import { UserConfig, WrapperConfig, LanguageClientConfig } from 'monaco-editor-wrapper';
+import { Constants } from '@native-twin/language-service/browser';
 
 export class TwinEditorConfigService extends Context.Tag('editor/config/service')<
   TwinEditorConfigService,

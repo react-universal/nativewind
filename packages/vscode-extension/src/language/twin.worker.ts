@@ -13,8 +13,8 @@ import {
 import { LSPConfigService } from '@native-twin/language-service';
 import {
   NativeTwinManagerService,
-  DocumentsService,
-  ConnectionService,
+  LSPDocumentsService,
+  LSPConnectionService,
   languagePrograms,
 } from '@native-twin/language-service/browser';
 
@@ -23,8 +23,8 @@ const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScop
 const connection = createConnection(messageReader, messageWriter);
 const documentsHandler = new TextDocuments(TextDocument);
 
-const ConnectionLayer = ConnectionService.make(connection);
-const DocumentsLayer = DocumentsService.make(documentsHandler);
+const ConnectionLayer = LSPConnectionService.make(connection);
+const DocumentsLayer = LSPDocumentsService.make(documentsHandler);
 
 const MainLive = Layer.empty.pipe(
   Layer.provideMerge(DocumentsLayer),
@@ -35,9 +35,9 @@ const MainLive = Layer.empty.pipe(
 );
 
 const program = Effect.gen(function* () {
-  const connectionService = yield* ConnectionService;
+  const connectionService = yield* LSPConnectionService;
   const Connection = connectionService;
-  yield* DocumentsService;
+  yield* LSPDocumentsService;
   yield* LSPConfigService;
   const Runtime = ManagedRuntime.make(MainLive);
 

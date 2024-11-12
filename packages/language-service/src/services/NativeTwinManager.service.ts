@@ -24,10 +24,10 @@ import type {
   TwinRuleCompletion,
   TwinVariantCompletion,
 } from '../models/twin/native-twin.types';
-import { createTwinStore } from '../utils/twin/native-twin.utils';
 import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
 import { requireJS } from '../utils/load-js';
 import { createStyledContext } from '../utils/sheet.utils';
+import { createTwinStore } from '../utils/twin/native-twin.utils';
 
 export class NativeTwinManager {
   tw: InternalTwFn;
@@ -69,6 +69,22 @@ export class NativeTwinManager {
       RA.map(this.allowedPathsGlob, (x) => micromatch.scan(x)),
       (x) => x.base,
     );
+  }
+
+  setupManualTwin() {
+    this.userConfig = defineConfig({
+      content: [''],
+      presets: [presetTailwind()],
+    });
+    this.tw = this.getNativeTwin();
+    this.context = this.getContext();
+
+    this._configFile = 'tailwind.config.ts';
+    this.completions = createTwinStore({
+      config: this.userConfig,
+      context: this.context,
+      tw: this.tw,
+    });
   }
 
   loadUserFile(configFile: string) {

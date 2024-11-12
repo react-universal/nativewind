@@ -2,7 +2,9 @@ import * as Constants from './utils/constants.utils';
 
 /** Documents Service */
 export { LSPDocumentsService } from './services/LSPDocuments.service';
-
+export { DocumentLanguageRegion } from './models/documents/LanguageRegion.model';
+export { getSheetEntryStyles } from './utils/sheet.utils';
+export { completionRuleToQuickInfo } from './utils/language/quickInfo.utils';
 /** Language Service */
 export { filterTokensFromRules } from './utils/language/completions.maps';
 export { getCompletionsForTokens } from './utils/language/completion.pipes';

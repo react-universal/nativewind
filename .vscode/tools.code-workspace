@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "twin.run",
+      "path": "../sites/twin.run"
+    },
+    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },
@@ -27,10 +31,6 @@
     {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
-    },
-    {
-      "name": "twin.run",
-      "path": "../sites/twin.run"
     }
   ],
   "settings": {
