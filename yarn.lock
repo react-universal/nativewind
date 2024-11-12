@@ -230,29 +230,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.24.5":
-  version: 7.25.2
-  resolution: "@babel/core@npm:7.25.2"
-  dependencies:
-    "@ampproject/remapping": "npm:^2.2.0"
-    "@babel/code-frame": "npm:^7.24.7"
-    "@babel/generator": "npm:^7.25.0"
-    "@babel/helper-compilation-targets": "npm:^7.25.2"
-    "@babel/helper-module-transforms": "npm:^7.25.2"
-    "@babel/helpers": "npm:^7.25.0"
-    "@babel/parser": "npm:^7.25.0"
-    "@babel/template": "npm:^7.25.0"
-    "@babel/traverse": "npm:^7.25.2"
-    "@babel/types": "npm:^7.25.2"
-    convert-source-map: "npm:^2.0.0"
-    debug: "npm:^4.1.0"
-    gensync: "npm:^1.0.0-beta.2"
-    json5: "npm:^2.2.3"
-    semver: "npm:^6.3.1"
-  checksum: 10/0d6ec10ff430df66f654c089d6f7ef1d9bed0c318ac257ad5f0dfa0caa45666011828ae75f998bcdb279763e892b091b2925d0bc483299e61649d2c7a2245e33
-  languageName: node
-  linkType: hard
-
 "@babel/core@npm:^7.7.5":
   version: 7.25.8
   resolution: "@babel/core@npm:7.25.8"
@@ -953,7 +930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-module-transforms@npm:^7.24.8, @babel/helper-module-transforms@npm:^7.25.0, @babel/helper-module-transforms@npm:^7.25.2":
+"@babel/helper-module-transforms@npm:^7.24.8, @babel/helper-module-transforms@npm:^7.25.0":
   version: 7.25.2
   resolution: "@babel/helper-module-transforms@npm:7.25.2"
   dependencies:
@@ -1453,16 +1430,6 @@ __metadata:
     "@babel/traverse": "npm:^7.24.1"
     "@babel/types": "npm:^7.24.0"
   checksum: 10/54a9d0f86f2803fcc216cfa23b66b871ea0fa0a892af1c9a79075872c2437de71afbb150ed8216f30e00b19a0b9c5c9d5845173d170e1ebfbbf8887839b89dde
-  languageName: node
-  linkType: hard
-
-"@babel/helpers@npm:^7.25.0":
-  version: 7.25.6
-  resolution: "@babel/helpers@npm:7.25.6"
-  dependencies:
-    "@babel/template": "npm:^7.25.0"
-    "@babel/types": "npm:^7.25.6"
-  checksum: 10/43abc8d017b754619aa189d05e2bdb54aaf44f03ec0439e89b3e7c180d538adb01ce9014a1689f632a7e8b17655c72bfac0a92268476eec708b41d3ba0a65296
   languageName: node
   linkType: hard
 
@@ -3566,17 +3533,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-self@npm:^7.24.5":
-  version: 7.24.7
-  resolution: "@babel/plugin-transform-react-jsx-self@npm:7.24.7"
-  dependencies:
-    "@babel/helper-plugin-utils": "npm:^7.24.7"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 10/56115b4a6c006ce82846f1ab21e5ba713ee8f57a166c96c94fc632cdfbc8b9cebbf20b7cd9b8076439dabecdbf0f8ca4c2cb1bed1bf0b15cb44505a429f6a92f
-  languageName: node
-  linkType: hard
-
 "@babel/plugin-transform-react-jsx-source@npm:^7.0.0":
   version: 7.19.6
   resolution: "@babel/plugin-transform-react-jsx-source@npm:7.19.6"
@@ -3585,17 +3541,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 10/1e9e29a4efc5b79840bd4f68e404f5ab7765ce48c7bd22f12f2b185f9c782c66933bdf54a1b21879e4e56e6b50b4e88aca82789ecb1f61123af6dfa9ab16c555
-  languageName: node
-  linkType: hard
-
-"@babel/plugin-transform-react-jsx-source@npm:^7.24.1":
-  version: 7.24.7
-  resolution: "@babel/plugin-transform-react-jsx-source@npm:7.24.7"
-  dependencies:
-    "@babel/helper-plugin-utils": "npm:^7.24.7"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 10/682e2ae15d788453d8ab34cf0dcc29c093faf7c7cf1d60110c43f33e6477f916cf301456b314fc496fadc07123f7978225f41ac286ed0bfbad9c8e76392fdb6d
   languageName: node
   linkType: hard
 
@@ -4986,18 +4931,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chialab/esbuild-plugin-meta-url@npm:^0.18.2":
-  version: 0.18.2
-  resolution: "@chialab/esbuild-plugin-meta-url@npm:0.18.2"
-  dependencies:
-    "@chialab/esbuild-rna": "npm:^0.18.1"
-    "@chialab/estransform": "npm:^0.18.1"
-    mime-types: "npm:^2.1.35"
-  checksum: 10/40bf50c6427c117e852702e0da193d69b96e79f1b6658a5105082b4cf1135c212ac2b310efe151dfb6f7b0fcbf707ff1f9f7ce4ff9e13d33bb8fad988380c172
-  languageName: node
-  linkType: hard
-
-"@chialab/esbuild-rna@npm:^0.18.1, @chialab/esbuild-rna@npm:^0.18.2":
+"@chialab/esbuild-rna@npm:^0.18.2":
   version: 0.18.2
   resolution: "@chialab/esbuild-rna@npm:0.18.2"
   dependencies:
@@ -5007,7 +4941,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chialab/estransform@npm:^0.18.0, @chialab/estransform@npm:^0.18.1":
+"@chialab/estransform@npm:^0.18.0":
   version: 0.18.1
   resolution: "@chialab/estransform@npm:0.18.1"
   dependencies:
@@ -9747,7 +9681,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel__core@npm:*, @types/babel__core@npm:^7.20.5":
+"@types/babel__core@npm:*":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
   dependencies:
@@ -10587,13 +10521,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/systemjs@npm:^6":
-  version: 6.15.1
-  resolution: "@types/systemjs@npm:6.15.1"
-  checksum: 10/4c29f4951299b67a287b8b21219416c4d8eee277582ae045f6a97eaaa9d27ad59789f6b608c5519adf0e42eee23f139c4027cc157f37807a16b4601b353f5442
-  languageName: node
-  linkType: hard
-
 "@types/tapable@npm:^1":
   version: 1.0.12
   resolution: "@types/tapable@npm:1.0.12"
@@ -11079,21 +11006,6 @@ __metadata:
   version: 1.0.6
   resolution: "@vanilla-extract/private@npm:1.0.6"
   checksum: 10/50463610da0fc9069b3e2b33b6222ea2f005487432db9110ea430e474e29b3b756bcd1fffd47b87536358829d47bce6510398f050b5f6de07ee1e4e92eeade5a
-  languageName: node
-  linkType: hard
-
-"@vitejs/plugin-react@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "@vitejs/plugin-react@npm:4.3.1"
-  dependencies:
-    "@babel/core": "npm:^7.24.5"
-    "@babel/plugin-transform-react-jsx-self": "npm:^7.24.5"
-    "@babel/plugin-transform-react-jsx-source": "npm:^7.24.1"
-    "@types/babel__core": "npm:^7.20.5"
-    react-refresh: "npm:^0.14.2"
-  peerDependencies:
-    vite: ^4.2.0 || ^5.0.0
-  checksum: 10/a9d1eb30c968bf719a3277067211493746579aee14a7af8c0edb2cde38e8e5bbd461e62a41c3590e2c6eb04a047114eb3e97dcd591967625fbbc7aead8dfaf90
   languageName: node
   linkType: hard
 
@@ -15804,13 +15716,6 @@ __metadata:
   peerDependencies:
     typescript: "*"
   checksum: 10/364c71f25e80bc9b0e73cbd74535b7bb650374c115ed6e9040485380dc4d8696f4868a47da963e271dcd67ee29444515ab047cf117ff1967ea0460e6524d26e8
-  languageName: node
-  linkType: hard
-
-"esbuild-plugin-wasm@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "esbuild-plugin-wasm@npm:1.1.0"
-  checksum: 10/382df12ecb92634d0f526cad4792b0ac5dc8016cdf63e23d9ee099f0f2c530855463cc45045c4a6ec10a6a1bd2ff59b5c4b24e6314a361fa70cc57645caf602b
   languageName: node
   linkType: hard
 
@@ -25137,13 +25042,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"request-light@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "request-light@npm:0.7.0"
-  checksum: 10/f05268172af90c3ad0fd2a6039216c2053f5569d5c450b182c5ea0c7d256e20d0c8726a570706ebf20e5e1720f69f8b924ef4e5674d8a497234a801ade30b31e
-  languageName: node
-  linkType: hard
-
 "require-directory@npm:^2.1.1":
   version: 2.1.1
   resolution: "require-directory@npm:2.1.1"
@@ -27793,7 +27691,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "twin-run@workspace:sites/twin.run"
   dependencies:
-    "@chialab/esbuild-plugin-meta-url": "npm:^0.18.2"
     "@codingame/esbuild-import-meta-url-plugin": "patch:@codingame/esbuild-import-meta-url-plugin@npm%3A1.0.2#~/.yarn/patches/@codingame-esbuild-import-meta-url-plugin-npm-1.0.2-db00f1218b.patch"
     "@codingame/monaco-vscode-api": "npm:~8.0.4"
     "@codingame/monaco-vscode-css-language-features-default-extension": "npm:~8.0.4"
@@ -27822,26 +27719,15 @@ __metadata:
     "@native-twin/helpers": "workspace:*"
     "@native-twin/language-service": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
-    "@rollup/pluginutils": "npm:^5.1.0"
-    "@types/react": "npm:~18.2.79"
-    "@types/react-dom": "npm:~18.2.25"
-    "@types/systemjs": "npm:^6"
     "@types/vscode": "npm:^1.89.0"
     "@types/ws": "npm:^8"
-    "@vitejs/plugin-react": "npm:^4.3.1"
     effect: "npm:^3.10.0"
     esbuild: "npm:^0.21.5"
-    esbuild-plugin-wasm: "npm:^1.1.0"
     monaco-editor: "npm:@codingame/monaco-vscode-editor-api@^8.0.4"
     monaco-editor-wrapper: "npm:~5.5.3"
     monaco-languageclient: "npm:~8.8.3"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    request-light: "npm:^0.7.0"
     vite: "npm:^5.4.10"
     vite-plugin-node-polyfills: "npm:^0.22.0"
-    vite-plugin-prebundle-workers: "npm:^0.2.0"
-    vite-plugin-wasm: "npm:^3.3.0"
     vite-tsconfig-paths: "npm:^5.0.1"
     vscode: "npm:@codingame/monaco-vscode-api@~8.0.4"
     vscode-json-languageservice: "npm:~5.4.0"
@@ -27850,7 +27736,6 @@ __metadata:
     vscode-languageserver-types: "npm:~3.17.5"
     vscode-uri: "npm:~3.0.8"
     vscode-ws-jsonrpc: "npm:~3.3.2"
-    ws: "npm:^8.17.0"
   languageName: unknown
   linkType: soft
 
@@ -28619,22 +28504,6 @@ __metadata:
   peerDependencies:
     vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
   checksum: 10/004a68987d271c04e1a7b9df38f8fca32b1e4a261b464f69895af5ea90e40cbb31e18170435613cb9f2edc735589267ff51772c8793f6f567ba2849da8d36ec4
-  languageName: node
-  linkType: hard
-
-"vite-plugin-prebundle-workers@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "vite-plugin-prebundle-workers@npm:0.2.0"
-  checksum: 10/c6fc63fb5d00907dd9d03b2ebce1e1137ec092a93dc42eb04af93b61e303b0a1a54baea0c8341caf7dbf97abd7b67a3b1772fe2ff8c0a639aa6cea967b39c96d
-  languageName: node
-  linkType: hard
-
-"vite-plugin-wasm@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "vite-plugin-wasm@npm:3.3.0"
-  peerDependencies:
-    vite: ^2 || ^3 || ^4 || ^5
-  checksum: 10/1bcfb50f03280f1966247a4bf9e6ab3a4a76a26fa58fd178708cb3758629cffea544a13c87d0982de0a95a4b41bfc2ad46ae51d3b22080eec965ebfaa17e0454
   languageName: node
   linkType: hard
 
@@ -29429,7 +29298,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.17.0, ws@npm:^8.18.0":
+"ws@npm:^8.18.0":
   version: 8.18.0
   resolution: "ws@npm:8.18.0"
   peerDependencies:

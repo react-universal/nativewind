@@ -41,38 +41,24 @@
     "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@^8.0.4",
     "monaco-editor-wrapper": "~5.5.3",
     "monaco-languageclient": "~8.8.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "vite-plugin-wasm": "^3.3.0",
     "vscode": "npm:@codingame/monaco-vscode-api@~8.0.4",
     "vscode-json-languageservice": "~5.4.0",
     "vscode-languageclient": "~9.0.1",
     "vscode-languageserver": "~9.0.1",
     "vscode-uri": "~3.0.8",
-    "vscode-ws-jsonrpc": "~3.3.2",
-    "ws": "~8.18.0"
+    "vscode-ws-jsonrpc": "~3.3.2"
   },
   "devDependencies": {
-    "@chialab/esbuild-plugin-meta-url": "^0.18.2",
     "@codingame/esbuild-import-meta-url-plugin": "patch:@codingame/esbuild-import-meta-url-plugin@npm%3A1.0.2#~/.yarn/patches/@codingame-esbuild-import-meta-url-plugin-npm-1.0.2-db00f1218b.patch",
     "@codingame/monaco-vscode-rollup-vsix-plugin": "^6.0.1",
     "@entur/vite-plugin-assets-json": "^0.0.9",
-    "@rollup/pluginutils": "^5.1.0",
-    "@types/react": "~18.2.79",
-    "@types/react-dom": "~18.2.25",
-    "@types/systemjs": "^6",
     "@types/vscode": "^1.89.0",
     "@types/ws": "^8",
-    "@vitejs/plugin-react": "^4.3.1",
     "esbuild": "^0.21.5",
-    "esbuild-plugin-wasm": "^1.1.0",
-    "request-light": "^0.7.0",
     "vite": "^5.4.10",
     "vite-plugin-node-polyfills": "^0.22.0",
-    "vite-plugin-prebundle-workers": "^0.2.0",
     "vite-tsconfig-paths": "^5.0.1",
-    "vscode-languageserver-types": "~3.17.5",
-    "ws": "^8.17.0"
+    "vscode-languageserver-types": "~3.17.5"
   },
   "packageManager": "yarn@4.2.2"
 }

@@ -1,7 +1,6 @@
 import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 import vsixPlugin from '@codingame/monaco-vscode-rollup-vsix-plugin';
 import assetsJSON from '@entur/vite-plugin-assets-json';
-import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -40,7 +39,6 @@ export default defineConfig({
       },
     }),
     tsconfigPaths(),
-    react(),
     vsixPlugin(),
     assetsJSON(),
   ],
