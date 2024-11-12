@@ -36,13 +36,13 @@ function isNativeReflectConstruct() {
   try {
     Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }
 
 //@ts-ignore
-function _construct(Parent, args, Class) {
+function _construct(_Parent, _args, _Class) {
   if (isNativeReflectConstruct()) {
     //@ts-ignore
     _construct = Reflect.construct;

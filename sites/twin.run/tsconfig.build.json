@@ -23,6 +23,6 @@
       "@/*": ["src/*"]
     }
   },
-  "exclude": ["src/editor/content"],
+  "exclude": ["src/fixtures/**/*"],
   "include": ["src"]
 }

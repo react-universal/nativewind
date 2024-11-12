@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@chialab/esbuild-plugin-meta-url": "^0.18.2",
-    "@codingame/esbuild-import-meta-url-plugin": "^1.0.2",
+    "@codingame/esbuild-import-meta-url-plugin": "patch:@codingame/esbuild-import-meta-url-plugin@npm%3A1.0.2#~/.yarn/patches/@codingame-esbuild-import-meta-url-plugin-npm-1.0.2-db00f1218b.patch",
     "@codingame/monaco-vscode-rollup-vsix-plugin": "^6.0.1",
     "@entur/vite-plugin-assets-json": "^0.0.9",
     "@rollup/pluginutils": "^5.1.0",

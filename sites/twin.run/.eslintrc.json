@@ -2,7 +2,7 @@
   "extends": "../../.eslintrc.json",
   "ignorePatterns": [
     "!**/*",
-    "src/editor/content/*"
+    "src/fixtures/*"
   ],
   "overrides": [
     {

@@ -37,11 +37,14 @@ import { TwinTextDocument } from './editor/models/TwinTextDocument.model';
 import * as Option from 'effect/Option';
 import { sheetEntriesToCss } from '@native-twin/css';
 import { isRecord } from 'effect/Predicate';
+import { TWIN_PACKAGES_TYPINGS } from './utils/constants.utils';
+import { AppWorkersService } from './editor/services/AppWorkers.service';
 
 let editorWorkerCache: Worker | null = null;
 
 const MainLive = TwinEditorService.Live.pipe(
   Layer.provideMerge(LanguageClientService.Live),
+  Layer.provideMerge(AppWorkersService.Live),
   Layer.provideMerge(FileSystemService.Live),
   Layer.provideMerge(TwinEditorConfigService.Live),
   Layer.provideMerge(VscodeHightLightsProvider.Live),
@@ -50,13 +53,13 @@ const MainLive = TwinEditorService.Live.pipe(
 
 const program = Effect.gen(function* () {
   const { makeEditor, getMonacoApp } = yield* TwinEditorService;
-  const { twinTypings } = yield* FileSystemService;
-  const { getPackageTypings } = yield* LanguageClientService;
+  // const { getPackageTypings } = yield* LanguageClientService;
+  const workers = yield* AppWorkersService;
   const twin = yield* NativeTwinManagerService;
   twin.setupManualTwin();
 
   yield* makeEditor;
-  yield* getPackageTypings(twinTypings);
+  yield* workers.installPackagesTypings(TWIN_PACKAGES_TYPINGS);
 
   yield* getMonacoApp().pipe(
     Effect.flatMap((x) => Effect.promise(() => x.awaitReadiness())),

@@ -1,5 +1,4 @@
 import { defineConfig } from '@native-twin/core';
-import { presetTailwind } from '@native-twin/preset-tailwind';
 
 export default defineConfig({
   content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
@@ -29,5 +28,4 @@ export default defineConfig({
       },
     },
   },
-  presets: [presetTailwind()],
 });

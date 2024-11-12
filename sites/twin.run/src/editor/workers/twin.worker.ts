@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 /// <reference lib="WebWorker" />
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -23,8 +22,6 @@ const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScop
 const connectionHandler = createConnection(messageReader, messageWriter);
 export const documentsHandler = new TextDocuments(TextDocument);
 
-// const ConnectionLayer = ConnectionService.make(connection);
-// const DocumentsLayer = DocumentsService.make(documentsHandler);
 export const LspMainLive = LSPDocumentsService.make(documentsHandler).pipe(
   Layer.provideMerge(LSPConfigService.Live),
   Layer.provideMerge(NativeTwinManagerService.Live),
@@ -34,12 +31,7 @@ export const LspMainLive = LSPDocumentsService.make(documentsHandler).pipe(
 const program = Effect.gen(function* () {
   const connectionService = yield* LSPConnectionService;
   const Connection = connectionService;
-  // const configService = yield* ConfigManagerService;
   const Runtime = ManagedRuntime.make(LspMainLive);
-  // Connection.onInitialize(async (...args) => {
-  //   const init = initializeConnection(...args, nativeTwinManager, configService);
-  //   return init;
-  // });
 
   Connection.onCompletion(async (...args) => {
     const completions = await Runtime.runPromise(

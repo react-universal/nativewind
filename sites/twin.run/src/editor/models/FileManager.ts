@@ -65,3 +65,8 @@ export class FileManager {
     );
   }
 }
+
+export interface TypescriptRegisteredTyping {
+  disposable: monaco.IDisposable;
+  model: monaco.editor.ITextModel;
+}

@@ -5023,13 +5023,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codingame/esbuild-import-meta-url-plugin@npm:^1.0.2":
+"@codingame/esbuild-import-meta-url-plugin@npm:1.0.2":
   version: 1.0.2
   resolution: "@codingame/esbuild-import-meta-url-plugin@npm:1.0.2"
   dependencies:
     esbuild: "npm:>=0.19.x"
     import-meta-resolve: "npm:^4.0.0"
   checksum: 10/1f08b51d89b17f4c1853f5846a52439a9dc1d41dd8ad4f8c648eef489e9cfee4334b284ea7a9125ed321cb34e6ac407020df839f791989ecd78958882dafdd64
+  languageName: node
+  linkType: hard
+
+"@codingame/esbuild-import-meta-url-plugin@patch:@codingame/esbuild-import-meta-url-plugin@npm%3A1.0.2#~/.yarn/patches/@codingame-esbuild-import-meta-url-plugin-npm-1.0.2-db00f1218b.patch":
+  version: 1.0.2
+  resolution: "@codingame/esbuild-import-meta-url-plugin@patch:@codingame/esbuild-import-meta-url-plugin@npm%3A1.0.2#~/.yarn/patches/@codingame-esbuild-import-meta-url-plugin-npm-1.0.2-db00f1218b.patch::version=1.0.2&hash=d13f8b"
+  dependencies:
+    esbuild: "npm:>=0.19.x"
+    import-meta-resolve: "npm:^4.0.0"
+  checksum: 10/ed574a6b5fcc1b265c939294cee8832beee455218a4a06f1109d9afdbcc65c38bd2c4f52efce7ef144f1ba0682ef7413a6a805683308ecc0d87bb8d22117870d
   languageName: node
   linkType: hard
 
@@ -27784,7 +27794,7 @@ __metadata:
   resolution: "twin-run@workspace:sites/twin.run"
   dependencies:
     "@chialab/esbuild-plugin-meta-url": "npm:^0.18.2"
-    "@codingame/esbuild-import-meta-url-plugin": "npm:^1.0.2"
+    "@codingame/esbuild-import-meta-url-plugin": "patch:@codingame/esbuild-import-meta-url-plugin@npm%3A1.0.2#~/.yarn/patches/@codingame-esbuild-import-meta-url-plugin-npm-1.0.2-db00f1218b.patch"
     "@codingame/monaco-vscode-api": "npm:~8.0.4"
     "@codingame/monaco-vscode-css-language-features-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-editor-api": "npm:~8.0.4"
