@@ -1,14 +1,17 @@
+// sort-imports-ignore
+import * as vscode from 'vscode';
 // import getEditorOverride from '@codingame/monaco-vscode-editor-service-override';
+// import getExplorerOverride from '@codingame/monaco-vscode-explorer-service-override';
+import getHostOverride from '@codingame/monaco-vscode-host-service-override';
 import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
 // import getLayoutOverride from '@codingame/monaco-vscode-layout-service-override';
 // import getMonarchOverride from '@codingame/monaco-vscode-monarch-service-override';
 import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
-// import getExplorerOverride from '@codingame/monaco-vscode-explorer-service-override';
-import getHostOverride from '@codingame/monaco-vscode-host-service-override';
 // import getViewsOverride from '@codingame/monaco-vscode-views-service-override';
 // import getExtOverride from '@codingame/monaco-vscode-extensions-service-override';
 // import getBaseOverride from '@codingame/monaco-vscode-base-service-override';
 import workerUrl from '@/editor/workers/twin.worker?worker&url';
+// import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
 import editorUserConfigJSON from '@/fixtures/editor-config/configuration.json?raw';
 import tailwindConfig from '@/fixtures/tailwind-configs/tailwind-preset.config?raw';
 import {
@@ -30,6 +33,7 @@ import {
 import { Constants } from '@native-twin/language-service/browser';
 
 const make = Effect.gen(function* () {
+  const workspaceFile = vscode.Uri.file('/workspace/.vscode/workspace.code-workspace');
   const colorDecorations = yield* Effect.cachedFunction((_: number) =>
     Effect.sync(() => getColorDecoration()),
   );
@@ -57,6 +61,11 @@ const make = Effect.gen(function* () {
     },
     name: 'Native Twin LSP',
     clientOptions: {
+      workspaceFolder: {
+        index: 0,
+        name: 'workspace',
+        uri: vscode.Uri.parse('/workspace'),
+      },
       middleware: {
         provideDocumentColors: async (document, token, next) =>
           onProvideDocumentColors(
@@ -96,21 +105,20 @@ const make = Effect.gen(function* () {
     languageClientConfig: languageClientConfig,
     loggerConfig: {
       enabled: true,
+      debugEnabled: true,
     },
   };
 
   return {
-    config: monacoEditorConfig,
+    workspaceFile,
+    monacoEditorConfig,
     vscodeConfig: editorUserConfigJSON,
   };
 });
 
 export class TwinEditorConfigService extends Context.Tag('editor/config/service')<
   TwinEditorConfigService,
-  {
-    config: UserConfig;
-    vscodeConfig: string;
-  }
+  Effect.Effect.Success<typeof make>
 >() {
   static Live = Layer.scoped(TwinEditorConfigService, make);
 }

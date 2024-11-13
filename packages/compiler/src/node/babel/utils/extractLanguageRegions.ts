@@ -55,53 +55,57 @@ export const extractLanguageRegions = (
   },
 ): t.SourceLocation[] => {
   const sourceLocations: t.SourceLocation[] = [];
-  const parsed = getBabelAST(code, 'any_file');
+  try {
+    const parsed = getBabelAST(code, 'any_file');
 
-  traverse(parsed, {
-    CallExpression: (path) => {
-      const sources: t.SourceLocation[] = [];
-      if (
-        t.isIdentifier(path.node.callee) &&
-        config.functions.includes(path.node.callee.name)
-      ) {
-        for (const arg of path.node.arguments) {
-          if (t.isObjectExpression(arg)) {
-            sources.push(...matchVariantsObject(arg.properties));
+    traverse(parsed, {
+      CallExpression: (path) => {
+        const sources: t.SourceLocation[] = [];
+        if (
+          t.isIdentifier(path.node.callee) &&
+          config.functions.includes(path.node.callee.name)
+        ) {
+          for (const arg of path.node.arguments) {
+            if (t.isObjectExpression(arg)) {
+              sources.push(...matchVariantsObject(arg.properties));
+            }
           }
         }
-      }
-      sourceLocations.push(...sources);
-    },
-    TaggedTemplateExpression: (path) => {
-      if (
-        t.isIdentifier(path.node.tag) &&
-        config.functions.includes(path.node.tag.name)
-      ) {
-        sourceLocations.push(...templateExpressionMatcher(path.node.quasi.quasis));
-      }
-    },
-    JSXAttribute: (path) => {
-      if (
-        t.isJSXIdentifier(path.node.name) &&
-        config.jsxAttributes.includes(path.node.name.name) &&
-        path.node.value
-      ) {
-        if (t.isStringLiteral(path.node.value) && path.node.value.loc) {
-          sourceLocations.push(path.node.value.loc);
-        }
+        sourceLocations.push(...sources);
+      },
+      TaggedTemplateExpression: (path) => {
         if (
-          t.isJSXExpressionContainer(path.node.value) &&
-          t.isTemplateLiteral(path.node.value.expression)
+          t.isIdentifier(path.node.tag) &&
+          config.functions.includes(path.node.tag.name)
         ) {
-          sourceLocations.push(
-            ...templateExpressionMatcher(path.node.value.expression.quasis),
-          );
+          sourceLocations.push(...templateExpressionMatcher(path.node.quasi.quasis));
         }
-      }
-    },
-  });
+      },
+      JSXAttribute: (path) => {
+        if (
+          t.isJSXIdentifier(path.node.name) &&
+          config.jsxAttributes.includes(path.node.name.name) &&
+          path.node.value
+        ) {
+          if (t.isStringLiteral(path.node.value) && path.node.value.loc) {
+            sourceLocations.push(path.node.value.loc);
+          }
+          if (
+            t.isJSXExpressionContainer(path.node.value) &&
+            t.isTemplateLiteral(path.node.value.expression)
+          ) {
+            sourceLocations.push(
+              ...templateExpressionMatcher(path.node.value.expression.quasis),
+            );
+          }
+        }
+      },
+    });
 
-  return sourceLocations;
+    return sourceLocations;
+  } catch {
+    return sourceLocations;
+  }
 };
 
 const matchVariantsObject = (

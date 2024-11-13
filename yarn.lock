@@ -5022,6 +5022,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codingame/monaco-vscode-css-default-extension@npm:~8.0.4":
+  version: 8.0.4
+  resolution: "@codingame/monaco-vscode-css-default-extension@npm:8.0.4"
+  dependencies:
+    vscode: "npm:@codingame/monaco-vscode-api@8.0.4"
+  checksum: 10/e5f8ccadc2f47e54e30bca28ae3ecd003da4682172dd6b019536fd85cbe860c87b1fa120eca591eeea6f51ce252af526dc942692d123a40034fc9e0b95c3b7b9
+  languageName: node
+  linkType: hard
+
 "@codingame/monaco-vscode-css-language-features-default-extension@npm:~8.0.4":
   version: 8.0.4
   resolution: "@codingame/monaco-vscode-css-language-features-default-extension@npm:8.0.4"
@@ -27693,6 +27702,7 @@ __metadata:
   dependencies:
     "@codingame/esbuild-import-meta-url-plugin": "patch:@codingame/esbuild-import-meta-url-plugin@npm%3A1.0.2#~/.yarn/patches/@codingame-esbuild-import-meta-url-plugin-npm-1.0.2-db00f1218b.patch"
     "@codingame/monaco-vscode-api": "npm:~8.0.4"
+    "@codingame/monaco-vscode-css-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-css-language-features-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-editor-api": "npm:~8.0.4"
     "@codingame/monaco-vscode-explorer-service-override": "npm:~8.0.4"

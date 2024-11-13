@@ -1,16 +1,16 @@
-import * as vscode from 'vscode';
-import * as monaco from 'monaco-editor';
-import { TextDocument } from 'vscode-languageserver-textdocument';
+import type { IStoredWorkspace } from '@codingame/monaco-vscode-configuration-service-override';
 import {
   RegisteredMemoryFile,
   registerFileSystemOverlay,
   RegisteredFileSystemProvider,
 } from '@codingame/monaco-vscode-files-service-override';
-import type { IStoredWorkspace } from '@codingame/monaco-vscode-configuration-service-override';
-import { IReference, ITextFileEditorModel } from 'vscode/monaco';
+import * as monaco from 'monaco-editor';
 import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
+import * as vscode from 'vscode';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import { IReference, ITextFileEditorModel } from 'vscode/monaco';
 
-export class FileManager {
+export class ___FileManager {
   focusDocument: vscode.TextDocument | undefined;
   readonly workspaceFile = monaco.Uri.file('/workspace.code-workspace');
   readonly rootPath = '/workspace';
@@ -22,7 +22,7 @@ export class FileManager {
     this.fileSystemProvider.registerFile(
       new RegisteredMemoryFile(
         this.workspaceFile,
-        JSON.stringify(<IStoredWorkspace>{
+        JSON.stringify({
           folders: [
             {
               path: '/workspace',
@@ -30,10 +30,22 @@ export class FileManager {
               name: 'workspace',
             },
           ],
-        }),
+        } as IStoredWorkspace),
       ),
     );
 
+    this.fileSystemProvider.registerFile(
+      new RegisteredMemoryFile(
+        vscode.Uri.file(`${this.rootPath}/tsconfig.json`),
+        `{
+          "compilerOptions": {
+            "jsx": "preserve",
+            "module": "ESNext",
+            "lib": ["Dom", "ESNext"]
+          }
+        }`,
+      ),
+    );
     this.fileSystemOverlay = registerFileSystemOverlay(1, this.fileSystemProvider);
   }
 
@@ -49,6 +61,7 @@ export class FileManager {
   }
 
   openFile(model: IReference<ITextFileEditorModel>) {
+    // this.editor.getEditor()?.getModel()?.dispose();
     this.editor.getEditor()?.setModel(model.object.textEditorModel);
   }
 

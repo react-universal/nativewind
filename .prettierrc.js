@@ -16,6 +16,7 @@ module.exports = {
     'importAttributes'
   ],
   importOrder: [
+    'vscode',
     '^(.*)\.css$',
     "@codingame/(.*)$",
     'expo/build/Expo.fx',
@@ -23,6 +24,7 @@ module.exports = {
     '^(react|react-native)$',
     '<THIRD_PARTY_MODULES>',
     '^@native-twin/(.*)$',
+    '^@/(.*)$',
     '^[./]'
   ],
 };

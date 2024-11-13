@@ -1,13 +1,13 @@
-import * as monaco from 'monaco-editor';
-import * as Effect from 'effect/Effect';
-import * as Stream from 'effect/Stream';
-import * as RA from 'effect/Array';
-import * as EffectWorker from '@effect/platform/Worker';
 import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
+import * as EffectWorker from '@effect/platform/Worker';
+import * as RA from 'effect/Array';
+import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import { GetPackageTypings } from './shared.schemas';
-import typingsWorker from '@/lsp/workers/typings.worker?worker&url';
+import * as Stream from 'effect/Stream';
+import * as monaco from 'monaco-editor';
 import { getOrCreateModel } from '@/editor/monaco.api';
+import typingsWorker from '@/lsp/workers/typings.worker?worker&url';
+import { GetPackageTypings } from './shared.schemas';
 
 const typingsWorkerLayer = BrowserWorker.layer(
   () => new globalThis.Worker(typingsWorker, { type: 'module' }),

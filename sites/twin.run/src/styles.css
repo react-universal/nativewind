@@ -136,3 +136,18 @@ html {
   flex: 2;
   min-height: 0
 }
+
+.editor-buttons-container {
+  display: flex;
+  flex-basis: 100px;
+  min-height: 25px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editor-action-button {
+  display: flex;
+  width: 25%;
+  padding: 10px;
+  background-color: gray;
+}

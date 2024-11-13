@@ -22,7 +22,7 @@ export const getDocumentTemplatesColors = (
   );
 
 /** File private */
-const templateTokenToColorInfo = (
+export const templateTokenToColorInfo = (
   templateNode: TemplateTokenData,
   twinService: NativeTwinManagerService['Type'],
   twinDocument: TwinLSPDocument,

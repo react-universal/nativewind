@@ -1,7 +1,4 @@
 /// <reference lib="WebWorker" />
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   BrowserMessageReader,
@@ -9,6 +6,9 @@ import {
   createConnection,
   TextDocuments,
 } from 'vscode-languageserver/browser.js';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
 import {
   NativeTwinManagerService,
   LSPDocumentsService,

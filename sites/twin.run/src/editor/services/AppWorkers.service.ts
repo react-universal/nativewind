@@ -1,5 +1,3 @@
-import typingsWorker from '@/editor/workers/typings.worker?worker&url';
-import { GetPackageTypings } from '@/utils/twin.schemas';
 import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
 import * as EffectWorker from '@effect/platform/Worker';
 import * as RA from 'effect/Array';
@@ -8,6 +6,8 @@ import * as Effect from 'effect/Effect';
 import { identity, pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
+import typingsWorker from '@/editor/workers/typings.worker?worker&url';
+import { GetPackageTypings } from '@/utils/twin.schemas';
 import { FileSystemService } from './FileSystem.service';
 
 const typingsInstallerWorkerLayer = BrowserWorker.layer(

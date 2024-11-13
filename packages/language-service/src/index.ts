@@ -6,6 +6,8 @@ export { DocumentLanguageRegion } from './models/documents/LanguageRegion.model'
 export { getSheetEntryStyles } from './utils/sheet.utils';
 export { completionRuleToQuickInfo } from './utils/language/quickInfo.utils';
 /** Language Service */
+export { getDocumentTemplatesColors } from './utils/language/colorInfo.utils';
+export { templateTokenToColorInfo } from './utils/language/colorInfo.utils';
 export { filterTokensFromRules } from './utils/language/completions.maps';
 export { getCompletionsForTokens } from './utils/language/completion.pipes';
 export {

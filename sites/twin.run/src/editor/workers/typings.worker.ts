@@ -7,14 +7,14 @@
  * https://github.com/CompuIves/codesandbox-client/blob/dcdb4169bcbe3e5aeaebae19ff1d45940c1af834/packages/app/src/app/components/CodeEditor/Monaco/workers/fetch-dependency-typings.js
  *
  */
+import * as BrowserRunner from '@effect/platform-browser/BrowserWorkerRunner';
+import * as Runner from '@effect/platform/WorkerRunner';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import { GetPackageTypings, TwinPackageTypings, TwinTyping } from './shared.schemas';
-import * as BrowserRunner from '@effect/platform-browser/BrowserWorkerRunner';
-import * as Runner from '@effect/platform/WorkerRunner';
 
 const WorkerLive = Runner.layerSerialized(GetPackageTypings, {
   GetPackageTypings: (req) => {
