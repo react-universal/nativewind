@@ -6,9 +6,8 @@
   "scripts": {
     "build:tsc": "tsc -p tsconfig.build.json",
     "clean": "rm -rf node_modules",
-    "dev": "vite",
+    "dev": "vite dev",
     "preview": "vite preview",
-    "server": "node --loader ts-node/esm src/server/direct.ts",
     "twin.run:build": "tsc && vite build"
   },
   "dependencies": {
@@ -17,10 +16,12 @@
     "@codingame/monaco-vscode-css-language-features-default-extension": "~8.0.4",
     "@codingame/monaco-vscode-editor-api": "~8.0.4",
     "@codingame/monaco-vscode-explorer-service-override": "~8.0.4",
+    "@codingame/monaco-vscode-html-default-extension": "~8.0.4",
     "@codingame/monaco-vscode-html-language-features-default-extension": "~8.0.4",
     "@codingame/monaco-vscode-json-default-extension": "~8.0.4",
     "@codingame/monaco-vscode-language-detection-worker-service-override": "~8.0.4",
     "@codingame/monaco-vscode-lifecycle-service-override": "~8.0.4",
+    "@codingame/monaco-vscode-markdown-basics-default-extension": "~8.0.4",
     "@codingame/monaco-vscode-markdown-language-features-default-extension": "~8.0.4",
     "@codingame/monaco-vscode-npm-default-extension": "~8.0.4",
     "@codingame/monaco-vscode-standalone-css-language-features": "~8.0.4",
@@ -42,6 +43,7 @@
     "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@^8.0.4",
     "monaco-editor-wrapper": "~5.5.3",
     "monaco-languageclient": "~8.8.3",
+    "picomatch-browser": "^2.2.6",
     "vscode": "npm:@codingame/monaco-vscode-api@~8.0.4",
     "vscode-json-languageservice": "~5.4.0",
     "vscode-languageclient": "~9.0.1",

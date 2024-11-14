@@ -1,6 +1,6 @@
 // sort-imports-ignore
 import * as vscode from 'vscode';
-// import getEditorOverride from '@codingame/monaco-vscode-editor-service-override';
+import getEditorOverride from '@codingame/monaco-vscode-editor-service-override';
 // import getExplorerOverride from '@codingame/monaco-vscode-explorer-service-override';
 import getHostOverride from '@codingame/monaco-vscode-host-service-override';
 import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
@@ -10,10 +10,10 @@ import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-over
 // import getViewsOverride from '@codingame/monaco-vscode-views-service-override';
 // import getExtOverride from '@codingame/monaco-vscode-extensions-service-override';
 // import getBaseOverride from '@codingame/monaco-vscode-base-service-override';
+import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
 import workerUrl from '@/editor/workers/twin.worker?worker&url';
-// import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
 import editorUserConfigJSON from '@/fixtures/editor-config/configuration.json?raw';
-import tailwindConfig from '@/fixtures/tailwind-configs/tailwind-preset.config?raw';
+import jsxComponent from '@/fixtures/react/Basic.react?raw';
 import {
   getColorDecoration,
   onLanguageClientClosed,
@@ -31,17 +31,16 @@ import {
   CodeResources,
 } from 'monaco-editor-wrapper';
 import { Constants } from '@native-twin/language-service/browser';
+import { traceLayerLogs } from '@/utils/logger.utils';
 
 const make = Effect.gen(function* () {
-  const workspaceFile = vscode.Uri.file('/workspace/.vscode/workspace.code-workspace');
   const colorDecorations = yield* Effect.cachedFunction((_: number) =>
     Effect.sync(() => getColorDecoration()),
   );
 
   const initialFile: CodeResources['main'] = {
-    text: tailwindConfig,
-    uri: '/tailwind.config.ts',
-    fileExt: 'ts',
+    text: jsxComponent,
+    uri: '/workspace/Component.tsx',
   };
   const defaults = getMonacoDefaultConfig();
   const wrapperConfig = createWrapperConfig(
@@ -105,12 +104,11 @@ const make = Effect.gen(function* () {
     languageClientConfig: languageClientConfig,
     loggerConfig: {
       enabled: true,
-      debugEnabled: true,
+      debugEnabled: false,
     },
   };
 
   return {
-    workspaceFile,
     monacoEditorConfig,
     vscodeConfig: editorUserConfigJSON,
   };
@@ -120,7 +118,9 @@ export class TwinEditorConfigService extends Context.Tag('editor/config/service'
   TwinEditorConfigService,
   Effect.Effect.Success<typeof make>
 >() {
-  static Live = Layer.scoped(TwinEditorConfigService, make);
+  static Live = Layer.scoped(TwinEditorConfigService, make).pipe(
+    traceLayerLogs('TwinEditorConfigService'),
+  );
 }
 
 const getMonacoDefaultConfig = () => {
@@ -155,7 +155,7 @@ const createWrapperConfig = (
       userServices: {
         ...getThemeServiceOverride(),
         // ...getConfigurationServiceOverride(),
-        // ...getEditorOverride(useOpenEditorStub),
+        ...getEditorOverride(useOpenEditorStub),
         // ...getLayoutOverride(),
         // ...getViewsOverride(useOpenEditorStub),
         // ...getBaseOverride(),

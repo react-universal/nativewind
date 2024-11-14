@@ -71,6 +71,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@babel/standalone": "^7.24.2",
     "@babel/traverse": "^7.24.0",
     "@babel/types": "^7.24.0",
     "@effect/cli": "^0.48.3",
@@ -97,6 +98,7 @@
     "@babel/preset-typescript": "7.23.3",
     "@effect/language-service": "^0.2.0",
     "@types/babel__helper-module-imports": "^7.18.3",
+    "@types/babel__standalone": "^7.1.9",
     "@types/connect": "3.4.38",
     "@types/css-tree": "^2.3.8",
     "@types/js-beautify": "^1",

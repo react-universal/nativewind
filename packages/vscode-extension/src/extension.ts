@@ -1,6 +1,6 @@
+import * as vscode from 'vscode';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as vscode from 'vscode';
 import { NativeTwinManagerService } from '@native-twin/language-service';
 import { launchExtension } from './extension/extension.program';
 import { VscodeContext } from './extension/extension.service';

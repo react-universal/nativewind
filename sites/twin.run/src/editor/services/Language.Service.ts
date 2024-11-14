@@ -2,6 +2,7 @@ import { updateUserConfiguration } from '@codingame/monaco-vscode-configuration-
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import { traceLayerLogs } from '@/utils/logger.utils';
 import { TwinEditorConfigService } from './EditorConfig.service';
 
 const make = Effect.gen(function* () {
@@ -17,5 +18,7 @@ const make = Effect.gen(function* () {
 export class LanguageClientService extends Context.Tag(
   'editor/client/LanguageClientService',
 )<LanguageClientService, Effect.Effect.Success<typeof make>>() {
-  static Live = Layer.scoped(LanguageClientService, make);
+  static Live = Layer.scoped(LanguageClientService, make).pipe(
+    traceLayerLogs('LanguageClientService'),
+  );
 }

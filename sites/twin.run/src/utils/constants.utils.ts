@@ -1,8 +1,16 @@
-import { GetPackageTypings } from "@/editor/workers/shared.schemas";
+import { GetPackageTypings } from '@/editor/workers/shared.schemas';
 
 export const MONACO_BASE_FILE_URI = 'file:///';
 
 export const TWIN_PACKAGES_TYPINGS = [
+  new GetPackageTypings({
+    name: '@types/react',
+    version: '18.2.0',
+  }),
+  new GetPackageTypings({
+    name: 'react',
+    version: '18.2.0',
+  }),
   new GetPackageTypings({
     name: '@native-twin/core',
     version: '6.4.0',

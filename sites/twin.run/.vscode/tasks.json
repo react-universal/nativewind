@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "watch twin.run",
+      "type": "npm",
+      "script": "dev",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": [
+        "$vite-esbuild"
+      ]
+    }
+  ]
+}

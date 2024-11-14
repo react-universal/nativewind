@@ -1,4 +1,5 @@
 import * as Schema from 'effect/Schema';
+import type * as monaco from 'monaco-editor';
 
 export class TwinTyping extends Schema.Class<TwinTyping>('TwinTyping')({
   filePath: Schema.String,
@@ -23,3 +24,8 @@ export class GetPackageTypings extends Schema.TaggedRequest<GetPackageTypings>()
     },
   },
 ) {}
+
+export interface TypescriptRegisteredTyping {
+  disposable: monaco.IDisposable;
+  model: monaco.editor.ITextModel;
+}

@@ -13,6 +13,9 @@ import '@codingame/monaco-vscode-markdown-language-features-default-extension';
 import '@codingame/monaco-vscode-standalone-typescript-language-features';
 import '@codingame/monaco-vscode-typescript-basics-default-extension';
 import '@codingame/monaco-vscode-css-default-extension';
+import '@codingame/monaco-vscode-markdown-basics-default-extension';
+import '@codingame/monaco-vscode-html-language-features-default-extension';
+import '@codingame/monaco-vscode-html-default-extension';
 import '@codingame/monaco-vscode-typescript-language-features-default-extension';
 import * as monaco from 'monaco-editor';
 import * as Effect from 'effect/Effect';
@@ -22,16 +25,14 @@ import cssWorker from 'monaco-editor-wrapper/workers/module/css?worker';
 import htmlWorker from 'monaco-editor-wrapper/workers/module/html?worker';
 import tsWorker from 'monaco-editor-wrapper/workers/module/ts?worker';
 import { NativeTwinManagerService } from '@native-twin/language-service';
-import * as programs from './editor/programs';
+import * as programs from './programs';
 import { EditorMainRuntime } from './editor/editor.runtime';
 import { TWIN_PACKAGES_TYPINGS } from './utils/constants.utils';
 import { AppWorkersService } from './editor/services/AppWorkers.service';
-import { SetupEditorUI } from './editor/programs/setupEditorUI.program';
-
+import { runMain } from '@effect/platform-browser/BrowserRuntime';
 let editorWorkerCache: Worker | null = null;
 
 const program = Effect.gen(function* () {
-  console.log('RUN_PROGRAM');
   const workers = yield* AppWorkersService;
   const twin = yield* NativeTwinManagerService;
 
@@ -39,9 +40,8 @@ const program = Effect.gen(function* () {
 
   yield* programs.StartEditorProgram;
   yield* programs.StartHightLightsProvider;
-  yield* SetupEditorUI;
-  // yield* programs.InstallHoverProvider;
-  // yield* programs.InstallColorProvider;
+  yield* programs.SetupWorkSpace;
+  yield* programs.SetupEditorUI;
 
   yield* workers.installPackagesTypings(TWIN_PACKAGES_TYPINGS);
 
@@ -61,20 +61,21 @@ self.MonacoEnvironment = {
       case 'html':
         return new htmlWorker();
       case 'css':
-        console.log('REQUESTED_CSS_LANG: ');
         return new cssWorker();
       case 'editorWorkerService':
-        if (!editorWorkerCache) {
-          editorWorkerCache = new Worker(
-            new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url),
-            { type: 'module' },
-          );
+        if (editorWorkerCache) {
+          console.log('Replacing editor worker...', _, label);
+          editorWorkerCache.terminate();
         } else {
-          console.debug('attempt to recreate the editor worker');
+          console.log('Creating editor worker...', _, label);
         }
+        editorWorkerCache = new Worker(
+          new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url),
+          { type: 'module' },
+        );
         return editorWorkerCache;
       default:
-        console.log('OTHER_WORKER_LOAD: ', _, label);
+        console.warn('OTHER_WORKER_LOAD: ', _, label);
         return new editorWorker();
     }
   },
@@ -87,14 +88,17 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   target: monaco.languages.typescript.ScriptTarget.ESNext,
   moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
   lib: ['ESNext', 'DOM'],
+  jsx: monaco.languages.typescript.JsxEmit.Preserve,
+  // typeRoots: ['node_modules/@types'],
   isolatedModules: true,
-  allowJs: true,
+  allowJs: false,
   strict: false,
   skipLibCheck: true,
   allowSyntheticDefaultImports: true,
   disableSourceOfProjectReferenceRedirect: true,
   esModuleInterop: true,
   declarationMap: false,
+  types: ['react'],
   skipDefaultLibCheck: true,
 });
 
@@ -115,4 +119,4 @@ monaco.languages.html.razorLanguageService.defaults.setModeConfiguration({
   documentHighlights: true,
 });
 
-EditorMainRuntime.runPromise(program);
+runMain(EditorMainRuntime.runFork(program));

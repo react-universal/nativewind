@@ -1,9 +1,9 @@
+import type * as vscode from 'vscode-languageserver';
+import { Range } from 'vscode-languageserver-types';
 import { sheetEntriesToCss } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import type * as vscode from 'vscode-languageserver';
-import { Range } from 'vscode-languageserver-types';
 import { LSPDocumentsService } from '../services/LSPDocuments.service';
 import { NativeTwinManagerService } from '../services/NativeTwinManager.service';
 import { completionRuleToQuickInfo } from '../utils/language/quickInfo.utils';
@@ -26,13 +26,19 @@ export const getHoverDetails = (
       Option.bind('nodeAdPosition', ({ document }) =>
         document.getTemplateAtPosition(params.position),
       ),
-
-      Option.bind('flattenCompletions', ({ document, nodeAdPosition }) =>
-        nodeAdPosition.getParsedNodeAtOffset(document.positionToOffset(params.position)),
-      ),
       Option.let('cursorOffset', ({ document }) =>
         document.positionToOffset(params.position),
       ),
+
+      Option.bind('flattenCompletions', ({ nodeAdPosition, cursorOffset }) => {
+        console.log(
+          'nodeAdPosition: ',
+          nodeAdPosition,
+          nodeAdPosition.getParsedNodeAtOffset(cursorOffset),
+        );
+        return nodeAdPosition.getParsedNodeAtOffset(cursorOffset);
+      }),
+
       Option.bind('tokenAtPosition', ({ flattenCompletions, cursorOffset, document }) => {
         return RA.findFirst(
           flattenCompletions.flattenToken,
@@ -80,6 +86,8 @@ export const getHoverDetails = (
         return completionRuleToQuickInfo(sheet.rn, sheet.css, tokenAtPosition.range);
       }),
     );
+
+    console.log('ENTRY: ', hoverEntry);
 
     return Option.getOrUndefined(hoverEntry);
   });

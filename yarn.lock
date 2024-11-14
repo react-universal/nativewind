@@ -1274,6 +1274,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-string-parser@npm:^7.25.9":
+  version: 7.25.9
+  resolution: "@babel/helper-string-parser@npm:7.25.9"
+  checksum: 10/c28656c52bd48e8c1d9f3e8e68ecafd09d949c57755b0d353739eb4eae7ba4f7e67e92e4036f1cd43378cc1397a2c943ed7bcaf5949b04ab48607def0258b775
+  languageName: node
+  linkType: hard
+
 "@babel/helper-validator-identifier@npm:^7.16.7":
   version: 7.22.15
   resolution: "@babel/helper-validator-identifier@npm:7.22.15"
@@ -1313,6 +1320,13 @@ __metadata:
   version: 7.25.7
   resolution: "@babel/helper-validator-identifier@npm:7.25.7"
   checksum: 10/ec6934cc47fc35baaeb968414a372b064f14f7b130cf6489a014c9486b0fd2549b3c6c682cc1fc35080075e8e38d96aeb40342d63d09fc1a62510c8ce25cde1e
+  languageName: node
+  linkType: hard
+
+"@babel/helper-validator-identifier@npm:^7.25.9":
+  version: 7.25.9
+  resolution: "@babel/helper-validator-identifier@npm:7.25.9"
+  checksum: 10/3f9b649be0c2fd457fa1957b694b4e69532a668866b8a0d81eabfa34ba16dbf3107b39e0e7144c55c3c652bf773ec816af8df4a61273a2bb4eb3145ca9cf478e
   languageName: node
   linkType: hard
 
@@ -1614,6 +1628,17 @@ __metadata:
   bin:
     parser: ./bin/babel-parser.js
   checksum: 10/7bd57e89110bdc9cffe0ef2f2286f1cfb9bbb3aa1d9208c287e0bf6a1eb4cfe6ab33958876ebc59aafcbe3e2381c4449240fc7cc2ff32b79bc9db89cd52fc779
+  languageName: node
+  linkType: hard
+
+"@babel/parser@npm:^7.25.6":
+  version: 7.26.2
+  resolution: "@babel/parser@npm:7.26.2"
+  dependencies:
+    "@babel/types": "npm:^7.26.0"
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: 10/8baee43752a3678ad9f9e360ec845065eeee806f1fdc8e0f348a8a0e13eef0959dabed4a197c978896c493ea205c804d0a1187cc52e4a1ba017c7935bab4983d
   languageName: node
   linkType: hard
 
@@ -4360,6 +4385,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/standalone@npm:^7.24.2":
+  version: 7.26.2
+  resolution: "@babel/standalone@npm:7.26.2"
+  checksum: 10/c2ab46394145734d27359d78a8e0486daea8242f9346309bad45656b4b12e4e472e5e12bb9d2ab153f065c2b4b30adf8ff66f00a43c198a47148c8f5eaaa0f5e
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.0.0, @babel/template@npm:^7.18.10, @babel/template@npm:^7.20.7":
   version: 7.20.7
   resolution: "@babel/template@npm:7.20.7"
@@ -4666,6 +4698,16 @@ __metadata:
     "@babel/helper-validator-identifier": "npm:^7.25.7"
     to-fast-properties: "npm:^2.0.0"
   checksum: 10/973108dbb189916bb87360f2beff43ae97f1b08f1c071bc6499d363cce48b3c71674bf3b59dfd617f8c5062d1c76dc2a64232bc07b6ccef831fd0c06162d44d9
+  languageName: node
+  linkType: hard
+
+"@babel/types@npm:^7.26.0":
+  version: 7.26.0
+  resolution: "@babel/types@npm:7.26.0"
+  dependencies:
+    "@babel/helper-string-parser": "npm:^7.25.9"
+    "@babel/helper-validator-identifier": "npm:^7.25.9"
+  checksum: 10/40780741ecec886ed9edae234b5eb4976968cc70d72b4e5a40d55f83ff2cc457de20f9b0f4fe9d858350e43dab0ea496e7ef62e2b2f08df699481a76df02cd6e
   languageName: node
   linkType: hard
 
@@ -5104,6 +5146,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codingame/monaco-vscode-html-default-extension@npm:~8.0.4":
+  version: 8.0.4
+  resolution: "@codingame/monaco-vscode-html-default-extension@npm:8.0.4"
+  dependencies:
+    vscode: "npm:@codingame/monaco-vscode-api@8.0.4"
+  checksum: 10/3171387404734825bbc0d381ad110a7058f9c53b66263742a384cea0cdcce4278f7515e91a3e6036f2a09a68bff996805f57b671396d351c76e17efa497665cd
+  languageName: node
+  linkType: hard
+
 "@codingame/monaco-vscode-html-language-features-default-extension@npm:~8.0.4":
   version: 8.0.4
   resolution: "@codingame/monaco-vscode-html-language-features-default-extension@npm:8.0.4"
@@ -5302,6 +5353,15 @@ __metadata:
   dependencies:
     vscode: "npm:@codingame/monaco-vscode-api@8.0.4"
   checksum: 10/8c3e1f4d525caa3f21178c451af6e7830b3f14270a62f1b33ffa3d910cdeb7927d4f04a6f3e4e03cb5c4d002cc43f27bbe5e7a793ead3d767132dbb2fc94d55f
+  languageName: node
+  linkType: hard
+
+"@codingame/monaco-vscode-markdown-basics-default-extension@npm:~8.0.4":
+  version: 8.0.4
+  resolution: "@codingame/monaco-vscode-markdown-basics-default-extension@npm:8.0.4"
+  dependencies:
+    vscode: "npm:@codingame/monaco-vscode-api@8.0.4"
+  checksum: 10/f9ebe8080093274d05fa47f9c7ea5d2192508e848dd3ca209caf974fcf70e7e899b182736e5154159316cee1a86b901c90cc58455d58f60e90c0c9b514381a4f
   languageName: node
   linkType: hard
 
@@ -7614,6 +7674,7 @@ __metadata:
   dependencies:
     "@babel/plugin-syntax-jsx": "npm:^7.23.3"
     "@babel/preset-typescript": "npm:7.23.3"
+    "@babel/standalone": "npm:^7.24.2"
     "@babel/traverse": "npm:^7.24.0"
     "@babel/types": "npm:^7.24.0"
     "@effect/cli": "npm:^0.48.3"
@@ -7630,6 +7691,7 @@ __metadata:
     "@native-twin/jsx": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
+    "@types/babel__standalone": "npm:^7.1.9"
     "@types/connect": "npm:3.4.38"
     "@types/css-tree": "npm:^2.3.8"
     "@types/js-beautify": "npm:^1"
@@ -9690,7 +9752,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel__core@npm:*":
+"@types/babel__core@npm:*, @types/babel__core@npm:^7.20.5":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
   dependencies:
@@ -9725,7 +9787,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel__generator@npm:^7":
+"@types/babel__generator@npm:^7, @types/babel__generator@npm:^7.6.8":
   version: 7.6.8
   resolution: "@types/babel__generator@npm:7.6.8"
   dependencies:
@@ -9744,6 +9806,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/babel__standalone@npm:^7.1.9":
+  version: 7.1.9
+  resolution: "@types/babel__standalone@npm:7.1.9"
+  dependencies:
+    "@babel/parser": "npm:^7.25.6"
+    "@babel/types": "npm:^7.25.6"
+    "@types/babel__core": "npm:^7.20.5"
+    "@types/babel__generator": "npm:^7.6.8"
+    "@types/babel__template": "npm:^7.4.4"
+    "@types/babel__traverse": "npm:^7.20.6"
+  checksum: 10/ed22e64e4c14351eec992c04da2b64b915cdeecbe5c8c1ecbcf5af3c833e8a899718be8f5c10d6705de71c2c808f4ddcd64d01bbd08a83c65a7e289b08a0fb80
+  languageName: node
+  linkType: hard
+
 "@types/babel__template@npm:*":
   version: 7.4.2
   resolution: "@types/babel__template@npm:7.4.2"
@@ -9751,6 +9827,16 @@ __metadata:
     "@babel/parser": "npm:^7.1.0"
     "@babel/types": "npm:^7.0.0"
   checksum: 10/0fe977b45a3269336c77f3ae4641a6c48abf0fa35ab1a23fb571690786af02d6cec08255a43499b0b25c5633800f7ae882ace450cce905e3060fa9e6995047ae
+  languageName: node
+  linkType: hard
+
+"@types/babel__template@npm:^7.4.4":
+  version: 7.4.4
+  resolution: "@types/babel__template@npm:7.4.4"
+  dependencies:
+    "@babel/parser": "npm:^7.1.0"
+    "@babel/types": "npm:^7.0.0"
+  checksum: 10/d7a02d2a9b67e822694d8e6a7ddb8f2b71a1d6962dfd266554d2513eefbb205b33ca71a0d163b1caea3981ccf849211f9964d8bd0727124d18ace45aa6c9ae29
   languageName: node
   linkType: hard
 
@@ -9769,6 +9855,15 @@ __metadata:
   dependencies:
     "@babel/types": "npm:^7.20.7"
   checksum: 10/ccf85b0f1ed4931074d6efe34f79d9e8d54de2ce8109ddf8b8b4955094d30af4ef12dca9f64963c38a7b63d85583557d935bece1d9ad1fd5c925f1c62ffb0e10
+  languageName: node
+  linkType: hard
+
+"@types/babel__traverse@npm:^7.20.6":
+  version: 7.20.6
+  resolution: "@types/babel__traverse@npm:7.20.6"
+  dependencies:
+    "@babel/types": "npm:^7.20.7"
+  checksum: 10/63d13a3789aa1e783b87a8b03d9fb2c2c90078de7782422feff1631b8c2a25db626e63a63ac5a1465d47359201c73069dacb4b52149d17c568187625da3064ae
   languageName: node
   linkType: hard
 
@@ -23606,6 +23701,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"picomatch-browser@npm:^2.2.6":
+  version: 2.2.6
+  resolution: "picomatch-browser@npm:2.2.6"
+  checksum: 10/0136abee4bbef256e9b6b20676873807e11cc6d04d52d4cd4e9e5c7b48b0888e67f224873eb7eaba6da2a5356647e5aa9a2ef62ad98a675c7940344bfae0238e
+  languageName: node
+  linkType: hard
+
 "picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
@@ -27706,10 +27808,12 @@ __metadata:
     "@codingame/monaco-vscode-css-language-features-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-editor-api": "npm:~8.0.4"
     "@codingame/monaco-vscode-explorer-service-override": "npm:~8.0.4"
+    "@codingame/monaco-vscode-html-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-html-language-features-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-json-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-language-detection-worker-service-override": "npm:~8.0.4"
     "@codingame/monaco-vscode-lifecycle-service-override": "npm:~8.0.4"
+    "@codingame/monaco-vscode-markdown-basics-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-markdown-language-features-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-npm-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-rollup-vsix-plugin": "npm:^6.0.1"
@@ -27736,6 +27840,7 @@ __metadata:
     monaco-editor: "npm:@codingame/monaco-vscode-editor-api@^8.0.4"
     monaco-editor-wrapper: "npm:~5.5.3"
     monaco-languageclient: "npm:~8.8.3"
+    picomatch-browser: "npm:^2.2.6"
     vite: "npm:^5.4.10"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     vite-tsconfig-paths: "npm:^5.0.1"

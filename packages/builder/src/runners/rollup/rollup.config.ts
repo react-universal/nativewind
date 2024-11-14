@@ -92,6 +92,35 @@ export const createRollupConfig = (
           preserveModules: true,
           dynamicImportInCjs: true,
           esModule: 'if-default-prop',
+          sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
+            if (format === 'esm') {
+              if (!fs.existsSync(relativeSourcePath)) {
+                const targetPath = path.join(
+                  process.cwd(),
+                  relativeSourcePath.replaceAll(/(\.\.\/)/g, ''),
+                );
+                // const sourcemapFilename = path.basename(sourcemapPath);
+                // const codeFilename = path.basename(relativeSourcePath);
+
+                const fixedPath = path.relative(path.dirname(sourcemapPath), targetPath);
+                // console.log(`
+                //   cwd: ${process.cwd()} -
+                //   target: ${targetPath} -
+                //   targetExists: ${fs.existsSync(targetPath)} -
+                //   --------
+                //   relative: ${relativeSourcePath} -
+                //   codeFilename: ${codeFilename} -
+                //   -----
+                //   sourcemapPath: ${sourcemapPath} -
+                //   sourcemapFilename: ${sourcemapFilename} -
+                //   ----
+                //   fixedPath: ${fixedPath} -
+                //   exists: ${fs.existsSync(fixedPath)} \n`);
+                return fixedPath;
+              }
+            }
+            return relativeSourcePath;
+          },
           interop: 'compat',
           sourcemap,
           // Hoisting transitive imports adds bare imports in modules,

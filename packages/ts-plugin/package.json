@@ -15,14 +15,14 @@
   "author": "Cristhian Gutierrez",
   "main": "build/index.js",
   "scripts": {
-    "build:tsc:watch": "tsc -p tsconfig.build.json -w",
     "circular": "madge --extensions ts --circular --no-color --no-spinner --warning src",
     "clean": "rm -rf build",
     "deprecated": "tsc -p tsconfig.build.json -w",
     "deprecated:bbb": "tsc -p tsconfig.build.json",
     "esbuild:build": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
-    "test": "jest"
+    "test": "jest",
+    "ts____b": "tsc -p tsconfig.build.json -w"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.1.0",

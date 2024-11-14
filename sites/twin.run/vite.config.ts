@@ -1,19 +1,19 @@
-import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 import vsixPlugin from '@codingame/monaco-vscode-rollup-vsix-plugin';
+import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 import assetsJSON from '@entur/vite-plugin-assets-json';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import * as fs from 'fs';
 import path from 'path';
 import { defineConfig } from 'vite';
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-const pkg = JSON.parse(
-  fs.readFileSync(new URL('./package.json', import.meta.url).pathname).toString(),
-);
+// const pkg = JSON.parse(
+//   fs.readFileSync(new URL('./package.json', import.meta.url).pathname).toString(),
+// );
 
-const localDependencies = Object.entries(pkg.dependencies as Record<string, string>)
-  .filter(([, version]) => version.startsWith('@codingame'))
-  .map(([name]) => name);
+// const localDependencies = Object.entries(pkg.dependencies as Record<string, string>)
+//   .filter(([name]) => name.startsWith('@codingame'))
+//   .map(([name]) => name);
 
 export default defineConfig({
   assetsInclude: ['**/*.json', '**/*.wasm'],
@@ -27,12 +27,21 @@ export default defineConfig({
   worker: {
     format: 'es',
   },
+  logLevel: 'info',
   server: {
     port: 5173,
     host: '0.0.0.0',
   },
   resolve: {
-    dedupe: ['vscode', ...localDependencies],
+    dedupe: ['vscode'],
+    alias: {
+      //   '@babel/core': path.join(__dirname, './remaps/core'),
+      '@babel/generator': path.join(__dirname, './remaps/generator'),
+      //   '@babel/template': path.join(__dirname, './remaps/template'),
+      //   '@babel/traverse': path.join(__dirname, './remaps/traverse'),
+      //   '@babel/types': path.join(__dirname, './remaps/types'),
+      //   picomatch: 'picomatch-browser',
+    },
   },
   define: {
     rootDirectory: JSON.stringify(__dirname),
@@ -40,7 +49,6 @@ export default defineConfig({
   optimizeDeps: {
     include: [
       // add all local dependencies...
-      ...localDependencies,
       // and their exports
       'vscode/extensions',
       'vscode/services',
@@ -51,12 +59,13 @@ export default defineConfig({
       // it's mainly empirical and probably not the best way, fix me if you find a better way
       'vscode-textmate',
       'vscode-oniguruma',
-      '@vscode/vscode-languagedetection'
+      '@vscode/vscode-languagedetection',
     ],
     esbuildOptions: {
       define: {
         global: 'globalThis',
         __DEV__: 'true',
+        // process: JSON.stringify({ env: {} }),
       },
       plugins: [
         // @ts-expect-error
@@ -68,7 +77,7 @@ export default defineConfig({
 
   plugins: [
     nodePolyfills({
-      include: ['path', 'buffer', 'process'],
+      include: ['path', 'process'],
       globals: {
         Buffer: true,
         process: true,
@@ -111,5 +120,12 @@ export default defineConfig({
         };
       },
     },
+    {
+      name: 'log clear',
+      
+      onLog(level, log) {
+        
+      },
+    }
   ],
 });

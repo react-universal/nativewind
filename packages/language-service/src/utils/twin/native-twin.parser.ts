@@ -6,8 +6,12 @@ import {
 } from '@native-twin/css';
 import * as P from '@native-twin/arc-parser';
 import * as TwParser from '@native-twin/css/tailwind-parser';
+import {
+  LocatedGroupToken,
+  LocatedParser,
+  TemplateToken,
+} from '../../models/twin/parser.types';
 import { TemplateTokenWithText } from '../../models/twin/template-token.model';
-import { LocatedGroupToken, LocatedParser, TemplateToken } from '../../models/twin/parser.types';
 import { addTextToParsedRules } from './native-twin.utils';
 
 const mapWithLocation = <A extends object>(
@@ -93,6 +97,10 @@ export const parseTemplate = (
   template: string,
   templateStarts: number,
 ): TemplateTokenWithText[] => {
+  if (template.startsWith("'")) {
+    templateStarts = templateStarts + 1;
+  }
+  template = template.replace("'", '');
   const parsed = P.many1(
     P.whitespaceSurrounded(
       P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),

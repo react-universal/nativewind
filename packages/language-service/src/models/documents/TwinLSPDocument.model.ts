@@ -1,10 +1,10 @@
+import * as VSCDocument from 'vscode-languageserver-textdocument';
+import * as vscode from 'vscode-languageserver-types';
 import type * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import * as VSCDocument from 'vscode-languageserver-textdocument';
-import * as vscode from 'vscode-languageserver-types';
 import { babelExtractors } from '@native-twin/compiler/babel';
 import { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
 import type { TemplateTokenWithText } from '../twin/template-token.model';
@@ -81,6 +81,7 @@ export class TwinLSPDocument implements Equal.Equal {
     if (quotesRegex.test(text)) {
       startPosition.character += 1;
       endPosition.character -= 1;
+      console.log('MATCH_QUOTES_REGEX');
       return vscode.Range.create(startPosition, endPosition);
     }
     return range;

@@ -1,8 +1,8 @@
-import type * as vscode from 'vscode';
+import * as vscode from 'vscode';
 import * as Effect from 'effect/Effect';
-import * as Option from 'effect/Option';
-import { FileSystemService } from '../services/FileSystem.service';
-import { TwinEditorService } from '../services/TwinEditorEditor.service';
+import * as monaco from 'monaco-editor';
+import { FileSystemService } from '@/editor/services/FileSystem.service';
+import { TwinEditorService } from '@/editor/services/TwinEditor.service';
 
 export const SetupEditorUI = Effect.gen(function* () {
   const fs = yield* FileSystemService;
@@ -17,9 +17,34 @@ export const SetupEditorUI = Effect.gen(function* () {
       fs.getRegisteredModules().map((x) => x.uri.path),
     );
 
-    const file = await fs.createMonacoFileModel(data.uri, data.contents);
-    app.getEditor().pipe(Option.map((x) => x.setModel(file.object.textEditorModel)));
+    const file = monaco.editor.getModel(data.uri);
+
+    if (!file) return;
+
+    await app.wrapper.updateCodeResources({
+      main: {
+        uri: file.uri.toString(),
+        text: file.getValue(),
+      },
+    });
+    app.wrapper.updateLayout();
+    // app.getEditor().pipe(Option.map((x) => x.setModel(file)));
   };
+
+  // app.getEditor().pipe(
+  //   Option.map((x) =>
+  //     x.onDidChangeModel(async (model) => {
+  //       if (!model.newModelUrl) return;
+  //       const file = monaco.editor.getModel(model.newModelUrl);
+  //       if (!file) return;
+  //       console.log('MODEL: ', file);
+  //       // await vscode.workspace.openTextDocument(file.uri);
+  //       await EditorMainRuntime.runPromise(
+  //         workers.installPackagesTypings(TWIN_PACKAGES_TYPINGS),
+  //       );
+  //     }),
+  //   ),
+  // );
 
   const openComponentButton = createActionButton('Open Component file', async () =>
     makeFSAction(fs.files.component),

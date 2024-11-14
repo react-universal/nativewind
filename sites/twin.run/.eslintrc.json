@@ -2,7 +2,8 @@
   "extends": "../../.eslintrc.json",
   "ignorePatterns": [
     "!**/*",
-    "src/fixtures/*"
+    "src/fixtures/*",
+    "remaps"
   ],
   "overrides": [
     {
