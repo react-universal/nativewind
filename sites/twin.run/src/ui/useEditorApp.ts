@@ -1,3 +1,4 @@
+// import { attachPart, Parts } from '@codingame/monaco-vscode-views-service-override';
 import { useCallback, useEffect, useRef } from 'react';
 import { TwinEditorConfigService } from '@/editor/services/EditorConfig.service';
 import { FileSystemService } from '@/editor/services/FileSystem.service';
@@ -83,6 +84,7 @@ export const useEditorApp = ({ editor, config }: EditorAppParams) => {
     const bootEditor = async () => {
       await initMonaco();
       await startMonaco();
+      // attachPart(Parts.EDITOR_PART, document.getElementById('#editors-2')!);
     };
     if (editorRef.current) {
       bootEditor();

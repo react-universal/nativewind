@@ -44,10 +44,6 @@ export const setup = () => {
             console.log('Creating editor worker...', _, label);
           }
           editorWorkerCache = new editorWorker();
-          // new Worker(
-          //   new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url),
-          //   { type: 'module' },
-          // );
           return editorWorkerCache;
         default:
           console.warn('OTHER_WORKER_LOAD: ', _, label);
@@ -63,7 +59,7 @@ export const setup = () => {
     target: monaco.languages.typescript.ScriptTarget.ESNext,
     moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
     lib: ['ESNext', 'DOM'],
-    jsx: monaco.languages.typescript.JsxEmit.Preserve,
+    jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
     // typeRoots: ['node_modules/@types'],
     isolatedModules: true,
     allowJs: false,
@@ -79,7 +75,6 @@ export const setup = () => {
 
   monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
     noSuggestionDiagnostics: true,
-    // noSemanticValidation: true,
   });
   monaco.languages.css.cssDefaults.setModeConfiguration({
     hovers: true,

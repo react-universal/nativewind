@@ -66,7 +66,6 @@ export default defineConfig((): UserConfig => {
         // it's mainly empirical and probably not the best way, fix me if you find a better way
         'vscode-textmate',
         'vscode-oniguruma',
-        '@vscode/vscode-languagedetection',
 
         '@effect/platform-browser/BrowserWorkerRunner',
         '@effect/platform/WorkerRunner',
