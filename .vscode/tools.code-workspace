@@ -5,14 +5,6 @@
       "path": ".."
     },
     {
-      "name": "twin.run",
-      "path": "../sites/twin.run"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
-    },
-    {
       "name": "📦 @lib/language-service",
       "path": "../packages/language-service"
     },
@@ -25,12 +17,24 @@
       "path": "../packages/compiler"
     },
     {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
     },
     {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
+    },
+    {
+      "name": "📦 @lib/vite-plugin",
+      "path": "../packages/vite-plugin"
+    },
+    {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "twin.run",
+      "path": "../sites/twin.run"
     }
   ],
   "settings": {
@@ -69,14 +73,15 @@
       "TRBL",
       "xytrbl"
     ],
-    "jest.enable": true,
+    "jest.enable": false,
     "jest.runMode": "on-demand",
-    "jest.debugMode": true,
+    "jest.debugMode": false,
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/builder",
       "📦 @lib/with-nextjs",
       "📦 @lib/vscode",
+      "📦 @lib/vite-plugin",
       "📦 @lib/language-service",
       "📦 @lib/language-server",
       "expo-app",

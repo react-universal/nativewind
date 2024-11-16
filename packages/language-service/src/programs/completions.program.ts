@@ -22,7 +22,7 @@ export const getCompletionsAtPosition = (
     const extracted = Option.Do.pipe(
       Option.bind('document', () => document),
       Option.let('cursorOffset', ({ document }) =>
-        document.positionToOffset(params.position),
+        document.offsetAt(params.position),
       ),
       Option.bind('languageRegionAtPosition', ({ document }) =>
         document.getTemplateAtPosition(params.position),
@@ -36,8 +36,8 @@ export const getCompletionsAtPosition = (
     const completionEntries = Option.flatMap(extracted, (meta) => {
       const text = meta.document.getText(
         Range.create(
-          meta.document.offsetToPosition(meta.cursorOffset - 1),
-          meta.document.offsetToPosition(meta.cursorOffset + 1),
+          meta.document.positionAt(meta.cursorOffset - 1),
+          meta.document.positionAt(meta.cursorOffset + 1),
         ),
       );
       if (text === '``') {
@@ -45,8 +45,8 @@ export const getCompletionsAtPosition = (
           Completions.getAllCompletionRules(
             twinService.completions,
             Range.create(
-              meta.document.offsetToPosition(meta.cursorOffset),
-              meta.document.offsetToPosition(meta.cursorOffset + 1),
+              meta.document.positionAt(meta.cursorOffset),
+              meta.document.positionAt(meta.cursorOffset + 1),
             ),
           ),
         );

@@ -5,7 +5,7 @@ export const Component = () => {
   return (
     <div>
       <div className={`bg-rose-700 bg-blue text(sm md:gray)`} />
-      <div className={`bg-blue`} />
+      <div className='bg-blue' />
     </div>
   );
 };

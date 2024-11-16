@@ -12,9 +12,8 @@
 </head>
 
 <body>
-    <!-- <div id="root"></div>
-    <script type="module" src="./src/App.tsx"></script> -->
-    <div id="first-loading-status" class="loading-player">
+    <div id="monaco-editor-root"></div>
+    <!-- <div id="first-loading-status" class="loading-player">
         <video src="./loading-status.webm" loop controls="none" autoplay></video>
     </div>
     <div class="twin-editor">
@@ -22,8 +21,18 @@
             <div id="monaco-editor-root"></div>
             <iframe id="editorPreview" frameborder="0"></iframe>
         </div>
-    </div>
-    <script type="module" src="./src/index.ts"></script>
+    </div> -->
+    <script type="module">
+        import { setup } from './src';
+        import { runApp } from './src/App.ui';
+        setup();
+        runApp();
+    </script>
+    <style type="text/css" data-native-twin="">
+        :root {
+            font-size: 16px;
+        }
+    </style>
 </body>
 
 </html>

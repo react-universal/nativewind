@@ -59,6 +59,10 @@ const runner = Schema.Union(Schema.Literal('rollup'), Schema.Literal('esbuild'))
   .annotations({ default: 'rollup' })
   .pipe((x) => createDefaultOptional(x, 'rollup'));
 
+const external = Schema.Array(Schema.String)
+  .annotations({ default: ['vscode', 'react', 'react/jsx-runtime'] })
+  .pipe((x) => createDefaultOptional(x, ['vscode', 'react', 'react/jsx-runtime']));
+
 const configFileObject = Schema.Struct({
   $schema: Schema.String,
   runner,
@@ -68,6 +72,7 @@ const configFileObject = Schema.Struct({
   platform,
   types,
   entries,
+  external,
   vscode,
   bundle,
   production,

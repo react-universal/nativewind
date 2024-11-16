@@ -1,0 +1,64 @@
+{
+  "name": "@native-twin/vite-plugin",
+  "version": "7.0.0-next.2",
+  "description": "Vite extractor plugin for native twin",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/vite-plugin"
+  },
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "type": "module",
+  "exports": {
+    "types": "./build/index.d.ts",
+    "default": "./build/index.js"
+  },
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "LICENSE",
+    "src",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "build:watch": "node esbuild.mjs --watch",
+    "clean": "rm -rf build",
+    "gen:jsdocs": "jsdoc -c jsdoc.json"
+  },
+  "dependencies": {
+    "@effect/cli": "^0.48.3",
+    "@effect/platform": "^0.69.3",
+    "@effect/platform-node": "^0.64.4",
+    "@effect/platform-node-shared": "^0.19.3",
+    "@effect/printer-ansi": "^0.38.0",
+    "@native-twin/compiler": "workspace:*",
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*",
+    "effect": "^3.10.0"
+  },
+  "peerDependencies": {
+    "vite": ">=5"
+  },
+  "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
+    "better-docs": "*",
+    "vite": "^5.4.10"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-json": "^6.1.0"
+  }
+}

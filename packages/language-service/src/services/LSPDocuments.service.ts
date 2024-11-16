@@ -1,20 +1,25 @@
+import type { Connection, TextDocuments } from 'vscode-languageserver';
+import type { TextDocument } from 'vscode-languageserver-textdocument';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import type { Connection, TextDocuments } from 'vscode-languageserver';
-import type { TextDocument } from 'vscode-languageserver-textdocument';
-import { TwinLSPDocument } from '../models/documents/TwinLSPDocument.model';
+import { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument';
 import { LSPConfigService } from './LSPConfig.service';
 
 export interface DocumentsServiceShape {
   handler: TextDocuments<TextDocument>;
-  getDocument: (uri: string) => Option.Option<TwinLSPDocument>;
+  getDocument: (uri: string) => Option.Option<BaseTwinTextDocument>;
   setupConnection(connection: Connection): void;
 }
 
-const make = (handler: TextDocuments<TextDocument>) => {
+const make = (
+  handler: TextDocuments<TextDocument>,
+  DocumentConstructor: new (
+    ...params: ConstructorParameters<typeof BaseTwinTextDocument>
+  ) => BaseTwinTextDocument,
+) => {
   return Effect.gen(function* () {
     const config = yield* LSPConfigService;
 
@@ -28,7 +33,7 @@ const make = (handler: TextDocuments<TextDocument>) => {
         const currentConfig = yield* config.get;
         return Option.map(
           Option.fromNullable(handler.get(uri)),
-          (x) => new TwinLSPDocument(x, currentConfig.vscode),
+          (x) => new DocumentConstructor(x, currentConfig.vscode),
         );
       });
 
@@ -48,7 +53,12 @@ export class LSPDocumentsService extends Context.Tag('language-service/documents
   LSPDocumentsService,
   Effect.Effect.Success<ReturnType<typeof make>>
 >() {
-  static make = (handler: TextDocuments<TextDocument>) => {
-    return Layer.scoped(LSPDocumentsService, make(handler));
+  static make = (
+    handler: TextDocuments<TextDocument>,
+    DocumentConstructor: new (
+      ...params: ConstructorParameters<typeof BaseTwinTextDocument>
+    ) => BaseTwinTextDocument,
+  ) => {
+    return Layer.scoped(LSPDocumentsService, make(handler, DocumentConstructor));
   };
 }

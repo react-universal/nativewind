@@ -1,4 +1,4 @@
-import {packages} from '@babel/standalone';
+import { packages } from '@babel/standalone';
 import type * as types from '@babel/types';
 
 const traverse = packages.traverse;
@@ -14,7 +14,15 @@ export const extractLanguageRegions = (
 ): types.SourceLocation[] => {
   const sourceLocations: types.SourceLocation[] = [];
   try {
-    const parsed = packages.parser.parse(code);
+    const parsed = packages.parser.parse(code, {
+      plugins: ['jsx', 'typescript'],
+      sourceType: 'module',
+      errorRecovery: true,
+      startLine: 0,
+      startColumn: 1,
+      tokens: false,
+      ranges: true,
+    });
     traverse.default(parsed, {
       CallExpression: (path) => {
         const sources: types.SourceLocation[] = [];
@@ -60,7 +68,8 @@ export const extractLanguageRegions = (
     });
 
     return sourceLocations;
-  } catch {
+  } catch (e) {
+    console.log('ERROR: ', e);
     return sourceLocations;
   }
 };

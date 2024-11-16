@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { createVariants } from '@native-twin/core';
 
 const cls = createVariants({

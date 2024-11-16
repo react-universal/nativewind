@@ -2,7 +2,7 @@
 import * as vscode from 'vscode';
 import getEditorOverride from '@codingame/monaco-vscode-editor-service-override';
 // import getExplorerOverride from '@codingame/monaco-vscode-explorer-service-override';
-import getHostOverride from '@codingame/monaco-vscode-host-service-override';
+// import getHostOverride from '@codingame/monaco-vscode-host-service-override';
 import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
 // import getLayoutOverride from '@codingame/monaco-vscode-layout-service-override';
 // import getMonarchOverride from '@codingame/monaco-vscode-monarch-service-override';
@@ -159,7 +159,7 @@ const createWrapperConfig = (
         // ...getLayoutOverride(),
         // ...getViewsOverride(useOpenEditorStub),
         // ...getBaseOverride(),
-        ...getHostOverride(),
+        // ...getHostOverride(),
         // ...getMonarchOverride(),
         // ...getExplorerOverride(),
         // ...getViewOverride(),

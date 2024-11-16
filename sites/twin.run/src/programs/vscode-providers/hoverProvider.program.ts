@@ -10,7 +10,7 @@ import {
   DocumentLanguageRegion,
   getSheetEntryStyles,
   NativeTwinManagerService,
-} from '@native-twin/language-service';
+} from '@native-twin/language-service/browser';
 import { TwinTextDocument } from '@/editor/models/TwinTextDocument.model';
 
 export const InstallHoverProvider = Effect.gen(function* () {

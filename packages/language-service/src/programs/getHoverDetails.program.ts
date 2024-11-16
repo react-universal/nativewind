@@ -26,9 +26,7 @@ export const getHoverDetails = (
       Option.bind('nodeAdPosition', ({ document }) =>
         document.getTemplateAtPosition(params.position),
       ),
-      Option.let('cursorOffset', ({ document }) =>
-        document.positionToOffset(params.position),
-      ),
+      Option.let('cursorOffset', ({ document }) => document.offsetAt(params.position)),
 
       Option.bind('flattenCompletions', ({ nodeAdPosition, cursorOffset }) => {
         console.log(
@@ -47,15 +45,13 @@ export const getHoverDetails = (
         ).pipe(
           Option.map((x): { range: vscode.Range; text: string } => ({
             range: Range.create(
-              document.offsetToPosition(x.token.bodyLoc.start),
-              document.offsetToPosition(x.token.bodyLoc.end),
+              document.positionAt(x.token.bodyLoc.start),
+              document.positionAt(x.token.bodyLoc.end),
             ),
             text: x.token.text,
           })),
           Option.match({
-            onSome(a) {
-              return Option.some(a);
-            },
+            onSome: (a) => Option.some(a),
             onNone() {
               const token = flattenCompletions.token;
               if (
@@ -65,8 +61,8 @@ export const getHoverDetails = (
               ) {
                 return Option.some({
                   range: Range.create(
-                    document.offsetToPosition(flattenCompletions.bodyLoc.start),
-                    document.offsetToPosition(flattenCompletions.bodyLoc.end),
+                    document.positionAt(flattenCompletions.bodyLoc.start),
+                    document.positionAt(flattenCompletions.bodyLoc.end),
                   ),
                   text: flattenCompletions.text,
                 });
@@ -86,8 +82,6 @@ export const getHoverDetails = (
         return completionRuleToQuickInfo(sheet.rn, sheet.css, tokenAtPosition.range);
       }),
     );
-
-    console.log('ENTRY: ', hoverEntry);
 
     return Option.getOrUndefined(hoverEntry);
   });

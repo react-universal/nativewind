@@ -1,13 +1,13 @@
+import * as vscode from 'vscode-languageserver-types';
 import { FinalSheet } from '@native-twin/css';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import * as vscode from 'vscode-languageserver-types';
 import { asArray } from '@native-twin/helpers';
-import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
+import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument';
 import { VscodeCompletionItem } from '../../models/language/completion.model';
-import { TemplateTokenData } from '../../models/twin/template-token.model';
 import { TwinStore, TwinRuleCompletion } from '../../models/twin/native-twin.types';
+import { TemplateTokenData } from '../../models/twin/template-token.model';
 import { compareTwinRuleWithClassName } from './completion.ap';
 import { getDocumentationMarkdown } from './language.utils';
 
@@ -44,7 +44,7 @@ export const getAllCompletionRules = (
 export const completionRulesToEntries = (
   flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,
   ruleCompletions: ReadonlyArray<TwinRuleCompletion>,
-  document: TwinLSPDocument,
+  document: BaseTwinTextDocument,
 ) => {
   const filtered = filterTokensFromRules(flattenTemplateTokens, ruleCompletions);
   return ReadonlyArray.flatMap(filtered, (suggestion) => {
@@ -52,8 +52,8 @@ export const completionRulesToEntries = (
     const { insertText, range } = match.adjustTextInsert(
       rule.completion.className,
       vscode.Range.create(
-        document.offsetToPosition(match.token.bodyLoc.start),
-        document.offsetToPosition(match.token.bodyLoc.end),
+        document.positionAt(match.token.bodyLoc.start),
+        document.positionAt(match.token.bodyLoc.end),
       ),
     );
     // const token = match.token.token;

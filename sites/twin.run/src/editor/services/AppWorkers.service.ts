@@ -7,7 +7,6 @@ import { identity } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import typingsWorker from '@/editor/workers/typings.worker?worker&url';
-import {} from 'monaco-languageclient/tools'
 import { traceLayerLogs } from '@/utils/logger.utils';
 import { GetPackageTypings } from '@/utils/twin.schemas';
 import { FileSystemService } from './FileSystem.service';

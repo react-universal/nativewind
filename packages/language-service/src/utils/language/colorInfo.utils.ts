@@ -4,14 +4,14 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { Range, Color } from 'vscode-languageserver-types';
-import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
+import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument';
 import { TemplateTokenData } from '../../models/twin/template-token.model';
 import { TwinRuleCompletion } from '../../models/twin/native-twin.types';
 import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
 
 export const getDocumentTemplatesColors = (
   twinService: NativeTwinManagerService['Type'],
-  twinDocument: TwinLSPDocument,
+  twinDocument: BaseTwinTextDocument,
 ) =>
   pipe(
     twinDocument.getLanguageRegions(),
@@ -25,11 +25,11 @@ export const getDocumentTemplatesColors = (
 export const templateTokenToColorInfo = (
   templateNode: TemplateTokenData,
   twinService: NativeTwinManagerService['Type'],
-  twinDocument: TwinLSPDocument,
+  twinDocument: BaseTwinTextDocument,
 ): vscode.ColorInformation[] => {
   const range = Range.create(
-    twinDocument.offsetToPosition(templateNode.token.bodyLoc.start),
-    twinDocument.offsetToPosition(templateNode.token.bodyLoc.end),
+    twinDocument.positionAt(templateNode.token.bodyLoc.start),
+    twinDocument.positionAt(templateNode.token.bodyLoc.end),
   );
   const templateFilter = templateNode.adjustColorInfo(range);
   return twinService.completions.twinRules.pipe(

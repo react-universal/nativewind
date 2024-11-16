@@ -17,7 +17,7 @@ export const getDocumentHighLightsProgram = (
 
     if (!document) return [];
 
-    const cursorOffset = document.positionToOffset(params.position);
+    const cursorOffset = document.offsetAt(params.position);
     const highlights: vscode.DocumentHighlight[] = document
       .getTemplateAtPosition(params.position)
       .pipe(
@@ -27,8 +27,8 @@ export const getDocumentHighLightsProgram = (
           if (node.token.type === 'CLASS_NAME') {
             highLights.push({
               range: vscode.Range.create(
-                document.offsetToPosition(node.bodyLoc.start),
-                document.offsetToPosition(node.bodyLoc.end),
+                document.positionAt(node.bodyLoc.start),
+                document.positionAt(node.bodyLoc.end),
               ),
               kind: vscode.DocumentHighlightKind.Text,
             });

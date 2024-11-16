@@ -1,5 +1,4 @@
 import * as Effect from 'effect/Effect';
-import * as monaco from 'monaco-editor';
 import { FileSystemService } from '@/editor/services/FileSystem.service';
 import { TwinEditorService } from '@/editor/services/TwinEditor.service';
 
@@ -11,11 +10,6 @@ export const SetupWorkSpace = Effect.gen(function* () {
   //   console.log('CREATED_MODEL: ', model);
   //   fs.fsProvider.registerFile(fs.createFileInMemory(model.uri, model.getValue()));
   // });
-
-  console.log(
-    'extra libs: ',
-    monaco.languages.typescript.typescriptDefaults.getExtraLibs(),
-  );
 
   yield* app.createMonacoFileModel(fs.files.tsconfig.uri, fs.files.tsconfig.contents);
   yield* app.createMonacoFileModel(fs.files.npmPackage.uri, fs.files.npmPackage.contents);

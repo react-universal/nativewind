@@ -45,6 +45,17 @@
         "./src/index.ts"
       ]
     },
+    "external": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "vscode",
+        "react",
+        "react/jsx-runtime"
+      ]
+    },
     "vscode": {
       "type": "boolean",
       "default": false
@@ -80,7 +91,7 @@
     },
     "types": {
       "type": "boolean",
-      "description": "generate .d.ts Default: true",
+      "description": "generate .d.ts \nDefault: true",
       "title": "Ts types",
       "default": true
     }

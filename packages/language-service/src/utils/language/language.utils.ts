@@ -1,17 +1,17 @@
+import * as vscode from 'vscode-languageserver-types';
 import { FinalSheet } from '@native-twin/css';
 import { TinyColor } from '@ctrl/tinycolor';
 import toCssFormat from 'cssbeautify';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
-import * as vscode from 'vscode-languageserver-types';
 import { asArray } from '@native-twin/helpers';
+import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument';
 import { DocumentLanguageRegion } from '../../models/documents/LanguageRegion.model';
-import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
+import { TwinRuleCompletion, TwinRuleParts } from '../../models/twin/native-twin.types';
 import {
   TemplateTokenData,
   TemplateTokenWithText,
 } from '../../models/twin/template-token.model';
-import { TwinRuleCompletion, TwinRuleParts } from '../../models/twin/native-twin.types';
 import { variantTokenToString } from '../twin/native-twin.utils';
 
 export const getCompletionTokenKind = ({
@@ -108,7 +108,7 @@ export const getFlattenTemplateToken = (
 };
 
 export const getRangeFromTokensAtPosition = (
-  document: TwinLSPDocument,
+  document: BaseTwinTextDocument,
   nodeAtPosition: DocumentLanguageRegion,
   templateTokens: TemplateTokenWithText[],
 ) => {

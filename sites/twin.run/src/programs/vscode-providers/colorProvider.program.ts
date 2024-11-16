@@ -11,9 +11,9 @@ import {
   NativeTwinManagerService,
   TemplateTokenData,
   TwinRuleCompletion,
-} from '@native-twin/language-service';
-import { getColorDecoration } from '@/utils/languageClient.utils';
+} from '@native-twin/language-service/browser';
 import { TwinTextDocument } from '@/editor/models/TwinTextDocument.model';
+import { getColorDecoration } from '@/utils/languageClient.utils';
 
 const colorNames = Object.keys(CSS_COLORS);
 export const InstallColorProvider = Effect.gen(function* () {

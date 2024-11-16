@@ -12,6 +12,7 @@ import * as Predicate from 'effect/Predicate';
 import * as Stream from 'effect/Stream';
 import * as String from 'effect/String';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { cx, defineConfig, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import {
@@ -32,6 +33,8 @@ import {
 import { maybeLoadJS } from '../utils';
 import { NativeTwinServiceNode } from './NativeTwin.node';
 import { InternalTwinConfig } from './twin.types';
+
+const require = createRequire(import.meta.url);
 
 const checkDefaultTwinConfigFiles = (rootDir: string) =>
   Effect.flatMap(FileSystem.FileSystem, (fs) =>
@@ -125,21 +128,18 @@ export const getFileClasses = (filename: string) =>
     const filePath = path.relative(twin.projectRoot, filename);
     const babelTrees = yield* reactCompiler.getTrees(contents, filePath);
 
-    const registry = yield* pipe(
-      Stream.fromIterable(babelTrees),
+    const registry = yield* Stream.fromIterable(babelTrees).pipe(
       Stream.mapEffect((x) =>
         extractSheetsFromTree(x, path.relative(twin.projectRoot, filename)),
       ),
       Stream.map(HashMap.fromIterable),
-
-      Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) => {
-        return pipe(prev, HashMap.union(current));
-      }),
+      Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) =>
+        HashMap.union(current, prev),
+      ),
     );
 
     const fileClasses = pipe(
-      babelTrees,
-      RA.flatMap((x) => x.all()),
+      RA.flatMap(babelTrees, (x) => x.all()),
       RA.flatMap((leave) => extractMappedAttributes(leave.value.babelNode)),
       RA.map(({ value }) => {
         let classNames = '';
@@ -175,9 +175,7 @@ export const getElementEntries = (
 
     const entries = twin(classNames);
     const runtimeEntries = pipe(
-      entries,
-      RA.dedupeWith((a, b) => a.className === b.className),
-
+      RA.dedupeWith(entries, (a, b) => a.className === b.className),
       RA.map((x) => compileSheetEntry(x, ctx)),
       sortSheetEntries,
     );

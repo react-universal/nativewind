@@ -15,6 +15,8 @@ import {
   LSPConnectionService,
   languagePrograms,
   LSPConfigService,
+  TwinMonacoTextDocument,
+  MonacoNativeTwinManager,
 } from '@native-twin/language-service/browser';
 
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
@@ -22,9 +24,12 @@ const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScop
 const connectionHandler = createConnection(messageReader, messageWriter);
 export const documentsHandler = new TextDocuments(TextDocument);
 
-export const LspMainLive = LSPDocumentsService.make(documentsHandler).pipe(
+export const LspMainLive = LSPDocumentsService.make(
+  documentsHandler,
+  TwinMonacoTextDocument,
+).pipe(
   Layer.provideMerge(LSPConfigService.Live),
-  Layer.provideMerge(NativeTwinManagerService.Live),
+  Layer.provideMerge(NativeTwinManagerService.Live(new MonacoNativeTwinManager())),
   Layer.provideMerge(LSPConnectionService.make(connectionHandler)),
 );
 

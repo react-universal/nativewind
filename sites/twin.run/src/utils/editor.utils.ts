@@ -12,6 +12,7 @@ export const detectLanguageFromPath = (path: string) => {
   return ext;
 };
 
+
 export const getEditorFileByURI = (uri: monaco.Uri) =>
   pipe(monaco.editor.getModel(uri), Option.fromNullable);
 

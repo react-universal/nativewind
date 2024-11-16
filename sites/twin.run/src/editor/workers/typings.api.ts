@@ -5,8 +5,8 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Stream from 'effect/Stream';
 import * as monaco from 'monaco-editor';
-import { getOrCreateModel } from '@/editor/monaco.api';
 import typingsWorker from '@/lsp/workers/typings.worker?worker&url';
+import { FileSystemService } from '../services/FileSystem.service';
 import { GetPackageTypings } from './shared.schemas';
 
 const typingsWorkerLayer = BrowserWorker.layer(
@@ -15,6 +15,7 @@ const typingsWorkerLayer = BrowserWorker.layer(
 
 export const addPackageTypings = (packages: GetPackageTypings[]) =>
   Effect.gen(function* () {
+    const fs = yield* FileSystemService;
     const pool = yield* EffectWorker.makePoolSerialized({
       size: 1,
     });
@@ -32,11 +33,11 @@ export const addPackageTypings = (packages: GetPackageTypings[]) =>
                 typing.contents,
                 typing.filePath,
               ),
-              model: getOrCreateModel(typing.filePath, typing.contents),
+              model: fs.getOrCreateModel(typing.filePath, typing.contents),
             })),
           ),
         ),
       ),
       Stream.runCollect,
     );
-  }).pipe(Effect.scoped, Effect.provide(typingsWorkerLayer), Effect.runPromise);
+  }).pipe(Effect.scoped, Effect.provide(typingsWorkerLayer));

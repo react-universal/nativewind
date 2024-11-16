@@ -5,7 +5,7 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "WebWorker"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "moduleResolution": "Bundler",
     "strict": true,
     "forceConsistentCasingInFileNames": true,

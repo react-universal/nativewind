@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /// <reference lib="WebWorker" />
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   BrowserMessageReader,
@@ -10,12 +7,17 @@ import {
   createConnection,
   TextDocuments,
 } from 'vscode-languageserver/browser.js';
-import { LSPConfigService } from '@native-twin/language-service';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
 import {
   NativeTwinManagerService,
   LSPDocumentsService,
   LSPConnectionService,
   languagePrograms,
+  LSPConfigService,
+  TwinMonacoTextDocument,
+  MonacoNativeTwinManager,
 } from '@native-twin/language-service/browser';
 
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
@@ -24,12 +26,12 @@ const connection = createConnection(messageReader, messageWriter);
 const documentsHandler = new TextDocuments(TextDocument);
 
 const ConnectionLayer = LSPConnectionService.make(connection);
-const DocumentsLayer = LSPDocumentsService.make(documentsHandler);
+const DocumentsLayer = LSPDocumentsService.make(documentsHandler, TwinMonacoTextDocument);
 
 const MainLive = Layer.empty.pipe(
   Layer.provideMerge(DocumentsLayer),
   Layer.provideMerge(LSPConfigService.Live),
-  Layer.provideMerge(NativeTwinManagerService.Live),
+  Layer.provideMerge(NativeTwinManagerService.Live(new MonacoNativeTwinManager())),
   Layer.provideMerge(ConnectionLayer),
   // Layer.provideMerge(ConfigManagerService.Live),
 );

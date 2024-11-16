@@ -4,7 +4,6 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import { NativeTwinManagerService } from './NativeTwinManager.service';
 import { getClientCapabilities } from '../utils/connection.utils';
 import {
   DEFAULT_PLUGIN_CONFIG,
@@ -12,6 +11,7 @@ import {
 } from '../utils/constants.utils';
 import { loggerUtils } from '../utils/lsp.logger.service';
 import { LSPConnectionService } from './LSPConnection.service';
+import { NativeTwinManagerService } from './NativeTwinManager.service';
 
 interface VscodeLSPConfig {
   twinConfigFile: Option.Option<string>;
@@ -95,12 +95,11 @@ const make = Effect.gen(function* () {
       );
     }
 
-    console.debug('onInitialize CALLED');
     return capabilities;
   });
 
   Connection.onInitialized(() => {
-    console.debug('onInitialized CALLED');
+    // console.debug('onInitialized CALLED');
   });
 
   return {

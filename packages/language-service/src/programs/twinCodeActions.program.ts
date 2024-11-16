@@ -5,7 +5,7 @@ import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
 import { asArray } from '@native-twin/helpers';
 import { DocumentLanguageRegion } from '../models/documents/LanguageRegion.model';
-import { TwinLSPDocument } from '../models/documents/TwinLSPDocument.model';
+import { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument';
 import {
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
@@ -65,7 +65,7 @@ export const twinCodeActionsProgram = (params: vscodeLSP.CodeActionParams) => {
 };
 
 const getDuplicatedDeclarationCodeAction = (
-  twinDoc: TwinLSPDocument,
+  twinDoc: BaseTwinTextDocument,
   region: DocumentLanguageRegion,
   diagnostics: VscodeDiagnosticItem[],
 ) => {

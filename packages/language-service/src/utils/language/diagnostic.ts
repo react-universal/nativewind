@@ -1,9 +1,10 @@
+import { isSameRange } from '../vscode.utils';
+import * as vscode from 'vscode-languageserver-types';
 import * as RA from 'effect/Array';
 import * as Equivalence from 'effect/Equivalence';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import * as vscode from 'vscode-languageserver-types';
-import { TwinLSPDocument } from '../../models/documents/TwinLSPDocument.model';
+import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument';
 import {
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
@@ -11,7 +12,6 @@ import {
 import { TwinSheetEntry } from '../../models/twin/TwinSheetEntry.model';
 import { TemplateTokenWithText } from '../../models/twin/template-token.model';
 import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
-import { isSameRange } from '../vscode.utils';
 
 const createRegionEntriesExtractor =
   (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>
@@ -38,7 +38,7 @@ const createRegionEntriesExtractor =
   };
 
 export const diagnosticTokensToDiagnosticItems = (
-  document: TwinLSPDocument,
+  document: BaseTwinTextDocument,
   twinService: NativeTwinManagerService['Type'],
 ): VscodeDiagnosticItem[] => {
   const getRange = bodyLocToRange(document);
@@ -118,10 +118,10 @@ export const regionDescriptions = (data: DiagnosticToken[], uri: string) => {
 };
 
 export const bodyLocToRange =
-  (document: TwinLSPDocument) => (bodyLoc: TemplateTokenWithText['bodyLoc']) =>
+  (document: BaseTwinTextDocument) => (bodyLoc: TemplateTokenWithText['bodyLoc']) =>
     vscode.Range.create(
-      document.offsetToPosition(bodyLoc.start),
-      document.offsetToPosition(bodyLoc.end),
+      document.positionAt(bodyLoc.start),
+      document.positionAt(bodyLoc.end),
     );
 
 export const twinSheetEntryGroupByDuplicates = (entries: TwinSheetEntry[]) => {

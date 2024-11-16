@@ -1,6 +1,7 @@
 import * as Constants from './utils/constants.utils';
 
 /** Documents Service */
+export { TwinLSPDocument } from './models/documents/TwinLSPDocument.model';
 export { LSPDocumentsService } from './services/LSPDocuments.service';
 export { DocumentLanguageRegion } from './models/documents/LanguageRegion.model';
 export { getSheetEntryStyles } from './utils/sheet.utils';
@@ -24,6 +25,7 @@ export { TemplateTokenWithText } from './models/twin/template-token.model';
 export { NativeTwinManagerService } from './services/NativeTwinManager.service';
 export { parseTemplate } from './utils/twin/native-twin.parser';
 export type { TwinRuleCompletion } from './models/twin/native-twin.types';
+export { NativeTwinManager } from './utils/twin/twin.manager';
 
 /** Connection Service */
 export { LSPConnectionService } from './services/LSPConnection.service';

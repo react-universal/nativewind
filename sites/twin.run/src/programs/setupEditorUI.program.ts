@@ -9,7 +9,10 @@ export const SetupEditorUI = Effect.gen(function* () {
   const app = yield* TwinEditorService;
 
   const buttonsContainer = document.createElement('div', { is: 'container' });
-  buttonsContainer.setAttribute('class', 'editor-buttons-container');
+  buttonsContainer.setAttribute(
+    'class',
+    'flex flex-1 min-h-10 justify-between items-center',
+  );
 
   const makeFSAction = async (data: { uri: vscode.Uri; contents: string }) => {
     console.log(

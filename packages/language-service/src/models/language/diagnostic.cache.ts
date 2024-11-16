@@ -12,15 +12,15 @@ import {
 } from '../../utils/language/diagnostic';
 import { isSameRange } from '../../utils/vscode.utils';
 import { DocumentLanguageRegion } from '../documents/LanguageRegion.model';
-import { TwinLSPDocument } from '../documents/TwinLSPDocument.model';
 import { TwinSheetEntry } from '../twin/TwinSheetEntry.model';
 import { TwinDiagnosticCodes, VscodeDiagnosticItem } from './diagnostic.model';
+import { BaseTwinTextDocument } from '../documents/BaseTwinDocument';
 
 export class TwinDiagnosticHandler implements Equal.Equal {
   constructor(
     readonly region: DocumentLanguageRegion,
     readonly entries: TwinSheetEntry[],
-    readonly document: TwinLSPDocument,
+    readonly document: BaseTwinTextDocument,
   ) {}
 
   get groupByDeclaration() {

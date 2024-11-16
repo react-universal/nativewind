@@ -12,7 +12,11 @@ import reactJSXRaw from '@/fixtures/react/Basic.react?raw';
 import twinConfigRaw from '@/fixtures/tailwind-configs/tailwind-preset.config?raw';
 import npmPkgRaw from '@/fixtures/typescript/package.editor.json?raw';
 import tsconfigRaw from '@/fixtures/typescript/tsconfig.editor.json?raw';
-import { createEditorFileModel, pathToMonacoURI } from '@/utils/editor.utils';
+import {
+  createEditorFileModel,
+  detectLanguageFromPath,
+  pathToMonacoURI,
+} from '@/utils/editor.utils';
 import { traceLayerLogs } from '@/utils/logger.utils';
 import { TwinTyping, TypescriptRegisteredTyping } from '@/utils/twin.schemas';
 
@@ -35,15 +39,28 @@ const make = Effect.gen(function* () {
   fsProvider.registerFile(createFileInMemory(npmPackageFileUri, npmPkgRaw));
   fsProvider.registerFile(createFileInMemory(tsconfigFileUri, tsconfigRaw));
 
+  registerFileSystemOverlay(1, fsProvider);
+
   const getRegisteredModules = () =>
     monaco.editor.getModels().filter((x) => !x.uri.path.startsWith('/node_modules'));
 
-  registerFileSystemOverlay(1, fsProvider);
+  const getOrCreateModel = (path: string, defaultValue = '') => {
+    const uri = monaco.Uri.parse(new URL(path, '/workspace').href);
 
+    return (
+      monaco.editor.getModel(uri) ||
+      monaco.editor.createModel(
+        defaultValue,
+        detectLanguageFromPath(path) ?? 'typescript',
+        uri,
+      )
+    );
+  };
   return {
     registerTypescriptTyping,
     getRegisteredModules,
     createFileInMemory,
+    getOrCreateModel,
     fsProvider,
     files: {
       css: {

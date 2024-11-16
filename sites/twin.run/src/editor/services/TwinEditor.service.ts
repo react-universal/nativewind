@@ -9,11 +9,9 @@ import {
   MonacoEditorLanguageClientWrapper,
 } from 'monaco-editor-wrapper';
 import { traceLayerLogs } from '@/utils/logger.utils';
-import { FileSystemService } from './FileSystem.service';
 
 const make = Effect.gen(function* () {
   const wrapper = new MonacoEditorLanguageClientWrapper();
-  const fs = yield* FileSystemService;
 
   const getEditor = () => Option.fromNullable(wrapper.getEditor());
   const getMonacoApp = (): Option.Option<NonNullable<EditorAppExtended>> =>
