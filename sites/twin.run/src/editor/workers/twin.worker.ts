@@ -42,7 +42,6 @@ const program = Effect.gen(function* () {
     const completions = await Runtime.runPromise(
       languagePrograms.getCompletionsAtPosition(...args),
     );
-    console.log('COMPLETIONS: ', completions);
 
     return {
       isIncomplete: completions.length > 0,

@@ -86,7 +86,7 @@ export default defineConfig((): UserConfig => {
     plugins: [
       react(),
       nodePolyfills({
-        include: ['process'],
+        include: ['process', 'path'],
       }),
       tsconfigPaths(),
       vsixPlugin(),

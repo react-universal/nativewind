@@ -8,82 +8,85 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as monaco from 'monaco-editor';
-import reactJSXRaw from '@/fixtures/react/Basic.react?raw';
-import twinConfigRaw from '@/fixtures/tailwind-configs/tailwind-preset.config?raw';
-import npmPkgRaw from '@/fixtures/typescript/package.editor.json?raw';
-import tsconfigRaw from '@/fixtures/typescript/tsconfig.editor.json?raw';
-import {
-  createEditorFileModel,
-  detectLanguageFromPath,
-  pathToMonacoURI,
-} from '@/utils/editor.utils';
+import path from 'path';
+import { detectLanguageFromPath } from '@/utils/editor.utils';
 import { traceLayerLogs } from '@/utils/logger.utils';
-import { TwinTyping, TypescriptRegisteredTyping } from '@/utils/twin.schemas';
+import { MonacoContext } from './MonacoContext.service';
 
 const make = Effect.gen(function* () {
+  const context = yield* MonacoContext;
   const fsProvider = new RegisteredFileSystemProvider(false);
-
-  const reactComponentFileUri = vscode.Uri.file('/workspace/Component.tsx');
-  const twinConfigFileUri = vscode.Uri.file('/workspace/tailwind.config.ts');
-  const cssFileUri = vscode.Uri.file('/workspace/input.css');
-  const npmPackageFileUri = vscode.Uri.file('/workspace/package.json');
-  const tsconfigFileUri = vscode.Uri.file('/workspace/tsconfig.json');
 
   const createFileInMemory = (uri: vscode.Uri, contents: string) => {
     return new RegisteredMemoryFile(uri, contents);
   };
 
-  fsProvider.registerFile(createFileInMemory(reactComponentFileUri, reactJSXRaw));
-  fsProvider.registerFile(createFileInMemory(twinConfigFileUri, twinConfigRaw));
-  fsProvider.registerFile(createFileInMemory(cssFileUri, ':root {}'));
-  fsProvider.registerFile(createFileInMemory(npmPackageFileUri, npmPkgRaw));
-  fsProvider.registerFile(createFileInMemory(tsconfigFileUri, tsconfigRaw));
+  fsProvider.registerFile(
+    createFileInMemory(
+      context.workspace.projectFiles.jsx.uri,
+      context.workspace.projectFiles.jsx.contents,
+    ),
+  );
+  fsProvider.registerFile(
+    createFileInMemory(
+      context.workspace.projectFiles.twinConfig.uri,
+      context.workspace.projectFiles.twinConfig.contents,
+    ),
+  );
+  fsProvider.registerFile(
+    createFileInMemory(
+      context.workspace.rootFiles.inputCSS.uri,
+      context.workspace.rootFiles.inputCSS.contents,
+    ),
+  );
+  fsProvider.registerFile(
+    createFileInMemory(
+      context.workspace.rootFiles.packageJson.uri,
+      context.workspace.rootFiles.packageJson.contents,
+    ),
+  );
+  fsProvider.registerFile(
+    createFileInMemory(
+      context.workspace.rootFiles.tsconfig.uri,
+      context.workspace.rootFiles.tsconfig.contents,
+    ),
+  );
+
+  fsProvider.registerFile(
+    createFileInMemory(
+      context.workspace.rootFiles.workspaceFile.uri,
+      context.workspace.rootFiles.workspaceFile.contents,
+    ),
+  );
+
 
   registerFileSystemOverlay(1, fsProvider);
 
   const getRegisteredModules = () =>
     monaco.editor.getModels().filter((x) => !x.uri.path.startsWith('/node_modules'));
 
-  const getOrCreateModel = (path: string, defaultValue = '') => {
-    const uri = monaco.Uri.parse(new URL(path, '/workspace').href);
+  const getOrCreateModel = (filePath: string, defaultValue = '') => {
+    const uri = monaco.Uri.file(path.join('/workspace', filePath));
 
     return (
       monaco.editor.getModel(uri) ||
       monaco.editor.createModel(
         defaultValue,
-        detectLanguageFromPath(path) ?? 'typescript',
+        detectLanguageFromPath(filePath) ?? 'typescript',
         uri,
       )
     );
   };
+
+  const createEditorModelRef = (uri: vscode.Uri, contents: string) =>
+    Effect.tryPromise(() => monaco.editor.createModelReference(uri, contents));
+
   return {
-    registerTypescriptTyping,
     getRegisteredModules,
     createFileInMemory,
     getOrCreateModel,
+    createEditorModelRef,
     fsProvider,
-    files: {
-      css: {
-        uri: cssFileUri,
-        contents: '',
-      },
-      twinConfig: {
-        uri: twinConfigFileUri,
-        contents: twinConfigRaw,
-      },
-      component: {
-        uri: reactComponentFileUri,
-        contents: reactJSXRaw,
-      },
-      tsconfig: {
-        uri: tsconfigFileUri,
-        contents: tsconfigRaw,
-      },
-      npmPackage: {
-        uri: npmPackageFileUri,
-        contents: npmPkgRaw,
-      },
-    },
   };
 });
 
@@ -93,12 +96,3 @@ export class FileSystemService extends Context.Tag('editor/files/FileSystemServi
 >() {
   static Live = Layer.scoped(FileSystemService, make).pipe(traceLayerLogs('fs'));
 }
-
-const registerTypescriptTyping = (typing: TwinTyping) =>
-  Effect.sync<TypescriptRegisteredTyping>(() => ({
-    disposable: monaco.languages.typescript.typescriptDefaults.addExtraLib(
-      typing.contents,
-      typing.filePath,
-    ),
-    model: createEditorFileModel(pathToMonacoURI(typing.filePath), typing.contents),
-  }));

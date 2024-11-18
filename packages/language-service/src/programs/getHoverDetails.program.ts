@@ -29,11 +29,6 @@ export const getHoverDetails = (
       Option.let('cursorOffset', ({ document }) => document.offsetAt(params.position)),
 
       Option.bind('flattenCompletions', ({ nodeAdPosition, cursorOffset }) => {
-        console.log(
-          'nodeAdPosition: ',
-          nodeAdPosition,
-          nodeAdPosition.getParsedNodeAtOffset(cursorOffset),
-        );
         return nodeAdPosition.getParsedNodeAtOffset(cursorOffset);
       }),
 

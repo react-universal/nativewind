@@ -1,12 +1,9 @@
 {
   "workbench.colorTheme": "Default Dark Modern",
-  "editor.scrollBeyondLastLine": true,
-  "editor.mouseWheelZoom": true,
-  "editor.wordBasedSuggestions": "on",
-  "editor.acceptSuggestionOnEnter": "on",
-  "files.autoSave": "off",
-  "workbench.sideBar.location": "left",
+  "editor.wordBasedSuggestions": "off",
+  "typescript.tsserver.web.projectWideIntellisense.enabled": true,
+  "typescript.tsserver.web.projectWideIntellisense.suppressSemanticErrors": false,
   "diffEditor.renderSideBySide": false,
-  "editor.lightbulb.enabled": "on",
-  "editor.glyphMargin": true
+  "editor.guides.bracketPairsHorizontal": true,
+  "editor.experimental.asyncTokenization": false
 }

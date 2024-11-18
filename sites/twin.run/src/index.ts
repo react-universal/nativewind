@@ -1,27 +1,43 @@
 // sort-imports-ignore
 import 'vscode';
+import 'vscode/services';
 import 'vscode/localExtensionHost';
 // import 'vscode/services';
+// MARK: VSCode
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
+
+// MARK: NPM
 import '@codingame/monaco-vscode-npm-default-extension';
-import '@codingame/monaco-vscode-standalone-css-language-features';
-import '@codingame/monaco-vscode-standalone-html-language-features';
-import '@codingame/monaco-vscode-css-language-features-default-extension';
+
+// MARK: Markdown
 import '@codingame/monaco-vscode-json-default-extension';
-import '@codingame/monaco-vscode-markdown-language-features-default-extension';
-import '@codingame/monaco-vscode-standalone-typescript-language-features';
-import '@codingame/monaco-vscode-typescript-basics-default-extension';
+
+// MARK: CSS
+import '@codingame/monaco-vscode-standalone-css-language-features';
+import '@codingame/monaco-vscode-css-language-features-default-extension';
 import '@codingame/monaco-vscode-css-default-extension';
+
+// MARK: Markdown
+import '@codingame/monaco-vscode-markdown-language-features-default-extension';
 import '@codingame/monaco-vscode-markdown-basics-default-extension';
+
+// MARK: HTML
+import '@codingame/monaco-vscode-standalone-html-language-features';
 import '@codingame/monaco-vscode-html-language-features-default-extension';
 import '@codingame/monaco-vscode-html-default-extension';
+
+// MARK: Typescript
+import '@codingame/monaco-vscode-standalone-typescript-language-features';
+import '@codingame/monaco-vscode-typescript-basics-default-extension';
 import '@codingame/monaco-vscode-typescript-language-features-default-extension';
-import * as monaco from 'monaco-editor';
-import editorWorker from 'monaco-editor-wrapper/workers/module/editor?worker';
+
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import jsonWorker from 'monaco-editor-wrapper/workers/module/json?worker';
 import cssWorker from 'monaco-editor-wrapper/workers/module/css?worker';
 import htmlWorker from 'monaco-editor-wrapper/workers/module/html?worker';
 import tsWorker from 'monaco-editor-wrapper/workers/module/ts?worker';
+import textMateWorker from '@codingame/monaco-vscode-textmate-service-override/worker?worker';
+import * as monaco from 'monaco-editor';
 
 export const setup = () => {
   let editorWorkerCache: Worker | null = null;
@@ -31,14 +47,18 @@ export const setup = () => {
         case 'json':
           return new jsonWorker();
         case 'typescript':
+        case 'javascript':
           return new tsWorker();
         case 'html':
           return new htmlWorker();
         case 'css':
           return new cssWorker();
+        case 'TextMateWorker':
+          return new textMateWorker();
         case 'editorWorkerService':
+        case 'TextEditorWorker':
           if (editorWorkerCache) {
-            console.log('Replacing editor worker...', _, label);
+            console.warn('Replacing editor worker...', _, label);
             editorWorkerCache.terminate();
           } else {
             console.log('Creating editor worker...', _, label);
@@ -52,7 +72,7 @@ export const setup = () => {
     },
   };
 
-  monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
+  monaco.languages.typescript.typescriptDefaults.setEagerModelSync(false);
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
     ...monaco.languages.typescript.typescriptDefaults.getCompilerOptions(),
     module: monaco.languages.typescript.ModuleKind.ESNext,
@@ -75,6 +95,7 @@ export const setup = () => {
 
   monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
     noSuggestionDiagnostics: true,
+    onlyVisible: true,
   });
   monaco.languages.css.cssDefaults.setModeConfiguration({
     hovers: true,

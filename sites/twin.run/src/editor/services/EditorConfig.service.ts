@@ -1,12 +1,23 @@
 // sort-imports-ignore
 import * as vscode from 'vscode';
-import getEditorOverride from '@codingame/monaco-vscode-editor-service-override';
-import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
+// import getEditorOverride from '@codingame/monaco-vscode-editor-service-override';
+// import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
+// import getTextmateServiceOverride from '@codingame/monaco-vscode-textmate-service-override';
+import getConfigurationServiceOverride from '@codingame/monaco-vscode-configuration-service-override';
 import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
-import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
-import workerUrl from '@/editor/workers/twin.worker?worker&url';
-import editorUserConfigJSON from '@/fixtures/editor-config/configuration.json?raw';
-import jsxComponent from '@/fixtures/react/Basic.react?raw';
+import getSecretStorageServiceOverride from '@codingame/monaco-vscode-secret-storage-service-override';
+// import getExplorerServiceOverride from '@codingame/monaco-vscode-explorer-service-override';
+// import getLifecycleServiceOverride from '@codingame/monaco-vscode-lifecycle-service-override';
+// import getStatusBarServiceOverride from '@codingame/monaco-vscode-view-status-bar-service-override';
+// import getTitleBarServiceOverride from '@codingame/monaco-vscode-view-title-bar-service-override';
+// import getLocalizationServiceOverride from '@codingame/monaco-vscode-localization-service-override';
+// import getRemoteAgentServiceOverride from '@codingame/monaco-vscode-remote-agent-service-override';
+// import getEnvironmentServiceOverride from '@codingame/monaco-vscode-environment-service-override';
+// import { createDefaultLocaleConfiguration } from 'monaco-languageclient/vscode/services';
+import { VscodeApiConfig } from 'monaco-languageclient/vscode/services';
+// import { defaultViewsInit } from 'monaco-editor-wrapper/vscode/services';
+// import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
+import { WrapperConfig, LanguageClientConfig } from 'monaco-editor-wrapper';
 import {
   getColorDecoration,
   onLanguageClientClosed,
@@ -16,47 +27,43 @@ import {
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as monaco from 'monaco-editor';
-import {
-  UserConfig,
-  WrapperConfig,
-  LanguageClientConfig,
-  CodeResources,
-} from 'monaco-editor-wrapper';
 import { Constants } from '@native-twin/language-service/browser';
 import { traceLayerLogs } from '@/utils/logger.utils';
+import { LogLevel } from 'vscode/services';
+
+import workerUrl from '@/editor/workers/twin.worker?worker&url';
+import editorUserConfigJSON from '@/fixtures/editor-config/configuration.json?raw';
+import { MonacoContext } from './MonacoContext.service';
 
 const make = Effect.gen(function* () {
+  const context = yield* MonacoContext;
+
   const colorDecorations = yield* Effect.cachedFunction((_: number) =>
     Effect.sync(() => getColorDecoration()),
   );
 
-  const initialFile: CodeResources['main'] = {
-    text: jsxComponent,
-    uri: '/workspace/Component.tsx',
-  };
-  const defaults = getMonacoDefaultConfig();
-  const wrapperConfig = createWrapperConfig(
-    defaults.defaultMonacoEditorConfig,
-    initialFile,
+  const vscodeApiConfig = getVscodeApiConfig(
+    context.workspace.rootFiles.workspaceFile.uri,
     editorUserConfigJSON,
   );
+  const getEditorExtendedConfig = context.workspace.getExtendedAppConfig();
 
   const languageClientConfig: LanguageClientConfig = {
-    languageId: 'native.twin',
-    options: {
-      $type: 'WorkerDirect',
-      worker: new Worker(workerUrl, {
-        type: 'module',
-        name: 'twin.worker',
-      }),
-    },
     name: 'Native Twin LSP',
+    connection: {
+      options: {
+        $type: 'WorkerDirect',
+        worker: new Worker(workerUrl, {
+          type: 'module',
+          name: 'twin.worker',
+        }),
+      },
+    },
     clientOptions: {
       workspaceFolder: {
         index: 0,
         name: 'workspace',
-        uri: vscode.Uri.parse('/workspace'),
+        uri: vscode.Uri.file(context.workspace.workspacePath),
       },
       middleware: {
         provideDocumentColors: async (document, token, next) =>
@@ -92,13 +99,14 @@ const make = Effect.gen(function* () {
     },
   };
 
-  const monacoEditorConfig: UserConfig = {
-    wrapperConfig: wrapperConfig,
-    languageClientConfig: languageClientConfig,
-    loggerConfig: {
-      enabled: true,
-      debugEnabled: false,
+  const monacoEditorConfig: WrapperConfig = {
+    id: 'native.twin',
+    editorAppConfig: getEditorExtendedConfig,
+    languageClientConfigs: {
+      twin: languageClientConfig,
     },
+    vscodeApiConfig,
+    logLevel: LogLevel.Info,
   };
 
   return {
@@ -116,53 +124,53 @@ export class TwinEditorConfigService extends Context.Tag('editor/config/service'
   );
 }
 
-const getMonacoDefaultConfig = () => {
-  const defaultMonacoEditorConfig: monaco.editor.IStandaloneEditorConstructionOptions = {
-    glyphMargin: false,
-    guides: {
-      bracketPairs: true,
-    },
-    automaticLayout: false,
-    minimap: { enabled: false },
-    disableMonospaceOptimizations: false,
-    fontFamily: 'Fira Code',
-    fontWeight: '450',
-    fontLigatures: false,
-    colorDecorators: true,
-    defaultColorDecorators: true,
-  };
-
-  return {
-    defaultMonacoEditorConfig,
-  };
-};
-
-const createWrapperConfig = (
-  editorOptions: monaco.editor.IStandaloneEditorConstructionOptions,
-  initialFile: CodeResources['main'],
+const getVscodeApiConfig = (
+  workspaceFile: vscode.Uri,
   /** @description must be a JSON string */
   editorUserConfig: string,
-): WrapperConfig => {
+): VscodeApiConfig => {
   return {
-    serviceConfig: {
-      userServices: {
-        ...getThemeServiceOverride(),
-        ...getEditorOverride(useOpenEditorStub),
-        ...getLanguagesServiceOverride(),
-      },
-      enableExtHostWorker: true,
-      debugLogging: true,
+    userServices: {
+      ...getConfigurationServiceOverride(),
+      ...getThemeServiceOverride(),
+      ...getSecretStorageServiceOverride(),
+      // ...getLifecycleServiceOverride(),
+      // ...getExplorerServiceOverride(),
+      // ...getStatusBarServiceOverride(),
+      // ...getRemoteAgentServiceOverride(),
+      // ...getEnvironmentServiceOverride(),
+      // ...getTitleBarServiceOverride(),
+      // ...getLocalizationServiceOverride(createDefaultLocaleConfiguration()),
+      // ...getEditorOverride(useOpenEditorStub),
+      // ...getLanguagesServiceOverride(),
     },
-    editorAppConfig: {
-      $type: 'extended',
-      editorOptions,
-      codeResources: {
-        main: initialFile,
+    enableExtHostWorker: true,
+    userConfiguration: {
+      json: editorUserConfig,
+    },
+    workspaceConfig: {
+      enableWorkspaceTrust: true,
+      windowIndicator: {
+        label: 'workspace',
+        tooltip: '',
+        command: '',
       },
-      useDiffEditor: false,
-      overrideAutomaticLayout: false,
-      userConfiguration: {
-        json: editorUserConfig,
+      workspaceProvider: {
+        trusted: true,
+        async open() {
+          window.open(window.location.href);
+          return true;
+        },
+        workspace: {
+          workspaceUri: workspaceFile,
+        },
+      },
+      configurationDefaults: {
+        'window.title': 'native-twin-vscode${separator}${dirty}${activeEditorShort}',
+      },
+      productConfiguration: {
+        nameShort: 'native-twin-vscode',
+        nameLong: 'native-twin-vscode',
       },
     },
   };

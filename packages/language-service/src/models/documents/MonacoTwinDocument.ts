@@ -22,7 +22,7 @@ interface TwinTokenLocation {
 export const TwinTokenLocation = Data.tagged<TwinTokenLocation>('TwinTokenLocation');
 
 export class TwinMonacoTextDocument extends BaseTwinTextDocument {
-  constructor(document: VSCDocument.TextDocument, config: NativeTwinPluginConfiguration) {
+  constructor(document: VSCDocument.TextDocument | vscode.TextDocument, config: NativeTwinPluginConfiguration) {
     super(
       VSCDocument.TextDocument.create(
         document.uri.toString(),

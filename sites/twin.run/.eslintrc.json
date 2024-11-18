@@ -12,12 +12,15 @@
         "*.tsx"
       ],
       "extends": [
-        "plugin:@nx/typescript"
+        "plugin:@nx/typescript",
+        "plugin:@nx/react"
       ],
       "rules": {
+        "no-new-func": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "no-restricted-globals": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
         "@typescript-eslint/no-unused-vars": ["warn", {
           "argsIgnorePattern": "^_"
         }],

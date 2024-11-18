@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "build": "rollup -c rollup.config.js",
-    "build:watch": "node esbuild.mjs --watch",
+    "build:watch": "rollup -c rollup.config.js -w",
     "clean": "rm -rf build",
     "gen:jsdocs": "jsdoc -c jsdoc.json"
   },
@@ -45,6 +45,10 @@
     "@native-twin/preset-tailwind": "workspace:*",
     "effect": "^3.10.0"
   },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-json": "^6.1.0"
+  },
   "peerDependencies": {
     "vite": ">=5"
   },
@@ -56,9 +60,5 @@
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
-  },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.1",
-    "@rollup/plugin-json": "^6.1.0"
   }
 }

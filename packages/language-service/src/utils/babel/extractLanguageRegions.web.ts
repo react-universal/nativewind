@@ -63,6 +63,14 @@ export const extractLanguageRegions = (
               ...templateExpressionMatcher(path.node.value.expression.quasis),
             );
           }
+
+          if (
+            t.isJSXExpressionContainer(path.node.value) &&
+            t.isStringLiteral(path.node.value.expression) &&
+            path.node.value.expression.loc
+          ) {
+            sourceLocations.push(path.node.value.expression.loc);
+          }
         }
       },
     });

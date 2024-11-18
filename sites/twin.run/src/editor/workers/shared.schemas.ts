@@ -23,3 +23,20 @@ export class GetPackageTypings extends Schema.TaggedRequest<GetPackageTypings>()
     },
   },
 ) {}
+
+export const CompiledCodeResponse = Schema.Struct({
+  css: Schema.String,
+  js: Schema.String,
+});
+
+export class CompileCodeRequestSchema extends Schema.TaggedRequest<CompileCodeRequestSchema>()(
+  'CompileCodeRequestSchema',
+  {
+    failure: Schema.String,
+    success: CompiledCodeResponse,
+    payload: {
+      css: Schema.String,
+      jsx: Schema.String,
+    },
+  },
+) {}
