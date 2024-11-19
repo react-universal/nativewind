@@ -8,7 +8,7 @@ import { ReactNode } from 'react';
 import { useServerInsertedHTML } from 'next/navigation';
 import { TailwindUserConfig } from '@native-twin/core';
 
-// import { NativeTwinSheet } from '@native-twin/nextjs/app';
+// import { NativeTwinSheet } from '@native-twin/adapters/next/app';
 
 // let config = tailwindConfig as TailwindUserConfig;
 // if (tailwindConfig.mode !== 'web') {

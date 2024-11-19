@@ -70,6 +70,7 @@ const getDefaultConfig = (
     platformOutputs: twin.platformOutputs,
     twinConfigPath: twin.twinConfigPath,
   };
+
   return {
     twinMetroConfig: {
       ...metroConfig,

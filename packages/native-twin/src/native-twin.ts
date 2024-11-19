@@ -124,9 +124,11 @@ export function createTailwind(
     sortedPrecedences.splice(index, 0, entry);
   }
 
-  function insertPreflight() {
-    if (!cache.size && config.mode === 'web' && config.preflight) {
-      sheet.clear();
+  function insertPreflight(manual?: boolean) {
+    if (manual || (!cache.size && config.mode === 'web' && config.preflight)) {
+      if (!cache.size) {
+        sheet.clear();
+      }
       for (let preflight of asArray(config.preflight)) {
         if (typeof preflight == 'function') {
           preflight = preflight(context);
@@ -144,7 +146,7 @@ export function createTailwind(
               animations: [],
               preflight: true,
             };
-            sortedPrecedences.push(entry);
+            sortedPrecedences.unshift(entry);
             cache.set(entry.className, [entry]);
           }
         }

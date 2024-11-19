@@ -9,32 +9,20 @@
       "path": "../packages/jsx"
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
+      "name": "📦 @lib/compiler",
+      "path": "../packages/compiler"
     },
     {
       "name": "📦 @lib/metro",
       "path": "../packages/metro"
     },
     {
-      "name": "📦 @lib/dev-tools",
-      "path": "../packages/dev-tools"
-    },
-    {
-      "name": "📦 @lib/arc-parser",
-      "path": "../packages/arc-parser"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
       "name": "📦 @lib/css",
       "path": "../packages/css"
     },
     {
-      "name": "📦 @lib/styled",
-      "path": "../packages/styled"
+      "name": "📦 @lib/adapters",
+      "path": "../packages/adapters"
     },
     {
       "name": "📦 @lib/builder",
@@ -47,6 +35,10 @@
     {
       "name": "📦 @lib/language-service",
       "path": "../packages/language-service"
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
     },
     {
       "name": "@apps/expo",
@@ -81,6 +73,17 @@
       "**/.turbo": true,
       "**/yarn.lock": true,
       "**/build/*": true
+    },
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/.turbo": true,
+      "**/.nx": true,
+      "**/.expo": true
     },
     "editor.fontSize": 16,
     "typescript.tsdk": "root/node_modules/typescript/lib",

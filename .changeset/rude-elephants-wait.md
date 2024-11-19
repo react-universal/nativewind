@@ -1,5 +1,5 @@
 ---
-'@native-twin/nextjs': patch
+'@native-twin/adapters': patch
 '@native-twin/language-service': patch
 '@native-twin/language-server': patch
 '@native-twin/preset-tailwind': patch

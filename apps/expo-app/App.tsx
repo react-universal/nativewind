@@ -11,6 +11,7 @@ export default function App() {
         className={`
           w-[80vw] h-[20vh] rounded-full justify-center items-center
           last:bg-purple border-1 border-white
+          hover:bg-red
           ${true && 'h-[50vh]'}
         `}
       >

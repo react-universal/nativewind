@@ -17,7 +17,7 @@ export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown
   snapshot: () => () => void;
   clear: () => void;
   observeConfig: (cb: (config: TailwindConfig<Theme>) => void) => () => void;
-  insertPreflight(): void;
+  insertPreflight(manual?: boolean): void;
   subscriptions: Set<(cb: TailwindConfig<any>) => void>;
   version: number;
 }

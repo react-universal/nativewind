@@ -4,12 +4,15 @@ import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import pkg from '../package.json';
+import fs from 'node:fs';
 import * as CliConfigs from './config/cli.config';
 import { buildCommandHandler } from './runners/build.program';
 import { BuilderConfig } from './services/Builder.service';
 import { TwinLogger } from './utils/logger';
 
+const pkg = JSON.parse(
+  fs.readFileSync(new URL('../package.json', import.meta.url).pathname).toString(),
+);
 const twinCli = CliCommand.make('twin-cli', CliConfigs.CommandConfig).pipe(
   CliCommand.withDescription('Twin Cli'),
 );

@@ -15,5 +15,5 @@
     "noImplicitAny": true
   },
   "include": ["src/**/*"],
-  "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js"]
+  "exclude": ["build", "babel.config.js", "jest.config.js"]
 }

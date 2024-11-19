@@ -20,7 +20,7 @@
     "@native-twin/language-service": "6.4.0",
     "@native-twin/metro": "6.4.0",
     "@native-twin/core": "6.4.0",
-    "@native-twin/nextjs": "6.4.0",
+    "@native-twin/adapters": "6.4.0",
     "@native-twin/preset-tailwind": "6.4.0",
     "@native-twin/styled": "6.4.0",
     "@native-twin/ts-plugin": "6.4.0",

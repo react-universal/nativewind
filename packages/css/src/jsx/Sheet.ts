@@ -1,11 +1,11 @@
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Record from 'effect/Record';
-import { SelectorGroup } from '../css/css.types';
-import { AnyStyle, CompleteStyle, FinalSheet } from '../react-native/rn.types';
+import type { SelectorGroup } from '../css/css.types';
+import type { AnyStyle, CompleteStyle, FinalSheet } from '../react-native/rn.types';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
-import { ComponentSheet, RuntimeComponentEntry } from './Component';
-import { RuntimeSheetEntry, sortSheetEntries } from './SheetEntry';
+import type { ComponentSheet, RuntimeComponentEntry } from './Component';
+import { type RuntimeSheetEntry, sortSheetEntries } from './SheetEntry';
 import { RuntimeSheetDeclaration } from './SheetEntryDeclaration';
 import { defaultFinalSheet, defaultSheetMetadata, emptyChildsSheet } from './constants';
 

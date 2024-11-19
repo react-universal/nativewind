@@ -30,10 +30,6 @@
     "release": "yarn build:release && changeset publish",
     "test": "turbo run test"
   },
-  "resolutions": {
-    "metro-runtime@npm:0.80.6": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch",
-    "metro-runtime@npm:^0.80.3": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch"
-  },
   "dependencies": {
     "@effect/typeclass": "^0.29.0",
     "effect": "^3.10.0",
@@ -94,9 +90,7 @@
     "typescript": "^5.5.4"
   },
   "packageManager": "yarn@4.4.1",
-  "overrides": {
-    "@babel/types": "7.23.9",
-    "@babel/core": "7.23.9",
-    "type-fest": "4.26.1"
+  "volta": {
+    "node": "20.18.0"
   }
 }

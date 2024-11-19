@@ -7,7 +7,7 @@ import Document, {
   DocumentContext,
   DocumentInitialProps,
 } from 'next/document';
-import { installDocument } from '@native-twin/nextjs/_document';
+import { installDocument } from '@native-twin/adapters/next/_document';
 
 export async function getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
   AppRegistry.registerComponent('Main', () => Main);

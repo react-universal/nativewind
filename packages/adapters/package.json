@@ -1,5 +1,5 @@
 {
-  "name": "@native-twin/nextjs",
+  "name": "@native-twin/adapters",
   "version": "7.0.0-next.2",
   "description": "React Native Web Tailwindcss for nextjs",
   "keywords": [
@@ -19,24 +19,24 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/react-universal/native-twin",
-    "directory": "packages/native-twin-nextjs"
+    "directory": "packages/adapters"
   },
   "sideEffects": false,
   "exports": {
-    "./app": {
-      "types": "./build/app/index.d.ts",
-      "import": "./build/esm/app/index.js",
-      "require": "./build/app/index.js"
+    "./next/app": {
+      "types": "./build/next/app/index.d.ts",
+      "import": "./build/esm/next/app/index.js",
+      "require": "./build/next/app/index.js"
     },
-    "./_app": {
-      "types": "./build/_app.d.ts",
-      "import": "./build/esm/_app.js",
-      "require": "./build/_app.js"
+    "./next/_app": {
+      "types": "./build/next/_app.d.ts",
+      "import": "./build/esm/next/_app.js",
+      "require": "./build/next/_app.js"
     },
-    "./_document": {
-      "types": "./build/_document.d.ts",
-      "import": "./build/esm/_document.js",
-      "require": "./build/_document.js"
+    "./next/_document": {
+      "types": "./build/next/_document.d.ts",
+      "import": "./build/esm/next/_document.js",
+      "require": "./build/next/_document.js"
     },
     "./package.json": "./package.json"
   },
@@ -62,10 +62,7 @@
   },
   "devDependencies": {
     "@types/loader-utils": "^2.0.6",
-    "@types/webpack": "^5.28.5",
-    "@vanilla-extract/integration": "^7.1.10",
-    "debug": "^4.3.1",
-    "loader-utils": "^2.0.0"
+    "@types/webpack": "^5.28.5"
   },
   "peerDependencies": {
     "next": ">=14.0",

@@ -21,7 +21,7 @@
       "@native-twin/language-service",
       "@native-twin/metro",
       "@native-twin/core",
-      "@native-twin/nextjs",
+      "@native-twin/adapters",
       "@native-twin/preset-tailwind",
       "@native-twin/styled"
     ]

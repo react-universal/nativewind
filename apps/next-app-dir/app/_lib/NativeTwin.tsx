@@ -4,7 +4,7 @@
 import tailwindConfig from '../../tailwind.config';
 import { NativeTwinProvider } from './TwinProvider';
 
-import { NativeTwinSheet } from '@native-twin/nextjs/app';
+import { NativeTwinSheet } from '@native-twin/adapters/next/app';
 
 // export default installApp(tailwindConfig, NativeTwin);
 

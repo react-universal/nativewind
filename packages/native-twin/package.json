@@ -20,7 +20,9 @@
     "url": "https://github.com/react-universal/native-twin",
     "directory": "packages/native-tailwind"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "./src/runtime/tw.ts"
+  ],
   "exports": {
     ".": {
       "types": "./build/index.d.ts",

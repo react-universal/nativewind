@@ -1,0 +1,5 @@
+{
+  "main": "../../build/next/_app.js",
+  "module": "../../build/esm/next/_app.js",
+  "types": "../../build/next/_app.d.ts"
+}

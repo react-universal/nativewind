@@ -1,5 +1,5 @@
 ---
-'@native-twin/nextjs': major
+'@native-twin/adapters': major
 '@native-twin/language-service': major
 '@native-twin/language-server': major
 '@native-twin/preset-tailwind': major
