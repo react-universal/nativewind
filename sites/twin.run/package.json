@@ -55,6 +55,7 @@
   "devDependencies": {
     "@codingame/monaco-vscode-rollup-vsix-plugin": "~11.0.1",
     "@entur/vite-plugin-assets-json": "^0.0.9",
+    "@native-twin/vite-plugin": "workspace:*",
     "@types/vscode": "^1.94.2",
     "@types/ws": "^8",
     "@vitejs/plugin-react": "^4.3.3",

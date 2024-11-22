@@ -37,8 +37,7 @@
       "types": "./build/next/_document.d.ts",
       "import": "./build/esm/next/_document.js",
       "require": "./build/next/_document.js"
-    },
-    "./package.json": "./package.json"
+    }
   },
   "files": [
     "build",

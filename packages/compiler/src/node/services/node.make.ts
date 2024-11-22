@@ -25,9 +25,6 @@ export const makeNodeLayer = (config: NodeWithNativeTwinOptions) => {
 
   if (!inputCSS) {
     inputCSS = path.join(outputDir, DEFAULT_TWIN_INPUT_CSS_FILE);
-    if (!fs.existsSync(inputCSS)) {
-      fs.writeFileSync(inputCSS, '');
-    }
   } else {
     const isAbsolute = path.isAbsolute(inputCSS);
     const absolutePath = path.join(projectRoot, inputCSS);
@@ -36,6 +33,16 @@ export const makeNodeLayer = (config: NodeWithNativeTwinOptions) => {
         inputCSS = absolutePath;
       }
     }
+  }
+
+  if (!fs.existsSync(outputDir)) {
+    console.log('CREATING_OUTPUT_FILE_AT: ', outputDir);
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  if (!fs.existsSync(inputCSS)) {
+    console.log('CREATING_INPUT_FILE_AT: ', inputCSS);
+    fs.writeFileSync(inputCSS, '');
   }
 
   const twinConfig = extractTwinConfig({ projectRoot, twinConfigPath });

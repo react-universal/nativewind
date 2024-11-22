@@ -74,6 +74,7 @@ export const setTypescriptDefaults = () => {
 };
 
 export const configureMonacoWorkers = (logger?: Logger) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useWorkerFactory({
     workerOverrides: {
       ignoreMapping: true,

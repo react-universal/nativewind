@@ -1,12 +1,10 @@
 import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
 import * as EffectWorker from '@effect/platform/Worker';
-import * as Chunk from 'effect/Chunk';
 import * as Console from 'effect/Console';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import * as monaco from 'monaco-editor';
 import compilerWorker from '@/editor/workers/compiler.worker?worker&url';
 import typingsWorker from '@/editor/workers/typings.worker?worker&url';
 import { setTypescriptDefaults } from '@/utils/editor.utils';
@@ -37,6 +35,7 @@ const make = Effect.gen(function* () {
             setTypescriptDefaults();
             // monaco.languages.typescript.typescriptDefaults.
             // fileSystem.getOrCreateModel(x.filePath, x.contents);
+            return _libraries;
           }),
         );
       }).pipe(Effect.scoped, Effect.provide(typingsInstallerWorkerLayer)),

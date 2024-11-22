@@ -30,6 +30,7 @@ export default defineConfig({
     interop: 'auto',
     esModule: true,
     exports: 'auto',
+    sourcemap: true,
     inlineDynamicImports: false,
     format: 'esm',
     dynamicImportInCjs: false,

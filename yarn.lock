@@ -7957,7 +7957,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@native-twin/vite-plugin@workspace:packages/vite-plugin":
+"@native-twin/vite-plugin@workspace:*, @native-twin/vite-plugin@workspace:packages/vite-plugin":
   version: 0.0.0-use.local
   resolution: "@native-twin/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
@@ -27639,6 +27639,7 @@ __metadata:
     "@native-twin/helpers": "workspace:*"
     "@native-twin/language-service": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
+    "@native-twin/vite-plugin": "workspace:*"
     "@types/vscode": "npm:^1.94.2"
     "@types/ws": "npm:^8"
     "@typescript/ata": "npm:^0.9.7"
