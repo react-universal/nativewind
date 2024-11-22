@@ -9,6 +9,7 @@
 '@native-twin/dev-tools': patch
 '@native-twin/cli': patch
 '@native-twin/helpers': patch
+'@native-twin/vite-plugin': major
 '@native-twin/styled': patch
 '@native-twin/babel': patch
 '@native-twin/metro': patch

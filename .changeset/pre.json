@@ -13,6 +13,7 @@
     "@native-twin/css": "6.4.0",
     "@native-twin/compiler": "6.4.0",
     "@native-twin/dev-tools": "0.0.1",
+    "@native-twin/vite-plugin": "6.4.0",
     "@native-twin/dev-tools-webui": "0.0.1-private",
     "@native-twin/helpers": "6.4.0",
     "@native-twin/jsx": "6.4.0",

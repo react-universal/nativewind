@@ -9,6 +9,7 @@
 '@native-twin/dev-tools': major
 '@native-twin/cli': major
 '@native-twin/helpers': major
+'@native-twin/vite-plugin': major
 '@native-twin/styled': major
 '@native-twin/babel': major
 '@native-twin/metro': major

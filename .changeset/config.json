@@ -22,6 +22,7 @@
       "@native-twin/metro",
       "@native-twin/core",
       "@native-twin/adapters",
+      "@native-twin/vite-plugin",
       "@native-twin/preset-tailwind",
       "@native-twin/styled"
     ]

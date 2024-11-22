@@ -55,6 +55,7 @@
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*",
     "better-docs": "*",
+    "rollup": "*",
     "vite": "^5.4.10"
   },
   "publishConfig": {
