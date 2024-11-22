@@ -66,7 +66,7 @@
     "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "gen:jsdocs": "jsdoc -c jsdoc.json",
-    "test": "jest",
+    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },
@@ -103,7 +103,11 @@
     "@types/css-tree": "^2.3.8",
     "@types/js-beautify": "^1",
     "@types/micromatch": "^4.0.4",
-    "babel-plugin-tester": "^11.0.4"
+    "babel-plugin-tester": "^11.0.4",
+    "babel-preset-vite": "^1.1.3",
+    "jest-ts-webcompat-resolver": "^1.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-jest-mock-import-meta": "^1.2.1"
   },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*",

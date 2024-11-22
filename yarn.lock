@@ -4462,6 +4462,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.13.9, @babel/runtime@npm:^7.25.0":
+  version: 7.26.0
+  resolution: "@babel/runtime@npm:7.26.0"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: 10/9f4ea1c1d566c497c052d505587554e782e021e6ccd302c2ad7ae8291c8e16e3f19d4a7726fb64469e057779ea2081c28b7dbefec6d813a22f08a35712c0f699
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.20.0":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
@@ -4486,15 +4495,6 @@ __metadata:
   dependencies:
     regenerator-runtime: "npm:^0.14.0"
   checksum: 10/8d32c7e116606ea322b89f9fde8ffae6be9503b549dc0d0abb38bd9dc26e87469b9fb7a66964cc089ee558fd0a97d304fb0a3cfec140694764fb0d71b6a6f5e4
-  languageName: node
-  linkType: hard
-
-"@babel/runtime@npm:^7.25.0":
-  version: 7.26.0
-  resolution: "@babel/runtime@npm:7.26.0"
-  dependencies:
-    regenerator-runtime: "npm:^0.14.0"
-  checksum: 10/9f4ea1c1d566c497c052d505587554e782e021e6ccd302c2ad7ae8291c8e16e3f19d4a7726fb64469e057779ea2081c28b7dbefec6d813a22f08a35712c0f699
   languageName: node
   linkType: hard
 
@@ -7654,15 +7654,19 @@ __metadata:
     "@types/js-beautify": "npm:^1"
     "@types/micromatch": "npm:^4.0.4"
     babel-plugin-tester: "npm:^11.0.4"
+    babel-preset-vite: "npm:^1.1.3"
     better-docs: "npm:*"
     code-block-writer: "npm:^13.0.1"
     effect: "npm:^3.10.0"
     fast-check: "npm:^3.21.0"
     jest: "npm:*"
+    jest-ts-webcompat-resolver: "npm:^1.0.0"
     jiti: "npm:1.21.0"
     js-beautify: "npm:^1.15.1"
     micromatch: "npm:4.0.5"
     sucrase: "npm:^3.35.0"
+    ts-jest: "npm:^29.2.5"
+    ts-jest-mock-import-meta: "npm:^1.2.1"
   dependenciesMeta:
     "@native-twin/cli":
       optional: true
@@ -9896,7 +9900,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel__core@npm:*, @types/babel__core@npm:^7.20.5":
+"@types/babel__core@npm:*, @types/babel__core@npm:^7.1.12, @types/babel__core@npm:^7.20.5":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
   dependencies:
@@ -12722,6 +12726,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-plugin-transform-vite-meta-env@npm:1.0.3":
+  version: 1.0.3
+  resolution: "babel-plugin-transform-vite-meta-env@npm:1.0.3"
+  dependencies:
+    "@babel/runtime": "npm:^7.13.9"
+    "@types/babel__core": "npm:^7.1.12"
+  checksum: 10/60afd6358e3a16a8aae7ee911cd7a2dbdd0427a61f2d3e7eb9eaa85e4c895a1e22c620fdfd166306103f6733c2f6c5de1bc567c371d572b0f785856cc02bda32
+  languageName: node
+  linkType: hard
+
+"babel-plugin-transform-vite-meta-glob@npm:1.1.2":
+  version: 1.1.2
+  resolution: "babel-plugin-transform-vite-meta-glob@npm:1.1.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.13.9"
+    "@types/babel__core": "npm:^7.1.12"
+    glob: "npm:^10.3.10"
+  checksum: 10/8a73f38a0827f07f2e5cd8f41066eb7fac08ec2ce900adc671cae817a55faf349f4f17946971d3fd80eb5f31657cd58c44e6da8f5a47668e39da0d90facd64bd
+  languageName: node
+  linkType: hard
+
+"babel-plugin-transform-vite-meta-hot@npm:1.0.0":
+  version: 1.0.0
+  resolution: "babel-plugin-transform-vite-meta-hot@npm:1.0.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.13.9"
+    "@types/babel__core": "npm:^7.1.12"
+  checksum: 10/bcaeecbe89f6f279c8bf90afa2cec0f3e86576179b268cefba9acac4070799a243e66d6e31ec6283068df964a5beb746390ed025b52bb6fc651e69a1610ccaa5
+  languageName: node
+  linkType: hard
+
 "babel-preset-current-node-syntax@npm:^1.0.0":
   version: 1.0.1
   resolution: "babel-preset-current-node-syntax@npm:1.0.1"
@@ -12789,6 +12824,19 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0
   checksum: 10/aa4ff2a8a728d9d698ed521e3461a109a1e66202b13d3494e41eea30729a5e7cc03b3a2d56c594423a135429c37bf63a9fa8b0b9ce275298be3095a88c69f6fb
+  languageName: node
+  linkType: hard
+
+"babel-preset-vite@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "babel-preset-vite@npm:1.1.3"
+  dependencies:
+    "@babel/runtime": "npm:^7.13.9"
+    "@types/babel__core": "npm:^7.1.12"
+    babel-plugin-transform-vite-meta-env: "npm:1.0.3"
+    babel-plugin-transform-vite-meta-glob: "npm:1.1.2"
+    babel-plugin-transform-vite-meta-hot: "npm:1.0.0"
+  checksum: 10/243b43c25846a597a03cf36b1b0e6b39d209f5a13207a238bdc9a03b61fcdd450abe2a26595cde17513c321ba63071868def875a54664e45058b5c532f8306a4
   languageName: node
   linkType: hard
 
@@ -13200,7 +13248,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bs-logger@npm:0.x":
+"bs-logger@npm:0.x, bs-logger@npm:^0.2.6":
   version: 0.2.6
   resolution: "bs-logger@npm:0.2.6"
   dependencies:
@@ -15399,6 +15447,17 @@ __metadata:
   dependencies:
     fast-check: "npm:^3.21.0"
   checksum: 10/bb4af2d9d60b332dedc7358121a321a541a7404d4993c1f15dfda674b73a06e14b09baafefbce9439ac6fc668c47c314fdd21b1963b65d917f35ad8fc13bf6b9
+  languageName: node
+  linkType: hard
+
+"ejs@npm:^3.1.10":
+  version: 3.1.10
+  resolution: "ejs@npm:3.1.10"
+  dependencies:
+    jake: "npm:^10.8.5"
+  bin:
+    ejs: bin/cli.js
+  checksum: 10/a9cb7d7cd13b7b1cd0be5c4788e44dd10d92f7285d2f65b942f33e127230c054f99a42db4d99f766d8dbc6c57e94799593ee66a14efd7c8dd70c4812bf6aa384
   languageName: node
   linkType: hard
 
@@ -20008,6 +20067,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-ts-webcompat-resolver@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "jest-ts-webcompat-resolver@npm:1.0.0"
+  peerDependencies:
+    jest-resolve: "*"
+  checksum: 10/e41680ee0be7efad4807589835263bff15539419f622c8f75a029f4804bdbf0d20634bac178a9be1f4dc4108e828abdf3aaa65f4b0f8aec5600007fa85f44ab0
+  languageName: node
+  linkType: hard
+
 "jest-util@npm:^29.0.0, jest-util@npm:^29.7.0":
   version: 29.7.0
   resolution: "jest-util@npm:29.7.0"
@@ -20835,7 +20903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.memoize@npm:4.x":
+"lodash.memoize@npm:4.x, lodash.memoize@npm:^4.1.2":
   version: 4.1.2
   resolution: "lodash.memoize@npm:4.1.2"
   checksum: 10/192b2168f310c86f303580b53acf81ab029761b9bd9caa9506a019ffea5f3363ea98d7e39e7e11e6b9917066c9d36a09a11f6fe16f812326390d8f3a54a1a6da
@@ -21079,7 +21147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"make-error@npm:1.x, make-error@npm:^1.1.1":
+"make-error@npm:1.x, make-error@npm:^1.1.1, make-error@npm:^1.3.6":
   version: 1.3.6
   resolution: "make-error@npm:1.3.6"
   checksum: 10/b86e5e0e25f7f777b77fabd8e2cbf15737972869d852a22b7e73c17623928fccb826d8e46b9951501d3f20e51ad74ba8c59ed584f610526a48f8ccf88aaec402
@@ -25723,7 +25791,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.x":
+"semver@npm:7.x, semver@npm:^7.6.3":
   version: 7.6.3
   resolution: "semver@npm:7.6.3"
   bin:
@@ -27498,6 +27566,52 @@ __metadata:
   version: 0.1.13
   resolution: "ts-interface-checker@npm:0.1.13"
   checksum: 10/9f7346b9e25bade7a1050c001ec5a4f7023909c0e1644c5a96ae20703a131627f081479e6622a4ecee2177283d0069e651e507bedadd3904fc4010ab28ffce00
+  languageName: node
+  linkType: hard
+
+"ts-jest-mock-import-meta@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "ts-jest-mock-import-meta@npm:1.2.1"
+  peerDependencies:
+    ts-jest: ">=20.0.0"
+  checksum: 10/99c90d2f9e4d15733fe6664d4a8a66f95ba36e2deba19f9c1712afda1ebd55ca57e383166b8a120d908bd341bf56cd7d718b303ad8f8c40a32ec45fadf88e234
+  languageName: node
+  linkType: hard
+
+"ts-jest@npm:^29.2.5":
+  version: 29.2.5
+  resolution: "ts-jest@npm:29.2.5"
+  dependencies:
+    bs-logger: "npm:^0.2.6"
+    ejs: "npm:^3.1.10"
+    fast-json-stable-stringify: "npm:^2.1.0"
+    jest-util: "npm:^29.0.0"
+    json5: "npm:^2.2.3"
+    lodash.memoize: "npm:^4.1.2"
+    make-error: "npm:^1.3.6"
+    semver: "npm:^7.6.3"
+    yargs-parser: "npm:^21.1.1"
+  peerDependencies:
+    "@babel/core": ">=7.0.0-beta.0 <8"
+    "@jest/transform": ^29.0.0
+    "@jest/types": ^29.0.0
+    babel-jest: ^29.0.0
+    jest: ^29.0.0
+    typescript: ">=4.3 <6"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@jest/transform":
+      optional: true
+    "@jest/types":
+      optional: true
+    babel-jest:
+      optional: true
+    esbuild:
+      optional: true
+  bin:
+    ts-jest: cli.js
+  checksum: 10/f89e562816861ec4510840a6b439be6145f688b999679328de8080dc8e66481325fc5879519b662163e33b7578f35243071c38beb761af34e5fe58e3e326a958
   languageName: node
   linkType: hard
 

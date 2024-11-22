@@ -34,8 +34,8 @@
 // };
 
 export default function App() {
-  return <View className={`group flex-1 first:bg-red-200`} _twinComponentID={"-1401126235:0"} _twinOrd={-1} _twinComponentSheet={[{
-    id: "-1401126235:0",
+  return <View className={`group flex-1 first:bg-red-200`} _twinComponentID={"1625619362:0"} _twinOrd={-1} _twinComponentSheet={[{
+    id: "1625619362:0",
     target: "style",
     prop: "className",
     entries: [{
@@ -116,8 +116,8 @@ export default function App() {
       odd: []
     }
   }]}>
-      <Text _twinComponentID={"-1401126235:0:0"} _twinOrd={0} _twinComponentSheet={[{
-      id: "-1401126235:0:0",
+      <Text _twinComponentID={"1625619362:0:0"} _twinOrd={0} _twinComponentSheet={[{
+      id: "1625619362:0:0",
       target: "style",
       prop: "className",
       entries: [],

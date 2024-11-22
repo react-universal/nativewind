@@ -34,7 +34,9 @@ import { TwinNodeContext } from '../services/TwinNodeContext.service';
 import { maybeLoadJS } from '../utils';
 import { InternalTwinConfig } from './twin.types';
 
-const require = createRequire(import.meta.url);
+if (!require) {
+  require = createRequire(import.meta.url);
+}
 
 const checkDefaultTwinConfigFiles = (rootDir: string) =>
   Effect.flatMap(FileSystem.FileSystem, (fs) =>
