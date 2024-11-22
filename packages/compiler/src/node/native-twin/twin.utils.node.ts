@@ -30,8 +30,8 @@ import {
   extractMappedAttributes,
   extractSheetsFromTree,
 } from '../babel/utils/twin-jsx.utils';
+import { TwinNodeContext } from '../services/TwinNodeContext.service';
 import { maybeLoadJS } from '../utils';
-import { NativeTwinServiceNode } from './NativeTwin.node';
 import { InternalTwinConfig } from './twin.types';
 
 const require = createRequire(import.meta.url);
@@ -98,10 +98,10 @@ export const createTwinCSSFiles = ({
   };
 };
 
-export const getFileClasses = (filename: string) =>
+export const getFileClasses = (filename: string, forPlatform: string) =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
-    const twin = yield* NativeTwinServiceNode;
+    const twin = yield* TwinNodeContext;
     const exists = yield* fs.exists(filename).pipe(
       Effect.mapError((x) => {
         console.log('getFileClasses_ERROR: ', x);
@@ -125,12 +125,16 @@ export const getFileClasses = (filename: string) =>
         registry: HashMap.empty<string, JSXElementNode>(),
       };
     }
-    const filePath = path.relative(twin.projectRoot, filename);
+    const filePath = path.relative(twin.config.projectRoot, filename);
     const babelTrees = yield* reactCompiler.getTrees(contents, filePath);
 
     const registry = yield* Stream.fromIterable(babelTrees).pipe(
       Stream.mapEffect((x) =>
-        extractSheetsFromTree(x, path.relative(twin.projectRoot, filename)),
+        extractSheetsFromTree(
+          x,
+          path.relative(twin.config.projectRoot, filename),
+          forPlatform,
+        ),
       ),
       Stream.map(HashMap.fromIterable),
       Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) =>

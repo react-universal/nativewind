@@ -12,7 +12,7 @@ export interface TwinMetroConfig extends IntermediateConfigT {
 }
 
 /** @domain Metro config options */
-export interface MetroWithNativeTwindOptions {
+export interface NodeWithNativeTwinOptions {
   projectRoot?: string;
   outputDir?: string;
   configPath?: string;

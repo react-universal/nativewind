@@ -1,32 +1,34 @@
 import * as Chunk from 'effect/Chunk';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import type { GetTransformOptions, ExtraTransformOptions } from 'metro-config';
 import type { CustomResolver } from 'metro-resolver';
 import path from 'node:path';
-import { makeBabelLayer } from '../babel';
 import { TwinFSService } from '../file-system';
 import { NativeTwinServiceNode } from '../native-twin';
-import { twinLoggerLayer } from '../services/Logger.service';
+import { TwinNodeContext } from '../services/TwinNodeContext.service';
+import { TwinNodeLayer } from '../services/node.make';
 
 const setupPlatforms: Set<string> = new Set();
 
 export const twinMetroRequestResolver = (
   originalResolver: CustomResolver | undefined,
-  twinConfig: NativeTwinServiceNode['Type'],
+  {
+    twin,
+  }: {
+    twin: NativeTwinServiceNode['Type'];
+  },
 ): CustomResolver => {
   return (context, moduleName, platform) => {
     const resolver = originalResolver ?? context.resolveRequest;
     const resolved = resolver(context, moduleName, platform);
 
     platform ??= 'native';
-    const platformOutput = twinConfig.getPlatformOutput(platform);
-    const platformInput = twinConfig.getPlatformInput();
+    const platformOutput = twin.getPlatformOutput(platform);
+    const platformInput = twin.getPlatformInput();
 
     if ('filePath' in resolved && resolved.filePath === platformInput) {
-      console.log('INPUT_FILE_FOUND: ', resolved);
       return {
         ...resolved,
         filePath: path.resolve(platformOutput),
@@ -39,31 +41,13 @@ export const twinMetroRequestResolver = (
 
 /** @category Programs */
 export const twinGetTransformerOptions =
-  (config: {
-    originalGetTransformerOptions: GetTransformOptions;
-    twinConfigPath: string;
-    projectRoot: string;
-    inputCSS: string;
-  }) =>
+  (originalGetTransformerOptions: GetTransformOptions, context: TwinNodeLayer) =>
   (...[entryPoints, options, getDeps]: Parameters<GetTransformOptions>) => {
     const platform = options.platform ?? 'native';
     console.debug('Not platform specified on getTransformerOptions');
 
-    const mainLayer = makeBabelLayer.pipe(
-      Layer.provideMerge(TwinFSService.Live),
-      Layer.provideMerge(
-        NativeTwinServiceNode.Live(
-          config.twinConfigPath,
-          config.projectRoot,
-          platform,
-          config.inputCSS,
-        ),
-      ),
-      Layer.provideMerge(twinLoggerLayer),
-    );
-
     return Effect.gen(function* () {
-      const twin = yield* NativeTwinServiceNode;
+      const twin = yield* TwinNodeContext;
       const watcher = yield* TwinFSService;
 
       const writeStylesToFS = !options.dev;
@@ -73,7 +57,9 @@ export const twinGetTransformerOptions =
 
       // We can skip writing to the filesystem if this instance patched Metro
       if (writeStylesToFS) {
-        const outputPath = twin.getPlatformOutput(platform);
+        const outputPath =
+          twin.config.outputPaths[platform as 'native'] ??
+          twin.config.outputPaths.defaultFile;
 
         console.debug(`getTransformOptions.platform ${platform}`);
         console.debug(`getTransformOptions.output ${outputPath}`);
@@ -93,7 +79,7 @@ export const twinGetTransformerOptions =
       }
 
       const result: Partial<ExtraTransformOptions> = yield* Effect.promise(() =>
-        config.originalGetTransformerOptions(entryPoints, options, getDeps),
+        originalGetTransformerOptions(entryPoints, options, getDeps),
       );
 
       // 32159
@@ -109,7 +95,7 @@ export const twinGetTransformerOptions =
       //     unstable_disableES6Transforms: true,
       //   },
       // } as Partial<ExtraTransformOptions>;
-    }).pipe(Effect.provide(mainLayer));
+    }).pipe(context.executor.runPromise);
   };
 
 const startTwinCompilerWatcher = (platform: string, allFiles: string[]) =>

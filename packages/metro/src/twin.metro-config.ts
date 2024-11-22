@@ -1,41 +1,38 @@
-import * as Effect from 'effect/Effect';
-import * as LogLevel from 'effect/LogLevel';
-import * as Logger from 'effect/Logger';
 import {
   twinMetroRequestResolver,
   twinGetTransformerOptions,
   TwinMetroConfig,
-  MetroWithNativeTwindOptions,
+  NodeWithNativeTwinOptions,
+  cachedEntries,
 } from '@native-twin/compiler/metro';
 import {
   createTwinCSSFiles,
   getTwinCacheDir,
   NativeTwinManager,
+  makeNodeLayer,
 } from '@native-twin/compiler/node';
 
 export function withNativeTwin(
   metroConfig: TwinMetroConfig,
-  nativeTwinConfig: MetroWithNativeTwindOptions = {},
+  nativeTwinConfig: NodeWithNativeTwinOptions = {},
 ): TwinMetroConfig {
-  const { twinMetroConfig, originalGetTransformerOptions, transformerOptions } =
-    getDefaultConfig(metroConfig, nativeTwinConfig);
+  const nodeContext = makeNodeLayer(nativeTwinConfig);
 
-  const getTransformerOptions = twinGetTransformerOptions({
+  const { twinMetroConfig, originalGetTransformerOptions } = getDefaultConfig(
+    metroConfig,
+    nativeTwinConfig,
+  );
+
+  const getTransformerOptions = twinGetTransformerOptions(
     originalGetTransformerOptions,
-    projectRoot: transformerOptions.projectRoot,
-    twinConfigPath: transformerOptions.twinConfigPath,
-    inputCSS: transformerOptions.inputCSS,
-  });
+    nodeContext,
+  );
   return {
     ...twinMetroConfig,
     transformer: {
       ...twinMetroConfig.transformer,
       getTransformOptions: (...args) => {
-        return getTransformerOptions(...args).pipe(
-          Effect.annotateLogs('platform', args[1].platform ?? 'server'),
-          Logger.withMinimumLogLevel(LogLevel.All),
-          Effect.runPromise,
-        );
+        return getTransformerOptions(...args);
       },
     },
   };
@@ -43,7 +40,7 @@ export function withNativeTwin(
 
 const getDefaultConfig = (
   metroConfig: TwinMetroConfig,
-  nativeTwinConfig: MetroWithNativeTwindOptions = {},
+  nativeTwinConfig: NodeWithNativeTwinOptions = {},
 ) => {
   const projectRoot = nativeTwinConfig.projectRoot ?? process.cwd();
   const outputDir = getTwinCacheDir();
@@ -51,15 +48,19 @@ const getDefaultConfig = (
     outputDir: outputDir,
     inputCSS: nativeTwinConfig.inputCSS,
   });
-  const twin = new NativeTwinManager(
-    nativeTwinConfig.configPath ?? 'tailwind.config.ts',
-    projectRoot,
-    'native',
+
+  const twin = new NativeTwinManager({
     inputCSS,
-  );
+    platform: 'native',
+    projectRoot,
+    twinConfigPath: nativeTwinConfig.configPath ?? 'tailwind.config.ts',
+    runtimeEntries: cachedEntries,
+  });
 
   const originalResolver = metroConfig.resolver.resolveRequest;
-  const metroResolver = twinMetroRequestResolver(originalResolver, twin);
+  const metroResolver = twinMetroRequestResolver(originalResolver, {
+    twin,
+  });
 
   const transformerOptions = {
     allowedPaths: twin.allowedPaths,
@@ -69,6 +70,7 @@ const getDefaultConfig = (
     inputCSS,
     platformOutputs: twin.platformOutputs,
     twinConfigPath: twin.twinConfigPath,
+    runtimeEntries: cachedEntries,
   };
 
   return {

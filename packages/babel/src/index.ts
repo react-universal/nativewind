@@ -2,14 +2,13 @@ import type { PluginObj } from '@babel/core';
 import { addNamed } from '@babel/helper-module-imports';
 import * as Effect from 'effect/Effect';
 import {
-  makeBabelLayer,
   ReactCompilerService,
   JSXImportPluginContext,
   type TwinBabelPluginOptions,
   type BabelAPI,
   BABEL_JSX_PLUGIN_IMPORT_RUNTIME,
 } from '@native-twin/compiler/babel';
-import { NativeTwinServiceNode } from '@native-twin/compiler/node';
+import { makeNodeLayer } from '@native-twin/compiler/node';
 
 const allowed = new Set<string>();
 const program = Effect.scoped(
@@ -49,12 +48,18 @@ function nativeTwinBabelPlugin(
   options: TwinBabelPluginOptions,
   cwd: string,
 ): PluginObj {
+  const { MainLayer } = makeNodeLayer({
+    configPath: options.twinConfigPath,
+    debug: true,
+    inputCSS: options.inputCSS,
+    outputDir: options.outputDir,
+    projectRoot: cwd,
+  });
   return program.pipe(
     // Logger.withMinimumLogLevel(LogLevel.All),
     // Effect.provide(layer),
-    Effect.provide(makeBabelLayer),
     Effect.provide(JSXImportPluginContext.make(options, cwd)),
-    Effect.provide(NativeTwinServiceNode.Live(options.twinConfigPath ?? '', cwd)),
+    Effect.provide(MainLayer),
     Effect.runSync,
   );
 }

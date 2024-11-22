@@ -13,7 +13,7 @@ import {
   getJSXCompiledTreeRuntime,
   runtimeEntriesToAst,
 } from '../../babel/utils/twin-jsx.utils';
-import { NativeTwinServiceNode } from '../../native-twin';
+import { TwinNodeContext } from '../../services/TwinNodeContext.service';
 
 interface JSXElementOutputData {
   stringEntries: string;
@@ -38,15 +38,19 @@ const getNativeFileOutput = (stringStyles: string, platform: string) =>
   Effect.gen(function* () {
     const writer = new CodeBlockWriter();
     const path = yield* Path.Path;
-    const twin = yield* NativeTwinServiceNode;
+    const twin = yield* TwinNodeContext;
 
     writer.writeLine(`const setup = require('@native-twin/core').setup;`);
     writer.writeLine(`const runtimeTW = require('@native-twin/core').tw;`);
     writer.newLine();
 
+    const outputFilePath =
+      twin.config.outputPaths[platform as 'native'] ??
+      twin.config.outputPaths.defaultFile;
+
     let importTwinPath = path.relative(
-      path.dirname(twin.getPlatformOutput(platform)),
-      twin.twinConfigPath,
+      path.dirname(outputFilePath),
+      twin.config.twinConfigPath,
     );
 
     if (!importTwinPath.startsWith('.')) {

@@ -2,16 +2,17 @@ import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import { BuildConfig, makeBabelConfig, makeBabelLayer } from '../../babel';
+import { BuildConfig, makeBabelConfig } from '../../babel';
 import { compileReactCode } from '../../babel/programs/react.program';
-import { NativeTwinServiceNode } from '../../native-twin';
+import { TwinNodeContext } from '../../services/TwinNodeContext.service';
+import { makeNodeLayer } from '../../services/node.make';
 import type { BabelTransformerFn } from '../models/metro.models';
 
 const mainProgram = Effect.gen(function* () {
-  const twin = yield* NativeTwinServiceNode;
+  const twin = yield* TwinNodeContext;
   const input = yield* BuildConfig;
 
-  if (!twin.isAllowedPath(input.filename)) {
+  if (!twin.utils.isAllowedPath(input.filename)) {
     return input.filename;
   }
 
@@ -26,26 +27,26 @@ export const babelRunnable = Effect.scoped(
 
 export const transform: BabelTransformerFn = async (params) => {
   // console.log('[transform]: PARAMS: ', params);
+  const nodeLayer = makeNodeLayer({
+    projectRoot: params.options.projectRoot,
+    configPath: params.options.customTransformOptions.twinConfigPath,
+    debug: true,
+    inputCSS: params.options.customTransformOptions.inputCSS,
+  });
+
+  const babelConfigLayer = makeBabelConfig({
+    code: params.src,
+    filename: params.filename,
+    inputCSS: params.options.customTransformOptions.inputCSS,
+    outputCSS: params.options.customTransformOptions.outputCSS,
+    platform: params.options.platform,
+    projectRoot: params.options.projectRoot,
+    twinConfigPath: params.options.customTransformOptions.twinConfigPath,
+  });
+
   return babelRunnable.pipe(
-    Effect.provide(makeBabelLayer),
-    Effect.provide(
-      makeBabelConfig({
-        code: params.src,
-        filename: params.filename,
-        inputCSS: params.options.customTransformOptions.inputCSS,
-        outputCSS: params.options.customTransformOptions.outputCSS,
-        platform: params.options.platform,
-        projectRoot: params.options.projectRoot,
-        twinConfigPath: params.options.customTransformOptions.twinConfigPath,
-      }),
-    ),
-    Effect.provide(
-      NativeTwinServiceNode.Live(
-        params.options.customTransformOptions.twinConfigPath,
-        params.options.projectRoot,
-        params.options.platform,
-      ),
-    ),
+    Effect.provide(nodeLayer.MainLayer),
+    Effect.provide(babelConfigLayer),
     Effect.map((code) => {
       // @ts-expect-error untyped
       return upstreamTransformer.transform({

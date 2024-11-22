@@ -80,9 +80,13 @@ const transformJSXElementTree = (trees: HashMap.HashMap<string, JSXElementNode>)
   });
 };
 
-const getJSXElementRegistry = (babelTrees: Tree<JSXElementTree>[], filename: string) =>
+const getJSXElementRegistry = (
+  babelTrees: Tree<JSXElementTree>[],
+  filename: string,
+  platform: string,
+) =>
   Stream.fromIterable(babelTrees).pipe(
-    Stream.mapEffect((x) => extractSheetsFromTree(x, filename)),
+    Stream.mapEffect((x) => extractSheetsFromTree(x, filename, platform)),
     Stream.map(HashMap.fromIterable),
     Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) =>
       HashMap.union(current, prev),
@@ -114,8 +118,8 @@ const make = Effect.gen(function* () {
       Effect.flatMap(babel.getAST(code, filename), (x) =>
         babel.getJSXElementTrees(x, filename),
       ),
-    getRegistry: (trees: Tree<JSXElementTree>[], filename: string) =>
-      getJSXElementRegistry(trees, filename),
+    getRegistry: (trees: Tree<JSXElementTree>[], filename: string, platform: string) =>
+      getJSXElementRegistry(trees, filename, platform),
     transformTress: transformTrees,
     memberExpressionIsReactImport,
     identifierIsReactImport,

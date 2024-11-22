@@ -3,30 +3,27 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-// import * as Option from 'effect/Option';
 import type { TransformResponse } from 'metro-transform-worker';
 import path from 'node:path';
 import { matchCss } from '@native-twin/helpers/server';
 import { assertString } from '../../../shared';
-import { BabelCompiler, BuildConfig, makeBabelConfig, makeBabelLayer } from '../../babel';
+import { BabelCompiler, makeBabelConfig } from '../../babel';
 import { compileReactCode } from '../../babel/programs/react.program';
-import { TwinFSService } from '../../file-system';
-import { NativeTwinServiceNode } from '../../native-twin';
-// import { transformCSS } from '../../programs/css.transform';
-import { twinLoggerLayer } from '../../services/Logger.service';
+import { TwinNodeContext } from '../../services/TwinNodeContext.service';
+import { makeNodeLayer } from '../../services/node.make';
 import type { TwinMetroTransformFn } from '../models';
 import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.service';
 import { transformCSSExpo } from '../utils/css.utils';
 
 const metroMainProgram = Effect.gen(function* () {
   const { runWorker, input } = yield* MetroWorkerService;
-  const twin = yield* NativeTwinServiceNode;
-  yield* BuildConfig;
+  const twin = yield* TwinNodeContext;
   const babel = yield* BabelCompiler;
 
+  const platformOutput = input.config.outputCSS;
   if (
     matchCss(input.filename) &&
-    input.filename.includes(path.basename(twin.getPlatformOutput(twin.platform)))
+    input.filename.includes(path.basename(platformOutput))
   ) {
     console.log('[METRO_TRANSFORMER]: Detect css file', input.filename);
     const result: TransformResponse = yield* Effect.promise(() =>
@@ -85,7 +82,7 @@ const metroMainProgram = Effect.gen(function* () {
   //   return response;
   // }
 
-  if (!twin.isAllowedPath(input.filename)) {
+  if (!twin.utils.isAllowedPath(input.filename)) {
     // transformCSSExpo(input.config, input.projectRoot, input.filename, input.data);
     return yield* runWorker(input);
   }
@@ -118,16 +115,8 @@ const metroMainProgram = Effect.gen(function* () {
   return result;
 }).pipe(Effect.scoped);
 
-const MainLayer = makeBabelLayer.pipe(
-  Layer.provideMerge(TwinFSService.Live),
-  Layer.merge(twinLoggerLayer),
-);
-
 export const metroRunnable = Effect.scoped(
-  metroMainProgram.pipe(
-    Logger.withMinimumLogLevel(LogLevel.All),
-    Effect.provide(MainLayer),
-  ),
+  metroMainProgram.pipe(Logger.withMinimumLogLevel(LogLevel.All)),
 );
 
 export const transform: TwinMetroTransformFn = async (
@@ -144,26 +133,24 @@ export const transform: TwinMetroTransformFn = async (
 
   assertString(outputCSS);
 
+  const babelConfigLayer = makeBabelConfig({
+    code: data.toString(),
+    filename: filename,
+    inputCSS: config.inputCSS,
+    outputCSS: outputCSS,
+    platform: platform,
+    projectRoot: projectRoot,
+    twinConfigPath: config.twinConfigPath,
+  });
+  const nodeLayer = makeNodeLayer({
+    configPath: config.twinConfigPath,
+    debug: true,
+    inputCSS: config.inputCSS,
+  });
+
   const layer = makeWorkerLayers(config, projectRoot, filename, data, options).pipe(
-    Layer.provideMerge(
-      NativeTwinServiceNode.Live(
-        config.twinConfigPath,
-        projectRoot,
-        platform,
-        config.inputCSS,
-      ),
-    ),
-    Layer.provideMerge(
-      makeBabelConfig({
-        code: data.toString(),
-        filename: filename,
-        inputCSS: config.inputCSS,
-        outputCSS: outputCSS,
-        platform: platform,
-        projectRoot: projectRoot,
-        twinConfigPath: config.twinConfigPath,
-      }),
-    ),
+    Layer.provideMerge(nodeLayer.MainLayer),
+    Layer.provideMerge(babelConfigLayer),
   );
 
   return metroRunnable.pipe(Effect.provide(layer), Effect.runPromise);

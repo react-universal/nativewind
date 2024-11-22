@@ -21,6 +21,10 @@
       "path": "../packages/compiler"
     },
     {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
     },

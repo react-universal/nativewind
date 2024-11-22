@@ -12,7 +12,7 @@ export default function nativeTwinVite(config: TwinVitePluginConfig): PluginOpti
   const viteBabel: Plugin = {
     name: 'vite:twin-babel',
     enforce: 'pre',
-    async transform(code, id, _options) {
+    async transform(code, id) {
       if (id.includes('/node_modules/')) return;
 
       const [filepath] = id.split('?');

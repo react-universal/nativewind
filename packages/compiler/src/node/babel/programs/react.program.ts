@@ -29,7 +29,7 @@ export const compileReactCode = Effect.gen(function* () {
       babel.getJSXElementTrees(ast, input.filename),
     ),
     Effect.bind('registry', ({ trees, input }) =>
-      getJSXElementRegistry(trees, input.filename),
+      getJSXElementRegistry(trees, input.filename, input.platform),
     ),
     Effect.bind('output', ({ registry, input }) =>
       transformTrees(registry, input.platform),
@@ -103,10 +103,11 @@ const transformJSXElementTree = (trees: HashMap.HashMap<string, JSXElementNode>)
 export const getJSXElementRegistry = (
   babelTrees: Tree<JSXElementTree>[],
   filename: string,
+  platform: string,
 ) =>
   pipe(
     Stream.fromIterable(babelTrees),
-    Stream.mapEffect((x) => extractSheetsFromTree(x, filename)),
+    Stream.mapEffect((x) => extractSheetsFromTree(x, filename, platform)),
     Stream.map(HashMap.fromIterable),
     Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) =>
       HashMap.union(prev, current),

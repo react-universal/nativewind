@@ -1,1 +1,5 @@
-export { TwinFSService, makeFileSystem } from './services/TwinWatcher.service';
+export {
+  TwinFSService,
+  makeFileSystem,
+  cachedEntries,
+} from './services/TwinWatcher.service';

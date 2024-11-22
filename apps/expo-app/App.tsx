@@ -9,7 +9,7 @@ export default function App() {
     <View className='bg-blue-800 flex-1 items-center justify-center first:bg-green'>
       <View
         className={`
-          w-[80vw] h-[20vh] rounded-full justify-center items-center
+          w-[80vw] h-[20vh] rounded-full justify-center items-center bg-purple-200
           last:bg-purple border-1 border-white
           hover:bg-red
           ${true && 'h-[50vh]'}

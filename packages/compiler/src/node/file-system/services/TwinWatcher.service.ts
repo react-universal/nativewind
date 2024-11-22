@@ -11,15 +11,18 @@ import * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import type { JSXElementNode } from '../../babel/models';
-import { NativeTwinServiceNode } from '../../native-twin';
+import { NativeTwinManager } from '../../native-twin';
 import { getFileClasses } from '../../native-twin/twin.utils.node';
+import { TwinNodeContext } from '../../services/TwinNodeContext.service';
 import { readDirectoryRecursive } from '../../utils';
 import { getNativeStylesJSOutput } from '../utils/native.utils';
 
 const initialized: Set<string> = new Set();
+export const cachedEntries: NativeTwinManager['runtimeEntries'] = [];
 
 const getAllFilesInProject = Effect.gen(function* () {
-  const { allowedPaths } = yield* NativeTwinServiceNode;
+  const { config } = yield* TwinNodeContext;
+  const allowedPaths = config.allowedPaths;
 
   return yield* pipe(
     allowedPaths,
@@ -29,8 +32,10 @@ const getAllFilesInProject = Effect.gen(function* () {
 });
 
 export const makeFileSystem = Effect.gen(function* () {
-  const twin = yield* NativeTwinServiceNode;
+  const twin = yield* TwinNodeContext;
   const fs = yield* FileSystem.FileSystem;
+  const twWeb = twin.tw.web;
+  const twNative = twin.tw.native;
 
   const getTwinCssOutput = (params: {
     filepath: string;
@@ -39,9 +44,10 @@ export const makeFileSystem = Effect.gen(function* () {
   }) => {
     return Effect.gen(function* () {
       yield* Effect.log('[getTwinCssOutput]: ', params.filepath);
+      const tw = params.platform === 'web' ? twin.tw.web : twin.tw.native;
 
       if (params.filepath.endsWith('.css')) {
-        return sheetEntriesToCss(twin.sheetTarget, false);
+        return sheetEntriesToCss(tw.target, false);
       }
 
       const registry = yield* createCompilerRegistry(params.trees);
@@ -61,15 +67,15 @@ export const makeFileSystem = Effect.gen(function* () {
     });
   };
 
-  const compileFiles = (files: string[]) => {
+  const compileFiles = (files: string[], platform: string) => {
     return Effect.gen(function* () {
       const classes = yield* pipe(
         files,
-        RA.map((x) => getFileClasses(x)),
+        RA.map((x) => getFileClasses(x, platform)),
         Effect.allSuccesses,
       );
       return RA.map(classes, (x) => {
-        const twinOutput = twin.tw(`${x}`);
+        const twinOutput = platform === 'web' ? twWeb(`${x}`) : twNative(`${x}`);
         return {
           twinOutput,
           trees: x.registry,
@@ -82,14 +88,33 @@ export const makeFileSystem = Effect.gen(function* () {
     return Effect.gen(function* () {
       yield* Effect.log('Building project...');
 
-      const twinResult = yield* compileFiles(files);
+      const tw = platform === 'web' ? twWeb : twNative;
+      const outputPath =
+        twin.config.outputPaths[platform as 'native'] ??
+        twin.config.outputPaths.defaultFile;
+
+      const twinResult = yield* compileFiles(files, platform);
       yield* refreshCSSOutput({
-        filepath: twin.getPlatformOutput(platform),
+        filepath: outputPath,
         trees: RA.map(twinResult, (x) => x.trees),
         platform,
       });
       yield* Effect.log(`Build success!`);
-      yield* Effect.log(`Added ${twin.sheetTarget.length} classes`);
+      pipe(
+        tw.target,
+        RA.appendAll(cachedEntries),
+        RA.dedupeWith(
+          (a, b) =>
+            `${a.className}-${a.selectors.join('')}` ===
+            `${b.className}-${b.selectors.join('')}`,
+        ),
+        (result) => {
+          if (result.length > cachedEntries.length) {
+            cachedEntries.splice(0, cachedEntries.length, ...result);
+          }
+        },
+      );
+      yield* Effect.log(`Added ${tw.target.length} classes`);
     });
   };
 
@@ -146,7 +171,7 @@ export const makeFileSystem = Effect.gen(function* () {
           ...watchEvent,
           path: path.resolve(basePath, watchEvent.path),
         })),
-        Stream.filter((watchEvent) => twin.isAllowedPath(watchEvent.path)),
+        Stream.filter((watchEvent) => twin.utils.isAllowedPath(watchEvent.path)),
         Stream.tap((x) => Effect.log(`File change detected: ${x.path} \n`)),
       );
     });

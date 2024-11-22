@@ -11,7 +11,8 @@ import {
   mappedComponents,
   type MappedComponent,
 } from '../../../shared';
-import { NativeTwinServiceNode } from '../../native-twin';
+import { getElementEntries } from '../../native-twin/twin.utils.node';
+import { TwinNodeContext } from '../../services/TwinNodeContext.service';
 import { JSXElementNode, JSXElementTree, type JSXMappedAttribute } from '../models';
 import { jsxTreeNodeToJSXElementNode } from './babel.transform';
 import { getJSXElementAttrs, getJSXElementName } from './jsx.utils';
@@ -147,14 +148,22 @@ export const runtimeEntriesToAst = (entries: string) => {
   }
 };
 
-export const extractSheetsFromTree = (tree: Tree<JSXElementTree>, fileName: string) =>
+export const extractSheetsFromTree = (
+  tree: Tree<JSXElementTree>,
+  fileName: string,
+  platform: string,
+) =>
   Effect.gen(function* () {
-    const twin = yield* NativeTwinServiceNode;
+    const twin = yield* TwinNodeContext;
+    const tw = platform === 'web' ? twin.tw.web : twin.tw.native;
     const fileSheet = RA.empty<[string, JSXElementNode]>();
 
     tree.traverse((leave) => {
       const runtimeData = extractMappedAttributes(leave.value.babelNode);
-      const entries = twin.getJSXElementEntries(runtimeData);
+      const entries = getElementEntries(runtimeData, tw, {
+        baseRem: tw.config.root.rem ?? 16,
+        platform,
+      });
       const model = jsxTreeNodeToJSXElementNode(leave, entries, fileName);
 
       fileSheet.push([model.id, model]);

@@ -1,4 +1,4 @@
-import { createVirtualSheet, Preflight } from '@native-twin/css';
+import { createVirtualSheet, Preflight, SheetEntry } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
 import micromatch from 'micromatch';
@@ -22,6 +22,7 @@ export class NativeTwinManager {
   private readonly twWeb: InternalTwFn;
   private readonly nativeConfig: TailwindConfig<InternalTwinConfig>;
   private readonly webConfig: TailwindConfig<InternalTwinConfig>;
+  debugEnabled = false;
 
   readonly preflight: Preflight;
   readonly platformOutputs: string[];
@@ -30,18 +31,27 @@ export class NativeTwinManager {
   readonly projectRoot: string;
   readonly platform: string;
   readonly inputCSS: string;
-  constructor(
-    twinConfigPath: string,
-    projectRoot: string,
-    platform: string,
-    inputCSS: string,
-  ) {
-    this.twinConfigPath = twinConfigPath;
-    this.projectRoot = projectRoot;
-    this.platform = platform;
-    this.inputCSS = inputCSS;
-    this.nativeConfig = this.getUserTwinConfig({ platform: 'native', twinConfigPath });
-    this.webConfig = this.getUserTwinConfig({ platform: 'web', twinConfigPath });
+  runtimeEntries: SheetEntry[];
+  constructor(data: {
+    twinConfigPath: string;
+    projectRoot: string;
+    platform: string;
+    inputCSS: string;
+    runtimeEntries: NativeTwinManager['runtimeEntries'];
+  }) {
+    this.runtimeEntries = data.runtimeEntries;
+    this.twinConfigPath = data.twinConfigPath;
+    this.projectRoot = data.projectRoot;
+    this.platform = data.platform;
+    this.inputCSS = data.inputCSS;
+    this.nativeConfig = this.getUserTwinConfig({
+      platform: 'native',
+      twinConfigPath: data.twinConfigPath,
+    });
+    this.webConfig = this.getUserTwinConfig({
+      platform: 'web',
+      twinConfigPath: data.twinConfigPath,
+    });
     // this.config = this.getUserTwinConfig({ platform, twinConfigPath });
     this.__tw = createTailwind(this.config, createVirtualSheet());
     this.twWeb = createTailwind(this.webConfig, createVirtualSheet());

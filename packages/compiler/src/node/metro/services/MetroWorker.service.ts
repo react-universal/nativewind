@@ -2,8 +2,9 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import worker from 'metro-transform-worker';
+import path from 'path';
 import { ensureBuffer } from '@native-twin/helpers/server';
-import { NativeTwinServiceNode } from '../../native-twin';
+import { BuildConfig } from '../../babel';
 import type { MetroWorkerInput, NativeTwinTransformerOpts } from '../models/metro.models';
 
 export class MetroWorkerService extends Context.Tag('metro/worker/context')<
@@ -20,37 +21,35 @@ export class MetroWorkerService extends Context.Tag('metro/worker/context')<
 type MetroTransformFn = typeof worker.transform;
 export const createWorkerService = (input: MetroWorkerInput) => {
   return Effect.gen(function* () {
-    const twin = yield* NativeTwinServiceNode;
+    const buildConfig = yield* BuildConfig;
     const transform: MetroTransformFn = input.config.originalTransformerPath
       ? require(input.config.originalTransformerPath).transform
       : worker.transform;
 
     return {
       input,
-      runWorker: (config) =>
-        Effect.promise(() =>
+      runWorker: (config) => {
+        return Effect.promise(() =>
           transform(
             {
               ...config.config,
-              // @ts-expect-error asd
-              custommmmConfig: 'asdasdasd',
             },
             config.projectRoot,
             config.filename,
             config.data,
             {
               ...config.options,
-              custommmm: 'asdasdasd',
-              'twin.outputDir': twin.outputDir,
+              // @ts-expect-error add
+              'twin.outputDir': path.dirname(buildConfig.outputCSS),
               customTransformOptions: {
                 ...config.options.customTransformOptions,
-                custommmm2: 'asdasdasd',
-                'twin.outputDirCustom': twin.outputDir,
-                outputCSS: input.config.outputCSS,
+                'twin.outputDirCustom': path.dirname(buildConfig.outputCSS),
+                outputCSS: buildConfig.outputCSS,
               },
             },
           ),
-        ),
+        );
+      },
     } as MetroWorkerService['Type'];
   });
 };

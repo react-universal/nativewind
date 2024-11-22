@@ -83,7 +83,6 @@ const TwinCustomLogger = Logger.make((options) => {
       ),
     );
   }
-  msgFactory.push();
 
   const message = msgFactory.join(' ');
 

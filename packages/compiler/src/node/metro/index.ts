@@ -1,6 +1,6 @@
-import { TwinFSService } from '../file-system';
+import { TwinFSService, cachedEntries } from '../file-system';
 import { twinGetTransformerOptions, twinMetroRequestResolver } from './metro.resolver';
-import type { TwinMetroConfig, MetroWithNativeTwindOptions } from './metro.types';
+import type { TwinMetroConfig, NodeWithNativeTwinOptions } from './metro.types';
 import type {
   BabelTransformerConfig,
   BabelTransformerFn,
@@ -9,11 +9,16 @@ import type {
   TwinMetroTransformFn,
 } from './models';
 
-export { twinGetTransformerOptions, twinMetroRequestResolver, TwinFSService };
+export {
+  twinGetTransformerOptions,
+  twinMetroRequestResolver,
+  TwinFSService,
+  cachedEntries,
+};
 
 export type {
   TwinMetroConfig,
-  MetroWithNativeTwindOptions,
+  NodeWithNativeTwinOptions,
   BabelTransformerConfig,
   BabelTransformerFn,
   BabelTransformerOptions,
