@@ -47,7 +47,8 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.1",
-    "@rollup/plugin-json": "^6.1.0"
+    "@rollup/plugin-json": "^6.1.0",
+    "vite-plugin-require": "^1.2.14"
   },
   "peerDependencies": {
     "vite": ">=5"
@@ -55,7 +56,7 @@
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*",
     "better-docs": "*",
-    "rollup": "*",
+    "rollup": "^4.20.0",
     "vite": "^5.4.10"
   },
   "publishConfig": {

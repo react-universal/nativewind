@@ -27,12 +27,6 @@ export const twinMetroRequestResolver = (
       const resolved = resolver(context, moduleName, platform);
 
       if ('filePath' in resolved && resolved.filePath === platformInput) {
-        console.log('DETECT_CSS_INPUT: ', {
-          resolved,
-          redirectTo: path.resolve(platformOutput),
-          input: platformInput,
-          platformOutput,
-        });
         return {
           ...resolved,
           filePath: path.resolve(platformOutput),

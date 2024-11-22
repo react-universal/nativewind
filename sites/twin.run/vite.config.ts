@@ -33,6 +33,7 @@ export default defineConfig((): UserConfig => {
     build: {
       target: 'esnext',
       sourcemap: true,
+      commonjsOptions: { transformMixedEsModules: true },
     },
     esbuild: {
       minifySyntax: false,

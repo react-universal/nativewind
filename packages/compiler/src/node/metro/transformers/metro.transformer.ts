@@ -26,7 +26,7 @@ const metroMainProgram = Effect.gen(function* () {
     matchCss(input.filename) &&
     input.filename.includes(path.basename(platformOutput))
   ) {
-    console.log('[METRO_TRANSFORMER]: Detect css file', input.filename);
+    // console.log('[METRO_TRANSFORMER]: Detect css file', input.filename);
     const result: TransformResponse = yield* Effect.promise(() =>
       transformCSSExpo(
         input.config,
