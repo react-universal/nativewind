@@ -1,5 +1,4 @@
 import { TwinFSService } from './file-system';
-import { NativeTwinServiceNode, NativeTwinManager } from './native-twin';
 import { createTwinCSSFiles, getTwinCacheDir } from './native-twin/twin.utils.node';
 import { twinLoggerLayer } from './services/Logger.service';
 
@@ -10,8 +9,6 @@ export { NodeContextShape, TwinNodeContext } from './services/TwinNodeContext.se
 export { makeNodeLayer, type TwinNodeLayer } from './services/node.make';
 
 export {
-  NativeTwinServiceNode,
-  NativeTwinManager,
   createTwinCSSFiles,
   getTwinCacheDir,
   TwinFSService,

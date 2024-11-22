@@ -6,14 +6,17 @@ import worker, { type TransformResponse } from 'metro-transform-worker';
 import { pathToHtmlSafeName, countLines } from '@native-twin/helpers/server';
 import { TwinFSService } from '../file-system';
 import { MetroWorkerService } from '../metro/services/MetroWorker.service';
-import { NativeTwinServiceNode } from '../native-twin';
+import { TwinNodeContext } from '../services/TwinNodeContext.service';
 
 export const transformCSS = Effect.gen(function* () {
   const { input } = yield* MetroWorkerService;
-  const twin = yield* NativeTwinServiceNode;
+  const twin = yield* TwinNodeContext;
   const twinFS = yield* TwinFSService;
+  const platform = input.options.platform ?? 'native';
+  // const tw = twin.utils.getTwForPlatform('web');
+  const outputPath = twin.utils.getOutputCSSPath('web');
 
-  if (twin.platform !== 'web') {
+  if (platform !== 'web') {
     return Option.none() as Option.Option<TransformResponse>;
   }
 
@@ -22,9 +25,9 @@ export const transformCSS = Effect.gen(function* () {
     require('lightningcss') as typeof import('lightningcss');
 
   const files = yield* twinFS.getAllFilesInProject;
-  yield* twinFS.runTwinForFiles(files, twin.platform);
+  yield* twinFS.runTwinForFiles(files, platform);
 
-  const output = fs.readFileSync(twin.getPlatformOutput(twin.platform), 'utf-8');
+  const output = fs.readFileSync(outputPath, 'utf-8');
   // const twinCSS = sheetEntriesToCss(twin.sheetTarget, true);
 
   if (output.length === 0) {
@@ -33,7 +36,7 @@ export const transformCSS = Effect.gen(function* () {
 
   const cssResult = lightningcssTransform({
     code: Buffer.from(output),
-    filename: twin.getPlatformOutput('web'),
+    filename: outputPath,
     cssModules: false,
     minify: false,
   });

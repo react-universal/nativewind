@@ -1,4 +1,4 @@
-import { sheetEntriesToCss } from '@native-twin/css';
+import { sheetEntriesToCss, SheetEntry } from '@native-twin/css';
 import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
 import * as NodePath from '@effect/platform-node/NodePath';
 import * as FileSystem from '@effect/platform/FileSystem';
@@ -11,14 +11,13 @@ import * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import type { JSXElementNode } from '../../babel/models';
-import { NativeTwinManager } from '../../native-twin';
 import { getFileClasses } from '../../native-twin/twin.utils.node';
 import { TwinNodeContext } from '../../services/TwinNodeContext.service';
 import { readDirectoryRecursive } from '../../utils';
 import { getNativeStylesJSOutput } from '../utils/native.utils';
 
 const initialized: Set<string> = new Set();
-export const cachedEntries: NativeTwinManager['runtimeEntries'] = [];
+export const cachedEntries: SheetEntry[] = [];
 
 const getAllFilesInProject = Effect.gen(function* () {
   const { config } = yield* TwinNodeContext;
@@ -34,8 +33,6 @@ const getAllFilesInProject = Effect.gen(function* () {
 export const makeFileSystem = Effect.gen(function* () {
   const twin = yield* TwinNodeContext;
   const fs = yield* FileSystem.FileSystem;
-  const twWeb = twin.tw.web;
-  const twNative = twin.tw.native;
 
   const getTwinCssOutput = (params: {
     filepath: string;
@@ -44,7 +41,7 @@ export const makeFileSystem = Effect.gen(function* () {
   }) => {
     return Effect.gen(function* () {
       yield* Effect.log('[getTwinCssOutput]: ', params.filepath);
-      const tw = params.platform === 'web' ? twin.tw.web : twin.tw.native;
+      const tw = twin.utils.getTwForPlatform(params.platform);
 
       if (params.filepath.endsWith('.css')) {
         return sheetEntriesToCss(tw.target, false);
@@ -69,13 +66,14 @@ export const makeFileSystem = Effect.gen(function* () {
 
   const compileFiles = (files: string[], platform: string) => {
     return Effect.gen(function* () {
+      const tw = twin.utils.getTwForPlatform(platform);
       const classes = yield* pipe(
         files,
         RA.map((x) => getFileClasses(x, platform)),
         Effect.allSuccesses,
       );
       return RA.map(classes, (x) => {
-        const twinOutput = platform === 'web' ? twWeb(`${x}`) : twNative(`${x}`);
+        const twinOutput = tw(`${x}`);
         return {
           twinOutput,
           trees: x.registry,
@@ -87,11 +85,8 @@ export const makeFileSystem = Effect.gen(function* () {
   const runTwinForFiles = (files: string[], platform: string) => {
     return Effect.gen(function* () {
       yield* Effect.log('Building project...');
-
-      const tw = platform === 'web' ? twWeb : twNative;
-      const outputPath =
-        twin.config.outputPaths[platform as 'native'] ??
-        twin.config.outputPaths.defaultFile;
+      const tw = twin.utils.getTwForPlatform(platform);
+      const outputPath = twin.utils.getOutputCSSPath(platform);
 
       const twinResult = yield* compileFiles(files, platform);
       yield* refreshCSSOutput({

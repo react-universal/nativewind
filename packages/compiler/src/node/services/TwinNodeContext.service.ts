@@ -4,8 +4,8 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import micromatch from 'micromatch';
 import path from 'node:path';
-import { TailwindConfig } from '@native-twin/core';
-import { InternalTwFn, InternalTwinConfig } from '../native-twin';
+import type { TailwindConfig } from '@native-twin/core';
+import type { InternalTwFn, InternalTwinConfig } from '../native-twin';
 import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils';
 
 interface ContextOptions {
@@ -55,11 +55,32 @@ const make = ({
     };
 
     const outputPaths = {
-      defaultFile: path.join(outputDir, 'twin.out.css'),
+      defaultFile: path.join(outputDir, 'twin.out.native.css'),
       web: path.join(outputDir, 'twin.out.web.css'),
       ios: path.join(outputDir, 'twin.out.ios.css.js'),
       android: path.join(outputDir, 'twin.out.android.css.js'),
       native: path.join(outputDir, 'twin.out.native.css.js'),
+    };
+
+    const getTwForPlatform = (platform: string) => {
+      if (platform === 'web') return webTw;
+      return nativeTw;
+    };
+
+    const getOutputCSSPath = (platform: string) => {
+      switch (platform) {
+        case 'web':
+          return outputPaths.web;
+        case 'ios':
+          return outputPaths.ios;
+        case 'android':
+          return outputPaths.android;
+        case 'native':
+          return outputPaths.native;
+        default:
+          console.warn('[WARN]: cant determine outputCSS fallback to default');
+          return outputPaths.defaultFile;
+      }
     };
 
     const config = {
@@ -79,6 +100,8 @@ const make = ({
         config,
         utils: {
           isAllowedPath,
+          getTwForPlatform,
+          getOutputCSSPath,
         },
         tw: {
           native: nativeTw,
@@ -115,6 +138,8 @@ export class TwinNodeContext extends Context.Tag('node/shared/context')<
     };
     utils: {
       isAllowedPath: (path: string) => boolean;
+      getTwForPlatform: (platform: string) => InternalTwFn;
+      getOutputCSSPath: (platform: string) => string;
     };
   }
 >() {

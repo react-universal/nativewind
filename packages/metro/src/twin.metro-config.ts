@@ -1,3 +1,4 @@
+import { Effect } from 'effect';
 import {
   twinMetroRequestResolver,
   twinGetTransformerOptions,
@@ -8,8 +9,8 @@ import {
 import {
   createTwinCSSFiles,
   getTwinCacheDir,
-  NativeTwinManager,
   makeNodeLayer,
+  TwinNodeContext,
 } from '@native-twin/compiler/node';
 
 export function withNativeTwin(
@@ -36,61 +37,60 @@ export function withNativeTwin(
       },
     },
   };
+
+  function getDefaultConfig(
+    metroConfig: TwinMetroConfig,
+    nativeTwinConfig: NodeWithNativeTwinOptions = {},
+  ) {
+    const projectRoot = nativeTwinConfig.projectRoot ?? process.cwd();
+    const outputDir = getTwinCacheDir();
+    const { inputCSS } = createTwinCSSFiles({
+      outputDir: outputDir,
+      inputCSS: nativeTwinConfig.inputCSS,
+    });
+
+    // const twin = new NativeTwinManager({
+    //   inputCSS,
+    //   platform: 'native',
+    //   projectRoot,
+    //   twinConfigPath: nativeTwinConfig.configPath ?? 'tailwind.config.ts',
+    //   runtimeEntries: cachedEntries,
+    // });
+
+    const originalResolver = metroConfig.resolver.resolveRequest;
+    const metroResolver = twinMetroRequestResolver(originalResolver, nodeContext);
+    const data = Effect.map(TwinNodeContext, (x) => x).pipe(nodeContext.executor.runSync);
+
+    const transformerOptions = {
+      allowedPaths: data.config.allowedPaths,
+      allowedPathsGlob: data.config.allowedPathsGlob,
+      outputDir,
+      projectRoot,
+      inputCSS,
+      platformOutputs: Array.from(Object.values(data.config.outputPaths)),
+      twinConfigPath: data.config.twinConfigPath,
+      runtimeEntries: cachedEntries,
+    };
+
+    return {
+      twinMetroConfig: {
+        ...metroConfig,
+        transformerPath: require.resolve('@native-twin/compiler/metro.transformer'),
+        resolver: {
+          ...metroConfig.resolver,
+          resolveRequest: metroResolver,
+        },
+        transformer: {
+          ...metroConfig.transformer,
+          ...transformerOptions,
+          // babelTransformerPath: require.resolve('@native-twin/compiler/metro.babel.transformer'),
+          originalTransformerPath: metroConfig.transformerPath,
+          unstable_allowRequireContext: true,
+        },
+      },
+      originalGetTransformerOptions: metroConfig.transformer.getTransformOptions,
+      originalResolver,
+      transformerOptions,
+    };
+  }
 }
-
-const getDefaultConfig = (
-  metroConfig: TwinMetroConfig,
-  nativeTwinConfig: NodeWithNativeTwinOptions = {},
-) => {
-  const projectRoot = nativeTwinConfig.projectRoot ?? process.cwd();
-  const outputDir = getTwinCacheDir();
-  const { inputCSS } = createTwinCSSFiles({
-    outputDir: outputDir,
-    inputCSS: nativeTwinConfig.inputCSS,
-  });
-
-  const twin = new NativeTwinManager({
-    inputCSS,
-    platform: 'native',
-    projectRoot,
-    twinConfigPath: nativeTwinConfig.configPath ?? 'tailwind.config.ts',
-    runtimeEntries: cachedEntries,
-  });
-
-  const originalResolver = metroConfig.resolver.resolveRequest;
-  const metroResolver = twinMetroRequestResolver(originalResolver, {
-    twin,
-  });
-
-  const transformerOptions = {
-    allowedPaths: twin.allowedPaths,
-    allowedPathsGlob: twin.allowedPathsGlob,
-    outputDir,
-    projectRoot,
-    inputCSS,
-    platformOutputs: twin.platformOutputs,
-    twinConfigPath: twin.twinConfigPath,
-    runtimeEntries: cachedEntries,
-  };
-
-  return {
-    twinMetroConfig: {
-      ...metroConfig,
-      transformerPath: require.resolve('@native-twin/compiler/metro.transformer'),
-      resolver: {
-        ...metroConfig.resolver,
-        resolveRequest: metroResolver,
-      },
-      transformer: {
-        ...metroConfig.transformer,
-        ...transformerOptions,
-        // babelTransformerPath: require.resolve('@native-twin/compiler/metro.babel.transformer'),
-        originalTransformerPath: metroConfig.transformerPath,
-        unstable_allowRequireContext: true,
-      },
-    },
-    originalGetTransformerOptions: metroConfig.transformer.getTransformOptions,
-    originalResolver,
-    transformerOptions,
-  };
-};

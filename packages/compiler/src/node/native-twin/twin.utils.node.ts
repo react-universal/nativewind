@@ -87,9 +87,16 @@ export const createTwinCSSFiles = ({
   if (!fs.existsSync(path.resolve(outputDir))) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
+
   if (!inputCSS) {
     inputCSS = path.join(outputDir, DEFAULT_TWIN_INPUT_CSS_FILE);
     fs.writeFileSync(inputCSS, '');
+  } else {
+    if (!fs.existsSync(inputCSS)) {
+      if (fs.existsSync(path.join(process.cwd(), inputCSS))) {
+        inputCSS = path.join(process.cwd(), inputCSS);
+      }
+    }
   }
 
   // fs.writeFileSync(outputCSS, '.tt_root { font-size: 16px }', 'utf-8');

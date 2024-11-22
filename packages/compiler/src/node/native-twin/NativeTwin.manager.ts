@@ -17,7 +17,7 @@ import {
   getTwinConfigPath,
 } from './twin.utils.node';
 
-export class NativeTwinManager {
+export class __NativeTwinManager {
   private readonly __tw: InternalTwFn;
   private readonly twWeb: InternalTwFn;
   private readonly nativeConfig: TailwindConfig<InternalTwinConfig>;
@@ -37,7 +37,7 @@ export class NativeTwinManager {
     projectRoot: string;
     platform: string;
     inputCSS: string;
-    runtimeEntries: NativeTwinManager['runtimeEntries'];
+    runtimeEntries: __NativeTwinManager['runtimeEntries'];
   }) {
     this.runtimeEntries = data.runtimeEntries;
     this.twinConfigPath = data.twinConfigPath;

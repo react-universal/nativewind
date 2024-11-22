@@ -1,9 +1,12 @@
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
+import fs from 'node:fs';
+import path from 'node:path';
+import { DEFAULT_TWIN_INPUT_CSS_FILE } from '../../shared';
 import { BabelCompiler, ReactCompilerService } from '../babel';
 import { TwinFSService } from '../file-system';
 import { NodeWithNativeTwinOptions } from '../metro/metro.types';
-import { createTwinCSSFiles, getTwinCacheDir } from '../native-twin/twin.utils.node';
+import { getTwinCacheDir } from '../native-twin/twin.utils.node';
 import { extractTwinConfig } from '../utils/twin.utils';
 import { twinLoggerLayer } from './Logger.service';
 import { TwinNodeContext } from './TwinNodeContext.service';
@@ -21,11 +24,18 @@ export const makeNodeLayer = (config: NodeWithNativeTwinOptions) => {
   const outputDir = config.outputDir ?? getTwinCacheDir();
 
   if (!inputCSS) {
-    const files = createTwinCSSFiles({
-      outputDir,
-      inputCSS,
-    });
-    inputCSS = files.inputCSS;
+    inputCSS = path.join(outputDir, DEFAULT_TWIN_INPUT_CSS_FILE);
+    if (!fs.existsSync(inputCSS)) {
+      fs.writeFileSync(inputCSS, '');
+    }
+  } else {
+    const isAbsolute = path.isAbsolute(inputCSS);
+    const absolutePath = path.join(projectRoot, inputCSS);
+    if (!isAbsolute) {
+      if (fs.existsSync(absolutePath)) {
+        inputCSS = absolutePath;
+      }
+    }
   }
 
   const twinConfig = extractTwinConfig({ projectRoot, twinConfigPath });
@@ -40,10 +50,7 @@ export const makeNodeLayer = (config: NodeWithNativeTwinOptions) => {
   });
 
   const MainLayer = Layer.empty
-    .pipe(
-      Layer.provideMerge(DefaultLayer),
-      Layer.provideMerge(nodeContext),
-    )
+    .pipe(Layer.provideMerge(DefaultLayer), Layer.provideMerge(nodeContext))
     .pipe(Layer.provide(twinLoggerLayer));
 
   const executor = ManagedRuntime.make(MainLayer);

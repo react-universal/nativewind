@@ -1,9 +1,9 @@
+import type { SheetEntry } from '@native-twin/css';
 import type {
   JsTransformerConfig,
   JsTransformOptions,
   TransformResponse,
 } from 'metro-transform-worker';
-import type { NativeTwinManager } from '../../native-twin';
 
 export type BabelTransformerFn = (params: {
   src: string;
@@ -20,7 +20,7 @@ export interface NativeTwinTransformerOpts extends JsTransformerConfig {
   inputCSS: string;
   outputCSS: string;
   platformOutputs: string[];
-  runtimeEntries: NativeTwinManager['runtimeEntries'];
+  runtimeEntries: SheetEntry[];
 }
 
 export interface MetroWorkerInput {
@@ -41,7 +41,7 @@ export type TwinMetroTransformFn = (
 
 export interface BabelTransformerOptions {
   customTransformOptions: {
-    runtimeEntries: NativeTwinManager['runtimeEntries'];
+    runtimeEntries: SheetEntry[];
     routerRoot: string;
     inputCSS: string;
     outputCSS: string;

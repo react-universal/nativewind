@@ -20,8 +20,9 @@ const metroMainProgram = Effect.gen(function* () {
   const twin = yield* TwinNodeContext;
   const babel = yield* BabelCompiler;
 
-  const platformOutput = input.config.outputCSS;
+  const platformOutput = twin.utils.getOutputCSSPath(input.options.platform ?? 'native');
   if (
+    platformOutput &&
     matchCss(input.filename) &&
     input.filename.includes(path.basename(platformOutput))
   ) {
@@ -83,7 +84,6 @@ const metroMainProgram = Effect.gen(function* () {
   // }
 
   if (!twin.utils.isAllowedPath(input.filename)) {
-    // transformCSSExpo(input.config, input.projectRoot, input.filename, input.data);
     return yield* runWorker(input);
   }
 
@@ -113,7 +113,7 @@ const metroMainProgram = Effect.gen(function* () {
   });
 
   return result;
-}).pipe(Effect.scoped);
+});
 
 export const metroRunnable = Effect.scoped(
   metroMainProgram.pipe(Logger.withMinimumLogLevel(LogLevel.All)),
@@ -127,9 +127,9 @@ export const transform: TwinMetroTransformFn = async (
   options,
 ) => {
   const platform = options.platform ?? 'native';
-  const outputCSS = config.platformOutputs.find((x) =>
-    x.includes(`${options.platform ?? 'native'}.`),
-  );
+  const outputCSS =
+    config.outputCSS ??
+    config.platformOutputs.find((x) => x.includes(`${options.platform ?? 'native'}.`));
 
   assertString(outputCSS);
 
@@ -153,5 +153,10 @@ export const transform: TwinMetroTransformFn = async (
     Layer.provideMerge(babelConfigLayer),
   );
 
-  return metroRunnable.pipe(Effect.provide(layer), Effect.runPromise);
+  return metroRunnable
+    .pipe(Effect.provide(layer), nodeLayer.executor.runPromise)
+    .catch((error) => {
+      console.log('ERROR: ', error);
+      throw new Error(error);
+    });
 };
