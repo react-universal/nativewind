@@ -12,7 +12,6 @@ import * as Predicate from 'effect/Predicate';
 import * as Stream from 'effect/Stream';
 import * as String from 'effect/String';
 import fs from 'node:fs';
-import { createRequire } from 'node:module';
 import path from 'node:path';
 import { cx, defineConfig, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import {
@@ -33,10 +32,6 @@ import {
 import { TwinNodeContext } from '../services/TwinNodeContext.service';
 import { maybeLoadJS } from '../utils';
 import { InternalTwinConfig } from './twin.types';
-
-if (!require) {
-  require = createRequire(import.meta.url);
-}
 
 const checkDefaultTwinConfigFiles = (rootDir: string) =>
   Effect.flatMap(FileSystem.FileSystem, (fs) =>
