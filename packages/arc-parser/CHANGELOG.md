@@ -1,5 +1,11 @@
 # @universal-labs/arc-parser
 
+## 7.0.0-next.3
+
+### Patch Changes
+
+- [#144](https://github.com/react-universal/native-twin/pull/144) [`04a5afe`](https://github.com/react-universal/native-twin/commit/04a5afe70ee0b2ccd16a7c961624d1391cfa7a67) Thanks [@chrisarts](https://github.com/chrisarts)! - Update compiler
+
 ## 7.0.0-next.2
 
 ### Major Changes
