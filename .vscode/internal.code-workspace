@@ -53,6 +53,10 @@
       "path": "../packages/adapters"
     },
     {
+      "name": "📦 @lib/vite-plugin",
+      "path": "../packages/vite-plugin"
+    },
+    {
       "name": "📦 @lib/dev-tools",
       "path": "../packages/dev-tools"
     },
@@ -143,6 +147,7 @@
       "📦 @lib/language-service",
       "📦 @lib/language-server",
       "📦 @lib/metro",
+      "📦 @lib/vite-plugin",
       "expo-app",
       "expo-router",
       "next-pages-example",
