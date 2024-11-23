@@ -49,8 +49,8 @@
       "path": "../packages/css"
     },
     {
-      "name": "📦 @lib/with-nextjs",
-      "path": "../packages/native-twin-nextjs"
+      "name": "📦 @lib/adapters",
+      "path": "../packages/adapters"
     },
     {
       "name": "📦 @lib/dev-tools",
@@ -138,13 +138,13 @@
       "📦 @lib/dev-tools",
       "📦 @lib/styled",
       "📦 @lib/native-twin",
-      "📦 @lib/with-nextjs",
+      "📦 @lib/adapters",
       "📦 @lib/vscode",
       "📦 @lib/language-service",
       "📦 @lib/language-server",
       "📦 @lib/metro",
-      "📦 @lib/with-nextjs",
       "expo-app",
+      "expo-router",
       "next-pages-example",
       "next-app-dir",
       "twin.run",
