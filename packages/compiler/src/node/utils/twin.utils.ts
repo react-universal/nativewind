@@ -3,9 +3,9 @@ import * as Option from 'effect/Option';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { createTailwind, defineConfig, TailwindConfig } from '@native-twin/core';
-import { InternalTwinConfig, InternalTwFn } from '../native-twin';
-import { getTwinConfigPath } from '../native-twin/twin.utils.node';
-import { maybeLoadJS } from './modules.utils';
+import type { InternalTwinConfig, InternalTwFn } from '../models/twin.types.js';
+import { maybeLoadJS } from './modules.utils.js';
+import { getTwinConfigPath } from './twin.utils.node.js';
 
 export const extractTwinConfig = ({
   projectRoot,

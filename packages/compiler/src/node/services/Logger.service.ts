@@ -23,11 +23,7 @@ const ANDROID_COLOR = pipe(
   apply(Ansi.greenBright),
   Ansi.combine(Ansi.bold),
 );
-const METRO_COLOR = pipe(
-  Ansi.combine(Ansi.bgYellow),
-  apply(Ansi.yellowBright),
-  Ansi.combine(Ansi.bold),
-);
+const METRO_COLOR = Ansi.combine(Ansi.combine(Ansi.bgMagenta, Ansi.white), Ansi.bold);
 
 const render = (doc: Doc.AnsiDoc): string => Doc.render(doc, { style: 'pretty' });
 

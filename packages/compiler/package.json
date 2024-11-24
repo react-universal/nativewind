@@ -26,29 +26,10 @@
       "require": "./build/node/index.js",
       "default": "./build/esm/node/index.js"
     },
-    "./metro": {
-      "types": "./build/node/metro/index.d.ts",
-      "import": "./build/esm/node/metro/index.js",
-      "require": "./build/node/metro/index.js",
-      "default": "./build/esm/node/metro/index.js"
-    },
-    "./babel": {
-      "types": "./build/node/babel/index.d.ts",
-      "import": "./build/esm/node/babel/index.js",
-      "require": "./build/node/babel/index.js",
-      "default": "./build/esm/node/babel/index.js"
-    },
-    "./metro.babel.transformer": {
-      "types": "./build/node/metro/transformers/metro.babel.transformer.d.ts",
-      "import": "./build/esm/node/metro/transformers/metro.babel.transformer.js",
-      "require": "./build/node/metro/transformers/metro.babel.transformer.js",
-      "default": "./build/esm/node/metro/transformers/metro.babel.transformer.js"
-    },
-    "./metro.transformer": {
-      "types": "./build/node/metro/transformers/metro.transformer.d.ts",
-      "import": "./build/esm/node/metro/transformers/metro.transformer.js",
-      "require": "./build/node/metro/transformers/metro.transformer.js",
-      "default": "./build/esm/node/metro/transformers/metro.transformer.js"
+    "./programs/*": {
+      "import": "./build/esm/node/programs/*.js",
+      "require": "./build/node/programs/*.js",
+      "default": "./build/esm/node/programs/*.js"
     }
   },
   "main": "./build/index.js",
@@ -76,6 +57,8 @@
     "@effect/platform-node": "^0.64.4",
     "@effect/platform-node-shared": "^0.19.3",
     "@effect/printer-ansi": "^0.38.0",
+    "@effect/sql": "^0.20.9",
+    "@effect/sql-sqlite-node": "^0.21.9",
     "@effect/typeclass": "^0.29.0",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",

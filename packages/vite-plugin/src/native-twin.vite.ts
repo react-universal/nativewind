@@ -1,5 +1,5 @@
 import { createFilter, Plugin, PluginOption } from 'vite';
-import { createTwinExtractor, TwinVitePluginConfig } from './twin.transform';
+import { createTwinExtractor, TwinVitePluginConfig } from './twin.transform.js';
 
 const defaultIncludeRE = /\.[tj]sx?$/;
 

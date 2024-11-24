@@ -5,8 +5,8 @@ import * as Layer from 'effect/Layer';
 import micromatch from 'micromatch';
 import path from 'node:path';
 import type { TailwindConfig } from '@native-twin/core';
-import type { InternalTwFn, InternalTwinConfig } from '../native-twin';
-import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils';
+import type { InternalTwFn, InternalTwinConfig } from '../models/twin.types.js';
+import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
 
 interface ContextOptions {
   projectRoot: string;
@@ -145,5 +145,16 @@ export class TwinNodeContext extends Context.Tag('node/shared/context')<
 >() {
   static make = make;
 }
+
+export const TwinNodeUserConfig = Effect.Tag('TwinNodeUserConfig')<
+  'twin/TwinNodeUserConfig',
+  {
+    projectRoot: string;
+    outputDir: string;
+    configPath: string;
+    inputCSS: string;
+    debug: boolean;
+  }
+>();
 
 export type NodeContextShape = TwinNodeContext['Type'];

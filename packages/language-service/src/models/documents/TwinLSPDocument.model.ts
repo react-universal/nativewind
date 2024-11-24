@@ -1,10 +1,8 @@
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import type * as t from '@babel/types';
 import * as RA from 'effect/Array';
-import * as Equal from 'effect/Equal';
-import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import { babelExtractors } from '@native-twin/compiler/babel';
+import { extractLanguageRegions } from '@native-twin/compiler/node';
 import { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
 import { BaseTwinTextDocument } from './BaseTwinDocument';
 import { DocumentLanguageRegion } from './LanguageRegion.model';
@@ -18,10 +16,7 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
   }
 
   getLanguageRegions() {
-    const regions = babelExtractors.extractLanguageRegions(
-      this.getText(undefined),
-      this.config,
-    );
+    const regions = extractLanguageRegions(this.getText(undefined), this.config);
     return RA.map(regions, (x) => this.getRegionAt(x));
   }
 
@@ -42,18 +37,18 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
     );
   }
 
-  // MARK: Equality protocol
-  [Equal.symbol](that: unknown) {
-    return (
-      that instanceof TwinLSPDocument &&
-      this.version === that.version &&
-      this.uri === that.uri
-    );
-  }
+  // // MARK: Equality protocol
+  // [Equal.symbol](that: unknown) {
+  //   return (
+  //     that instanceof TwinLSPDocument &&
+  //     this.version === that.version &&
+  //     this.uri === that.uri
+  //   );
+  // }
 
-  [Hash.symbol](): number {
-    return Hash.combine(Hash.hash(this.uri))(this.version);
-  }
+  // [Hash.symbol](): number {
+  //   return Hash.combine(Hash.hash(this.uri))(this.version);
+  // }
 
   // MARK: Private methods
   private getRegionAt(location: t.SourceLocation) {

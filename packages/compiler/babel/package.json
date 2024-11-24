@@ -1,5 +1,0 @@
-{
-  "main": "../build/node/babel/index.js",
-  "module": "../build/esm/node/babel/index.js",
-  "types": "../build/node/babel/index.d.ts"
-}

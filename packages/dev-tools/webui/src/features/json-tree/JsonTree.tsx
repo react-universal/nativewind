@@ -23,6 +23,7 @@ export default function JsonTreeSvgView({ node }: JsonTreeSvgViewProps) {
       const domEl = d3Select(domRef.current);
       const svg = domEl.select('#tree_view_svg');
       const content = domEl.select('#tree_view_content');
+      
 
       svg.call(d3Zoom().transform, zoomIdentity.translate(0, 0).scale(1));
       svg.call(
@@ -32,7 +33,7 @@ export default function JsonTreeSvgView({ node }: JsonTreeSvgViewProps) {
             return (
               event.target.id === 'tree_view_svg' ||
               event.target.id === 'tree_view_content' ||
-              event.shiftKey
+              event
             );
           })
           .on('zoom', (event) => {

@@ -29,6 +29,7 @@ export {
   generateAlphabeticName,
   escapeBackticksAndOctals,
   splitBySpace,
+  assertString,
 } from './string.utils';
 
 export type {

@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
     },
@@ -27,10 +31,6 @@
     {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
     },
     {
       "name": "📦 @lib/native-twin",

@@ -1,0 +1,260 @@
+import { sheetEntriesToCss, SheetEntry } from '@native-twin/css';
+import * as FileSystem from '@effect/platform/FileSystem';
+import * as Path from '@effect/platform/Path';
+import * as RA from 'effect/Array';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import * as HashMap from 'effect/HashMap';
+import * as Layer from 'effect/Layer';
+import * as Stream from 'effect/Stream';
+import type { JSXElementNode } from '../models/JSXElement.model.js';
+import { readDirectoryRecursive } from '../utils/fileWatcher.util.js';
+import { getNativeStylesJSOutput } from '../utils/native.utils.js';
+import { getFileClasses } from '../utils/twin.utils.node.js';
+import { TwinNodeContext } from './TwinNodeContext.service.js';
+
+const initialized: Set<string> = new Set();
+export const cachedEntries: SheetEntry[] = [];
+
+const getAllFilesInProject = Effect.gen(function* () {
+  const { config } = yield* TwinNodeContext;
+  const allowedPaths = config.allowedPaths;
+
+  return yield* pipe(
+    allowedPaths,
+    RA.map(readDirectoryRecursive),
+    Effect.allSuccesses,
+  ).pipe(Effect.map((x) => pipe(x, RA.flatten, RA.dedupe)));
+});
+
+export const makeFileSystem = Effect.gen(function* () {
+  const twin = yield* TwinNodeContext;
+  const fs = yield* FileSystem.FileSystem;
+
+  const getTwinCssOutput = (params: {
+    filepath: string;
+    platform: string;
+    trees: HashMap.HashMap<string, JSXElementNode>[];
+  }) => {
+    return Effect.gen(function* () {
+      yield* Effect.log('[getTwinCssOutput]: ', params.filepath);
+      const tw = twin.utils.getTwForPlatform(params.platform);
+
+      if (params.filepath.endsWith('.css')) {
+        return sheetEntriesToCss(tw.target, false);
+      }
+
+      const registry = yield* createCompilerRegistry(params.trees);
+      return yield* getNativeStylesJSOutput(registry, params.platform);
+    });
+  };
+
+  const refreshCSSOutput = (params: {
+    filepath: string;
+    platform: string;
+    trees: HashMap.HashMap<string, JSXElementNode>[];
+  }) => {
+    return Effect.gen(function* () {
+      const jsOutput = yield* getTwinCssOutput(params);
+      const output = new TextEncoder().encode(jsOutput);
+      yield* fs.writeFile(params.filepath, output);
+    });
+  };
+
+  const compileFiles = (files: string[], platform: string) => {
+    return Effect.gen(function* () {
+      const tw = twin.utils.getTwForPlatform(platform);
+      const classes = yield* pipe(
+        files,
+        RA.map((x) => getFileClasses(x, platform)),
+        Effect.allSuccesses,
+      );
+      return RA.map(classes, (x) => {
+        const twinOutput = tw(`${x}`);
+        return {
+          twinOutput,
+          trees: x.registry,
+        };
+      });
+    });
+  };
+
+  const runTwinForFiles = (files: string[], platform: string) => {
+    return Effect.gen(function* () {
+      yield* Effect.log('Building project...');
+      const tw = twin.utils.getTwForPlatform(platform);
+      const outputPath = twin.utils.getOutputCSSPath(platform);
+
+      const twinResult = yield* compileFiles(files, platform);
+      yield* refreshCSSOutput({
+        filepath: outputPath,
+        trees: RA.map(twinResult, (x) => x.trees),
+        platform,
+      });
+      yield* Effect.log(`Build success!`);
+      pipe(
+        tw.target,
+        RA.appendAll(cachedEntries),
+        RA.dedupeWith(
+          (a, b) =>
+            `${a.className}-${a.selectors.join('')}` ===
+            `${b.className}-${b.selectors.join('')}`,
+        ),
+        (result) => {
+          if (result.length > cachedEntries.length) {
+            cachedEntries.splice(0, cachedEntries.length, ...result);
+          }
+        },
+      );
+      yield* Effect.log(`Added ${tw.target.length} classes`);
+    });
+  };
+
+  const setupPlatform = (params: { targetPlatform: string; projectRoot: string }) =>
+    Effect.gen(function* () {
+      const allFiles = yield* getAllFilesInProject;
+      const platform = params.targetPlatform ?? 'native';
+
+      const hasPlatform = initialized.has(platform);
+      const currentSize = initialized.size;
+      if (!hasPlatform) {
+        initialized.add(platform);
+        if (currentSize === 0) {
+          yield* Effect.log(`Initializing project \n`);
+        }
+        yield* runTwinForFiles(allFiles, platform);
+        if (currentSize === 0) {
+          yield* startWatcher.pipe(Effect.forkDaemon);
+          yield* Effect.yieldNow();
+          yield* Effect.log(`Watcher started`);
+        }
+      }
+    });
+
+  const startWatcher = Effect.gen(function* () {
+    const path = yield* Path.Path;
+    const allFiles = yield* getAllFilesInProject;
+    // const platform = 'web';
+
+    const watchFiles = pipe(
+      allFiles,
+      RA.map((x) => path.dirname(x)),
+      RA.dedupe,
+    );
+
+    const allWatchers = yield* Effect.all(RA.map(watchFiles, createWatcherFor));
+
+    return pipe(
+      allWatchers,
+      Stream.mergeAll({
+        concurrency: watchFiles.length,
+      }),
+    );
+  });
+
+  const createWatcherFor = (basePath: string) => {
+    return Effect.gen(function* () {
+      const path = yield* Path.Path;
+      const fs = yield* FileSystem.FileSystem;
+
+      return pipe(
+        fs.watch(basePath),
+        Stream.map((watchEvent) => ({
+          ...watchEvent,
+          path: path.resolve(basePath, watchEvent.path),
+        })),
+        Stream.filter((watchEvent) => twin.utils.isAllowedPath(watchEvent.path)),
+        Stream.tap((x) => Effect.log(`File change detected: ${x.path} \n`)),
+      );
+    });
+  };
+
+  return {
+    startWatcher,
+    setupPlatform,
+    getAllFilesInProject,
+    runTwinForFiles,
+    getTwinCssOutput,
+  };
+});
+
+const createCompilerRegistry = (trees: HashMap.HashMap<string, JSXElementNode>[]) =>
+  pipe(
+    Stream.fromIterable(trees),
+    Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) => {
+      return pipe(prev, HashMap.union(current));
+    }),
+  );
+
+export class TwinFileSystem extends Context.Tag('metro/fs/service')<
+  TwinFileSystem,
+  Effect.Effect.Success<typeof makeFileSystem>
+>() {
+  static Live = Layer.scoped(TwinFileSystem, makeFileSystem).pipe();
+}
+
+// const registry = yield* createCompilerRegistry(params.trees);
+// const jsOutput = pipe(
+//   HashMap.values(registry),
+//   RA.fromIterable,
+//   RA.map((node) => {
+//     const { leave } = getJSXCompiledTreeRuntime(
+//       node,
+//       pipe(
+//         node.parentID,
+//         Option.flatMap((x) => HashMap.get(registry, x)),
+//       ),
+//     );
+//     const stringEntries = entriesToComponentData(
+//       node.id,
+//       getRawSheet(leave.entries),
+//     );
+//     const astProps = runtimeEntriesToAst(stringEntries);
+//     return {
+//       stringEntries,
+//       astProps,
+//       node,
+//     };
+//   }),
+//   RA.map((x) => {
+//     const writer = new CodeBlockWriter();
+//     return writer
+//       .newLine()
+//       .indent(1)
+//       .write(`['${x.node.id}']: `)
+//       .writeLine(x.stringEntries)
+//       .toString();
+//   }),
+//   (x) => {
+//     const writer = new CodeBlockWriter();
+//     return writer
+//       .write(`export const globalSheets = `)
+//       .block(() => {
+//         writer.writeLine(`${x.join()}`);
+//       })
+//       .toString();
+//   },
+//   (stringStyles) => {
+//     const writer = new CodeBlockWriter();
+
+//     writer.write(`const StyleSheet = require('@native-twin/jsx').StyleSheet;`);
+//     writer.writeLine(`const setup = require('@native-twin/core').setup;`);
+//     writer.newLine();
+//     let importTwinPath = path.relative(
+//       path.dirname(twin.getPlatformOutput(params.platform)),
+//       twin.twinConfigPath,
+//     );
+//     if (!importTwinPath.startsWith('.')) {
+//       importTwinPath = `./${importTwinPath}`;
+//     }
+//     writer.writeLine(`const twinConfig = require('${importTwinPath}');`);
+
+//     writer.writeLine(`setup(twinConfig);`);
+//     writer.write(stringStyles);
+//     // writer.write(stringStyles.replaceAll("require('@native-twin/jsx').", ''));
+//     return writer.toString();
+//   },
+// );
+
+// return jsOutput;

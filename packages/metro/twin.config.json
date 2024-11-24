@@ -2,7 +2,7 @@
   "$schema": "../../node_modules/@native-twin/cli/twin.schema.json",
   "platform": "node",
   "reactNative": false,
-  "runner": "esbuild",
+  "runner": "rollup",
   "minify": false,
   "types": true,
   "vscode": false,

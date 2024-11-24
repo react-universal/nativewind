@@ -19,6 +19,7 @@
     "build": "turbo run build",
     "build:release": "npx turbo run build && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "build:watch": "turbo run build:watch --concurrency 15",
+    "clean": "node ./scripts/clean.mjs",
     "docgen": "yarn libs:foreach exec npx docgen && node ./scripts/docs.mjs",
     "docs:build": "turbo run docs:build",
     "example:expo": "yarn workspace expo-app run start",

@@ -6,6 +6,7 @@
     "sourceMap": true,
     "module": "ES2020",
     "strictFunctionTypes": true,
+    "moduleDetection": "force",
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,

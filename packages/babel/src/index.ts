@@ -7,7 +7,7 @@ import {
   type TwinBabelPluginOptions,
   type BabelAPI,
   BABEL_JSX_PLUGIN_IMPORT_RUNTIME,
-} from '@native-twin/compiler/babel';
+} from '@native-twin/compiler/node';
 import { makeNodeLayer } from '@native-twin/compiler/node';
 
 const allowed = new Set<string>();
@@ -48,7 +48,8 @@ function nativeTwinBabelPlugin(
   options: TwinBabelPluginOptions,
   cwd: string,
 ): PluginObj {
-  const { MainLayer } = makeNodeLayer({
+  console.log('BABEL_OPT: ', options);
+  const MainLayer = makeNodeLayer({
     configPath: options.twinConfigPath,
     debug: true,
     inputCSS: options.inputCSS,

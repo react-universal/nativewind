@@ -3009,6 +3009,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@effect/sql-sqlite-node@npm:^0.21.9":
+  version: 0.21.9
+  resolution: "@effect/sql-sqlite-node@npm:0.21.9"
+  dependencies:
+    "@opentelemetry/semantic-conventions": "npm:^1.25.1"
+    better-sqlite3: "npm:^11.1.2"
+  peerDependencies:
+    "@effect/platform": ^0.69.25
+    "@effect/sql": ^0.20.9
+    effect: ^3.10.16
+  checksum: 10/72dc745dafc3f26b3b0b5446399de228dcc8c74c2291339145d8dda6350655bbff20af94165f7467f815257a048ae7a64d6f7822a0727d728b6dd35259ca02c4
+  languageName: node
+  linkType: hard
+
+"@effect/sql@npm:^0.20.9":
+  version: 0.20.9
+  resolution: "@effect/sql@npm:0.20.9"
+  dependencies:
+    "@opentelemetry/semantic-conventions": "npm:^1.25.1"
+  peerDependencies:
+    "@effect/experimental": ^0.32.9
+    "@effect/platform": ^0.69.25
+    effect: ^3.10.16
+  checksum: 10/86117c64d09b91edead36206639d2315c5810c76902ec6b4f5ea3d41e431dab1ddfe23e455dff37a38352f2dfcc0db110129f816fec555d860ca7bb8b8356a04
+  languageName: node
+  linkType: hard
+
 "@effect/typeclass@npm:^0.29.0":
   version: 0.29.0
   resolution: "@effect/typeclass@npm:0.29.0"
@@ -4415,6 +4442,8 @@ __metadata:
     "@effect/platform-node": "npm:^0.64.4"
     "@effect/platform-node-shared": "npm:^0.19.3"
     "@effect/printer-ansi": "npm:^0.38.0"
+    "@effect/sql": "npm:^0.20.9"
+    "@effect/sql-sqlite-node": "npm:^0.21.9"
     "@effect/typeclass": "npm:^0.29.0"
     "@native-twin/cli": "workspace:*"
     "@native-twin/core": "workspace:*"
@@ -5102,6 +5131,13 @@ __metadata:
   version: 0.1.1
   resolution: "@one-ini/wasm@npm:0.1.1"
   checksum: 10/673c11518dba2e582e42415cbefe928513616f3af25e12f6e4e6b1b98b52b3e6c14bc251a361654af63cd64f208f22a1f7556fa49da2bf7efcf28cb14f16f807
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/semantic-conventions@npm:^1.25.1":
+  version: 1.28.0
+  resolution: "@opentelemetry/semantic-conventions@npm:1.28.0"
+  checksum: 10/c182a3206769b5d5a8ab89a5c674d046fd789421cef27ea55af179990e314732433c98e5017aa23e99f15fd2b0e13cb129bb6c2282da6860ce9419adf32b2e87
   languageName: node
   linkType: hard
 
@@ -9173,6 +9209,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"better-sqlite3@npm:^11.1.2":
+  version: 11.5.0
+  resolution: "better-sqlite3@npm:11.5.0"
+  dependencies:
+    bindings: "npm:^1.5.0"
+    node-gyp: "npm:latest"
+    prebuild-install: "npm:^7.1.1"
+  checksum: 10/c76f450f6313b47317270dae9a641c41ca95b2be7b08024741298d019f0c453ebb0ac0707a33af558fcb41373026944dc8409871ee010c7ed08cab869a116371
+  languageName: node
+  linkType: hard
+
 "big-integer@npm:1.6.x, big-integer@npm:^1.6.17":
   version: 1.6.51
   resolution: "big-integer@npm:1.6.51"
@@ -9194,6 +9241,15 @@ __metadata:
     buffers: "npm:~0.1.1"
     chainsaw: "npm:~0.1.0"
   checksum: 10/127591ebb7bfca242ec11be9ef874bcde17c520f249d764810045971b6617b659e8af4452f8a1586db7fd47e1b481a75d22c8f207fc1466c0f099b9435e51679
+  languageName: node
+  linkType: hard
+
+"bindings@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "bindings@npm:1.5.0"
+  dependencies:
+    file-uri-to-path: "npm:1.0.0"
+  checksum: 10/593d5ae975ffba15fbbb4788fe5abd1e125afbab849ab967ab43691d27d6483751805d98cb92f7ac24a2439a8a8678cd0131c535d5d63de84e383b0ce2786133
   languageName: node
   linkType: hard
 
@@ -13166,6 +13222,13 @@ __metadata:
   dependencies:
     flat-cache: "npm:^3.0.4"
   checksum: 10/099bb9d4ab332cb93c48b14807a6918a1da87c45dce91d4b61fd40e6505d56d0697da060cb901c729c90487067d93c9243f5da3dc9c41f0358483bfdebca736b
+  languageName: node
+  linkType: hard
+
+"file-uri-to-path@npm:1.0.0":
+  version: 1.0.0
+  resolution: "file-uri-to-path@npm:1.0.0"
+  checksum: 10/b648580bdd893a008c92c7ecc96c3ee57a5e7b6c4c18a9a09b44fb5d36d79146f8e442578bc0e173dc027adf3987e254ba1dfd6e3ec998b7c282873010502144
   languageName: node
   linkType: hard
 
@@ -19298,7 +19361,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prebuild-install@npm:^7.1.0":
+"prebuild-install@npm:^7.1.0, prebuild-install@npm:^7.1.1":
   version: 7.1.2
   resolution: "prebuild-install@npm:7.1.2"
   dependencies:

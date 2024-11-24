@@ -74,3 +74,7 @@ export function escapeBackticksAndOctals(str: string) {
 }
 
 export const splitBySpace = (classes: string) => classes.split(/\s+/g);
+
+export function assertString(x: unknown): asserts x is string {
+  if (typeof x !== 'string') throw new Error('Value is not defined');
+}
