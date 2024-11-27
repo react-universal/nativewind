@@ -305,7 +305,7 @@ export class TwinFileSystem extends Context.Tag('metro/fs/service')<
 >() {
   static Live = Layer.scoped(TwinFileSystem, TwinFSMake)
     .pipe(Layer.provideMerge(BabelCompiler.Live))
-    .pipe(Layer.provideMerge(FSLive));
+    .pipe(Layer.provide(FSLive));
 }
 
 // function runPlatform(platform: string) {

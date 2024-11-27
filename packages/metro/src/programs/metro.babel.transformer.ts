@@ -2,7 +2,7 @@ import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import { LogLevel } from 'effect';
 import * as Effect from 'effect/Effect';
 import {
-  NodeMainLayer,
+  NodeMainLayerSync,
   setConfigLayerFromUser,
   TwinNodeContext,
 } from '@native-twin/compiler/node';
@@ -43,7 +43,7 @@ export const transform: BabelTransformerFn = async (params) => {
       filename: params.filename,
     });
   }).pipe(
-    Effect.provide(NodeMainLayer),
+    Effect.provide(NodeMainLayerSync),
     Effect.provide(
       setConfigLayerFromUser({
         projectRoot: params.options.projectRoot,

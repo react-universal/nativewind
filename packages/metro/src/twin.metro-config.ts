@@ -6,7 +6,8 @@ import path from 'node:path';
 import { inspect } from 'node:util';
 import {
   listenForkedStreamChanges,
-  NodeMainLayer,
+  NodeMainLayerSync,
+  NodeMainLayerAsync,
   NodeWithNativeTwinOptions,
   setConfigLayerFromUser,
   twinLoggerLayer,
@@ -29,9 +30,14 @@ export function withNativeTwin(
     twinConfigPath: nativeTwinConfig.twinConfigPath,
   });
 
-  const runtime = ManagedRuntime.make(NodeMainLayer.pipe(Layer.provide(configLayer)));
+  const runtimeSync = ManagedRuntime.make(
+    NodeMainLayerSync.pipe(Layer.provide(configLayer)),
+  );
+  const runtimeAsync = ManagedRuntime.make(
+    NodeMainLayerAsync.pipe(Layer.provide(configLayer)),
+  );
 
-  const metroSettings = runtime.runSync(getMetroSettings);
+  const metroSettings = runtimeSync.runSync(getMetroSettings);
 
   const originalResolver = metroConfig.resolver.resolveRequest;
   const originalGetTransformerOptions = metroConfig.transformer.getTransformOptions;
@@ -76,10 +82,12 @@ export function withNativeTwin(
           // yield* watcher.runTwinForFiles(allFiles, config.platform);
 
           yield* listenForkedStreamChanges(watcher.fsWatcher, (event) => {
-            return Effect.log('FILE_CHANGE_DETECTED', inspect(event, false, null, true));
+            return Effect.logTrace(
+              'FILE_CHANGE_DETECTED',
+              inspect(event, false, null, true),
+            );
           });
-          yield* Effect.yieldNow();
-          yield* Effect.log(`Watcher started for [${options.platform}]`);
+          yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
 
           return result;
         }).pipe(
@@ -87,7 +95,7 @@ export function withNativeTwin(
           Effect.withSpan('Transformer', { attributes: { ...options } }),
           Effect.provide(twinLoggerLayer),
           Effect.scoped,
-          runtime.runPromise,
+          runtimeAsync.runPromise,
         );
       },
     },

@@ -6,7 +6,7 @@ export { maybeLoadJS, nodeRequireJS } from './utils/modules.utils.js';
 export { readDirectoryRecursive } from './utils/fileWatcher.util.js';
 export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from '../shared/twin.constants.js';
 export { TwinNodeContext } from './services/TwinNodeContext.service.js';
-export { NodeMainLayer } from './services/NodeMainLayer.js';
+export { NodeMainLayerAsync, NodeMainLayerSync } from './services/NodeMainLayer.js';
 export { BabelCompiler } from './services/BabelCompiler.service.js';
 export { JSXElementNode } from './models/JSXElement.model.js';
 export { JSXImportPluginContext } from './services/TwinBabelPlugin.service.js';

@@ -1,7 +1,9 @@
 import generate, { GeneratorResult } from '@babel/generator';
 import type { ParseResult } from '@babel/parser';
-import traverse, { type NodePath } from '@babel/traverse';
+import traverse, { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
+import { Path } from '@effect/platform';
+import { NodeFileSystem } from '@effect/platform-node';
 import { PlatformError } from '@effect/platform/Error';
 import { FileSystem } from '@effect/platform/FileSystem';
 import * as RA from 'effect/Array';
@@ -234,7 +236,9 @@ export class BabelCompiler extends Context.Tag('babel/common/compiler')<
     readonly identifierIsReactImport: (path: NodePath<t.Identifier>) => boolean;
   }
 >() {
-  static Live = Layer.scoped(BabelCompiler, make);
+  static Live = Layer.scoped(BabelCompiler, make).pipe(
+    Layer.provide(Layer.merge(NodeFileSystem.layer, Path.layer)),
+  );
 }
 
 const streamJsxElementTrees = (ast: ParseResult<t.File>, filename: string) =>

@@ -6,7 +6,7 @@ import path from 'node:path';
 import {
   TwinNodeContext,
   BabelCompiler,
-  NodeMainLayer,
+  NodeMainLayerSync,
   setConfigLayerFromUser,
 } from '@native-twin/compiler/node';
 import { matchCss } from '@native-twin/helpers/server';
@@ -73,7 +73,7 @@ export const transform: TwinMetroTransformFn = async (
 
     return transformed;
   }).pipe(
-    Effect.provide(NodeMainLayer),
+    Effect.provide(NodeMainLayerSync),
     Effect.provide(
       setConfigLayerFromUser({
         twinConfigPath: config.twinConfig.twinConfigPath,

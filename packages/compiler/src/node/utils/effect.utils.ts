@@ -23,6 +23,24 @@ export const listenForkedStreamChanges = <A, E, R>(
 ) => Effect.forkScoped(listenStreamChanges(stream, f));
 
 // type ChokidarEventFn = chokidar.FSWatcher['on'];
+// type ParamsOf<U> = (U extends any ? (k: U, ...rest: any[]) => void : never) extends (
+//   k: infer I,
+//   ...rest: any[]
+// ) => void
+//   ? I
+//   : never;
+// // A extends (...args: [event: any, ...rest: any[]]) => any
+// //   ? A extends (arg: infer R, ...args: any[]) => any
+// //     ? R extends string
+// //       ? R
+// //       : never
+// //     : never
+// //   : never;
+
+// type InferParams = ParamsOf<ChokidarEventFn>;
+
+// const fn = (abc: ABC) => {};
+// fn('sadasda');
 // type ChokidarEventFnArgs<A extends (...args: any[]) => any> = A extends (
 //   ...args: infer R
 // ) => any
