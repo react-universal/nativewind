@@ -18,7 +18,7 @@ const reactProgram = Effect.gen(function* () {
 export const createTestLayer = (input: CompilerInput) => {
   const nodeLayer = makeNodeLayer({
     configPath: input.twinConfigPath,
-    debug: true,
+    logLevel: true,
     inputCSS: input.inputCSS,
     outputDir: path.dirname(input.outputCSS),
     projectRoot: input.projectRoot,

@@ -1,7 +1,12 @@
 import * as Effect from 'effect/Effect';
 import * as fs from 'fs';
 import * as fsp from 'fs/promises';
-import { makeNodeLayer } from '@native-twin/compiler/node';
+import {
+  CompilerConfig,
+  NodeMainLayer,
+  setConfigLayerFromUser,
+} from '@native-twin/compiler/node';
+import { TwinNodeContext } from '@native-twin/compiler/node';
 import { TwinCSSExtractor } from '@native-twin/compiler/programs/css.extractor';
 
 export interface TwinVitePluginConfig {
@@ -12,33 +17,47 @@ export interface TwinVitePluginConfig {
 }
 
 const extractor = (config: TwinVitePluginConfig) => (code: string, filePath: string) =>
-  TwinCSSExtractor(code, filePath).pipe(
-    Effect.flatMap((compiled) =>
-      Effect.gen(function* () {
-        const outputExists = fs.existsSync(config.outputCSS);
-        if (!outputExists) return compiled;
+  Effect.gen(function* () {
+    const ctx = yield* TwinNodeContext;
+    const compilerConfig = yield* CompilerConfig;
+    console.log('ALLOWED_PATHS: ', compilerConfig);
 
-        yield* Effect.promise(() => fsp.writeFile(config.outputCSS, compiled.cssOutput));
-        console.log('RESULT____: ', compiled.cssOutput);
-        return compiled;
-      }),
-    ),
-  );
+    if (!ctx.utils.isAllowedPath(filePath)) {
+      return;
+    }
+
+    const compiled = yield* TwinCSSExtractor(code, filePath);
+    yield* Effect.log('ALLOWED_PATH: ', filePath);
+    const outputExists = fs.existsSync(config.outputCSS);
+
+    if (!outputExists) {
+      yield* Effect.promise(() => fsp.writeFile(config.outputCSS, ''));
+    }
+
+    yield* Effect.log('asdasdasd', config.outputCSS);
+
+    yield* Effect.promise(() => fsp.writeFile(config.outputCSS, compiled.cssOutput));
+    console.log('RESULT____: ', compiled.cssOutput);
+    return compiled;
+  });
 
 export const createTwinExtractor = (viteConfig: TwinVitePluginConfig) => {
-  const nodeLayer = makeNodeLayer({
-    configPath: viteConfig.twinConfigPath,
-    debug: true,
-    inputCSS: viteConfig.inputCSS,
-    projectRoot: viteConfig.projectRoot,
-  });
   const runExtractorEffect = extractor(viteConfig);
 
   return {
     viteConfig,
     extractor: async (code: string, filePath: string) => {
       return runExtractorEffect(code, filePath).pipe(
-        Effect.provide(nodeLayer),
+        Effect.provide(NodeMainLayer),
+        Effect.provide(
+          setConfigLayerFromUser({
+            configPath: viteConfig.twinConfigPath,
+            logLevel: 'Info',
+            inputCSS: viteConfig.inputCSS,
+            projectRoot: viteConfig.projectRoot,
+          }),
+        ),
+
         Effect.runPromise,
       );
     },

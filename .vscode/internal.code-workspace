@@ -5,16 +5,36 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
     },
     {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
     },
     {
       "name": "📦 @lib/language-service",
@@ -25,48 +45,28 @@
       "path": "../packages/language-server"
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/adapters",
-      "path": "../packages/adapters"
-    },
-    {
-      "name": "📦 @lib/vite-plugin",
-      "path": "../packages/vite-plugin"
-    },
-    {
-      "name": "📦 @lib/dev-tools",
-      "path": "../packages/dev-tools"
+      "name": "📦 @lib/preset-tw",
+      "path": "../packages/preset-tailwind"
     },
     {
       "name": "📦 @lib/arc-parser",
       "path": "../packages/arc-parser"
     },
     {
-      "name": "📦 @lib/preset-tw",
-      "path": "../packages/preset-tailwind"
+      "name": "📦 @lib/vite-plugin",
+      "path": "../packages/vite-plugin"
+    },
+    {
+      "name": "📦 @lib/adapters",
+      "path": "../packages/adapters"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
     },
     {
       "name": "expo-router",

@@ -1,4 +1,5 @@
 import type { SheetEntry } from '@native-twin/css';
+import type * as LogLevel from 'effect/LogLevel';
 import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
 import type {
   JsTransformerConfig,
@@ -23,17 +24,21 @@ export type BabelTransformerFn = (params: {
   options: BabelTransformerOptions;
 }) => Promise<any>;
 
-export interface NativeTwinTransformerOpts extends JsTransformerConfig {
+export interface BaseTwinTransformerOptions {
   transformerPath?: string;
   originalTransformerPath?: string;
-  allowedFiles: string[];
+  allowedPaths: string[];
+  allowedPathsGlob: string[];
   twinConfigPath: string;
   outputDir: string;
   projectRoot: string;
   inputCSS: string;
-  outputCSS: string;
+  logLevel: LogLevel.Literal;
   platformOutputs: string[];
   runtimeEntries: SheetEntry[];
+}
+export interface NativeTwinTransformerOpts extends JsTransformerConfig {
+  twinConfig: BaseTwinTransformerOptions;
 }
 
 export interface MetroWorkerInput {
@@ -61,6 +66,8 @@ export interface BabelTransformerOptions {
     environment: string;
     baseUrl: string;
     twinConfigPath: string;
+    logLevel: LogLevel.Literal;
+    outputDir: string;
   };
   dev: boolean;
   hot: boolean;

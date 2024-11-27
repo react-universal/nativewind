@@ -1,56 +1,25 @@
-import generate from '@babel/generator';
-import * as t from '@babel/types';
+// import * as t from '@babel/types';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
-import * as Array from 'effect/Array';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
-import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
-import * as Stream from 'effect/Stream';
 import * as String from 'effect/String';
 import fs from 'node:fs';
-import { createRequire } from 'node:module';
 import path from 'node:path';
-import { cx, defineConfig, RuntimeTW, TailwindConfig } from '@native-twin/core';
-import {
-  CompilerContext,
-  compileSheetEntry,
-  getGroupedEntries,
-  RuntimeComponentEntry,
-  sortSheetEntries,
-} from '@native-twin/css/jsx';
+import { defineConfig, TailwindConfig } from '@native-twin/core';
 import {
   DEFAULT_TWIN_INPUT_CSS_FILE,
   TWIN_DEFAULT_FILES,
 } from '../../shared/twin.constants.js';
-import { JSXElementNode } from '../models/JSXElement.model.js';
-import type { JSXMappedAttribute } from '../models/jsx.models.js';
 import { InternalTwinConfig } from '../models/twin.types.js';
-import { ReactCompilerService } from '../services/ReactBabel.service.js';
-import { TwinNodeContext } from '../services/TwinNodeContext.service.js';
-import { templateLiteralToStringLike } from './babel/babel.utils.js';
-import {
-  extractMappedAttributes,
-  extractSheetsFromTree,
-} from './babel/twin-jsx.utils.js';
 import { maybeLoadJS } from './modules.utils.js';
-
-let myRequire: NodeJS.Require;
-
-if (!('require' in globalThis)) {
-  myRequire = createRequire(import.meta.url);
-  globalThis.require = myRequire;
-} else {
-  myRequire = globalThis.require;
-}
 
 const checkDefaultTwinConfigFiles = (rootDir: string) =>
   Effect.flatMap(FileSystem.FileSystem, (fs) =>
     Effect.firstSuccessOf(
-      Array.map(TWIN_DEFAULT_FILES, (x) =>
+      RA.map(TWIN_DEFAULT_FILES, (x) =>
         fs.exists(path.join(rootDir, x)).pipe(Effect.map(() => x)),
       ),
     ),
@@ -75,18 +44,17 @@ export const getTwinConfigPath = (rootDir: string, twinConfigPath = '') =>
         Predicate.compose(Predicate.isString, String.isNonEmpty),
       ),
       () =>
-        pipe(
-          Array.map(TWIN_DEFAULT_FILES, (x) =>
+        Option.firstSomeOf(
+          RA.map(TWIN_DEFAULT_FILES, (x) =>
             Option.liftPredicate(path.join(rootDir, x), fs.existsSync),
           ),
-          Option.firstSomeOf,
         ),
     ),
     (x) => path.resolve(x),
   );
 
 export const getTwinCacheDir = () =>
-  path.join(path.dirname(myRequire.resolve('@native-twin/core')), '.cache');
+  path.join(path.dirname(require.resolve('@native-twin/core')), '.cache');
 
 export const createTwinCSSFiles = ({
   outputDir,
@@ -116,107 +84,70 @@ export const createTwinCSSFiles = ({
   };
 };
 
-export const getFileClasses = (filename: string, forPlatform: string) =>
-  Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem;
-    const twin = yield* TwinNodeContext;
-    const exists = yield* fs.exists(filename).pipe(
-      Effect.mapError((x) => {
-        console.log('getFileClasses_ERROR: ', x);
-        return false;
-      }),
-    );
-    const reactCompiler = yield* ReactCompilerService;
+// export const getFileClasses = (filename: string, forPlatform: string) =>
+//   Effect.gen(function* () {
+//     const fs = yield* FileSystem.FileSystem;
+//     const twin = yield* TwinNodeContext;
+//     const exists = yield* fs.exists(filename).pipe(
+//       Effect.mapError((x) => {
+//         console.log('getFileClasses_ERROR: ', x);
+//         return false;
+//       }),
+//     );
+//     const reactCompiler = yield* BabelCompiler;
 
-    if (!exists) {
-      return {
-        fileClasses: '',
-        registry: HashMap.empty<string, JSXElementNode>(),
-      };
-    }
+//     if (!exists) {
+//       return {
+//         fileClasses: '',
+//         registry: HashMap.empty<string, JSXElementNode>(),
+//       };
+//     }
 
-    const contents = yield* fs.readFileString(filename);
+//     const contents = yield* fs.readFileString(filename);
 
-    if (contents === '') {
-      return {
-        fileClasses: '',
-        registry: HashMap.empty<string, JSXElementNode>(),
-      };
-    }
-    const filePath = path.relative(twin.config.projectRoot, filename);
-    const babelTrees = yield* reactCompiler.getTrees(contents, filePath);
+//     if (contents === '') {
+//       return {
+//         fileClasses: '',
+//         registry: HashMap.empty<string, JSXElementNode>(),
+//       };
+//     }
+//     const filePath = path.relative(twin.config.projectRoot, filename);
+//     const babelTrees = yield* reactCompiler
+//       .getAST(contents, filePath)
+//       .pipe(Effect.flatMap((x) => reactCompiler.getJSXElementTrees(x, filename)));
 
-    const registry = yield* Stream.fromIterable(babelTrees).pipe(
-      Stream.mapEffect((x) =>
-        extractSheetsFromTree(
-          x,
-          path.relative(twin.config.projectRoot, filename),
-          forPlatform,
-        ),
-      ),
-      Stream.map(HashMap.fromIterable),
-      Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) =>
-        HashMap.union(current, prev),
-      ),
-    );
+//     const registry = yield* Stream.fromIterable(babelTrees).pipe(
+//       Stream.mapEffect((x) =>
+//         extractSheetsFromTree(
+//           x,
+//           path.relative(twin.config.projectRoot, filename),
+//           forPlatform,
+//         ),
+//       ),
+//       Stream.map(HashMap.fromIterable),
+//       Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) =>
+//         HashMap.union(current, prev),
+//       ),
+//     );
 
-    const fileClasses = pipe(
-      RA.flatMap(babelTrees, (x) => x.all()),
-      RA.flatMap((leave) => extractMappedAttributes(leave.value.babelNode)),
-      RA.map(({ value }) => {
-        let classNames = '';
-        if (t.isStringLiteral(value)) {
-          classNames = value.value;
-        } else {
-          const cooked = templateLiteralToStringLike(value);
-          classNames = cooked.strings.replace('\n', ' ');
-        }
-        return cx(`${classNames.trim()}`);
-      }),
-      RA.join(' '),
-    );
+//     const fileClasses = pipe(
+//       RA.flatMap(babelTrees, (x) => x.all()),
+//       RA.flatMap((leave) => extractMappedAttributes(leave.value.babelNode)),
+//       RA.map(({ value }) => {
+//         let classNames = '';
+//         if (t.isStringLiteral(value)) {
+//           classNames = value.value;
+//         } else {
+//           const cooked = templateLiteralToStringLike(value);
+//           classNames = cooked.strings.replace('\n', ' ');
+//         }
+//         return cx(`${classNames.trim()}`);
+//       }),
+//       RA.join(' '),
+//     );
 
-    return { fileClasses, registry };
-  }).pipe(Effect.scoped);
-
-export const getElementEntries = (
-  props: JSXMappedAttribute[],
-  twin: RuntimeTW,
-  ctx: CompilerContext,
-): RuntimeComponentEntry[] => {
-  return RA.map(props, ({ value, prop, target }): RuntimeComponentEntry => {
-    let classNames = '';
-    let templateExpression: null | string = null;
-    if (t.isStringLiteral(value)) {
-      classNames = value.value;
-    } else {
-      const cooked = templateLiteralToStringLike(value);
-      classNames = cooked.strings;
-      templateExpression = generate(cooked.expressions).code;
-    }
-
-    const entries = twin(classNames);
-    const runtimeEntries = pipe(
-      RA.dedupeWith(entries, (a, b) => a.className === b.className),
-      RA.map((x) => compileSheetEntry(x, ctx)),
-      sortSheetEntries,
-    );
-
-    return {
-      classNames,
-      prop,
-      target,
-      templateLiteral: templateExpression,
-      entries: runtimeEntries,
-      templateEntries: [],
-      // childEntries: pipe(
-      //   runtimeEntries,
-      //   RA.filter((x) => isChildEntry(x)),
-      // ),
-      rawSheet: getGroupedEntries(runtimeEntries),
-    };
-  });
-};
+//     return { fileClasses, registry };
+//   }).pipe(Effect.scoped);
 
 export const loadUserTwinConfigFile = (
   projectRoot: string,

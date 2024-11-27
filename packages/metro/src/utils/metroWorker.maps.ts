@@ -8,6 +8,7 @@ export const metroWorkerInputToCompilerCtx = ({
   options,
   projectRoot,
 }: MetroWorkerInput) => {
+  const twinConfig = config.twinConfig;
   const baseUrl: string = (options.customTransformOptions?.['baseUrl'] as string) ?? '';
   const environment: string =
     (options.customTransformOptions?.['environment'] as string) ?? 'client';
@@ -22,11 +23,11 @@ export const metroWorkerInputToCompilerCtx = ({
           ...options.customTransformOptions,
           baseUrl,
           environment,
-          inputCSS: config.inputCSS,
+          inputCSS: twinConfig.inputCSS,
           outputCSS:
-            config.platformOutputs.find((x) =>
+            twinConfig.platformOutputs.find((x) =>
               x.includes(`${options.platform ?? 'native'}.`),
-            ) ?? config.outputCSS,
+            ),
           routerRoot,
         },
         dev: options.dev,

@@ -5,7 +5,7 @@ import { presetTailwind } from '@native-twin/preset-tailwind';
 export const twinConfig = defineConfig({
   content: ['index.js', './App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
   root: {
-    rem: 16,
+    rem: 50,
   },
   theme: {
     extend: {
@@ -24,7 +24,7 @@ export const twinConfig = defineConfig({
         'inter-bold': 'Inter-Bold',
         'inter-medium': 'Inter-Medium',
         sans: 'Inter-Regular',
-      },
+      }, 
     },
   },
   presets: [presetTailwind()],

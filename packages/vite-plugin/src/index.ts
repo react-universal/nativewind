@@ -17,7 +17,6 @@ export default function nativeTwinVite(config: TwinVitePluginConfig): PluginOpti
 
       const [filepath] = id.split('?');
       if (!filter(filepath) || !filepath) return;
-
       await twinExtractor.extractor(code, filepath);
     },
   };

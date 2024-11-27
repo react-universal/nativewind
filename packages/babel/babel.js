@@ -19,6 +19,6 @@ module.exports = function (api, options) {
 
   api.cache(false);
   return {
-    plugins: [[require('./build'), { ...options, platform, engine, isServer, isDev }]],
+    plugins: [require('./build')],
   };
 };

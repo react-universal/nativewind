@@ -13,7 +13,7 @@ export const transformCSS = Effect.gen(function* () {
   const twinFS = yield* TwinFileSystem;
   const platform = input.options.platform ?? 'native';
   // const tw = twin.utils.getTwForPlatform('web');
-  const outputPath = twin.utils.getOutputCSSPath('web');
+  const outputPath = twin.getOutputCSSPath('web');
 
   if (platform !== 'web') {
     return Option.none() as Option.Option<TransformResponse>;
@@ -23,7 +23,7 @@ export const transformCSS = Effect.gen(function* () {
     // @ts-expect-error untyped
     require('lightningcss') as typeof import('lightningcss');
 
-  const files = yield* twinFS.getAllFilesInProject;
+  const files = yield* twinFS.getAllFiles;
   yield* twinFS.runTwinForFiles(files, platform);
 
   const output = fs.readFileSync(outputPath, 'utf-8');

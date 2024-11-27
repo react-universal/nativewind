@@ -3,7 +3,9 @@ import * as Doc from '@effect/printer-ansi/AnsiDoc';
 import * as AnsiColor from '@effect/printer-ansi/Color';
 import * as FiberId from 'effect/FiberId';
 import { apply, pipe } from 'effect/Function';
+import * as List from 'effect/List';
 import * as LogLevel from 'effect/LogLevel';
+import * as LogSpan from 'effect/LogSpan';
 import * as Logger from 'effect/Logger';
 
 const scopeText = pipe(
@@ -60,6 +62,13 @@ const TwinCustomLogger = Logger.make((options) => {
     msgFactory.push(
       Doc.text(options.message.join(' ')).pipe(Doc.annotate(messageConfig)),
     );
+  }
+
+  const spans = options.spans
+    .pipe(List.toArray)
+    .map((x) => pipe(x, LogSpan.render(x.startTime)));
+  if (spans.length > 0) {
+    msgFactory.push(Doc.text(spans.join(' ')));
   }
 
   const doc = Doc.hsep([

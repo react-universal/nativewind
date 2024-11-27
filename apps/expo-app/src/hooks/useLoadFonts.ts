@@ -5,21 +5,22 @@ export const useLoadFonts = () => {
     if (Fonts.isLoaded(fontFamily)) {
       return;
     }
+      
     return Fonts.loadAsync({
       [fontFamily]: resourceURI,
     }).catch();
-  };
+  }; 
   const bootFonts = async () => {
-    try {
+    try { 
       const inter = checkFontLoaded('Inter', require('../../assets/fonts/Inter-Regular.ttf'));
       const interRegular = checkFontLoaded(
-        'Inter-Regular',
+        'Inter-Regular', 
         require('../../assets/fonts/Inter-Regular.ttf'),
       );
       const interMedium = checkFontLoaded(
         'Inter-Medium',
         require('../../assets/fonts/Inter-Medium.ttf'),
-      );
+      ); 
       const interBold = checkFontLoaded(
         'Inter-Bold',
         require('../../assets/fonts/Inter-Bold.ttf'),

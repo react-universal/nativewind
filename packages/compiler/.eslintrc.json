@@ -17,6 +17,7 @@
         "no-empty": "off",
         "@typescript-eslint/no-unused-expressions": "off",
         "require-yield": "off",
+        "prefer-rest-params": "off",
         "no-control-regex": "off",
         "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/no-var-requires": "off",

@@ -7,10 +7,10 @@ import type { TailwindConfig } from '@native-twin/core';
 import { defineConfig, createTailwind } from '@native-twin/core';
 import { CompilerContext, RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { TWIN_CSS_FILES } from '../../shared/twin.constants.js';
+import { getElementEntries } from '../utils/babel/babel.jsx.js';
 import { maybeLoadJS } from '../utils/modules.utils.js';
 import {
   createTwinCSSFiles,
-  getElementEntries,
   getTwinCacheDir,
   getTwinConfigPath,
 } from '../utils/twin.utils.node.js';

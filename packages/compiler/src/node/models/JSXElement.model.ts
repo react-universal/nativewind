@@ -9,8 +9,10 @@ import {
   type RuntimeComponentEntry,
 } from '@native-twin/css/jsx';
 import type { TreeNode } from '@native-twin/helpers/tree';
-import { getJSXElementAttrs, getJSXElementName } from '../utils/babel/jsx.utils.js';
-import type { JSXElementTree, JSXMappedAttribute } from './jsx.models.js';
+import { getJSXElementName } from '../utils/babel/babel.jsx.js';
+import { getJSXElementAttrs } from '../utils/babel/babel.utils.js';
+import { JSXElementTree } from './Babel.models.js';
+import type { JSXMappedAttribute } from './jsx.models.js';
 
 const jsxElementHash = (path: t.JSXElement, filename: string): number => {
   const filenameHash = Hash.string(`${filename}`);

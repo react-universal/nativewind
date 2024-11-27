@@ -1,160 +1,110 @@
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
+import * as Ref from 'effect/Ref';
+import * as SubscriptionRef from 'effect/SubscriptionRef';
 import micromatch from 'micromatch';
 import path from 'node:path';
-import type { TailwindConfig } from '@native-twin/core';
-import type { InternalTwFn, InternalTwinConfig } from '../models/twin.types.js';
-import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
+import {
+  createTwinProcessor,
+  extractTwinConfig,
+  getFilesFromGlobs,
+} from '../utils/twin.utils.js';
+import { CompilerConfig } from './Compiler.config.js';
 
-interface ContextOptions {
-  projectRoot: string;
-  twinConfigPath: string;
-  inputCSS: string;
-  outputDir: string;
-  debug: boolean;
-  twinConfig?: TailwindConfig<InternalTwinConfig>;
-}
-const make = ({
-  projectRoot,
-  twinConfigPath,
-  inputCSS,
-  outputDir,
-  debug,
-  twinConfig,
-}: ContextOptions) => {
-  return Effect.gen(function* () {
-    let configPath = twinConfigPath;
-    let finalConfig: TailwindConfig<InternalTwinConfig> | null = twinConfig ?? null;
+const TwinNodeContextLive = Effect.gen(function* () {
+  const envConfig = yield* CompilerConfig;
+  const initialConfig = extractTwinConfig(envConfig.twinConfigPath);
+  const projectFilesRef = yield* SubscriptionRef.make(HashSet.empty<string>());
+  const twinConfigRef = yield* SubscriptionRef.make(initialConfig);
+  const runningPlatformsRef = yield* SubscriptionRef.make(HashSet.empty<string>());
+  const twRunnersRef = yield* Ref.make({
+    native: createTwinProcessor('native', initialConfig),
+    web: createTwinProcessor('web', initialConfig),
+  });
 
-    if (!finalConfig) {
-      const userConfig = extractTwinConfig({ projectRoot, twinConfigPath });
-      finalConfig = finalConfig ?? userConfig.config;
-      configPath = userConfig.twinConfigPath;
-    }
+  const getAllowedGlobPatterns = Ref.get(twinConfigRef).pipe(
+    Effect.map((x) =>
+      pipe(
+        RA.map(x.content, (x) => path.join(envConfig.projectRoot, x)),
+        (x) => [envConfig.twinConfigPath, ...x],
+      ),
+    ),
+  );
 
-    const nativeTw = createTwinProcessor('native', finalConfig);
-    const webTw = createTwinProcessor('web', finalConfig);
+  const scanAllowedPaths = getAllowedGlobPatterns.pipe(
+    Effect.map((globPatterns) =>
+      getFilesFromGlobs([...globPatterns, envConfig.twinConfigPath]),
+    ),
+  );
 
-    const allowedPathsGlob = RA.map(finalConfig.content, (x) =>
-      path.join(projectRoot, x),
-    );
-
-    const allowedPaths = RA.map(
-      RA.map(allowedPathsGlob, (x) => micromatch.scan(x)),
-      (x) => x.base,
-    );
-
-    const isAllowedPath = (filePath: string) => {
-      // console.log('ALLOWED_PATHS: ', filePath, this.allowedPathsGlob);
-      return (
-        micromatch.isMatch(path.join(projectRoot, filePath), allowedPathsGlob) ||
-        micromatch.isMatch(filePath, allowedPathsGlob)
-      );
-    };
-
-    const outputPaths = {
-      defaultFile: path.join(outputDir, 'twin.out.native.css'),
-      web: path.join(outputDir, 'twin.out.web.css'),
-      ios: path.join(outputDir, 'twin.out.ios.css.js'),
-      android: path.join(outputDir, 'twin.out.android.css.js'),
-      native: path.join(outputDir, 'twin.out.native.css.js'),
-    };
-
-    const getTwForPlatform = (platform: string) => {
-      if (platform === 'web') return webTw;
-      return nativeTw;
-    };
-
-    const getOutputCSSPath = (platform: string) => {
-      switch (platform) {
-        case 'web':
-          return outputPaths.web;
-        case 'ios':
-          return outputPaths.ios;
-        case 'android':
-          return outputPaths.android;
-        case 'native':
-          return outputPaths.native;
-        default:
-          console.warn('[WARN]: cant determine outputCSS fallback to default');
-          return outputPaths.defaultFile;
-      }
-    };
-
-    const config = {
-      allowedPathsGlob,
-      allowedPaths,
-      projectRoot,
-      twinConfigPath: configPath,
-      twinConfig: finalConfig,
-      inputCSS,
-      outputDir,
-      outputPaths,
-      debug,
-    };
-    return Layer.succeed(
-      TwinNodeContext,
-      TwinNodeContext.of({
-        config,
-        utils: {
-          isAllowedPath,
-          getTwForPlatform,
-          getOutputCSSPath,
-        },
-        tw: {
-          native: nativeTw,
-          web: webTw,
-        },
+  const isAllowedPath = (filePath: string) =>
+    getAllowedGlobPatterns.pipe(
+      Effect.map((globPatterns) => {
+        return (
+          micromatch.isMatch(path.join(envConfig.projectRoot, filePath), globPatterns) ||
+          micromatch.isMatch(filePath, globPatterns)
+        );
       }),
     );
-  }).pipe(Layer.unwrapEffect);
-};
+
+  const getTwForPlatform = (platform: string) => {
+    return Ref.get(twRunnersRef).pipe(
+      Effect.map((runners) => {
+        if (platform === 'web') return runners.web;
+        return runners.native;
+      }),
+    );
+  };
+
+  const getOutputCSSPath = (platform: string) => {
+    switch (platform) {
+      case 'web':
+        return envConfig.platformPaths.web;
+      case 'ios':
+        return envConfig.platformPaths.ios;
+      case 'android':
+        return envConfig.platformPaths.android;
+      case 'native':
+        return envConfig.platformPaths.native;
+      default:
+        console.warn('[WARN]: cant determine outputCSS fallback to default');
+        return envConfig.platformPaths.defaultFile;
+    }
+  };
+  return {
+    projectFilesRef,
+    twinConfigRef,
+    runningPlatformsRef,
+    getAllowedGlobPatterns,
+    twinConfig: yield* Ref.get(twinConfigRef),
+    tw: twRunnersRef,
+    isAllowedPath,
+    getTwForPlatform,
+    getOutputCSSPath,
+    scanAllowedPaths,
+  };
+});
 
 export class TwinNodeContext extends Context.Tag('node/shared/context')<
   TwinNodeContext,
-  {
-    config: {
-      projectRoot: string;
-      twinConfigPath: string;
-      inputCSS: string;
-      twinConfig: TailwindConfig<InternalTwinConfig>;
-      outputDir: string;
-      debug: boolean;
-      allowedPathsGlob: string[];
-      allowedPaths: string[];
-      outputPaths: {
-        defaultFile: string;
-        web: string;
-        ios: string;
-        android: string;
-        native: string;
-      };
-    };
-    tw: {
-      native: InternalTwFn;
-      web: InternalTwFn;
-    };
-    utils: {
-      isAllowedPath: (path: string) => boolean;
-      getTwForPlatform: (platform: string) => InternalTwFn;
-      getOutputCSSPath: (platform: string) => string;
-    };
-  }
+  Effect.Effect.Success<typeof TwinNodeContextLive>
 >() {
-  static make = make;
+  static Live = Layer.scoped(TwinNodeContext, TwinNodeContextLive);
 }
 
-export const TwinNodeUserConfig = Effect.Tag('TwinNodeUserConfig')<
-  'twin/TwinNodeUserConfig',
-  {
-    projectRoot: string;
-    outputDir: string;
-    configPath: string;
-    inputCSS: string;
-    debug: boolean;
-  }
->();
+// export const TwinNodeUserConfig = Effect.Tag('TwinNodeUserConfig')<
+//   'twin/TwinNodeUserConfig',
+//   {
+//     projectRoot: string;
+//     outputDir: string;
+//     configPath: string;
+//     inputCSS: string;
+//     debug: boolean;
+//   }
+// >();
 
 export type NodeContextShape = TwinNodeContext['Type'];

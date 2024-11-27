@@ -19,6 +19,8 @@ config.resolver.nodeModulesPaths = [
  */
 
 module.exports = withNativeTwin(config, {
+  projectRoot,
   configPath: path.join(__dirname, 'tailwind.config.ts'),
-  inputCSS: 'global.css',
+  inputCSS: path.join(projectRoot, 'global.css'),
+  logLevel: 'All',
 });

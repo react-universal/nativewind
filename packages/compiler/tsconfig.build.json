@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
-    "moduleResolution": "Bundler",
     "outDir": "build",
     "module": "ESNext",
     "declarationMap": true,

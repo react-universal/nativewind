@@ -85,6 +85,7 @@
     "prettier": "^3.2.5",
     "react-test-renderer": "18.2.0",
     "rimraf": "^5.0.7",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
     "turbo": "^2.2.3",

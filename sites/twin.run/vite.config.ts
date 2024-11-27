@@ -6,7 +6,7 @@ import path from 'path';
 import { createLogger, defineConfig, UserConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import nativeTwinVite from '@native-twin/vite-plugin';
+// import nativeTwinVite from '@native-twin/vite-plugin';
 import { esbuildPluginMetaUrl } from './remaps/esbuild.plugins/plugin-import-meta';
 
 const pkg = JSON.parse(
@@ -92,11 +92,11 @@ export default defineConfig((): UserConfig => {
       tsconfigPaths(),
       vsixPlugin(),
       assetsJSON(),
-      nativeTwinVite({
-        inputCSS: '',
-        outputCSS: 'public/output.css',
-        twinConfigPath: './tailwind.config.ts',
-      }),
+      // nativeTwinVite({
+      //   inputCSS: '',
+      //   outputCSS: path.join(__dirname, 'public/output.css'),
+      //   twinConfigPath: path.join(__dirname, './tailwind.config.ts'),
+      // }),
       {
         // For the *-language-features extensions which use SharedArrayBuffer
         name: 'configure-response-headers',
