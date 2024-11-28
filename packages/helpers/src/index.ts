@@ -47,6 +47,8 @@ export type {
   ClassNameProps,
   StyledComponentProps,
   Prettify,
+  NegativeInteger,
+  PositiveInteger,
 } from './utility.types';
 
 export { warn, type WarningEventMap } from './warn';

@@ -13,6 +13,15 @@ import {
 import { JSXChildElement, JSXMappedAttribute } from '../../models/jsx.models';
 import * as babelPredicates from './babel.predicates';
 
+export const getJSXElementName = (
+  openingElement: t.JSXOpeningElement,
+): Option.Option<string> => {
+  if (t.isJSXIdentifier(openingElement.name)) {
+    return Option.some(openingElement.name.name);
+  }
+  return Option.none();
+};
+
 export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {
   if (typeof value === 'string') return t.stringLiteral(value);
   if (typeof value === 'number') return t.numericLiteral(value);

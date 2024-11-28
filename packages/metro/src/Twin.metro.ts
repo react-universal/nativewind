@@ -11,8 +11,8 @@ import {
   NodeWithNativeTwinOptions,
   setConfigLayerFromUser,
   twinLoggerLayer,
+  TwinFileSystem,
 } from '@native-twin/compiler/node';
-import { TwinFileSystem } from '@native-twin/compiler/node';
 import { TwinMetroConfig } from './models/Metro.models';
 import { getMetroSettings } from './programs/getMetroSettings';
 
@@ -41,6 +41,8 @@ export function withNativeTwin(
 
   const originalResolver = metroConfig.resolver.resolveRequest;
   const originalGetTransformerOptions = metroConfig.transformer.getTransformOptions;
+
+  // runtimeAsync.runFork(LaunchTwinServer);
 
   return {
     ...metroConfig,
@@ -80,6 +82,7 @@ export function withNativeTwin(
 
           // const allFiles = yield* watcher.getAllFiles;
           // yield* watcher.runTwinForFiles(allFiles, config.platform);
+          yield* Effect.logDebug('CHECK_DEBUG_LOGGER');
 
           yield* listenForkedStreamChanges(watcher.fsWatcher, (event) => {
             return Effect.logTrace(
@@ -88,6 +91,8 @@ export function withNativeTwin(
             );
           });
           yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
+
+          // const fsMetrics = yield* TwinFileSystem.metrics.providedFreq.value;
 
           return result;
         }).pipe(

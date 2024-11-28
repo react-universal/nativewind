@@ -23,7 +23,7 @@ const context = await esbuild.context({
   entryPoints: ['./src/index.ts'],
   bundle: true,
   outdir: 'build',
-  external: ['vscode'],
+  external: ['vscode', 'fsevents'],
   format: 'cjs',
   logLevel: 'silent',
   metafile: true,

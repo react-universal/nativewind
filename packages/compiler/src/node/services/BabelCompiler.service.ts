@@ -33,13 +33,13 @@ import { InternalTwFn } from '../models/twin.types.js';
 import {
   addTwinPropsToElement,
   getElementEntries,
-  getJSXElementName,
   getJSXElementSource,
 } from '../utils/babel/babel.jsx.js';
 import * as babelPredicates from '../utils/babel/babel.predicates.js';
 import {
   extractMappedAttributes,
   getBabelAST,
+  getJSXElementName,
   identifierIsReactImport,
   memberExpressionIsReactImport,
 } from '../utils/babel/babel.utils.js';
@@ -313,7 +313,7 @@ const gelBabelJSXElementChildLeaves = (
   }
 };
 
-const extractLanguageRegions = (
+export const extractLanguageRegions = (
   code: string,
   config: {
     functions: string[];

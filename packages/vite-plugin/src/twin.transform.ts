@@ -3,11 +3,12 @@ import * as fs from 'fs';
 import * as fsp from 'fs/promises';
 import {
   CompilerConfig,
-  NodeMainLayer,
+  NodeMainLayerAsync,
   setConfigLayerFromUser,
 } from '@native-twin/compiler/node';
 import { TwinNodeContext } from '@native-twin/compiler/node';
 import { TwinCSSExtractor } from '@native-twin/compiler/programs/css.extractor';
+import { LogLevel } from 'effect';
 
 export interface TwinVitePluginConfig {
   inputCSS: string;
@@ -20,9 +21,9 @@ const extractor = (config: TwinVitePluginConfig) => (code: string, filePath: str
   Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
     const compilerConfig = yield* CompilerConfig;
-    console.log('ALLOWED_PATHS: ', compilerConfig);
+    yield* Effect.log('ALLOWED_PATHS: ', compilerConfig);
 
-    if (!ctx.utils.isAllowedPath(filePath)) {
+    if (!(yield* ctx.isAllowedPath(filePath))) {
       return;
     }
 
@@ -34,10 +35,8 @@ const extractor = (config: TwinVitePluginConfig) => (code: string, filePath: str
       yield* Effect.promise(() => fsp.writeFile(config.outputCSS, ''));
     }
 
-    yield* Effect.log('asdasdasd', config.outputCSS);
-
     yield* Effect.promise(() => fsp.writeFile(config.outputCSS, compiled.cssOutput));
-    console.log('RESULT____: ', compiled.cssOutput);
+    // console.log('RESULT____: ', compiled.cssOutput);
     return compiled;
   });
 
@@ -48,11 +47,11 @@ export const createTwinExtractor = (viteConfig: TwinVitePluginConfig) => {
     viteConfig,
     extractor: async (code: string, filePath: string) => {
       return runExtractorEffect(code, filePath).pipe(
-        Effect.provide(NodeMainLayer),
+        Effect.provide(NodeMainLayerAsync),
         Effect.provide(
           setConfigLayerFromUser({
-            configPath: viteConfig.twinConfigPath,
-            logLevel: 'Info',
+            twinConfigPath: viteConfig.twinConfigPath,
+            logLevel: LogLevel.Info,
             inputCSS: viteConfig.inputCSS,
             projectRoot: viteConfig.projectRoot,
           }),

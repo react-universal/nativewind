@@ -13,7 +13,7 @@ export { JSXImportPluginContext } from './services/TwinBabelPlugin.service.js';
 export { CompilerConfig, setConfigLayerFromUser } from './services/Compiler.config.js';
 export { extractTwinConfig } from './utils/twin.utils.js';
 export { listenForkedStreamChanges } from './utils/effect.utils.js';
-
+export { extractLanguageRegions } from './services/BabelCompiler.service.js';
 export type { NodeContextShape } from './services/TwinNodeContext.service.js';
 export type { NodeWithNativeTwinOptions } from './models/Compiler.models.js';
 export type * from './models/Babel.models.js';

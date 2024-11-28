@@ -24,6 +24,7 @@ import {
   addJsxExpressionAttribute,
   extractMappedAttributes,
   getBabelBindingImportSource,
+  getJSXElementName,
   templateLiteralToStringLike,
 } from './babel.utils.js';
 import { entriesToComponentData } from './code.utils.js';
@@ -65,15 +66,6 @@ export const getElementEntries = (
       rawSheet: getGroupedEntries(runtimeEntries),
     };
   });
-};
-
-export const getJSXElementName = (
-  openingElement: t.JSXOpeningElement,
-): Option.Option<string> => {
-  if (t.isJSXIdentifier(openingElement.name)) {
-    return Option.some(openingElement.name.name);
-  }
-  return Option.none();
 };
 
 export const getJSXElementSource = (path: JSXElementNodePath) =>

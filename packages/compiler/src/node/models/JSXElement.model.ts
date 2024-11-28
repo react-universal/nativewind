@@ -9,8 +9,7 @@ import {
   type RuntimeComponentEntry,
 } from '@native-twin/css/jsx';
 import type { TreeNode } from '@native-twin/helpers/tree';
-import { getJSXElementName } from '../utils/babel/babel.jsx.js';
-import { getJSXElementAttrs } from '../utils/babel/babel.utils.js';
+import { getJSXElementAttrs, getJSXElementName } from '../utils/babel/babel.utils.js';
 import { JSXElementTree } from './Babel.models.js';
 import type { JSXMappedAttribute } from './jsx.models.js';
 

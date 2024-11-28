@@ -47,7 +47,8 @@
   },
   "dependencies": {
     "@native-twin/compiler": "workspace:*",
-    "effect": "^3.10.0"
+    "effect": "^3.10.0",
+    "portfinder": "^1.0.32"
   },
   "peerDependencies": {
     "react": "*",

@@ -6,9 +6,8 @@ import {
   type TwinBabelPluginOptions,
   type BabelAPI,
   BABEL_JSX_PLUGIN_IMPORT_RUNTIME,
-  NodeMainLayer,
+  NodeMainLayerSync,
 } from '@native-twin/compiler/node';
-import { makeNodeLayer } from '@native-twin/compiler/node';
 import { BabelCompiler } from '@native-twin/compiler/node';
 
 const allowed = new Set<string>();
@@ -74,19 +73,19 @@ function nativeTwinBabelPlugin(
   cwd: string,
 ): PluginObj {
   // console.log('BABEL_OPT: ', options);
-  const MainLayer = makeNodeLayer({
-    configPath: options.twinConfigPath,
-    debug: true,
-    inputCSS: options.inputCSS,
-    outputDir: options.outputDir,
-    projectRoot: cwd,
-  });
+  // const MainLayer = makeNodeLayer({
+  //   configPath: options.twinConfigPath,
+  //   debug: true,
+  //   inputCSS: options.inputCSS,
+  //   outputDir: options.outputDir,
+  //   projectRoot: cwd,
+  // });
   return program.pipe(
     // Logger.withMinimumLogLevel(LogLevel.All),
     // Effect.provide(layer),
     Effect.provide(JSXImportPluginContext.make(options, cwd)),
-    Effect.provide(NodeMainLayer),
-    Effect.provide(MainLayer),
+    Effect.provide(NodeMainLayerSync),
+    // Effect.provide(MainLayer),
     Effect.runSync,
   );
 }

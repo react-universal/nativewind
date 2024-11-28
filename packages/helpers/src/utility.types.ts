@@ -82,3 +82,16 @@ export interface StyledComponentProps extends ClassNameProps {
 export type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
+
+export type PositiveInteger<T extends number = 1> = `${T}` extends
+  | '0'
+  | `-${any}`
+  | `${any}.${any}`
+  ? never
+  : T;
+
+export type NegativeInteger<T extends number = 1> = `${T}` extends '0' | `${any}.${any}`
+  ? never
+  : `${T}` extends `-${any}`
+    ? T
+    : never;

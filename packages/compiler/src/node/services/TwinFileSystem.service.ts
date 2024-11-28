@@ -11,11 +11,11 @@ import { pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
-import * as Queue from 'effect/Queue';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import type { JSXElementNode } from '../models/JSXElement.model.js';
+import { FrequencyMetric } from '../models/Metrics.models.js';
 import { listenForkedStreamChanges } from '../utils/effect.utils.js';
 import {
   createChokidarWatcher,
@@ -23,9 +23,16 @@ import {
 } from '../utils/fileWatcher.util.js';
 import { getNativeStylesJSOutput } from '../utils/native.utils.js';
 import { extractTwinConfig } from '../utils/twin.utils.js';
-import { BabelCompiler, BabelFileEntry } from './BabelCompiler.service.js';
+import { BabelCompiler } from './BabelCompiler.service.js';
 import { CompilerConfig } from './Compiler.config.js';
 import { TwinNodeContext } from './TwinNodeContext.service.js';
+
+const providedFrequency = new FrequencyMetric(
+  'Service',
+  'metro/fs/service',
+  'Twin FileSystem service',
+  'Info',
+);
 
 export const TwinFSMake = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
@@ -33,8 +40,6 @@ export const TwinFSMake = Effect.gen(function* () {
   const env = yield* CompilerConfig;
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  // const setupPlatforms = yield* Ref.make(new Set<string>());
-  const projectFilesQueue = yield* Queue.unbounded<BabelFileEntry>();
 
   const watcher = yield* Effect.sync(() =>
     chokidar.watch(ctx.twinConfig.content, {
@@ -84,25 +89,6 @@ export const TwinFSMake = Effect.gen(function* () {
     ),
   );
 
-  // yield* fs.watch(env.twinConfigPath).pipe(
-  //   Stream.tap((x) => Effect.log('TAILWIND_CONFIG_CHANGE: ', x)),
-  //   Stream.runForEach((x) => {
-  //     if (x._tag === 'Update') {
-  //       const newConfig = extractTwinConfig({
-  //         projectRoot: env.projectRoot,
-  //         twinConfigPath: env.twinConfigPath,
-  //       });
-
-  //       return SubscriptionRef.set(configFileRef, newConfig.config);
-  //     }
-  //     return Effect.void;
-  //   }),
-  //   Effect.withSpanScoped('WATCHER', {
-  //     attributes: { type: 'fs.watch(ctx.config.twinConfigPath)' },
-  //   }),
-  //   Effect.forkDaemon,
-  // );
-
   yield* ctx.twinConfigRef.changes.pipe(
     Stream.mapEffect(() => SubscriptionRef.get(ctx.twinConfigRef)),
     Stream.map((x) => x.content),
@@ -149,20 +135,7 @@ export const TwinFSMake = Effect.gen(function* () {
 
   const startWatcher = Effect.suspend(() => directoryWatchers);
 
-  yield* Queue.take(projectFilesQueue).pipe(
-    Effect.flatMap((x) => compiler.getBabelOutput(x)),
-    Effect.tap(() => Effect.log('Rebuilding...')),
-    Effect.flatMap((x) =>
-      refreshCSSOutput({
-        filepath: x.filename,
-        trees: RA.make(x.treeNodes),
-        platform: x.platform,
-      }),
-    ),
-    Effect.forever,
-    Effect.fork,
-  );
-
+  yield* providedFrequency.track(Effect.succeed('FS - provided'));
   return {
     fsWatcher,
     refreshCSSOutput,
@@ -173,28 +146,6 @@ export const TwinFSMake = Effect.gen(function* () {
     createWatcherFor,
     runTwinForFiles,
   };
-
-  // function refreshProjectFiles() {
-  //   ///asdasda  AAAAAAAAA
-  //   return Stream.fromIterable(ctx.config.allowedPaths).pipe(
-  //     Stream.mapEffect((x) =>
-  //       readDirectoryRecursive(x).pipe(Effect.orElse(() => Effect.succeed([]))),
-  //     ),
-  //     Stream.flattenIterables,
-  //     Stream.runCollect,
-  //     Effect.flatMap((x) =>
-  //       Ref.update(projectFiles, (current) =>
-  //         HashSet.union(
-  //           current,
-  //           RA.filter(RA.dedupe(RA.fromIterable(x)), ctx.utils.isAllowedPath),
-  //         ),
-  //       ),
-  //     ),
-  //     Effect.andThen(() =>
-  //       Ref.get(projectFiles).pipe(Effect.tap((x) => Effect.log('PROJECT_FILES: ', x))),
-  //     ),
-  //   );
-  // }
 
   function createWatcherFor(basePath: string) {
     return fs.watch(basePath).pipe(
@@ -306,30 +257,7 @@ export class TwinFileSystem extends Context.Tag('metro/fs/service')<
   static Live = Layer.scoped(TwinFileSystem, TwinFSMake)
     .pipe(Layer.provideMerge(BabelCompiler.Live))
     .pipe(Layer.provide(FSLive));
+  static metrics = {
+    providedFreq: providedFrequency,
+  };
 }
-
-// function runPlatform(platform: string) {
-//   return Effect.gen(function* () {
-//     const current = yield* Ref.get(setupPlatforms);
-//     const installed = current.has(platform);
-//     if (installed) {
-//       yield* Effect.log('already setup platform', platform);
-//       return;
-//     }
-//     yield* Effect.log(`Initializing project \n`);
-
-//     return (yield* directoryWatchers).pipe(
-//       Stream.map((watchEvent) => {
-//         console.log('PATH: ', watchEvent);
-//         return {
-//           ...watchEvent,
-//           // path: path.resolve(basePath, watchEvent.path),
-//         };
-//       }),
-//       Stream.filter((watchEvent) => ctx.utils.isAllowedPath(watchEvent.path)),
-//       Stream.tap((x) => Effect.log(`File change detected: ${x.path} \n`)),
-//       Stream.runDrain,
-//       Effect.fork,
-//     );
-//   });
-// }

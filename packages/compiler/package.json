@@ -20,6 +20,12 @@
       "require": "./build/index.js",
       "default": "./build/esm/index.js"
     },
+    "./server": {
+      "types": "./build/server/index.d.ts",
+      "import": "./build/esm/server/index.js",
+      "require": "./build/server/index.js",
+      "default": "./build/esm/server/index.js"
+    },
     "./node": {
       "types": "./build/node/index.d.ts",
       "import": "./build/esm/node/index.js",

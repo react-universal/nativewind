@@ -6,7 +6,7 @@ import tailwindConfig from './tailwind.config';
 setup(tailwindConfig);
 export default function App() {
   return ( 
-    <View className='bg-primary flex-1 items-center justify-center first:bg-green'>
+    <View className='bg-gray-900 flex-1 items-center justify-center first:bg-green'>
       <View
         className={`
           w-[80vw] h-[20vh] rounded-full justify-center items-center bg-purple-200

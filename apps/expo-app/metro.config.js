@@ -22,5 +22,5 @@ module.exports = withNativeTwin(config, {
   projectRoot,
   configPath: path.join(__dirname, 'tailwind.config.ts'),
   inputCSS: path.join(projectRoot, 'global.css'),
-  logLevel: 'All',
+  logLevel: 'Debug',
 });
