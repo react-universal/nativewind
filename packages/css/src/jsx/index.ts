@@ -21,12 +21,12 @@ export {
   compileSheetEntry,
   /** @category — Ord */
   sortSheetEntriesByPrecedence,
-} from './SheetEntry';
+} from './SheetEntry.js';
 
 export {
   /** @category — CSS Parsers */
   type RawJSXElementTreeNode,
-} from './metro.runtime';
+} from './metro.runtime.js';
 
 export {
   /** @category — CSS Parsers */
@@ -55,7 +55,7 @@ export {
   getSheetMetadata,
   /** @category — Mappers */
   getRawSheet,
-} from './Sheet';
+} from './Sheet.js';
 
 export {
   /** @category — CSS Parsers */
@@ -66,7 +66,7 @@ export {
   declarationValueConvertParser,
   /** @category — Match */
   matchUnitConvert,
-} from './SheetEntryDeclaration';
+} from './SheetEntryDeclaration.js';
 
 export type {
   /** @category — CSS Parsers */
@@ -75,11 +75,11 @@ export type {
   RegisteredComponent,
   /** @category — CSS Parsers */
   ComponentSheet,
-} from './Component';
+} from './Component.js';
 
 export type {
   /** @category — CSS Parsers */
   StyledPropEntries,
   /** @category — CSS Parsers */
   CompilerContext,
-} from './metro.runtime';
+} from './metro.runtime.js';

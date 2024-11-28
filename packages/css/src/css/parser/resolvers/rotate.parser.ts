@@ -1,9 +1,14 @@
 import * as P from '@native-twin/arc-parser';
-import { ParseCssDimensions } from '../dimensions.parser';
-import { AnyStyle } from '../../../react-native/rn.types';
+import type { AnyStyle } from '../../../react-native/rn.types.js';
+import { ParseCssDimensions } from '../dimensions.parser.js';
 
 export const ParseRotateValue = P.sequenceOf([
-  P.choice([P.literal('rotateX'), P.literal('rotateY'), P.literal('rotateZ'), P.literal('rotate')]),
+  P.choice([
+    P.literal('rotateX'),
+    P.literal('rotateY'),
+    P.literal('rotateZ'),
+    P.literal('rotate'),
+  ]),
   P.betweenParens(ParseCssDimensions),
 ]).map(([key, value]): AnyStyle['transform'] => {
   if (key == 'rotateX') {

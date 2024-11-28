@@ -1,4 +1,4 @@
-import { Parser, updateParserError, updateParserState } from './Parser';
+import { Parser, updateParserError, updateParserState } from './Parser.js';
 
 export const peek: Parser<string> = new Parser((state) => {
   if (state.isError) return state;

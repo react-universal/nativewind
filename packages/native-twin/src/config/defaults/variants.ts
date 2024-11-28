@@ -1,5 +1,5 @@
 import { normalize } from '@native-twin/css';
-import type { Variant } from '../../types/config.types';
+import type { Variant } from '../../types/config.types.js';
 
 export const defaultVariants: Variant[] = [
   ['focus-within', '&:focus-within'],

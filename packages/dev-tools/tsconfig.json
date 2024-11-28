@@ -1,16 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "moduleDetection": "force"
-  },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "**/__mocks__/*",
-    "**/__tests__/*",
-    "**/webui/**",
-    "build",
-    "dist"
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" }
   ]
 }

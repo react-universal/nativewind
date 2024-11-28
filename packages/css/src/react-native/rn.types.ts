@@ -1,13 +1,12 @@
-import type {
-  ImageStyle,
-  TextStyle,
-  ViewStyle,
-} from 'react-native';
-import type { SelectorGroup } from '../css/css.types';
+import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import type { SelectorGroup } from '../css/css.types.js';
 
 export type AnyStyle = ImageStyle | TextStyle | ViewStyle;
 
-export interface CompleteStyle extends ViewStyle, TextStyle, Omit<ImageStyle, 'overflow'> {}
+export interface CompleteStyle
+  extends ViewStyle,
+    TextStyle,
+    Omit<ImageStyle, 'overflow'> {}
 
 export interface ParserRuntimeContext {
   rem: number;

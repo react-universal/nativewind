@@ -1,14 +1,15 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.src.json",
+  "references": [
+    { "path": "../arc-parser/tsconfig.build.json" },
+    { "path": "../helpers/tsconfig.build.json" },
+    { "path": "../css/tsconfig.build.json" },
+  ],
   "compilerOptions": {
-    "outDir": "build",
-    "declarationMap": true,
-    "verbatimModuleSyntax": false,
-    "module": "ESNext",
-    "target": "ESNext",
-    "noEmit": false,
-    "emitDeclarationOnly": true,
-    "importHelpers": true
-  },
-  "exclude": ["./test/", "build"]
+    "types": ["node"],
+    "tsBuildInfoFile": ".tsbuildinfo/build.tsbuildinfo",
+    "outDir": "build/esm",
+    "declarationDir": "build/dts",
+    "stripInternal": true
+  }
 }

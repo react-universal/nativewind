@@ -1,5 +1,5 @@
-import { FinalSheet } from '../react-native/rn.types';
-import { ChildsSheet } from './Sheet';
+import type { FinalSheet } from '../react-native/rn.types.js';
+import type { ChildsSheet } from './Sheet.js';
 
 export const defaultSheetMetadata = {
   hasAnimations: false,

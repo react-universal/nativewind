@@ -1,7 +1,7 @@
 import { matchCssObject, matchThemeValue } from '@native-twin/core';
 import type { Rule } from '@native-twin/core';
 import { parsedRuleToClassName } from '@native-twin/css';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { TailwindPresetTheme } from '../types/theme.types.js';
 
 export const layoutThemeRules: Rule<TailwindPresetTheme>[] = [
   matchCssObject('hidden', (match, ctx, rule) => ({

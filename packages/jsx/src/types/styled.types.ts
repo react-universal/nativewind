@@ -13,7 +13,7 @@ import type {
   ValidInteractionPseudoSelector,
 } from '@native-twin/css';
 import { Atom } from '@native-twin/helpers/react';
-import { createComponentSheet } from '../sheet/StyleSheet';
+import { createComponentSheet } from '../sheet/StyleSheet.js';
 
 export interface RegisteredComponent {
   id: string;

@@ -1,4 +1,4 @@
-import { Parser, updateParserResult, updateParserError } from './Parser';
+import { Parser, updateParserResult, updateParserError } from './Parser.js';
 
 export const many = <A>(parser: Parser<A>): Parser<A[]> => {
   return new Parser((state) => {

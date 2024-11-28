@@ -1,10 +1,10 @@
 import { getSheet, type Sheet } from '@native-twin/css';
 import { noop } from '@native-twin/helpers';
-import { createTailwind } from '../native-twin';
-import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
-import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
-import { mutationObserver } from './mutation-observer';
-import { isDevEnvironment } from './runtime.utils';
+import { createTailwind } from '../native-twin.js';
+import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types.js';
+import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types.js';
+import { mutationObserver } from './mutation-observer.js';
+import { isDevEnvironment } from './runtime.utils.js';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
 // const subscriptions = new Set<(cb: TailwindConfig<any>) => void>();
@@ -23,9 +23,9 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
   // -> using a delegation proxy here
   noop as unknown as RuntimeTW<any>,
   {
-    apply(_target, _thisArg, args) {
+    apply(_target, _thisArg, args = ['']) {
       if (isDevEnvironment()) assertActive();
-      return active.apply(_thisArg, args);
+      return active.apply(_thisArg, [['', ...args].join('')]);
     },
 
     get(target, property) {

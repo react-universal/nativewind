@@ -7,7 +7,6 @@ import glob from 'glob';
 import fs from 'node:fs';
 import path from 'node:path';
 import * as rollup from 'rollup';
-import preserveDirectives from 'rollup-plugin-preserve-directives';
 
 const testPatterns = ['**/*.spec.ts', '**/*.test.ts'];
 
@@ -70,7 +69,7 @@ export const createRollupConfig = (
         input: entrypoints,
         plugins: [
           plugins,
-          preserveDirectives({ exclude: ['**/*.tsx'] }),
+          // preserveDirectives({ exclude: ['**/*.tsx'] }),
           tsPlugin({
             exclude: [...testPatterns],
             tsconfig: 'tsconfig.build.json',

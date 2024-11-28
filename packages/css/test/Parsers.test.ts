@@ -1,5 +1,5 @@
-import { ParseSelectorStrict } from '../src/css/selector.parser';
-import { generateStylesFor } from './test-utils';
+import { ParseSelectorStrict } from '../src/css/parser/selector.parser.js';
+import { generateStylesFor } from './test-utils.js';
 
 describe.skip('@native-twin/css - AT-RULES', () => {
   it('at-rule', () => {
@@ -292,13 +292,17 @@ describe.skip('@native-twin/css Transform', () => {
   it('translate-y-2', () => {
     const result = generateStylesFor('translate-y-2');
 
-    expect(result.base).toStrictEqual({ transform: [{ translateX: 0 }, { translateY: 32 }] });
+    expect(result.base).toStrictEqual({
+      transform: [{ translateX: 0 }, { translateY: 32 }],
+    });
   });
 
   it('-translate-y-2', () => {
     const result = generateStylesFor('-translate-y-2');
 
-    expect(result.base).toStrictEqual({ transform: [{ translateX: 0 }, { translateY: -32 }] });
+    expect(result.base).toStrictEqual({
+      transform: [{ translateX: 0 }, { translateY: -32 }],
+    });
   });
 
   it('rotate-[1.2turn]', () => {

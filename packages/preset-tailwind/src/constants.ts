@@ -1,4 +1,4 @@
-import { RuleMeta } from '@native-twin/core';
+import type { RuleMeta } from '@native-twin/core';
 
 export const DEFAULT_META: RuleMeta = {
   canBeNegative: false,

@@ -1,7 +1,7 @@
 import { PixelRatio, Platform, PlatformOSType } from 'react-native';
 import { atom } from '@native-twin/helpers/react';
-import { colorScheme } from './colorScheme.obs';
-import { viewport } from './viewport.obs';
+import { colorScheme } from './colorScheme.obs.js';
+import { viewport } from './viewport.obs.js';
 
 export type Units = {
   '%'?: number;

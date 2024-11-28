@@ -13,53 +13,7 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./build/index.d.ts",
-      "import": "./build/esm/index.js",
-      "require": "./build/index.js"
-    },
-    "./jsx-dev-runtime": {
-      "types": "./build/jsx-dev-runtime.d.ts",
-      "import": "./build/esm/jsx-dev-runtime",
-      "require": "./build/jsx-dev-runtime"
-    },
-    "./jsx-runtime": {
-      "types": "./build/jsx-runtime.d.ts",
-      "import": "./build/esm/jsx-runtime",
-      "require": "./build/jsx-runtime"
-    },
-    "./sheet": {
-      "types": "./build/sheet/index.d.ts",
-      "import": "./build/esm/sheet",
-      "require": "./build/sheet"
-    },
-    "./testing-library": {
-      "types": "./build/testing-library/index.d.ts",
-      "import": "./build/esm/testing-library",
-      "require": "./build/testing-library"
-    },
-    "./testing-library/setup": {
-      "types": "./build/testing-library/setup.d.ts",
-      "import": "./build/esm/testing-library/setup.js",
-      "require": "./build/testing-library/setup.js"
-    },
-    "./testing-library/setupAfterEnv": {
-      "types": "./build/testing-library/setupAfterEnv.d.ts",
-      "import": "./build/esm/testing-library/setupAfterEnv.js",
-      "require": "./build/testing-library/setupAfterEnv.js"
-    },
-    "./types": {
-      "types": "./types.d.ts"
-    },
-    "./rn-svg": {
-      "types": "./rn-svg.d.ts"
-    }
-  },
-  "main": "./build",
-  "module": "./build/esm",
-  "types": "./build/index.d.ts",
+  "type": "module",
   "files": [
     "build",
     "jsx-dev-runtime",
@@ -75,7 +29,10 @@
     "README.md"
   ],
   "scripts": {
-    "build": "twin build",
+    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-esm": "tsc -b tsconfig.build.json",
     "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -91,14 +48,20 @@
     "@native-twin/preset-tailwind": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "catalog:"
   },
   "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
+  },
+  "effect": {
+    "generateExports": {
+      "include": [
+        "*.ts"
+      ]
+    }
   }
 }

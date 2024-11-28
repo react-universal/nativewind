@@ -1,7 +1,7 @@
 import { noop, toHyphenCase, warn } from '@native-twin/helpers';
-import { getStyleElement } from '../html/get-style-element';
-import { sheetEntriesToCss } from '../transforms/sheet-to-css';
-import { Sheet } from './sheet.types';
+import { getStyleElement } from '../html/get-style-element.js';
+import { sheetEntriesToCss } from '../transforms/sheet-to-css.js';
+import type { Sheet } from './sheet.types.js';
 
 export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> {
   const target = (element as CSSStyleSheet)?.cssRules

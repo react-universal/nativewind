@@ -22,9 +22,11 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "native-twin",
-  "main": "./build/extension.js",
   "scripts": {
-    "build": "node ./esbuild.js",
+    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-esm": "tsc -b tsconfig.build.json",
     "build:tsc": "tsc -b",
     "build:tsc:watch": "tsc -p tsconfig.cjs.json --watch",
     "clean": "rm -rf build",
@@ -160,14 +162,13 @@
     "@native-twin/helpers": "workspace:*",
     "@native-twin/language-server": "workspace:*",
     "@native-twin/language-service": "workspace:*",
-    "effect": "^3.10.0",
+    "effect": "catalog:effect",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
     "@types/vscode": "^1.94.2",
     "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.4.0",
-    "vscode-test": "^1.6.1"
+    "@vscode/test-electron": "^2.4.0"
   },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*"

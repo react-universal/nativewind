@@ -1,4 +1,4 @@
-import { ColorsRecord } from './utility.types';
+import { ColorsRecord } from './utility.types.js';
 
 export function flattenObjectByPath(obj: any, path: string[] = []) {
   const flatten: Record<string, any> = {};

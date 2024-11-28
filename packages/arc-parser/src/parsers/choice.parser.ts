@@ -1,5 +1,5 @@
-import type { ParserState } from '../types';
-import { Parser } from './Parser';
+import type { ParserState } from '../types.js';
+import { Parser } from './Parser.js';
 
 export function choice<A>([p1]: [Parser<A>]): Parser<A>;
 export function choice<A, B>([p1, p2]: [Parser<A>, Parser<B>]): Parser<A | B>;

@@ -7,15 +7,15 @@ import {
 } from '@native-twin/css/jsx';
 import { asArray } from '@native-twin/helpers';
 import { useAtomValue } from '@native-twin/helpers/react';
-import { StyleSheet } from '../../sheet/StyleSheet';
-import { tw } from '../../sheet/native-tw';
-import { styledContext } from '../../store/observables';
-// import { ComponentTemplateEntryProp } from '../../types/jsx.types';
-import { ComponentConfig } from '../../types/styled.types';
-import { INTERNAL_RESET } from '../../utils/constants';
-import { composeDeclarations } from '../../utils/sheet.utils';
+import { StyleSheet } from '../../sheet/StyleSheet.js';
+import { tw } from '../../sheet/native-tw.js';
+import { styledContext } from '../../store/observables/index.js';
+// import { ComponentTemplateEntryProp } from '../../types/jsx.types.js';
+import { ComponentConfig } from '../../types/styled.types.js';
+import { INTERNAL_RESET } from '../../utils/constants.js';
+import { composeDeclarations } from '../../utils/sheet.utils.js';
 
-// import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps';
+// import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps.js';
 
 export const useStyledProps = (
   id: string,

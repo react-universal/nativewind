@@ -6,8 +6,8 @@ import {
   type TWParsedRule,
 } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import type { ThemeContext } from '../types/config.types';
-import type { __Theme__ } from '../types/theme.types';
+import type { ThemeContext } from '../types/config.types.js';
+import type { __Theme__ } from '../types/theme.types.js';
 
 /**
  * Converts provided parsed CSS rule to a specific format and applies necessary conditions.

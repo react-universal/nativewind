@@ -1,15 +1,15 @@
 import * as P from '@native-twin/arc-parser';
-import { AnyStyle } from '../../react-native/rn.types';
-import { getPropertyValueType } from '../../utils.parser';
-import { ParseCssDimensions } from './dimensions.parser';
-import { ParseAspectRatio } from './resolvers/aspect-ratio.parser';
-import { ParseShadowValue } from './resolvers/box-shadow.parser';
-import { ParseCssColor } from './resolvers/color.parser';
-import { ParseFlexValue } from './resolvers/flex.parser';
-import { ParseRotateValue } from './resolvers/rotate.parser';
-import { ParseSkewValue } from './resolvers/skew.parser';
-import { ParseTranslateValue } from './resolvers/translate.parser';
-import { ident } from '../css-common.parser';
+import type { AnyStyle } from '../../react-native/rn.types.js';
+import { getPropertyValueType } from '../../utils.parser.js';
+import { ParseCssDimensions } from './dimensions.parser.js';
+import { ParseAspectRatio } from './resolvers/aspect-ratio.parser.js';
+import { ParseShadowValue } from './resolvers/box-shadow.parser.js';
+import { ParseCssColor } from './resolvers/color.parser.js';
+import { ParseFlexValue } from './resolvers/flex.parser.js';
+import { ParseRotateValue } from './resolvers/rotate.parser.js';
+import { ParseSkewValue } from './resolvers/skew.parser.js';
+import { ParseTranslateValue } from './resolvers/translate.parser.js';
+import { ident } from '../css-common.parser.js';
 
 export const ParseCssDeclarationLine = P.coroutine((run) => {
   const getValue = () => {

@@ -1,4 +1,4 @@
-import { CompleteStyle } from '../react-native/rn.types';
+import type { CompleteStyle } from '../react-native/rn.types.js';
 
 export interface DefaultTheme {}
 

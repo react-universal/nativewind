@@ -20,22 +20,8 @@
     "url": "https://github.com/react-universal/native-twin",
     "directory": "packages/preset-tailwind"
   },
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./build/index.d.ts",
-      "require": "./build/index.js",
-      "import": "./build/esm/index.js"
-    },
-    "./colors": {
-      "types": "./build/tailwind-theme/colors.d.ts",
-      "require": "./build/tailwind-theme/colors.js",
-      "import": "./build/esm/tailwind-theme/colors.js"
-    }
-  },
-  "main": "./build/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/index.d.ts",
+  "license": "MIT",
+  "type": "module",
   "files": [
     "build",
     "colors",
@@ -45,7 +31,10 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "twin build",
+    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-esm": "tsc -b tsconfig.build.json",
     "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -55,13 +44,14 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@native-twin/core": "workspace:*"
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "catalog:"
   },
   "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

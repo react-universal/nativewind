@@ -1,5 +1,0 @@
-{
-  "main": "../build/tailwind/tailwind-rule.parser.js",
-  "module": "../build/esm/tailwind/tailwind-rule.parser.js",
-  "types": "../build/tailwind/tailwind-rule.parser.d.ts"
-}

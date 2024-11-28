@@ -13,12 +13,6 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "main": "./build/index.js",
-  "module": "./build/index.js",
-  "types": "./build/index.d.ts",
-  "bin": {
-    "native-twin-language-server": "./bin/native-twin-language-server"
-  },
   "files": [
     "LICENSE",
     "README.md",
@@ -29,7 +23,10 @@
     "plugin-parser"
   ],
   "scripts": {
-    "build": "node ./esbuild.mjs",
+    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-esm": "tsc -b tsconfig.build.json",
     "build:tsc": "tsc -p tsconfig.build.json",
     "build:tsc:watch": "tsc -p tsconfig.cjs.json --watch",
     "clean": "rm -rf build",
@@ -44,7 +41,7 @@
     "@native-twin/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "^2.9.3",
     "cssbeautify": "0.3.1",
-    "effect": "^3.10.0",
+    "effect": "catalog:effect",
     "match-sorter": "6.3.4",
     "showdown": "2.1.0",
     "ts-morph": "^23.0.0",

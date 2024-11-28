@@ -52,3 +52,7 @@ bck
 .expo/
 docs/
 .tsup
+
+
+.nx/cache
+.nx/workspace-data

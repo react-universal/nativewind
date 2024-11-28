@@ -4,17 +4,17 @@ import {
   parsedRuleToClassName,
 } from '@native-twin/css';
 import { flattenColorPalette, type MaybeArray } from '@native-twin/helpers';
-import { createRuleResolver } from '../parsers/rule-handler';
-import { createVariantResolver } from '../parsers/variant-handler';
+import { createRuleResolver } from '../parsers/rule-handler.js';
+import { createVariantResolver } from '../parsers/variant-handler.js';
 import type {
   RuleResult,
   TailwindConfig,
   ThemeContext,
   Variant,
   VariantResult,
-} from '../types/config.types';
-import type { __Theme__ } from '../types/theme.types';
-import { createThemeFunction } from './theme.function';
+} from '../types/config.types.js';
+import type { __Theme__ } from '../types/theme.types.js';
+import { createThemeFunction } from './theme.function.js';
 
 interface RuleHandlerFn<Theme extends __Theme__ = __Theme__> {
   (token: TWParsedRule, ctx: ThemeContext<Theme>): RuleResult;
@@ -40,7 +40,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   //   if (ignoredRules.has(rule.n)) return true;
   //   return ignorelist.some((x) => x.startsWith(rule.n));
   // };
-  const ctx: ThemeContext = {
+  const ctx: ThemeContext<Theme> = {
     get colors() {
       return flattenColorPalette(
         Object.assign(

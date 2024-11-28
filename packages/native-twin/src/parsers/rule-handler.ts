@@ -1,14 +1,14 @@
 import * as P from '@native-twin/arc-parser';
 import { getTWFeatureParser, type TWParsedRule } from '@native-twin/css';
-import type { Rule, ThemeContext } from '../types/config.types';
-import type { __Theme__ } from '../types/theme.types';
+import type { Rule, ThemeContext } from '../types/config.types.js';
+import type { __Theme__ } from '../types/theme.types.js';
 
 export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(
   rule: Rule<Theme>,
 ) => {
   const [_, __, resolver] = rule;
   const parser = createRuleMatcher(rule);
-  return (token: TWParsedRule, context: ThemeContext) => {
+  return (token: TWParsedRule, context: ThemeContext<Theme>) => {
     const parserResult = parser.run(token.n);
     if (parserResult.isError) return null;
     const nextToken = resolver(parserResult.result, context, token);

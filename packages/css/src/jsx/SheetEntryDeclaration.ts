@@ -5,13 +5,13 @@ import * as Match from 'effect/Match';
 import * as Predicate from 'effect/Predicate';
 import * as P from '@native-twin/arc-parser';
 import { hasOwnProperty } from '@native-twin/helpers';
-import { declarationValueWithUnitParser } from '../css/css-common.parser';
-import { unitlessCssProps } from '../css/css.constants';
-import { CSSUnit } from '../css/css.types';
-import { AnyStyle } from '../react-native/rn.types';
-import { SheetEntryDeclaration } from '../sheets/sheet.types';
-import { getPropertyValueType } from '../utils.parser';
-import { CompilerContext } from './metro.runtime';
+import { declarationValueWithUnitParser } from '../css/css-common.parser.js';
+import { unitlessCssProps } from '../css/css.constants.js';
+import type { CSSUnit } from '../css/css.types.js';
+import type { AnyStyle } from '../react-native/rn.types.js';
+import type { SheetEntryDeclaration } from '../sheets/sheet.types.js';
+import { getPropertyValueType } from '../utils.parser.js';
+import type { CompilerContext } from './metro.runtime.js';
 
 /** @category Tagged Types */
 export type RuntimeSheetDeclaration = Data.TaggedEnum<{

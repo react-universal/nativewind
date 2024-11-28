@@ -1,8 +1,8 @@
 import { createElement, forwardRef } from 'react';
 import { cx, tw } from '@native-twin/core';
-import type { JSXFunction, JSXInternalProps } from '../../types/jsx.types';
-import { getNormalizeConfig } from '../../utils/config.utils';
-import { REACT_FORWARD_REF_SYMBOL } from '../../utils/constants';
+import type { JSXFunction, JSXInternalProps } from '../../types/jsx.types.js';
+import { getNormalizeConfig } from '../../utils/config.utils.js';
+import { REACT_FORWARD_REF_SYMBOL } from '../../utils/constants.js';
 
 // TODO: Check this on every react web fmw
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();

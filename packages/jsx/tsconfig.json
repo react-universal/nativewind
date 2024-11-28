@@ -1,19 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
-    "noUncheckedIndexedAccess": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noFallthroughCasesInSwitch": false
-  },
-  "include": [
-    "src",
-    "types.d.ts"
-  ],
-  "exclude": [
-    "build",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js"
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
   ]
 }

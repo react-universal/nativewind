@@ -1,19 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
-    "noUnusedLocals": false,
-    "strictFunctionTypes": false,
-    "noPropertyAccessFromIndexSignature": true,
-    "strictNullChecks": true,
-    "noImplicitReturns": false,
-    "resolveJsonModule": true,
-    "strict": true,
-    "stripInternal": true,
-    "noImplicitAny": true
-  },
-  "include": ["src", "test","types.d.ts"],
-  "exclude": ["build"]
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
+  ]
 }

@@ -1,9 +1,9 @@
 import { getSheet } from '@native-twin/css';
-import { defineConfig } from '../config/define-config';
-import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
-import type { RuntimeTW, __Theme__ } from '../types/theme.types';
-import { isDevEnvironment } from './runtime.utils';
-import { setup } from './tw';
+import { defineConfig } from '../config/define-config.js';
+import type { TailwindConfig, TailwindUserConfig } from '../types/config.types.js';
+import type { RuntimeTW, __Theme__ } from '../types/theme.types.js';
+import { isDevEnvironment } from './runtime.utils.js';
+import { setup } from './tw.js';
 
 /**
  * @group Runtime

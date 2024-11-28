@@ -2,15 +2,15 @@ import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Order from 'effect/Order';
 import * as Predicate from 'effect/Predicate';
-import { OwnSheetSelectors } from '../css/css.constants';
-import type { ValidChildPseudoSelector } from '../css/css.types';
-import type { SheetEntry } from '../sheets/sheet.types';
-import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
+import { OwnSheetSelectors } from '../css/css.constants.js';
+import type { ValidChildPseudoSelector } from '../css/css.types.js';
+import type { SheetEntry } from '../sheets/sheet.types.js';
+import { getRuleSelectorGroup } from '../tailwind/tailwind.utils.js';
 import {
   compileEntryDeclaration,
-  RuntimeSheetDeclaration,
-} from './SheetEntryDeclaration';
-import { CompilerContext } from './metro.runtime';
+  type RuntimeSheetDeclaration,
+} from './SheetEntryDeclaration.js';
+import type { CompilerContext } from './metro.runtime.js';
 
 export type {
   /** @category — CSS Parsers */

@@ -1,8 +1,8 @@
 export {
-  Atom,
-  AtomGetter,
+  type Atom,
+  type AtomGetter,
   atom,
   atomStateMap,
   useAtom,
   useAtomValue,
-} from './atom.store';
+} from './atom.store.js';

@@ -1,4 +1,4 @@
-import { ParserTokenIdentity } from './css.types';
+import { ParserTokenIdentity } from './css.types.js';
 
 export const tokenIdentity: ParserTokenIdentity = (type) => (value) => ({
   type,

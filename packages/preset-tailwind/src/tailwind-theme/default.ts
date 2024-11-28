@@ -1,7 +1,7 @@
-import { TailwindPresetTheme } from '../types/theme.types';
-import { textAlign, verticalAlign } from './aligns';
-import { colors } from './colors';
-import { blur, dropShadow } from './filters';
+import type { TailwindPresetTheme } from '../types/theme.types.js';
+import { textAlign, verticalAlign } from './aligns.js';
+import { colors } from './colors.js';
+import { blur, dropShadow } from './filters.js';
 import {
   flex,
   flexBasis,
@@ -9,7 +9,7 @@ import {
   flexGrow,
   flexWrap,
   justifyContent,
-} from './flex';
+} from './flex.js';
 import {
   fontFamily,
   fontSize,
@@ -22,8 +22,8 @@ import {
   fontStyle,
   textTransform,
   wordSpacing,
-} from './font';
-import { resizeMode } from './image';
+} from './font.js';
+import { resizeMode } from './image.js';
 import {
   borderRadius,
   boxShadow,
@@ -36,10 +36,10 @@ import {
   ringWidth,
   spacing,
   verticalBreakpoints,
-} from './mixed';
-import { aspectRatio, containers, height, maxHeight, maxWidth, width } from './size';
-import { rotate, scale, skew, translate } from './transform';
-import { transition } from './transition';
+} from './mixed.js';
+import { aspectRatio, containers, height, maxHeight, maxWidth, width } from './size.js';
+import { rotate, scale, skew, translate } from './transform.js';
+import { transition } from './transition.js';
 
 export const theme = {
   blockSize: height,

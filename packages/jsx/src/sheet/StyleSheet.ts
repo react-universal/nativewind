@@ -1,4 +1,4 @@
-import {
+import type {
   AnyStyle,
   FinalSheet,
   GetChildStylesArgs,
@@ -14,12 +14,12 @@ import type {
   RuntimeSheetEntry,
 } from '@native-twin/css/jsx';
 import { Atom, atom } from '@native-twin/helpers/react';
-import { type StyledContext, remObs, styledContext } from '../store/observables';
-import { globalStyles } from '../store/styles.store';
-import type { ComponentConfig } from '../types/styled.types';
-import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
-import { getSheetEntryStyles, sheetEntriesToStyles } from '../utils/sheet.utils';
-import { tw } from './native-tw';
+import { type StyledContext, remObs, styledContext } from '../store/observables/index.js';
+import { globalStyles } from '../store/styles.store.js';
+import type { ComponentConfig } from '../types/styled.types.js';
+import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants.js';
+import { getSheetEntryStyles, sheetEntriesToStyles } from '../utils/sheet.utils.js';
+import { tw } from './native-tw.js';
 
 export const componentsRegistry: Map<string, RegisteredComponent> = new Map();
 const componentsState: Map<string, Atom<ComponentState>> = new Map();

@@ -1,6 +1,6 @@
 import { cx, tw } from '@native-twin/core';
-import type { JSXInternalProps } from '../types/jsx.types';
-import type { ComponentConfig } from '../types/styled.types';
+import type { JSXInternalProps } from '../types/jsx.types.js';
+import type { ComponentConfig } from '../types/styled.types.js';
 
 export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
   const configs = type?.defaultProps?.['configs'] as ComponentConfig[];

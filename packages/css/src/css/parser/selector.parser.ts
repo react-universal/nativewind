@@ -1,7 +1,7 @@
 import * as P from '@native-twin/arc-parser';
-import { ident } from '../css-common.parser';
-import { SelectorGroup } from '../css.types';
-import { SelectorPayload } from './css-parser.types';
+import { ident } from '../css-common.parser.js';
+import { SelectorGroup } from '../css.types.js';
+import { SelectorPayload } from './css-parser.types.js';
 
 /*
  ************ SELECTOR STRICT ***********

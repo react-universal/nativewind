@@ -6,7 +6,7 @@ import type {
   StringLike,
   UnionToIntersection,
 } from '@native-twin/helpers';
-import type { Preset, TailwindConfig, ThemeFunction } from './config.types';
+import type { Preset, TailwindConfig, ThemeFunction } from './config.types.js';
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];

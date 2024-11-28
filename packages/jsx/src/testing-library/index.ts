@@ -1,21 +1,20 @@
 import type { CompleteStyle } from '@native-twin/css';
 import { ComponentProps, ComponentType, forwardRef } from 'react';
+import { render as tlRender } from '@testing-library/react-native';
 import * as JSX from 'react/jsx-runtime';
 import { setup } from '@native-twin/core';
+import { defineConfig } from '@native-twin/core';
+import { presetTailwind } from '@native-twin/preset-tailwind';
 import '../components';
-import wrapJSX from '../jsx-wrapper';
-import { StyleSheet } from '../sheet/StyleSheet';
-import { createStylableComponent, stylizedComponents } from '../styled';
+import wrapJSX from '../jsx-wrapper.js';
+import { StyleSheet } from '../sheet/StyleSheet.js';
+import { createStylableComponent, stylizedComponents } from '../styled/index.js';
 import type {
   StylableComponentConfigOptions,
   ReactComponent,
   NativeTwinGeneratedProps,
-} from '../types/styled.types';
-import { INTERNAL_RESET } from '../utils/constants';
-import { render as tlRender } from '@testing-library/react-native';
-
-import { defineConfig } from '@native-twin/core';
-import { presetTailwind } from '@native-twin/preset-tailwind';
+} from '../types/styled.types.js';
+import { INTERNAL_RESET } from '../utils/constants.js';
 
 const testingConfig = defineConfig({
   content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
@@ -38,7 +37,6 @@ const testingConfig = defineConfig({
   },
   presets: [presetTailwind()],
 });
-
 
 setup(testingConfig);
 

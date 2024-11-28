@@ -5,9 +5,9 @@ import {
   sortSheetEntriesByPrecedence,
   type RuntimeGroupSheet,
 } from '@native-twin/css/jsx';
-import { componentsRegistry, StyleSheet } from '../sheet/StyleSheet';
-import { remObs, styledContext } from '../store/observables';
-import type { JSXInternalProps } from '../types/jsx.types';
+import { componentsRegistry, StyleSheet } from '../sheet/StyleSheet.js';
+import { remObs, styledContext } from '../store/observables/index.js';
+import type { JSXInternalProps } from '../types/jsx.types.js';
 
 export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
   const componentSheet = props?.['_twinComponentSheet'];

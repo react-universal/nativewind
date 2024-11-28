@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": [],
+  "references": [
+    { "path": "packages/builder/tsconfig.build.json" },
+    { "path": "packages/arc-parser/tsconfig.build.json" },
+    { "path": "packages/helpers/tsconfig.build.json" },
+    { "path": "packages/css/tsconfig.build.json" },
+    { "path": "./packages/native-twin/tsconfig.build.json" },
+    { "path": "packages/preset-tailwind/tsconfig.build.json" },
+    { "path": "packages/styled/tsconfig.build.json" },
+    { "path": "packages/adapters/tsconfig.build.json" },
+    { "path": "packages/babel/tsconfig.build.json" },
+    { "path": "packages/compiler/tsconfig.build.json" },
+    { "path": "packages/dev-tools/tsconfig.build.json" },
+    { "path": "packages/jsx/tsconfig.build.json" },
+    { "path": "packages/language-server/tsconfig.build.json" },
+    { "path": "packages/language-service/tsconfig.build.json" },
+    { "path": "packages/metro/tsconfig.build.json" },
+    { "path": "packages/vite-plugin/tsconfig.build.json" }
+  ]
+}

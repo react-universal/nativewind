@@ -6,4 +6,4 @@ export {
   type TwinStyleSheet,
   type ComponentState,
   type ComponentConfigProps,
-} from './StyleSheet';
+} from './StyleSheet.js';

@@ -1,4 +1,4 @@
-import { generateStylesFor } from './test-utils';
+import { generateStylesFor } from './test-utils.js';
 
 describe.skip('@native-twin/css - Pseudo', () => {
   it('Complex', () => {

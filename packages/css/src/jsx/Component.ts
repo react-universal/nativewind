@@ -1,7 +1,11 @@
-import type { AnyStyle, FinalSheet, GetChildStylesArgs } from '../react-native/rn.types';
-import type { SheetEntry, SheetInteractionState } from '../sheets/sheet.types';
-import { RuntimeGroupSheet } from './Sheet';
-import type { RuntimeSheetEntry } from './SheetEntry';
+import type {
+  AnyStyle,
+  FinalSheet,
+  GetChildStylesArgs,
+} from '../react-native/rn.types.js';
+import type { SheetEntry, SheetInteractionState } from '../sheets/sheet.types.js';
+import type { RuntimeGroupSheet } from './Sheet.js';
+import type { RuntimeSheetEntry } from './SheetEntry.js';
 
 /** @category jsxComponent */
 export interface RegisteredComponent {

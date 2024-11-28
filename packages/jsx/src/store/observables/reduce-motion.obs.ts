@@ -1,5 +1,5 @@
 import { AccessibilityInfo } from 'react-native';
-import { INTERNAL_RESET } from '../../utils/constants';
+import { INTERNAL_RESET } from '../../utils/constants.js';
 import { atom } from '@native-twin/helpers/react';
 
 /**

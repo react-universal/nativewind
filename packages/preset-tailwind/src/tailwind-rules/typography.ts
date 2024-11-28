@@ -1,6 +1,6 @@
 import { matchThemeColor, matchThemeValue } from '@native-twin/core';
 import type { Rule } from '@native-twin/core';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { TailwindPresetTheme } from '../types/theme.types.js';
 
 export const fontThemeRules: Rule<TailwindPresetTheme>[] = [
   matchThemeValue('text-', 'fontSize', 'fontSize'),

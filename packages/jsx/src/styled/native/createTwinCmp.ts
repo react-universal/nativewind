@@ -1,16 +1,16 @@
 import { forwardRef, createElement, useId } from 'react';
-import { groupContext } from '../../context';
-import { colorScheme } from '../../store/observables';
-import type { JSXFunction } from '../../types/jsx.types';
+import { groupContext } from '../../context/index.js';
+import { colorScheme } from '../../store/observables/index.js';
+import type { JSXFunction } from '../../types/jsx.types.js';
 import type {
   StylableComponentConfigOptions,
   ReactComponent,
-} from '../../types/styled.types';
-import { getNormalizeConfig } from '../../utils/config.utils';
-import { getComponentDisplayName } from '../../utils/react.utils';
-// import { useTwinDevTools } from '../hooks/useDevTools';
-import { useInteractions } from '../hooks/useInteractions';
-import { useStyledProps } from '../hooks/useStyledProps';
+} from '../../types/styled.types.js';
+import { getNormalizeConfig } from '../../utils/config.utils.js';
+import { getComponentDisplayName } from '../../utils/react.utils.js';
+// import { useTwinDevTools } from '../hooks/useDevTools.js';
+import { useInteractions } from '../hooks/useInteractions.js';
+import { useStyledProps } from '../hooks/useStyledProps.js';
 
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 

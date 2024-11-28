@@ -1,5 +1,5 @@
 import * as P from '@native-twin/arc-parser';
-import { cssValueUnitParser, parseMathOperatorSymbol } from '../css-common.parser';
+import { cssValueUnitParser, parseMathOperatorSymbol } from '../css-common.parser.js';
 
 export const ParseCssDimensions = P.recursiveParser(() =>
   P.choice([P.whitespaceSurrounded(ParseDimensionWithUnits), ParseCssCalc]),

@@ -4,7 +4,7 @@ import {
   toColorValue,
   toHyphenCase,
 } from '@native-twin/helpers';
-import { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types';
+import type { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types.js';
 
 export function sheetEntriesToCss(
   entries: SheetEntry[] | SheetEntry = [],

@@ -1,30 +1,30 @@
-import { defineConfig } from './config/define-config';
-import { convert } from './convert/convertRule';
-import { parsedRuleToEntry } from './convert/ruleToEntry';
-import { createTailwind } from './native-twin';
-import { parseCssValue } from './parsers/values.parser';
-import { cx } from './runtime/cx';
-import { install } from './runtime/install';
-import { mutationObserver } from './runtime/mutation-observer';
-import { consume, extract } from './runtime/ssr';
-import { tw, setup, observe } from './runtime/tw';
-import { tx } from './runtime/tx';
-import { createVariants } from './runtime/variants';
-import { createThemeContext } from './theme/theme.context';
-import { createThemeFunction } from './theme/theme.function';
+import { defineConfig } from './config/define-config.js';
+import { convert } from './convert/convertRule.js';
+import { parsedRuleToEntry } from './convert/ruleToEntry.js';
+import { createTailwind } from './native-twin.js';
+import { parseCssValue } from './parsers/values.parser.js';
+import { cx } from './runtime/cx.js';
+import { install } from './runtime/install.js';
+import { mutationObserver } from './runtime/mutation-observer.js';
+import { consume, extract } from './runtime/ssr.js';
+import { tw, setup, observe } from './runtime/tw.js';
+import { tx } from './runtime/tx.js';
+import { createVariants } from './runtime/variants.js';
+import { createThemeContext } from './theme/theme.context.js';
+import { createThemeFunction } from './theme/theme.function.js';
 import {
   matchCssObject,
   matchThemeColor,
   matchThemeValue,
   matchAnimation,
-} from './theme/theme.match';
+} from './theme/theme.match.js';
 
 /** TYPES */
-export type { ExtractResult } from './runtime/ssr';
-export type { TxFunction } from './runtime/tx';
-export type { ConfigVariants, VariantProps, VariantsConfig } from './runtime/variants';
-export type * from './types/config.types';
-export type * from './types/theme.types';
+export type { ExtractResult } from './runtime/ssr.js';
+export type { TxFunction } from './runtime/tx.js';
+export type { ConfigVariants, VariantProps, VariantsConfig } from './runtime/variants.js';
+export type * from './types/config.types.js';
+export type * from './types/theme.types.js';
 export type { PropsFrom } from '@native-twin/helpers';
 
 export {

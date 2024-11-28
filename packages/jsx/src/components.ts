@@ -17,7 +17,7 @@ import {
   KeyboardAvoidingView,
   VirtualizedList,
 } from 'react-native';
-import { withMappedProps, createStylableComponent } from './styled';
+import { withMappedProps, createStylableComponent } from './styled/index.js';
 
 createStylableComponent(Image, { className: 'style' });
 createStylableComponent(Pressable, { className: 'style' });

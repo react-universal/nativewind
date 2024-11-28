@@ -1,4 +1,4 @@
-import { Parser } from './Parser';
+import { Parser } from './Parser.js';
 
 // pipeParsers :: [Parser * * *] -> Parser * * *
 export function pipeParsers<A>([p1]: [Parser<A>]): Parser<A>;

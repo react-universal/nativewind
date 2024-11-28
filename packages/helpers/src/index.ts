@@ -1,13 +1,13 @@
-export { hash, createHash, getBitMask, getHashMask, simpleHash } from './hash.utils';
+export { hash, createHash, getBitMask, getHashMask, simpleHash } from './hash.utils.js';
 
-export { createStore, createValueStore } from './store.utils';
+export { createStore, createValueStore } from './store.utils.js';
 
 export {
   getNonce,
   escapeSelector,
   fixHTMLTagClassNamesList,
   compareClassNames,
-} from './browser.utils';
+} from './browser.utils.js';
 
 export {
   asRegExp,
@@ -16,11 +16,11 @@ export {
   asArray,
   identity,
   keysOf,
-} from './identity.utils';
+} from './identity.utils.js';
 
-export { toColorValue } from './color.utils';
+export { toColorValue } from './color.utils.js';
 
-export { hasOwnProperty, isObject, isString, noop, uniq } from './function.utils';
+export { hasOwnProperty, isObject, isString, noop, uniq } from './function.utils.js';
 
 export {
   toCamelCase,
@@ -30,7 +30,7 @@ export {
   escapeBackticksAndOctals,
   splitBySpace,
   assertString,
-} from './string.utils';
+} from './string.utils.js';
 
 export type {
   ArrayType,
@@ -49,14 +49,14 @@ export type {
   Prettify,
   NegativeInteger,
   PositiveInteger,
-} from './utility.types';
+} from './utility.types.js';
 
-export { warn, type WarningEventMap } from './warn';
+export { warn, type WarningEventMap } from './warn.js';
 
 export {
   createExponentialUnits,
   createLinearUnits,
   createPercentRatios,
-} from './create-value.utils';
+} from './create-value.utils.js';
 
-export { flattenObjectByPath, flattenColorPalette } from './object.utils';
+export { flattenObjectByPath, flattenColorPalette } from './object.utils.js';

@@ -28,37 +28,24 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "build:watch": "rollup -c rollup.config.js -w",
+    "_____build": "rollup -c rollup.config.js",
+    "_____build:watch": "rollup -c rollup.config.js -w",
     "clean": "rm -rf build",
     "gen:jsdocs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "@effect/cli": "^0.48.3",
-    "@effect/platform": "^0.69.3",
-    "@effect/platform-node": "^0.64.4",
-    "@effect/platform-node-shared": "^0.19.3",
-    "@effect/printer-ansi": "^0.38.0",
+    "@effect/cli": "catalog:effect",
+    "@effect/platform": "catalog:effect",
+    "@effect/platform-node": "catalog:effect",
+    "@effect/platform-node-shared": "catalog:effect",
+    "@effect/printer-ansi": "catalog:effect",
     "@native-twin/compiler": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "effect": "^3.10.0"
+    "effect": "catalog:effect"
   },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.1",
-    "@rollup/plugin-json": "^6.1.0",
-    "vite-plugin-require": "^1.2.14"
-  },
-  "peerDependencies": {
-    "vite": ">=5"
-  },
-  "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
-    "better-docs": "*",
-    "rollup": "^4.20.0",
-    "vite": "^5.4.10"
-  },
+  "devDependencies": {},
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"

@@ -1,3 +1,3 @@
-export { createStylableComponent, stylizedComponents } from './createTwinCmp';
-export { withMappedProps } from './twinMappedCmp';
-export { twinComponent } from './twinCmp';
+export { createStylableComponent, stylizedComponents } from './createTwinCmp.js';
+export { withMappedProps } from './twinMappedCmp.js';
+export { twinComponent } from './twinCmp.js';

@@ -1,5 +1,0 @@
-{
-  "main": "../build/react.js",
-  "module": "../build/esm/react.js",
-  "types": "../build/react.d.ts"
-}

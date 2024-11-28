@@ -1,0 +1,35 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["{projectRoot}/build", "{projectRoot}/dist"],
+      "inputs": ["default", "^production", "{projectRoot}/jest.config.js"],
+      "cache": true
+    }
+  },
+  "defaultBase": "main",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": ["default", "!{projectRoot}/jest.config.ts"],
+    "sharedGlobals": [
+      "!{projectRoot}/test/**/*", 
+      "!{projectRoot}/*/__tests__/**/*",
+      "!{projectRoot}/expo-snack.js"
+    ]
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/js/typescript",
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.build.json"
+        }
+      }
+    }
+  ]
+}

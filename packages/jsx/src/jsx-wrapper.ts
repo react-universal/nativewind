@@ -1,7 +1,7 @@
-// import { stylizeJSXChilds } from './jsx/jsx-childs';
-import { jsxStyles } from './jsx/jsx-styles';
-import { stylizedComponents } from './styled';
-import type { JSXFunction } from './types/jsx.types';
+// import { stylizeJSXChilds } from './jsx/jsx-childs.js';
+import { jsxStyles } from './jsx/jsx-styles.js';
+import { stylizedComponents } from './styled/index.js';
+import type { JSXFunction } from './types/jsx.types.js';
 
 /**
  * Create a new JSX function that swaps the component type being rendered with

@@ -1,18 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "ES2020",
-    "target": "ES2022",
-    "noEmit": false,
-    "moduleResolution": "Bundler",
-    "noUncheckedIndexedAccess": false,
-    "noPropertyAccessFromIndexSignature": false,
-    "rootDir": "src",
-    "emitDeclarationOnly": true,
-    "outDir": "build",
-    "declarationMap": true,
-    "sourceMap": true
-  },
-  "include": ["src"],
-  "exclude": ["build", "babel.config.js", "jest.config.js"]
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
+  ]
 }

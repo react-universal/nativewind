@@ -1,5 +1,5 @@
-import { Layer } from '../css/precedence';
-import type { SheetEntry } from '../sheets/sheet.types';
+import { Layer } from '../css/precedence.js';
+import type { SheetEntry } from '../sheets/sheet.types.js';
 
 const collator = new Intl.Collator('en', { numeric: true });
 
@@ -46,5 +46,7 @@ function byModifier(s: string | null | undefined) {
 }
 
 function byName(s: string | null | undefined) {
-  return (s || '').replace(/\W/g, (c) => String.fromCharCode(127 + c.charCodeAt(0))) + '\x00';
+  return (
+    (s || '').replace(/\W/g, (c) => String.fromCharCode(127 + c.charCodeAt(0))) + '\x00'
+  );
 }

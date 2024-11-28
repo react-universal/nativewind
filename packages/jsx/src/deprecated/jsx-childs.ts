@@ -1,6 +1,6 @@
 import { Children, cloneElement, isValidElement } from 'react';
 import { isFragment } from 'react-is';
-import { JSXInternalProps } from '../types/jsx.types';
+import { JSXInternalProps } from '../types/jsx.types.js';
 
 export function stylizeJSXChilds(props: JSXInternalProps | null | undefined) {
   if (props && props['children'] && props['className']) {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { TreeNode } from './TreeNode';
+import { TreeNode } from './TreeNode.js';
 
 export class Tree<T> {
   root: TreeNode<T>;

@@ -1,5 +1,5 @@
-import { ParserState } from '../types';
-import { Parser, updateParserError, updateParserResult } from './Parser';
+import { ParserState } from '../types.js';
+import { Parser, updateParserError, updateParserResult } from './Parser.js';
 
 export const fail = (errorData: string) => {
   return new Parser<any>((state) => {

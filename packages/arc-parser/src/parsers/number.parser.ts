@@ -1,7 +1,7 @@
-import type { Parser } from './Parser';
-import { choice } from './choice.parser';
-import { many1 } from './many.parser';
-import { char, letters, regex, whitespace } from './string.parser';
+import type { Parser } from './Parser.js';
+import { choice } from './choice.parser.js';
+import { many1 } from './many.parser.js';
+import { char, letters, regex, whitespace } from './string.parser.js';
 
 const regexDigits = /^[0-9]+/;
 

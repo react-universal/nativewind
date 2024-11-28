@@ -21,24 +21,8 @@
     "url": "https://github.com/react-universal/native-twin",
     "directory": "packages/adapters"
   },
-  "sideEffects": false,
-  "exports": {
-    "./next/app": {
-      "types": "./build/next/app/index.d.ts",
-      "import": "./build/esm/next/app/index.js",
-      "require": "./build/next/app/index.js"
-    },
-    "./next/_app": {
-      "types": "./build/next/_app.d.ts",
-      "import": "./build/esm/next/_app.js",
-      "require": "./build/next/_app.js"
-    },
-    "./next/_document": {
-      "types": "./build/next/_document.d.ts",
-      "import": "./build/esm/next/_document.js",
-      "require": "./build/next/_document.js"
-    }
-  },
+  "license": "MIT",
+  "type": "module",
   "files": [
     "build",
     "src",
@@ -50,7 +34,10 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "twin build",
+    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-esm": "tsc -b tsconfig.build.json",
     "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -64,16 +51,7 @@
     "@types/webpack": "^5.28.5"
   },
   "peerDependencies": {
-    "next": ">=14.0",
-    "react": ">=18.0"
-  },
-  "peerDependenciesMeta": {
-    "next": {
-      "optional": true
-    }
-  },
-  "optionalDependencies": {
-    "@native-twin/cli": "workspace:*"
+    "react": "catalog:"
   },
   "publishConfig": {
     "access": "public",

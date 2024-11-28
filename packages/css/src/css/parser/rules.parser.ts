@@ -1,9 +1,12 @@
 import * as P from '@native-twin/arc-parser';
-import { FinalSheet } from '../../react-native/rn.types';
-import { CssParserData } from './css-parser.types';
-import { ParseCssDeclarationLine, parseDeclarationProperty } from './declarations.parser';
-import { ParseCssDimensions } from './dimensions.parser';
-import { ParseSelectorStrict } from './selector.parser';
+import type { FinalSheet } from '../../react-native/rn.types.js';
+import { CssParserData } from './css-parser.types.js';
+import {
+  ParseCssDeclarationLine,
+  parseDeclarationProperty,
+} from './declarations.parser.js';
+import { ParseCssDimensions } from './dimensions.parser.js';
+import { ParseSelectorStrict } from './selector.parser.js';
 
 export const ParseCssRules = P.coroutine((run) => {
   const result = guessNextRule();

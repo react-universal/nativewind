@@ -1,6 +1,6 @@
 import * as P from '@native-twin/arc-parser';
-import { AnyStyle } from '../../../react-native/rn.types';
-import { ParseCssDimensions } from '../dimensions.parser';
+import type { AnyStyle } from '../../../react-native/rn.types.js';
+import { ParseCssDimensions } from '../dimensions.parser.js';
 
 export const ParseSkewValue = P.sequenceOf([
   P.choice([P.literal('skewX'), P.literal('skewY')]),

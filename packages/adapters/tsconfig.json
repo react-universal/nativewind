@@ -1,19 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "lib": ["DOM", "DOM.Iterable", "ES2021"],
-    "noUnusedLocals": false,
-    "strictFunctionTypes": false,
-    "strictNullChecks": true,
-    "noImplicitReturns": false,
-    "declarationMap": true,
-    "resolveJsonModule": true,
-    "noEmit": true,
-    "strict": true,
-    "stripInternal": true,
-    "noImplicitAny": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["build", "babel.config.js", "jest.config.js"]
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
+  ]
 }

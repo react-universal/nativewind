@@ -7,8 +7,8 @@ import {
   type RuntimeSheetEntry,
   type SheetEntry,
 } from '@native-twin/css/jsx';
-import { remObs } from '../../../store/observables';
-import type { ComponentTemplateEntryProp } from '../../../types/jsx.types';
+import { remObs } from '../../../store/observables/index.js';
+import type { ComponentTemplateEntryProp } from '../../../types/jsx.types.js';
 
 export const composeTemplateSheets = (entries: SheetEntry[]): RuntimeGroupSheet => {
   return entries

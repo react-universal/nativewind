@@ -10,8 +10,8 @@ import {
   fixHTMLTagClassNamesList,
   type StringLike,
 } from '@native-twin/helpers';
-import type { RuntimeTW } from '../types/theme.types';
-import { tw as tw$ } from './tw';
+import type { RuntimeTW } from '../types/theme.types.js';
+import { tw as tw$ } from './tw.js';
 
 export interface ExtractResult {
   /** The possibly modified HTML */
@@ -39,7 +39,7 @@ export function consume(
   let result = '';
   let lastChunkStart = 0;
 
-  parseHTML(markup, (startIndex, endIndex, quote) => {
+  parseHTML(markup, (startIndex: number, endIndex: number, quote: string) => {
     const value = markup.slice(startIndex, endIndex);
     const classList = parseTWTokens(fixHTMLTagClassNamesList(value, quote))
       .map(parsedRuleToClassName)

@@ -1,9 +1,9 @@
 import { useCallback, useContext } from 'react';
 import { ComponentSheet } from '@native-twin/css/jsx';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
-import { groupContext } from '../../context';
-import { getTwinComponent } from '../../store/components.store';
-import { DEFAULT_INTERACTIONS } from '../../utils/constants';
+import { groupContext } from '../../context/index.js';
+import { getTwinComponent } from '../../store/components.store.js';
+import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
 
 export const useTwinComponent = (
   id: string,

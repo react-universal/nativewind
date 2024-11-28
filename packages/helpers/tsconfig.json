@@ -1,17 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declarationMap": false,
-    "noImplicitAny": true,
-    "resolveJsonModule": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "noEmit": false,
-    "strict": true,
-    "target": "esnext"
-  },
-  "include": ["src", "test", "./*.d.ts"],
-  "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js"]
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
+  ]
 }

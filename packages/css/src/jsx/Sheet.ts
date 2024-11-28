@@ -1,13 +1,13 @@
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Record from 'effect/Record';
-import type { SelectorGroup } from '../css/css.types';
-import type { AnyStyle, CompleteStyle, FinalSheet } from '../react-native/rn.types';
-import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
-import type { ComponentSheet, RuntimeComponentEntry } from './Component';
-import { type RuntimeSheetEntry, sortSheetEntries } from './SheetEntry';
-import { RuntimeSheetDeclaration } from './SheetEntryDeclaration';
-import { defaultFinalSheet, defaultSheetMetadata, emptyChildsSheet } from './constants';
+import type { SelectorGroup } from '../css/css.types.js';
+import type { AnyStyle, CompleteStyle, FinalSheet } from '../react-native/rn.types.js';
+import { getRuleSelectorGroup } from '../tailwind/tailwind.utils.js';
+import type { ComponentSheet, RuntimeComponentEntry } from './Component.js';
+import { type RuntimeSheetEntry, sortSheetEntries } from './SheetEntry.js';
+import { RuntimeSheetDeclaration } from './SheetEntryDeclaration.js';
+import { defaultFinalSheet, defaultSheetMetadata, emptyChildsSheet } from './constants.js';
 
 /** @category MetroBundler */
 export type ChildsSheet = Record<'first' | 'last' | 'even' | 'odd', RuntimeSheetEntry[]>;

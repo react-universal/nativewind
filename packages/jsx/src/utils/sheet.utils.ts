@@ -7,7 +7,7 @@ import {
 } from '@native-twin/css';
 import { parseCssValue, tw } from '@native-twin/core';
 import { RuntimeSheetEntry } from '@native-twin/css/jsx';
-import type { StyledContext } from '../store/observables';
+import type { StyledContext } from '../store/observables/index.js';
 
 export const sheetEntryToStyle = (
   entry: RuntimeSheetEntry,

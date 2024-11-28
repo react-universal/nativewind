@@ -1,16 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "declarationMap": true,
-    "noImplicitAny": true,
-    "resolveJsonModule": true,
-    "lib": ["ESNext"],
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "noEmit": false,
-    "strict": true,
-    "target": "esnext"
-  },
-  "include": ["src"],
-  "exclude": ["build"]
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" }
+  ]
 }

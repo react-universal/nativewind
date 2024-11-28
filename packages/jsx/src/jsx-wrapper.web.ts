@@ -1,8 +1,8 @@
 // import { createElement } from 'react';
-import { jsxStyles } from './jsx/jsx-styles.web';
-import { stylizedComponents } from './styled/index.web';
-// import { createStylableComponent } from './styled/web';
-import type { JSXFunction } from './types/jsx.types';
+import { jsxStyles } from './jsx/jsx-styles.web.js';
+import { stylizedComponents } from './styled/index.web.js';
+// import { createStylableComponent } from './styled/web.js';
+import type { JSXFunction } from './types/jsx.types.js';
 
 /**
  * Create a new JSX function that swaps the component type being rendered with

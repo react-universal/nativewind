@@ -1,19 +1,19 @@
 import type { Rule } from '@native-twin/core';
-import { TailwindPresetTheme } from '../types/theme.types';
-import { textAlignsRules, verticalAlignsRules } from './align';
-import { backgroundRules } from './background';
-import { appearanceRules, outlineRules } from './behaviors';
-import { borderRules } from './border';
-import { flexRules } from './flex';
-import { layoutThemeRules } from './layout';
-import { opacityRules } from './opacity';
-import { positionRules } from './position';
-import { boxShadowRules } from './shadows';
-import { sizeRules } from './size';
-import { spacingRules } from './spacing';
-import { translateRules } from './transform';
-import { transitionRules, durationRules } from './transition';
-import { fontThemeRules } from './typography';
+import type { TailwindPresetTheme } from '../types/theme.types.js';
+import { textAlignsRules, verticalAlignsRules } from './align.js';
+import { backgroundRules } from './background.js';
+import { appearanceRules, outlineRules } from './behaviors.js';
+import { borderRules } from './border.js';
+import { flexRules } from './flex.js';
+import { layoutThemeRules } from './layout.js';
+import { opacityRules } from './opacity.js';
+import { positionRules } from './position.js';
+import { boxShadowRules } from './shadows.js';
+import { sizeRules } from './size.js';
+import { spacingRules } from './spacing.js';
+import { translateRules } from './transform.js';
+import { transitionRules, durationRules } from './transition.js';
+import { fontThemeRules } from './typography.js';
 
 export const themeRules: Rule<TailwindPresetTheme>[] = [
   backgroundRules,

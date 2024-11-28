@@ -1,8 +1,8 @@
 import { ComponentType, createElement, forwardRef, useId } from 'react';
-import { groupContext } from '../../context';
-import type { ComponentConfig } from '../../types/styled.types';
-import { getComponentType } from '../../utils/react.utils';
-import { useStyledProps } from '../hooks/useStyledProps';
+import { groupContext } from '../../context/index.js';
+import type { ComponentConfig } from '../../types/styled.types.js';
+import { getComponentType } from '../../utils/react.utils.js';
+import { useStyledProps } from '../hooks/useStyledProps.js';
 
 export function twinComponent(
   baseComponent: ComponentType<any>,

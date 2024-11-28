@@ -5,8 +5,8 @@ import type {
   Rule,
   RuleMeta,
   RuleResolver,
-} from '../types/config.types';
-import type { __Theme__ } from '../types/theme.types';
+} from '../types/config.types.js';
+import type { __Theme__ } from '../types/theme.types.js';
 
 export function matchCssObject(
   pattern: string,
@@ -81,6 +81,7 @@ export function matchThemeColor(
           preflight: false,
         };
       }
+      return undefined;
     },
     meta,
   ];

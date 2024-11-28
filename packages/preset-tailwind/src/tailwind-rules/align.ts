@@ -1,6 +1,6 @@
 import type { Rule } from '@native-twin/core';
 import { matchThemeValue } from '@native-twin/core';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { TailwindPresetTheme } from '../types/theme.types.js';
 
 export const verticalAlignsRules: Rule<TailwindPresetTheme>[] = [
   matchThemeValue('align-', 'verticalAlign', 'verticalAlign', {

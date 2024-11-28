@@ -1,4 +1,4 @@
-import { parseTWTokens, parsedRuleToClassName } from '../src';
+import { parseTWTokens, parsedRuleToClassName } from '../src/index.js';
 
 describe('@native-twin/core - Raw rules parser', () => {
   it('Parse regular rules', () => {

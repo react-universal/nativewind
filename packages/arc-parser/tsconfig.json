@@ -1,5 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src", "test", "./*.d.ts"],
-  "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js"]
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
+  ]
 }

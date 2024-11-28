@@ -13,34 +13,7 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "exports": {
-    ".": {
-      "types": "./build/index.d.ts",
-      "import": "./build/esm/index.js",
-      "require": "./build/index.js",
-      "default": "./build/esm/index.js"
-    },
-    "./server": {
-      "types": "./build/server/index.d.ts",
-      "import": "./build/esm/server/index.js",
-      "require": "./build/server/index.js",
-      "default": "./build/esm/server/index.js"
-    },
-    "./node": {
-      "types": "./build/node/index.d.ts",
-      "import": "./build/esm/node/index.js",
-      "require": "./build/node/index.js",
-      "default": "./build/esm/node/index.js"
-    },
-    "./programs/*": {
-      "import": "./build/esm/node/programs/*.js",
-      "require": "./build/node/programs/*.js",
-      "default": "./build/esm/node/programs/*.js"
-    }
-  },
-  "main": "./build/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/index.d.ts",
+  "type": "module",
   "files": [
     "build",
     "LICENSE",
@@ -49,7 +22,10 @@
     "README.md"
   ],
   "scripts": {
-    "build": "twin build",
+    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-esm": "tsc -b tsconfig.build.json",
     "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "gen:jsdocs": "jsdoc -c jsdoc.json"
@@ -58,21 +34,19 @@
     "@babel/standalone": "^7.24.2",
     "@babel/traverse": "^7.24.0",
     "@babel/types": "^7.24.0",
-    "@effect/cli": "^0.48.3",
-    "@effect/platform": "^0.69.3",
-    "@effect/platform-node": "^0.64.4",
-    "@effect/platform-node-shared": "^0.19.3",
-    "@effect/printer-ansi": "^0.38.0",
-    "@effect/sql": "^0.20.9",
-    "@effect/sql-sqlite-node": "^0.21.9",
-    "@effect/typeclass": "^0.29.0",
+    "@effect/platform": "catalog:effect",
+    "@effect/platform-node": "catalog:effect",
+    "@effect/platform-node-shared": "catalog:effect",
+    "@effect/printer-ansi": "catalog:effect",
+    "@effect/sql": "catalog:effect",
+    "@effect/sql-sqlite-node": "catalog:effect",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/jsx": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "code-block-writer": "^13.0.1",
-    "effect": "^3.10.0",
+    "effect": "catalog:effect",
     "fast-check": "^3.21.0",
     "jiti": "^2.4.0",
     "js-beautify": "^1.15.1",
@@ -82,19 +56,12 @@
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",
     "@babel/preset-typescript": "7.23.3",
-    "@effect/language-service": "^0.2.0",
     "@types/babel__helper-module-imports": "^7.18.3",
     "@types/babel__standalone": "^7.1.9",
     "@types/connect": "3.4.38",
-    "@types/css-tree": "^2.3.8",
     "@types/js-beautify": "^1",
     "@types/micromatch": "^4.0.4",
     "babel-plugin-tester": "^11.0.4"
-  },
-  "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
-    "better-docs": "*",
-    "jest": "*"
   },
   "publishConfig": {
     "access": "public",

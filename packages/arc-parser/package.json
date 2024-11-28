@@ -13,10 +13,8 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "main": "./build/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/index.d.ts",
+  "sideEffects": [],
+  "type": "module",
   "files": [
     "LICENSE",
     "README.md",
@@ -25,7 +23,10 @@
     "src"
   ],
   "scripts": {
-    "build": "twin build",
+    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-esm": "tsc -b tsconfig.build.json",
     "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -33,12 +34,11 @@
     "test": "jest"
   },
   "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
-  },
-  "modules": "./build/esm/index.js"
+    "directory": "dist",
+    "provenance": true
+  }
 }

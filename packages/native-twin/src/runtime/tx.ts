@@ -1,6 +1,6 @@
 import type { CSSValue, SheetEntry } from '@native-twin/css';
 import { interpolate } from '@native-twin/css';
-import { tw as tw$ } from './tw';
+import { tw as tw$ } from './tw.js';
 
 export interface TxFunction {
   (...classes: CSSValue[]): SheetEntry[];

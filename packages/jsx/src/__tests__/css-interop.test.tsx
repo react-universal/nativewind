@@ -3,8 +3,12 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import { act } from 'react-test-renderer';
 import { defineConfig, setup } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { colorScheme } from '../store/observables/colorScheme.obs';
-import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
+import { colorScheme } from '../store/observables/colorScheme.obs.js';
+import {
+  createMockComponent,
+  resetComponents,
+  resetStyles,
+} from '../testing-library/index.js';
 
 const testID = 'native-twin-element';
 
