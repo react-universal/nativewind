@@ -4,14 +4,14 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
 import { asArray } from '@native-twin/helpers';
-import { DocumentLanguageRegion } from '../models/documents/LanguageRegion.model';
-import { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument';
+import { DocumentLanguageRegion } from '../models/documents/LanguageRegion.model.js';
+import { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument.js';
 import {
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
-} from '../models/language/diagnostic.model';
-import { LSPDocumentsService } from '../services/LSPDocuments.service';
-import { diagnosticProviderSource } from '../utils/constants.utils';
+} from '../models/language/diagnostic.model.js';
+import { LSPDocumentsService } from '../services/LSPDocuments.service.js';
+import { diagnosticProviderSource } from '../utils/constants.utils.js';
 
 export const twinCodeActionsProgram = (params: vscodeLSP.CodeActionParams) => {
   return Effect.gen(function* () {

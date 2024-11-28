@@ -13,6 +13,7 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
+  "type": "module",
   "files": [
     "build",
     "LICENSE",
@@ -46,11 +47,10 @@
     "react-native-safe-area-context": "*"
   },
   "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   }
 }

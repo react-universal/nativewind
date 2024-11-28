@@ -4,12 +4,12 @@ import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import { asArray } from '@native-twin/helpers';
-import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument';
-import { VscodeCompletionItem } from '../../models/language/completion.model';
-import { TwinStore, TwinRuleCompletion } from '../../models/twin/native-twin.types';
-import { TemplateTokenData } from '../../models/twin/template-token.model';
-import { compareTwinRuleWithClassName } from './completion.ap';
-import { getDocumentationMarkdown } from './language.utils';
+import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
+import { VscodeCompletionItem } from '../../models/language/completion.model.js';
+import { TwinStore, TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
+import { TemplateTokenData } from '../../models/twin/template-token.model.js';
+import { compareTwinRuleWithClassName } from './completion.ap.js';
+import { getDocumentationMarkdown } from './language.utils.js';
 
 export const createCompletionEntryDetails = (
   completion: vscode.CompletionItem,

@@ -13,7 +13,6 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "main": "build/index.js",
   "scripts": {
     "circular": "madge --extensions ts --circular --no-color --no-spinner --warning src",
     "clean": "rm -rf build",
@@ -43,6 +42,6 @@
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   }
 }

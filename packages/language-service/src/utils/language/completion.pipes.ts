@@ -3,10 +3,10 @@ import { pipe } from 'effect/Function';
 import {
   TemplateTokenData,
   TemplateTokenWithText,
-} from '../../models/twin/template-token.model';
-import { TwinRuleCompletion } from '../../models/twin/native-twin.types';
-import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
-import { getFlattenTemplateToken } from './language.utils';
+} from '../../models/twin/template-token.model.js';
+import { TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
+import { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
+import { getFlattenTemplateToken } from './language.utils.js';
 
 export const getCompletionsForTokens = (
   tokens: TemplateTokenData[],

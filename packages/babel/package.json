@@ -49,11 +49,10 @@
     "babel-plugin-tester": "^11.0.4"
   },
   "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   }
 }

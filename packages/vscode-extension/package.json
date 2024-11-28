@@ -170,15 +170,12 @@
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.4.0"
   },
-  "optionalDependencies": {
-    "@native-twin/cli": "workspace:*"
-  },
   "engines": {
     "vscode": "^1.94.2"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   },
   "icon": "resources/icons/transparent/logo-128.png",
   "extensionKind": [

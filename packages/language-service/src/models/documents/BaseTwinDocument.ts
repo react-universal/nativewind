@@ -4,9 +4,9 @@ import * as Data from 'effect/Data';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
-import { TemplateTokenWithText } from '../twin/template-token.model';
-import { DocumentLanguageRegion } from './LanguageRegion.model';
+import { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
+import { TemplateTokenWithText } from '../twin/template-token.model.js';
+import { DocumentLanguageRegion } from './LanguageRegion.model.js';
 
 interface TwinTokenLocation {
   _tag: 'TwinTokenLocation';

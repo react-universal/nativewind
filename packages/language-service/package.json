@@ -13,24 +13,7 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "exports": {
-    ".": {
-      "types": "./build/index.d.ts",
-      "import": "./build/esm/index.js",
-      "require": "./build/index.js",
-      "default": "./build/index.js"
-    },
-    "./browser": {
-      "types": "./build/browser.d.ts",
-      "import": "./build/esm/browser.js",
-      "require": "./build/browser.js",
-      "default": "./build/browser.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "main": "./build/index.js",
-  "module": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "type": "module",
   "files": [
     "LICENSE",
     "README.md",
@@ -41,7 +24,10 @@
     "browser"
   ],
   "scripts": {
-    "build": "twin build",
+    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-esm": "tsc -b tsconfig.build.json",
     "build:tsc": "tsc -p tsconfig.build.json",
     "build:tsc:watch": "twin build -w",
     "clean": "rm -rf build",
@@ -77,12 +63,11 @@
     "madge": "7.0.0"
   },
   "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   },
   "nx": {
     "includedScripts": [

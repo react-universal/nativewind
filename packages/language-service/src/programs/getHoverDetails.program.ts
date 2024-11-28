@@ -4,10 +4,10 @@ import { sheetEntriesToCss } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import { LSPDocumentsService } from '../services/LSPDocuments.service';
-import { NativeTwinManagerService } from '../services/NativeTwinManager.service';
-import { completionRuleToQuickInfo } from '../utils/language/quickInfo.utils';
-import { getSheetEntryStyles } from '../utils/sheet.utils';
+import { LSPDocumentsService } from '../services/LSPDocuments.service.js';
+import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
+import { completionRuleToQuickInfo } from '../utils/language/quickInfo.utils.js';
+import { getSheetEntryStyles } from '../utils/sheet.utils.js';
 
 export const getHoverDetails = (
   params: vscode.HoverParams,

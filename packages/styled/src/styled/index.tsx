@@ -1,6 +1,6 @@
 import React from 'react';
 import * as RN from 'react-native';
-import styledComponentsFactory from './StyledComponent';
+import styledComponentsFactory from './StyledComponent.js';
 
 const styled = <StyleType, InitialProps extends { style?: RN.StyleProp<StyleType> }>(
   Component: React.ComponentType<InitialProps>,

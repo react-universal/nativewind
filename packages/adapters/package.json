@@ -55,6 +55,6 @@
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   }
 }

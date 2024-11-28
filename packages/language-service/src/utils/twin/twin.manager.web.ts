@@ -1,7 +1,7 @@
 import { createVirtualSheet } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as HashSet from 'effect/HashSet';
-// @ts-expect-error
+// @ts-expect-error sdasd
 import picomatch from 'picomatch-browser';
 import {
   createTailwind,
@@ -19,10 +19,10 @@ import type {
   TwinStore,
   TwinRuleCompletion,
   TwinVariantCompletion,
-} from '../../models/twin/native-twin.types';
-import { DEFAULT_TWIN_CONFIG } from '../constants.utils';
-import { createStyledContext } from '../sheet.utils';
-import { createTwinStore } from './native-twin.utils';
+} from '../../models/twin/native-twin.types.js';
+import { DEFAULT_TWIN_CONFIG } from '../constants.utils.js';
+import { createStyledContext } from '../sheet.utils.js';
+import { createTwinStore } from './native-twin.utils.js';
 
 export class MonacoNativeTwinManager {
   tw: InternalTwFn;

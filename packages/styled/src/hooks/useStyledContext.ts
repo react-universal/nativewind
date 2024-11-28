@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { RuntimeContext } from '@native-twin/css';
-import { globalStore } from '../styled/store';
+import { globalStore } from '../styled/store.js';
 
 export const useStyledContext = () => {
   const context = useSyncExternalStore(

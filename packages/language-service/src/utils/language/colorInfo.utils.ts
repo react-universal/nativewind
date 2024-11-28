@@ -4,10 +4,10 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { Range, Color } from 'vscode-languageserver-types';
-import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument';
-import { TemplateTokenData } from '../../models/twin/template-token.model';
-import { TwinRuleCompletion } from '../../models/twin/native-twin.types';
-import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
+import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
+import { TemplateTokenData } from '../../models/twin/template-token.model.js';
+import { TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
+import { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
 
 export const getDocumentTemplatesColors = (
   twinService: NativeTwinManagerService['Type'],

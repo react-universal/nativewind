@@ -1,17 +1,17 @@
-import { isSameRange } from '../vscode.utils';
+import { isSameRange } from '../vscode.utils.js';
 import * as vscode from 'vscode-languageserver-types';
 import * as RA from 'effect/Array';
 import * as Equivalence from 'effect/Equivalence';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument';
+import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
 import {
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
-} from '../../models/language/diagnostic.model';
-import { TwinSheetEntry } from '../../models/twin/TwinSheetEntry.model';
-import { TemplateTokenWithText } from '../../models/twin/template-token.model';
-import { NativeTwinManagerService } from '../../services/NativeTwinManager.service';
+} from '../../models/language/diagnostic.model.js';
+import { TwinSheetEntry } from '../../models/twin/TwinSheetEntry.model.js';
+import { TemplateTokenWithText } from '../../models/twin/template-token.model.js';
+import { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
 
 const createRegionEntriesExtractor =
   (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>

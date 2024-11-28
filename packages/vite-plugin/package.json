@@ -14,12 +14,6 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "type": "module",
-  "exports": {
-    "types": "./build/index.d.ts",
-    "default": "./build/index.js"
-  },
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -48,6 +42,6 @@
   "devDependencies": {},
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   }
 }

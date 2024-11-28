@@ -9,12 +9,12 @@ import {
   isSameTwinSheetEntryDeclaration,
   twinEntryClassNameEquivalence,
   twinSheetEntryGroupByDuplicates,
-} from '../../utils/language/diagnostic';
-import { isSameRange } from '../../utils/vscode.utils';
-import { DocumentLanguageRegion } from '../documents/LanguageRegion.model';
-import { TwinSheetEntry } from '../twin/TwinSheetEntry.model';
-import { TwinDiagnosticCodes, VscodeDiagnosticItem } from './diagnostic.model';
-import { BaseTwinTextDocument } from '../documents/BaseTwinDocument';
+} from '../../utils/language/diagnostic.js';
+import { isSameRange } from '../../utils/vscode.utils.js';
+import { DocumentLanguageRegion } from '../documents/LanguageRegion.model.js';
+import { TwinSheetEntry } from '../twin/TwinSheetEntry.model.js';
+import { TwinDiagnosticCodes, VscodeDiagnosticItem } from './diagnostic.model.js';
+import { BaseTwinTextDocument } from '../documents/BaseTwinDocument.js';
 
 export class TwinDiagnosticHandler implements Equal.Equal {
   constructor(

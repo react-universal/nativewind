@@ -21,11 +21,11 @@ import type {
   TwinStore,
   TwinRuleCompletion,
   TwinVariantCompletion,
-} from '../../models/twin/native-twin.types';
-import { DEFAULT_TWIN_CONFIG } from '../constants.utils';
-import { requireJS } from '../load-js';
-import { createStyledContext } from '../sheet.utils';
-import { createTwinStore } from '../twin/native-twin.utils';
+} from '../../models/twin/native-twin.types.js';
+import { DEFAULT_TWIN_CONFIG } from '../constants.utils.js';
+import { requireJS } from '../load-js.js';
+import { createStyledContext } from '../sheet.utils.js';
+import { createTwinStore } from '../twin/native-twin.utils.js';
 
 export class NativeTwinManager {
   tw: InternalTwFn;

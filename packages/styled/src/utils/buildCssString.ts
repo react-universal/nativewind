@@ -1,5 +1,5 @@
 import type { CompleteStyle } from '@native-twin/css';
-import type { ClassNameProps, Primitive, TemplateFunctions } from '../types/styled.types';
+import type { ClassNameProps, Primitive, TemplateFunctions } from '../types/styled.types.js';
 
 /** Converts the tagged template string into a css string */
 export function buildCSSString<T>(

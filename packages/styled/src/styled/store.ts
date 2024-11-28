@@ -6,7 +6,7 @@ import {
   createStyledContext,
 } from '@native-twin/css';
 import { createStore } from '@native-twin/helpers';
-import type { RegisteredComponent } from '../types/styled.types';
+import type { RegisteredComponent } from '../types/styled.types.js';
 
 const createComponent = (id: string, groupID: string) => {
   return new Proxy<RegisteredComponent>(

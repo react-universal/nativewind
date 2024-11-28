@@ -8,12 +8,12 @@ import {
 } from 'react';
 import { StyleSheet, type StyleProp, type Touchable } from 'react-native';
 import type { AnyStyle } from '@native-twin/css';
-import { useChildren } from '../hooks/useChildren';
-import { useComponentInteractions } from '../hooks/useComponentInteractions';
-import { useComponentRegistry } from '../hooks/useComponentRegistry';
-import { useCssToRN } from '../hooks/useCssToRN';
-import type { StyledComponentProps } from '../types/styled.types';
-import { getComponentDisplayName } from '../utils/getComponentDisplayName';
+import { useChildren } from '../hooks/useChildren.js';
+import { useComponentInteractions } from '../hooks/useComponentInteractions.js';
+import { useComponentRegistry } from '../hooks/useComponentRegistry.js';
+import { useCssToRN } from '../hooks/useCssToRN.js';
+import type { StyledComponentProps } from '../types/styled.types.js';
+import { getComponentDisplayName } from '../utils/getComponentDisplayName.js';
 
 export type { StyledComponentProps };
 export { useCssToRN, useComponentRegistry, useComponentInteractions };

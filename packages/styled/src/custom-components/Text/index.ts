@@ -1,1 +1,1 @@
-export * from './Text.core';
+export * from './Text.core.js';

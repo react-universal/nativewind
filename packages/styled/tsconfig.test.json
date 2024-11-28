@@ -5,6 +5,7 @@
     { "path": "tsconfig.src.json" },
   ],
   "compilerOptions": {
+    "jsx": "preserve",
     "tsBuildInfoFile": ".tsbuildinfo/test.tsbuildinfo",
     "rootDir": "test",
     "noEmit": true

@@ -20,11 +20,7 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "main": "./build/index",
-  "module": "./build/esm/index",
-  "browser": "./build/index",
-  "types": "./build/index.d.ts",
+  "type": "module",
   "files": [
     "build",
     "LICENSE",
@@ -34,7 +30,10 @@
     "styled"
   ],
   "scripts": {
-    "build": "twin build",
+    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --plugins @babel/plugin-syntax-jsx --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/plugin-syntax-jsx --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-esm": "tsc -b tsconfig.build.json",
     "bundle": "yarn clean && yarn twin-build",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -61,13 +60,12 @@
     "react-native-web": "catalog:"
   },
   "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "packageManager": "pnpm@9.14.2",
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
 }

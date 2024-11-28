@@ -1,7 +1,7 @@
 import * as Context from 'effect/Context';
 import * as Layer from 'effect/Layer';
-import type { NativeTwinManager } from '../utils/twin/twin.manager';
-import type { MonacoNativeTwinManager } from '../utils/twin/twin.manager.web';
+import type { NativeTwinManager } from '../utils/twin/twin.manager.js';
+import type { MonacoNativeTwinManager } from '../utils/twin/twin.manager.web.js';
 
 // export const make = Effect.gen(function* () {
 //   const config = yield* LSPConfigService.pipe(Effect.flatMap((x) => x.get));

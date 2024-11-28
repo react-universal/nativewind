@@ -3,13 +3,13 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type { Range } from 'vscode-languageserver-textdocument';
 import type { RuntimeTW } from '@native-twin/core';
-import { getFlattenTemplateToken } from '../../utils/twin/native-twin.utils';
-import { TwinSheetEntry } from './TwinSheetEntry.model';
+import { getFlattenTemplateToken } from '../../utils/twin/native-twin.utils.js';
+import { TwinSheetEntry } from './TwinSheetEntry.model.js';
 import type {
   LocatedGroupToken,
   LocatedGroupTokenWithText,
   TemplateToken,
-} from './parser.types';
+} from './parser.types.js';
 
 export class TemplateTokenWithText implements Equal.Equal {
   readonly token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText;

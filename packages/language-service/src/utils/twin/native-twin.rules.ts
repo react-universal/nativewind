@@ -4,12 +4,12 @@ import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import type { RuleMeta } from '@native-twin/core';
 import { ColorsRecord, asArray } from '@native-twin/helpers';
-import { DEFAULT_RULE_META } from '../constants.utils';
+import { DEFAULT_RULE_META } from '../constants.utils.js';
 import {
   InternalNativeTwinRule,
   TwinRuleParts,
   TwinRuleCompletion,
-} from '../../models/twin/native-twin.types';
+} from '../../models/twin/native-twin.types.js';
 
 export function getRuleParts(rule: InternalNativeTwinRule): TwinRuleParts {
   const pattern = rule[0];

@@ -11,7 +11,7 @@ import {
   getRuleSelectorGroup,
   RuntimeContext,
 } from '@native-twin/css';
-import { useStyledContext } from './useStyledContext';
+import { useStyledContext } from './useStyledContext.js';
 
 export function useCssToRN(className: string) {
   const componentID = useId();

@@ -5,14 +5,14 @@ import toCssFormat from 'cssbeautify';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import { asArray } from '@native-twin/helpers';
-import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument';
-import { DocumentLanguageRegion } from '../../models/documents/LanguageRegion.model';
-import { TwinRuleCompletion, TwinRuleParts } from '../../models/twin/native-twin.types';
+import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
+import { DocumentLanguageRegion } from '../../models/documents/LanguageRegion.model.js';
+import { TwinRuleCompletion, TwinRuleParts } from '../../models/twin/native-twin.types.js';
 import {
   TemplateTokenData,
   TemplateTokenWithText,
-} from '../../models/twin/template-token.model';
-import { variantTokenToString } from '../twin/native-twin.utils';
+} from '../../models/twin/template-token.model.js';
+import { variantTokenToString } from '../twin/native-twin.utils.js';
 
 export const getCompletionTokenKind = ({
   rule,

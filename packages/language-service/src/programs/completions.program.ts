@@ -2,11 +2,11 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { Range } from 'vscode-languageserver-types';
-import { VscodeCompletionItem } from '../models/language/completion.model';
-import { NativeTwinManagerService } from '../services/NativeTwinManager.service';
-import { LSPDocumentsService } from '../services/LSPDocuments.service';
-import { getCompletionsForTokens } from '../utils/language/completion.pipes';
-import * as Completions from '../utils/language/completions.maps';
+import { VscodeCompletionItem } from '../models/language/completion.model.js';
+import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
+import { LSPDocumentsService } from '../services/LSPDocuments.service.js';
+import { getCompletionsForTokens } from '../utils/language/completion.pipes.js';
+import * as Completions from '../utils/language/completions.maps.js';
 
 export const getCompletionsAtPosition = (
   params: vscode.CompletionParams,

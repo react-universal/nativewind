@@ -1,5 +1,5 @@
 import * as Schema from 'effect/Schema';
-import { DEFAULT_PLUGIN_CONFIG } from '../utils/constants.utils';
+import { DEFAULT_PLUGIN_CONFIG } from '../utils/constants.utils.js';
 
 const TwinFileConfigSchemaString = Schema.String;
 const TwinFileConfigSchemaPaths = Schema.Array(TwinFileConfigSchemaString);

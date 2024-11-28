@@ -17,9 +17,6 @@
     "directory": "packages/dev-tools"
   },
   "license": "MIT",
-  "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
   "files": [
     "build",
     "dist",
@@ -57,6 +54,6 @@
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   }
 }

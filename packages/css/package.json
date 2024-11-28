@@ -54,17 +54,19 @@
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   },
   "effect": {
     "generateExports": {
       "include": [
-        "**/*.ts"
+        "**/*.ts",
+        "jsx/*.ts"
       ]
     },
     "generateIndex": {
       "include": [
-        "**/*.ts"
+        "**/*.ts",
+        "jsx/*.ts"
       ]
     }
   },

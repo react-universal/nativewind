@@ -9,8 +9,8 @@ import { ColorsRecord, asArray, toColorValue } from '@native-twin/helpers';
 import {
   TemplateTokenWithText,
   TemplateTokenData,
-} from '../../models/twin/template-token.model';
-import { createRuleClassNames, createRuleCompositions } from './native-twin.rules';
+} from '../../models/twin/template-token.model.js';
+import { createRuleClassNames, createRuleCompositions } from './native-twin.rules.js';
 import {
   TwinRuleCompletion,
   TwinVariantCompletion,
@@ -18,8 +18,8 @@ import {
   InternalTwinConfig,
   InternalTwinThemeContext,
   TwinStore,
-} from '../../models/twin/native-twin.types';
-import { LocatedParser, TemplateToken } from '../../models/twin/parser.types';
+} from '../../models/twin/native-twin.types.js';
+import { LocatedParser, TemplateToken } from '../../models/twin/parser.types.js';
 
 export const createTwinStore = (nativeTwinHandler: {
   tw: InternalTwFn;

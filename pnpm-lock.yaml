@@ -186,6 +186,9 @@ importers:
       eslint-plugin-unused-imports:
         specifier: ^4.1.4
         version: 4.1.4(@typescript-eslint/eslint-plugin@8.16.0(@typescript-eslint/parser@8.16.0(eslint@9.15.0(jiti@2.4.0))(typescript@5.7.2))(eslint@9.15.0(jiti@2.4.0))(typescript@5.7.2))(eslint@9.15.0(jiti@2.4.0))
+      glob:
+        specifier: ^11.0.0
+        version: 11.0.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.10.1)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.10.1)(typescript@5.7.2))
@@ -227,7 +230,7 @@ importers:
         version: 4.6.0(monaco-editor@0.52.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@native-twin/adapters':
         specifier: workspace:*
-        version: link:../../packages/adapters/_release/package
+        version: link:../../packages/adapters/dist
       '@native-twin/core':
         specifier: workspace:*
         version: link:../../packages/native-twin/dist
@@ -236,7 +239,7 @@ importers:
         version: link:../../packages/jsx/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../../packages/preset-tailwind/_release/package
+        version: link:../../packages/preset-tailwind/dist
       next:
         specifier: 'catalog:'
         version: 14.2.18(@babel/core@7.26.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -257,25 +260,25 @@ importers:
     dependencies:
       '@native-twin/babel':
         specifier: workspace:*
-        version: link:../../packages/babel/_release/package
+        version: link:../../packages/babel/dist
       '@native-twin/core':
         specifier: workspace:*
         version: link:../../packages/native-twin/dist
       '@native-twin/dev-tools':
         specifier: workspace:*
-        version: link:../../packages/dev-tools/_release/package
+        version: link:../../packages/dev-tools/dist
       '@native-twin/jsx':
         specifier: workspace:*
         version: link:../../packages/jsx/dist
       '@native-twin/metro':
         specifier: workspace:*
-        version: link:../../packages/metro/_release/package
+        version: link:../../packages/metro/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../../packages/preset-tailwind/_release/package
+        version: link:../../packages/preset-tailwind/dist
       '@native-twin/styled':
         specifier: workspace:*
-        version: link:../../packages/styled/_release/package
+        version: link:../../packages/styled/dist
       expo:
         specifier: 'catalog:'
         version: 51.0.39(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))
@@ -351,25 +354,25 @@ importers:
         version: 3.2.3(react-native@0.74.5(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.2.79)(react@18.2.0))
       '@native-twin/babel':
         specifier: workspace:*
-        version: link:../../packages/babel/_release/package
+        version: link:../../packages/babel/dist
       '@native-twin/core':
         specifier: workspace:*
         version: link:../../packages/native-twin/dist
       '@native-twin/dev-tools':
         specifier: workspace:*
-        version: link:../../packages/dev-tools/_release/package
+        version: link:../../packages/dev-tools/dist
       '@native-twin/jsx':
         specifier: workspace:*
         version: link:../../packages/jsx/dist
       '@native-twin/metro':
         specifier: workspace:*
-        version: link:../../packages/metro/_release/package
+        version: link:../../packages/metro/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../../packages/preset-tailwind/_release/package
+        version: link:../../packages/preset-tailwind/dist
       '@native-twin/styled':
         specifier: workspace:*
-        version: link:../../packages/styled/_release/package
+        version: link:../../packages/styled/dist
       expo:
         specifier: 'catalog:'
         version: 51.0.39(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))
@@ -445,7 +448,7 @@ importers:
     dependencies:
       '@native-twin/adapters':
         specifier: workspace:*
-        version: link:../../packages/adapters/_release/package
+        version: link:../../packages/adapters/dist
       '@native-twin/core':
         specifier: workspace:*
         version: link:../../packages/native-twin/dist
@@ -454,7 +457,7 @@ importers:
         version: link:../../packages/jsx/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../../packages/preset-tailwind/_release/package
+        version: link:../../packages/preset-tailwind/dist
       next:
         specifier: 'catalog:'
         version: 14.2.18(@babel/core@7.26.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -472,7 +475,7 @@ importers:
     dependencies:
       '@native-twin/adapters':
         specifier: workspace:*
-        version: link:../../packages/adapters/_release/package
+        version: link:../../packages/adapters/dist
       '@native-twin/core':
         specifier: workspace:*
         version: link:../../packages/native-twin/dist
@@ -481,7 +484,7 @@ importers:
         version: link:../../packages/jsx/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../../packages/preset-tailwind/_release/package
+        version: link:../../packages/preset-tailwind/dist
       next:
         specifier: 'catalog:'
         version: 14.2.18(@babel/core@7.26.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -526,7 +529,7 @@ importers:
       '@types/webpack':
         specifier: ^5.28.5
         version: 5.28.5(@swc/core@1.5.29(@swc/helpers@0.5.15))
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/arc-parser:
     optionalDependencies:
@@ -542,7 +545,7 @@ importers:
         version: 7.25.9
       '@native-twin/compiler':
         specifier: workspace:*
-        version: link:../compiler/_release/package
+        version: link:../compiler/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
@@ -550,9 +553,6 @@ importers:
         specifier: catalog:effect
         version: 3.10.19
     optionalDependencies:
-      '@native-twin/cli':
-        specifier: workspace:*
-        version: link:../builder/_release/package
       jest:
         specifier: '*'
         version: 29.7.0(@types/node@22.10.1)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.10.1)(typescript@5.7.2))
@@ -563,7 +563,7 @@ importers:
       babel-plugin-tester:
         specifier: ^11.0.4
         version: 11.0.4(@babel/core@7.26.0)
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/builder:
     dependencies:
@@ -610,7 +610,7 @@ importers:
       minimist:
         specifier: ^1.2.8
         version: 1.2.8
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/compiler:
     dependencies:
@@ -646,7 +646,7 @@ importers:
         version: link:../native-twin/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../css/_release/package
+        version: link:../css/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
@@ -655,7 +655,7 @@ importers:
         version: link:../jsx/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../preset-tailwind/_release/package
+        version: link:../preset-tailwind/dist
       code-block-writer:
         specifier: ^13.0.1
         version: 13.0.3
@@ -702,7 +702,7 @@ importers:
       babel-plugin-tester:
         specifier: ^11.0.4
         version: 11.0.4(@babel/core@7.26.0)
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/css:
     dependencies:
@@ -716,19 +716,19 @@ importers:
       jest:
         specifier: '*'
         version: 29.7.0(@types/node@22.10.1)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.10.1)(typescript@5.7.2))
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/dev-tools:
     dependencies:
       '@native-twin/babel':
         specifier: workspace:*
-        version: link:../babel/_release/package
+        version: link:../babel/dist
       '@native-twin/core':
         specifier: workspace:*
         version: link:../native-twin/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../css/_release/package
+        version: link:../css/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
@@ -737,7 +737,7 @@ importers:
         version: link:../jsx/dist
       '@native-twin/metro':
         specifier: workspace:*
-        version: link:../metro/_release/package
+        version: link:../metro/dist
       effect:
         specifier: catalog:effect
         version: 3.10.19
@@ -753,7 +753,7 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 18.2.0(react@18.2.0)
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/dev-tools/webui:
     dependencies:
@@ -762,7 +762,7 @@ importers:
         version: 3.2.3(react-native@0.74.5(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.2.79)(react@18.2.0))
       '@native-twin/babel':
         specifier: workspace:*
-        version: link:../../babel/_release/package
+        version: link:../../babel/dist
       '@native-twin/core':
         specifier: workspace:*
         version: link:../../native-twin/dist
@@ -771,7 +771,7 @@ importers:
         version: link:../../jsx/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../../preset-tailwind/_release/package
+        version: link:../../preset-tailwind/dist
       '@tanstack/react-table':
         specifier: ^8.20.5
         version: 8.20.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -863,13 +863,13 @@ importers:
         version: link:../native-twin/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../css/_release/package
+        version: link:../css/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../preset-tailwind/_release/package
+        version: link:../preset-tailwind/dist
       react:
         specifier: 'catalog:'
         version: 18.2.0
@@ -889,10 +889,10 @@ importers:
         version: link:../native-twin/dist
       '@native-twin/language-service':
         specifier: workspace:*
-        version: link:../language-service/_release/package
+        version: link:../language-service/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../preset-tailwind/_release/package
+        version: link:../preset-tailwind/dist
       '@vscode/emmet-helper':
         specifier: ^2.9.3
         version: 2.11.0
@@ -927,9 +927,6 @@ importers:
         specifier: ^3.17.5
         version: 3.17.5
     optionalDependencies:
-      '@native-twin/cli':
-        specifier: workspace:*
-        version: link:../builder/_release/package
       jest:
         specifier: '*'
         version: 29.7.0(@types/node@22.10.1)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.10.1)(typescript@5.7.2))
@@ -946,7 +943,7 @@ importers:
       madge:
         specifier: 7.0.0
         version: 7.0.0(typescript@5.7.2)
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/language-service:
     dependencies:
@@ -955,19 +952,19 @@ importers:
         version: 4.1.0
       '@native-twin/compiler':
         specifier: workspace:*
-        version: link:../compiler/_release/package
+        version: link:../compiler/dist
       '@native-twin/core':
         specifier: workspace:*
         version: link:../native-twin/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../css/_release/package
+        version: link:../css/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../preset-tailwind/_release/package
+        version: link:../preset-tailwind/dist
       '@vscode/emmet-helper':
         specifier: ^2.9.3
         version: 2.11.0
@@ -1005,9 +1002,6 @@ importers:
         specifier: ^3.17.5
         version: 3.17.5
     optionalDependencies:
-      '@native-twin/cli':
-        specifier: workspace:*
-        version: link:../builder/_release/package
       jest:
         specifier: '*'
         version: 29.7.0(@types/node@22.10.1)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.10.1)(typescript@5.7.2))
@@ -1027,13 +1021,13 @@ importers:
       madge:
         specifier: 7.0.0
         version: 7.0.0(typescript@5.7.2)
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/metro:
     dependencies:
       '@native-twin/compiler':
         specifier: workspace:*
-        version: link:../compiler/_release/package
+        version: link:../compiler/dist
       effect:
         specifier: catalog:effect
         version: 3.10.19
@@ -1050,13 +1044,10 @@ importers:
         specifier: '*'
         version: 4.10.5(react-native@0.74.5(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(react@18.2.0))(react@18.2.0)
     optionalDependencies:
-      '@native-twin/cli':
-        specifier: workspace:*
-        version: link:../builder/_release/package
       jest:
         specifier: '*'
         version: 29.7.0(@types/node@22.10.1)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.10.1)(typescript@5.7.2))
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/native-twin:
     dependencies:
@@ -1065,7 +1056,7 @@ importers:
         version: link:../arc-parser/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../css/_release/package
+        version: link:../css/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
@@ -1085,7 +1076,7 @@ importers:
         version: link:../native-twin/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../css/_release/package
+        version: link:../css/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
@@ -1096,7 +1087,7 @@ importers:
       jest:
         specifier: '*'
         version: 29.7.0(@types/node@22.10.1)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.10.1)(typescript@5.7.2))
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/styled:
     dependencies:
@@ -1105,7 +1096,7 @@ importers:
         version: link:../native-twin/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../css/_release/package
+        version: link:../css/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
@@ -1131,9 +1122,6 @@ importers:
         specifier: 0.0.3
         version: 0.0.3
     optionalDependencies:
-      '@native-twin/cli':
-        specifier: workspace:*
-        version: link:../builder/_release/package
       jest:
         specifier: '*'
         version: 29.7.0(@types/node@22.10.1)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.10.1)(typescript@5.7.2))
@@ -1141,7 +1129,7 @@ importers:
       '@types/react-is':
         specifier: ^17.0.3
         version: 17.0.7
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/ts-plugin:
     dependencies:
@@ -1153,13 +1141,13 @@ importers:
         version: link:../native-twin/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../css/_release/package
+        version: link:../css/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../preset-tailwind/_release/package
+        version: link:../preset-tailwind/dist
       effect:
         specifier: catalog:effect
         version: 3.10.19
@@ -1180,7 +1168,7 @@ importers:
       madge:
         specifier: 7.0.0
         version: 7.0.0(typescript@5.7.2)
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/vite-plugin:
     dependencies:
@@ -1201,45 +1189,41 @@ importers:
         version: 0.38.19(@effect/typeclass@0.29.19(effect@3.10.19))(effect@3.10.19)
       '@native-twin/compiler':
         specifier: workspace:*
-        version: link:../compiler/_release/package
+        version: link:../compiler/dist
       '@native-twin/core':
         specifier: workspace:*
         version: link:../native-twin/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../css/_release/package
+        version: link:../css/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../preset-tailwind/_release/package
+        version: link:../preset-tailwind/dist
       effect:
         specifier: catalog:effect
         version: 3.10.19
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   packages/vscode-extension:
     dependencies:
       '@native-twin/compiler':
         specifier: workspace:*
-        version: link:../compiler/_release/package
+        version: link:../compiler/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../helpers/dist
       '@native-twin/language-server':
         specifier: workspace:*
-        version: link:../language-server/_release/package
+        version: link:../language-server/dist
       '@native-twin/language-service':
         specifier: workspace:*
-        version: link:../language-service/_release/package
+        version: link:../language-service/dist
       effect:
         specifier: catalog:effect
         version: 3.10.19
       vscode-languageclient:
         specifier: ^9.0.1
         version: 9.0.1
-    optionalDependencies:
-      '@native-twin/cli':
-        specifier: workspace:*
-        version: link:../builder/_release/package
     devDependencies:
       '@types/vscode':
         specifier: ^1.94.2
@@ -1250,7 +1234,7 @@ importers:
       '@vscode/test-electron':
         specifier: ^2.4.0
         version: 2.4.1
-    publishDirectory: _release/package
+    publishDirectory: dist
 
   sites/twin.run:
     dependencies:
@@ -1325,16 +1309,16 @@ importers:
         version: link:../../packages/native-twin/dist
       '@native-twin/css':
         specifier: workspace:*
-        version: link:../../packages/css/_release/package
+        version: link:../../packages/css/dist
       '@native-twin/helpers':
         specifier: workspace:*
         version: link:../../packages/helpers/dist
       '@native-twin/language-service':
         specifier: workspace:*
-        version: link:../../packages/language-service/_release/package
+        version: link:../../packages/language-service/dist
       '@native-twin/preset-tailwind':
         specifier: workspace:*
-        version: link:../../packages/preset-tailwind/_release/package
+        version: link:../../packages/preset-tailwind/dist
       '@typescript/ata':
         specifier: ^0.9.7
         version: 0.9.7(typescript@5.7.2)
@@ -1386,7 +1370,7 @@ importers:
         version: 0.0.9
       '@native-twin/vite-plugin':
         specifier: workspace:*
-        version: link:../../packages/vite-plugin/_release/package
+        version: link:../../packages/vite-plugin/dist
       '@types/vscode':
         specifier: ^1.94.2
         version: 1.95.0
@@ -2982,7 +2966,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {'0': node >=0.10.0}
+    engines: {node: '>=0.10.0'}
 
   '@expo/cli@0.18.31':
     resolution: {integrity: sha512-v9llw9fT3Uv+TCM6Xllo54t672CuYtinEQZ2LPJ2EJsCwuTc4Cd2gXQaouuIVD21VoeGQnr5JtJuWbF97sBKzQ==}
@@ -6647,6 +6631,11 @@ packages:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
 
+  glob@11.0.0:
+    resolution: {integrity: sha512-9UiX/Bl6J2yaBbxKoEBRm4Cipxgok8kQYcOPEhScPwebu2I0HoQOuYdIO6S3hLuWoZgpDpwQZMzTFxgpkyT76g==}
+    engines: {node: 20 || >=22}
+    hasBin: true
+
   glob@7.1.6:
     resolution: {integrity: sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==}
     deprecated: Glob versions prior to v9 are no longer supported
@@ -7214,6 +7203,10 @@ packages:
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
+  jackspeak@4.0.2:
+    resolution: {integrity: sha512-bZsjR/iRjl1Nk1UkjGpAzLNfQtzuijhn2g+pbZb98HQ1Gk8vM9hfbxeMBP+M2/UUdwj0RqGG3mlvk2MsAqwvEw==}
+    engines: {node: 20 || >=22}
+
   jake@10.9.2:
     resolution: {integrity: sha512-2P4SQ0HrLQ+fw6llpLnOaGAvN2Zu6778SJMrCUwns4fOoG9ayrTiZk3VV8sCPkVZF8ab0zksVpS8FDY5pRCNBA==}
     engines: {node: '>=10'}
@@ -7670,6 +7663,10 @@ packages:
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
+  lru-cache@11.0.2:
+    resolution: {integrity: sha512-123qHRfJBmo2jXDbo/a5YOQrJoHF/GNQTLzQ5+IdK5pWpceK17yRc6ozlWd25FxvGKQbIUs91fDFkXmDHTKcyA==}
+    engines: {node: 20 || >=22}
+
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
@@ -7905,6 +7902,10 @@ packages:
 
   minimalistic-crypto-utils@1.0.1:
     resolution: {integrity: sha512-JIYlbt6g8i5jKfJ3xz7rF0LXmv2TkDxBLUkiBeZ7bAx4GnnNMr8xFpGnOxn6GhTEHx3SjRrZEoU+j04prX1ktg==}
+
+  minimatch@10.0.1:
+    resolution: {integrity: sha512-ethXTt3SGGR+95gudmqJ1eNhRO7eGEGIgYA9vnPatK4/etz2MEVDno5GMCibdMTuBMyElzIlgxMna3K94XDIDQ==}
+    engines: {node: 20 || >=22}
 
   minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
@@ -8443,6 +8444,10 @@ packages:
   path-scurry@1.11.1:
     resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
     engines: {node: '>=16 || 14 >=14.18'}
+
+  path-scurry@2.0.0:
+    resolution: {integrity: sha512-ypGJsmGtdXUOeM5u93TyeIEfEhM6s+ljAhrk5vAvSx8uyY/02OvrZnA0YNGUrPXfpJMgI1ODd3nwz8Npx4O4cg==}
+    engines: {node: 20 || >=22}
 
   path-to-regexp@0.1.10:
     resolution: {integrity: sha512-7lf7qcQidTku0Gu3YDPc8DJ1q7OOucfa/BSsIwjuh56VU7katFvuM8hULfkwB3Fns/rsVF7PwPKVw1sl5KQS9w==}
@@ -17136,6 +17141,15 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
+  glob@11.0.0:
+    dependencies:
+      foreground-child: 3.3.0
+      jackspeak: 4.0.2
+      minimatch: 10.0.1
+      minipass: 7.1.2
+      package-json-from-dist: 1.0.1
+      path-scurry: 2.0.0
+
   glob@7.1.6:
     dependencies:
       fs.realpath: 1.0.0
@@ -17671,6 +17685,10 @@ snapshots:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
+
+  jackspeak@4.0.2:
+    dependencies:
+      '@isaacs/cliui': 8.0.2
 
   jake@10.9.2:
     dependencies:
@@ -18366,6 +18384,8 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
+  lru-cache@11.0.2: {}
+
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
@@ -18754,6 +18774,10 @@ snapshots:
   minimalistic-assert@1.0.1: {}
 
   minimalistic-crypto-utils@1.0.1: {}
+
+  minimatch@10.0.1:
+    dependencies:
+      brace-expansion: 2.0.1
 
   minimatch@3.1.2:
     dependencies:
@@ -19409,6 +19433,11 @@ snapshots:
   path-scurry@1.11.1:
     dependencies:
       lru-cache: 10.4.3
+      minipass: 7.1.2
+
+  path-scurry@2.0.0:
+    dependencies:
+      lru-cache: 11.0.2
       minipass: 7.1.2
 
   path-to-regexp@0.1.10: {}

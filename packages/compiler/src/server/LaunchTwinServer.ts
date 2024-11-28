@@ -5,7 +5,7 @@ import * as HttpMiddleware from '@effect/platform/HttpMiddleware';
 import * as HttpServer from '@effect/platform/HttpServer';
 import * as Layer from 'effect/Layer';
 import { createServer } from 'node:http';
-import { TwinNodeContext } from '../node/services/TwinNodeContext.service';
+import { TwinNodeContext } from '../node/services/TwinNodeContext.service.js';
 import { TwinServerApiLive } from './services/TwinApi.service.js';
 
 export const LaunchTwinServer = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(

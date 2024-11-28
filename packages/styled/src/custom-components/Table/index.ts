@@ -6,7 +6,7 @@ import {
   TD as ExpoTD,
   TBody as ExpoTBody,
   TR as ExpoTR,
-} from './Table';
+} from './Table.js';
 
 const Table = ExpoTable;
 const THead = ExpoTHead;

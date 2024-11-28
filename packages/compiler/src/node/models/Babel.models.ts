@@ -5,7 +5,7 @@ import * as Data from 'effect/Data';
 import type * as Option from 'effect/Option';
 import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import type { Tree } from '@native-twin/helpers/tree';
-import type { JSXElementNode } from './JSXElement.model';
+import type { JSXElementNode } from './JSXElement.model.js';
 
 export interface CompilerInput {
   code: string;

@@ -5,8 +5,8 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument';
-import { LSPConfigService } from './LSPConfig.service';
+import { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument.js';
+import { LSPConfigService } from './LSPConfig.service.js';
 
 export interface DocumentsServiceShape {
   handler: TextDocuments<TextDocument>;

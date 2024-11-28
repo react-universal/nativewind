@@ -10,9 +10,9 @@ import {
   LocatedGroupToken,
   LocatedParser,
   TemplateToken,
-} from '../../models/twin/parser.types';
-import { TemplateTokenWithText } from '../../models/twin/template-token.model';
-import { addTextToParsedRules } from './native-twin.utils';
+} from '../../models/twin/parser.types.js';
+import { TemplateTokenWithText } from '../../models/twin/template-token.model.js';
+import { addTextToParsedRules } from './native-twin.utils.js';
 
 const mapWithLocation = <A extends object>(
   x: P.ParserState<A, any>,

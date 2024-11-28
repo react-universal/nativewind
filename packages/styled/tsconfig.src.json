@@ -2,14 +2,13 @@
   "extends": "../../tsconfig.base.json",
   "include": ["src"],
   "references": [
-    { "path": "../arc-parser" },
     { "path": "../helpers" },
     { "path": "../css" },
     { "path": "../native-twin" }
   ],
   "compilerOptions": {
     "types": ["node"],
-    "lib": ["DOM"],
+    "jsx": "preserve",
     "outDir": "build/src",
     "tsBuildInfoFile": ".tsbuildinfo/src.tsbuildinfo",
     "rootDir": "src"

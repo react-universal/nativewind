@@ -1,13 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "jsx": "react-jsx",
-    "outDir": "build/types",
-    "sourceMap": true,
-    "module": "ES2020",
-    "exactOptionalPropertyTypes": false,
-    "importHelpers": true
-  },
-  "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js"]
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
+  ]
 }

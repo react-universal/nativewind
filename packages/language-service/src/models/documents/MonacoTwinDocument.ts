@@ -4,10 +4,10 @@ import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import * as Option from 'effect/Option';
-import { extractLanguageRegions } from '../../utils/babel/extractLanguageRegions.web';
-import { type NativeTwinPluginConfiguration } from '../../utils/constants.utils';
-import { BaseTwinTextDocument } from './BaseTwinDocument';
-import { DocumentLanguageRegion } from './LanguageRegion.model';
+import { extractLanguageRegions } from '../../utils/babel/extractLanguageRegions.web.js';
+import { type NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
+import { BaseTwinTextDocument } from './BaseTwinDocument.js';
+import { DocumentLanguageRegion } from './LanguageRegion.model.js';
 
 interface TwinTokenLocation {
   _tag: 'TwinTokenLocation';

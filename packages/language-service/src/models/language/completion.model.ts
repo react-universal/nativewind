@@ -4,8 +4,8 @@ import * as vscode from 'vscode-languageserver-types';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
-} from '../../utils/language/language.utils';
-import { TwinRuleCompletion, TwinVariantCompletion } from '../twin/native-twin.types';
+} from '../../utils/language/language.utils.js';
+import { TwinRuleCompletion, TwinVariantCompletion } from '../twin/native-twin.types.js';
 
 export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal {
   label: string;

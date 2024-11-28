@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "include": ["src"],
-  "references": [{ "path": "../helpers" }, { "path": "../compiler" }],
+  "references": [
+    { "path": "../helpers" }, 
+    { "path": "../compiler" }
+  ],
   "compilerOptions": {
     "tsBuildInfoFile": ".tsbuildinfo/src.tsbuildinfo",
     "rootDir": "src",

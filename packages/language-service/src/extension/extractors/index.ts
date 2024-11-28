@@ -1,1 +1,1 @@
-export * from './classNames.extractor';
+export * from './classNames.extractor.js';

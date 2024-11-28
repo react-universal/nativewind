@@ -1,7 +1,7 @@
 import { parse } from '@babel/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
+import { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
 
 const matchVariantsObject = (
   properties: t.ObjectExpression['properties'],

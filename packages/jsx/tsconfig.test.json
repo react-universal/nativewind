@@ -4,6 +4,7 @@
   "references": [{ "path": "tsconfig.src.json" }],
   "compilerOptions": {
     "types": ["node", "jest"],
+    "jsx": "preserve",
     "tsBuildInfoFile": ".tsbuildinfo/test.tsbuildinfo",
     "rootDir": "src/__tests__",
     "noEmit": true

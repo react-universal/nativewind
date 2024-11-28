@@ -3,8 +3,8 @@ import * as ReadonlyArray from 'effect/Array';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
-import { TwinRuleCompletion } from '../../models/twin/native-twin.types';
-import { getDocumentationMarkdown } from './language.utils';
+import { TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
+import { getDocumentationMarkdown } from './language.utils.js';
 
 export const completionRulesToQuickInfo = (
   completionRules: HashSet.HashSet<TwinRuleCompletion>,

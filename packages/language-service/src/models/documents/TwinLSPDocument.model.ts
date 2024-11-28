@@ -3,9 +3,9 @@ import type * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
 import { extractLanguageRegions } from '@native-twin/compiler/node';
-import { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
-import { BaseTwinTextDocument } from './BaseTwinDocument';
-import { DocumentLanguageRegion } from './LanguageRegion.model';
+import { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
+import { BaseTwinTextDocument } from './BaseTwinDocument.js';
+import { DocumentLanguageRegion } from './LanguageRegion.model.js';
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
   constructor(

@@ -1,5 +1,5 @@
 import { useMemo, useSyncExternalStore } from 'react';
-import { getParentComponentState, globalStore, registerComponent } from '../styled/store';
+import { getParentComponentState, globalStore, registerComponent } from '../styled/store.js';
 
 interface RegisterComponent {
   parentID: string | undefined;
