@@ -13,6 +13,7 @@ import {
   twinLoggerLayer,
   TwinFileSystem,
 } from '@native-twin/compiler/node';
+import { LaunchTwinServer } from '@native-twin/compiler/server';
 import { TwinMetroConfig } from './models/Metro.models';
 import { getMetroSettings } from './programs/getMetroSettings';
 
@@ -42,7 +43,7 @@ export function withNativeTwin(
   const originalResolver = metroConfig.resolver.resolveRequest;
   const originalGetTransformerOptions = metroConfig.transformer.getTransformOptions;
 
-  // runtimeAsync.runFork(LaunchTwinServer);
+  runtimeAsync.runFork(LaunchTwinServer);
 
   return {
     ...metroConfig,

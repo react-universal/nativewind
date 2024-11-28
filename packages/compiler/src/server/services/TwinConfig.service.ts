@@ -1,3 +1,4 @@
+import { HttpServerRequest } from '@effect/platform';
 import * as HttpApi from '@effect/platform/HttpApi';
 import * as HttpApiBuilder from '@effect/platform/HttpApiBuilder';
 import * as HttpApiEndpoint from '@effect/platform/HttpApiEndpoint';
@@ -11,7 +12,7 @@ import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
 import * as Schema from 'effect/Schema';
-import { TwinNodeContext } from '../../node/services/TwinNodeContext.service';
+import { TwinNodeContext } from '../../node/services/TwinNodeContext.service.js';
 
 /**
  * @category ServerModels
@@ -92,11 +93,15 @@ export const TwinConfigMiddlewareLive = Layer.effect(
   TwinConfigMiddleware,
   Effect.gen(function* () {
     return TwinConfigMiddleware.of(
-      Effect.succeed({
-        allowedFilePaths: [],
-        allowedPathPatterns: [],
-        projectFiles: HashSet.empty<string>(),
-        runningPlatforms: HashSet.empty<string>(),
+      Effect.gen(function* () {
+        const request = yield* HttpServerRequest.HttpServerRequest;
+        console.log('MID_ ', request.url);
+        return {
+          allowedFilePaths: [],
+          allowedPathPatterns: [],
+          projectFiles: HashSet.empty<string>(),
+          runningPlatforms: HashSet.empty<string>(),
+        };
       }),
     );
   }),
