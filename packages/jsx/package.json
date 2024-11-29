@@ -48,10 +48,10 @@
     "@native-twin/preset-tailwind": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "catalog:"
+    "@types/react": "~18.2.79"
   },
   "peerDependencies": {
-    "react": "catalog:",
+    "react": "~18.2.0",
     "react-native-reanimated": "*"
   },
   "optionalDependencies": {

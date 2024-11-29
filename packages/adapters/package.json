@@ -49,12 +49,11 @@
     "@native-twin/helpers": "workspace:*"
   },
   "devDependencies": {
-    "@types/loader-utils": "^2.0.6",
-    "@types/webpack": "^5.28.5"
+    "@types/loader-utils": "^2.0.6"
   },
   "peerDependencies": {
-    "next": "catalog:",
-    "react": "catalog:"
+    "next": "^14.2.3",
+    "react": "~18.2.0"
   },
   "publishConfig": {
     "access": "public",

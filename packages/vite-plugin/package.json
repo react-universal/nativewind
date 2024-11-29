@@ -31,13 +31,13 @@
     "gen:jsdocs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "@effect/cli": "catalog:effect",
-    "@effect/platform": "catalog:effect",
-    "@effect/platform-node": "catalog:effect",
-    "@effect/platform-node-shared": "catalog:effect",
-    "@effect/printer-ansi": "catalog:effect",
+    "@effect/cli": "^0.48.3",
+    "@effect/platform": "^0.69.3",
+    "@effect/platform-node": "^0.64.4",
+    "@effect/platform-node-shared": "^0.19.3",
+    "@effect/printer-ansi": "^0.38.0",
     "@native-twin/compiler": "workspace:*",
-    "effect": "catalog:effect"
+    "effect": "^3.10.0"
   },
   "devDependencies": {
     "@babel/parser": "^7.26.2"

@@ -53,11 +53,11 @@
     "@types/react-is": "^17.0.3"
   },
   "peerDependencies": {
-    "@types/react": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "react-native": "catalog:",
-    "react-native-web": "catalog:"
+    "@types/react": "~18.2.79",
+    "react": "~18.2.0",
+    "react-dom": "~18.2.0",
+    "react-native": "0.74.5",
+    "react-native-web": "~0.19.10"
   },
   "optionalDependencies": {
     "jest": "*"

@@ -50,7 +50,7 @@
     "@native-twin/helpers": "workspace:*"
   },
   "peerDependencies": {
-    "react": "catalog:"
+    "react": "~18.2.0"
   },
   "optionalDependencies": {
     "jest": "*"

@@ -39,7 +39,8 @@
   "dependencies": {
     "@native-twin/compiler": "workspace:*",
     "@native-twin/css": "workspace:*",
-    "effect": "catalog:effect",
+    "@native-twin/helpers": "workspace:*",
+    "effect": "^3.10.0",
     "portfinder": "^1.0.32"
   },
   "optionalDependencies": {

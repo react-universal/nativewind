@@ -1,5 +1,5 @@
 import { traverse } from '@babel/core';
-import { CodeGenerator, type GeneratorResult } from '@babel/generator/index.js';
+import { CodeGenerator, type GeneratorResult } from '@babel/generator';
 import type { ParseResult } from '@babel/parser';
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';

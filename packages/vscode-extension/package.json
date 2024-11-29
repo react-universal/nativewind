@@ -163,7 +163,7 @@
     "@native-twin/helpers": "workspace:*",
     "@native-twin/language-server": "workspace:*",
     "@native-twin/language-service": "workspace:*",
-    "effect": "catalog:effect",
+    "effect": "^3.10.0",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {

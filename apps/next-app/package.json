@@ -14,10 +14,10 @@
     "@native-twin/core": "workspace:*",
     "@native-twin/jsx": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "next": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "react-native-web": "catalog:"
+    "next": "^14.2.3",
+    "react": "~18.2.0",
+    "react-dom": "~18.2.0",
+    "react-native-web": "~0.19.10"
   },
   "nx": {
     "targets": "nextjs:pages:dev",

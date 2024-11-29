@@ -1,4 +1,4 @@
-const { getDefaultConfig } = require('expo/metro-config');
+const { getDefaultConfig } = require('@expo/metro-config');
 const { withNativeTwin } = require('@native-twin/metro');
 const path = require('path');
 

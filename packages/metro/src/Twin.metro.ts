@@ -47,7 +47,7 @@ export function withNativeTwin(
 
   return {
     ...metroConfig,
-    transformerPath: path.join(__dirname, 'programs', 'metro.transformer.js'),
+    transformerPath: require.resolve('./programs/metro.transformer'),
     resolver: {
       ...metroConfig.resolver,
       resolveRequest: (context, moduleName, platform) => {
