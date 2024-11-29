@@ -1,7 +1,7 @@
 /* eslint-env node, browser */
 import type { ComponentType } from 'react';
 import React from 'react';
-import type { AppProps } from 'next/app';
+import type { AppProps } from 'next/app.js';
 import type { TailwindConfig, TailwindUserConfig } from '@native-twin/core';
 import { install as install$ } from '@native-twin/core';
 

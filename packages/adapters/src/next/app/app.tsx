@@ -1,7 +1,7 @@
 import { sheetEntriesToCss, SheetEntry } from '@native-twin/css';
 import React, { type ReactNode, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { useServerInsertedHTML } from 'next/navigation';
+import { useServerInsertedHTML } from 'next/navigation.js';
 import { install, TailwindConfig, TailwindUserConfig } from '@native-twin/core';
 import { getNonce } from '@native-twin/helpers';
 interface AppComponentProps {

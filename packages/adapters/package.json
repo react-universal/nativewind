@@ -35,8 +35,8 @@
   ],
   "scripts": {
     "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
-    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
-    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
+    "build-annotate": "babel build/esm --plugins annotate-pure-calls --plugins @babel/plugin-syntax-jsx --out-dir build/esm --source-maps",
+    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/plugin-syntax-jsx --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
     "build-esm": "tsc -b tsconfig.build.json",
     "build:watch": "twin build -w",
     "clean": "rm -rf build",
@@ -44,13 +44,16 @@
     "lint": "eslint \"./**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@native-twin/core": "workspace:*"
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*"
   },
   "devDependencies": {
     "@types/loader-utils": "^2.0.6",
     "@types/webpack": "^5.28.5"
   },
   "peerDependencies": {
+    "next": "catalog:",
     "react": "catalog:"
   },
   "publishConfig": {

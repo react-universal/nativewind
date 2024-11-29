@@ -1,2 +1,2 @@
 'use client';
-export * from './app';
+export * from './app.js';
