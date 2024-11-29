@@ -28,8 +28,3 @@ catalogs:
     "@effect/cli": ^0.48.3
     "@effect/platform-browser": ^0.48.3
 
-  babel:
-    "@babel/plugin-syntax-jsx": ^7.23.3
-    "@babel/preset-typescript": 7.23.3
-    "@types/babel__helper-module-imports": ^7.18.3
-    "@babel/types": ^7.24.0

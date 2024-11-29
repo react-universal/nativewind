@@ -47,10 +47,15 @@
     "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*"
   },
+  "devDependencies": {
+    "@types/react": "catalog:"
+  },
   "peerDependencies": {
-    "react": "catalog:"
+    "react": "catalog:",
+    "react-native-reanimated": "*"
   },
   "optionalDependencies": {
+    "@jest/globals": "*",
     "jest": "*"
   },
   "publishConfig": {

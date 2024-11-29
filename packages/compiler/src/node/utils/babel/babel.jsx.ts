@@ -1,5 +1,5 @@
-import generate from '@babel/generator';
-import template from '@babel/template';
+import { template } from '@babel/core';
+import { CodeGenerator } from '@babel/generator';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
@@ -42,7 +42,8 @@ export const getElementEntries = (
     } else {
       const cooked = templateLiteralToStringLike(value);
       classNames = cooked.strings;
-      templateExpression = generate(cooked.expressions).code;
+      const generate = new CodeGenerator(cooked.expressions);
+      templateExpression = generate.generate().code;
     }
 
     const entries = twin(classNames);

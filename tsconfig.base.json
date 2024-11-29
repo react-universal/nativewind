@@ -53,6 +53,7 @@
       "@native-twin/adapters/next/_app": ["packages/adapters/src/next/_app.js"],
       "@native-twin/adapters/next/_document": ["packages/adapters/src/next/_document.js"],
       "@native-twin/adapters/next/app": ["packages/adapters/src/next/app/index.js"],
+      "@native-twin/adapters/next/app/*": ["packages/adapters/src/next/*.js"],
 
       // Twin Builder
       "@native-twin/builder": ["packages/builder/src/twin-cli.js"],
@@ -85,16 +86,32 @@
       "@native-twin/jsx/*": ["packages/jsx/src/*.js"],
       "@native-twin/jsx/test/*": ["packages/jsx/__tests__/*.js"],
 
-      // Common libs
       "@native-twin/babel": ["packages/babel/src/index.js"],
+      "@native-twin/babel/*": ["packages/babel/src/*.js"],
+
       "@native-twin/dev-tools": ["packages/dev-tools/src/index.js"],
+      "@native-twin/dev-tools/*": ["packages/dev-tools/src/*.js"],
+      
       "@native-twin/language-server": ["packages/language-server/src/index.js"],
+      "@native-twin/language-server/*": ["packages/language-server/src/*.js"],
+
       "@native-twin/language-service": ["packages/language-service/src/index.js"],
+      "@native-twin/language-service/*": ["packages/language-service/src/*.js"],
+
       "@native-twin/metro": ["packages/metro/src/index.js"],
+      "@native-twin/metro*": ["packages/metro/src/*.js"],
+
       "@native-twin/preset-tailwind": ["packages/preset-tailwind/src/index.js"],
+      "@native-twin/preset-tailwind/*": ["packages/preset-tailwind/src/*.js"],
+
       "@native-twin/styled": ["packages/styled/src/index.js"],
+      "@native-twin/styled*": ["packages/styled/src/*.js"],
+
       "@native-twin/vite-plugin": ["packages/vite-plugin/src/index.js"],
+      "@native-twin/vite-plugin/*": ["packages/vite-plugin/src/*.js"],
+
       "@native-twin/vscode-extension": ["packages/vscode-extension/src/index.js"],
+      "@native-twin/vscode-extension/*": ["packages/vscode-extension/src/*.js"],
     }
   },
   "exclude": ["**/eslint.config.js"]

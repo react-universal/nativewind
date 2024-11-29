@@ -1,7 +1,7 @@
 import type { PlatformError } from '@effect/platform/Error';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
-import chokidar from 'chokidar';
+import type { FSWatcher } from 'chokidar';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -48,10 +48,7 @@ export function readDirectoryRecursive(
   });
 }
 
-export const createChokidarWatcher = (
-  projectRoot: string,
-  watcher: chokidar.FSWatcher,
-) => {
+export const createChokidarWatcher = (projectRoot: string, watcher: FSWatcher) => {
   return Stream.acquireRelease(Effect.succeed(watcher), (x) =>
     Effect.promise(() => x.close()),
   ).pipe(

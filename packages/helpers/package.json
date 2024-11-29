@@ -37,6 +37,12 @@
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest"
   },
+  "devDependencies": {
+    "@types/react": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:"
+  },
   "optionalDependencies": {
     "jest": "*"
   },

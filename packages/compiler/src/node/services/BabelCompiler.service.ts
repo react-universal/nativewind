@@ -1,11 +1,12 @@
-import generate, { GeneratorResult } from '@babel/generator';
+import { traverse } from '@babel/core';
+import { CodeGenerator, type GeneratorResult } from '@babel/generator/index.js';
 import type { ParseResult } from '@babel/parser';
-import traverse, { NodePath } from '@babel/traverse';
+import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { Path } from '@effect/platform';
-import { NodeFileSystem } from '@effect/platform-node';
-import { PlatformError } from '@effect/platform/Error';
-import { FileSystem } from '@effect/platform/FileSystem';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as PlatformError from '@effect/platform/Error';
+import * as FileSystem from '@effect/platform/FileSystem';
+import * as Path from '@effect/platform/Path';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -24,8 +25,8 @@ import {
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
 import {
   type JSXElementNodePath,
+  type TransformedJSXElementTree,
   JSXElementTree,
-  TransformedJSXElementTree,
 } from '../models/Babel.models.js';
 import { JSXElementNode } from '../models/JSXElement.model.js';
 import { JSXMappedAttribute } from '../models/jsx.models.js';
@@ -89,7 +90,7 @@ const makeJSXElementNode = (
   });
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
-  const fs = yield* FileSystem;
+  const fs = yield* FileSystem.FileSystem;
 
   const getBabelOutput = (input: BabelCodeEntry | BabelFileEntry) =>
     Effect.Do.pipe(
@@ -144,7 +145,10 @@ const make = Effect.gen(function* () {
     memberExpressionIsReactImport,
     identifierIsReactImport,
     mutateAST: (ast: ParseResult<t.File>) =>
-      Effect.sync(() => Option.fromNullable(generate(ast)).pipe(Option.getOrNull)),
+      Effect.sync(() => {
+        const generate = new CodeGenerator(ast);
+        return Option.fromNullable(generate.generate()).pipe(Option.getOrNull);
+      }),
   };
 
   function getCompilerInputCode(input: BabelFileEntry | BabelCodeEntry) {
@@ -217,7 +221,7 @@ export class BabelCompiler extends Context.Tag('babel/common/compiler')<
   {
     readonly getCompilerInputCode: (
       input: BabelFileEntry | BabelCodeEntry,
-    ) => Effect.Effect<string, PlatformError, never>;
+    ) => Effect.Effect<string, PlatformError.PlatformError, never>;
     transformAST: (
       registry: HashMap.HashMap<string, JSXElementNode>,
       platform: string,
@@ -227,7 +231,7 @@ export class BabelCompiler extends Context.Tag('babel/common/compiler')<
     ) => Effect.Effect<GeneratorResult | null, never, never>;
     readonly getBabelOutput: (
       input: BabelFileEntry | BabelCodeEntry,
-    ) => Effect.Effect<BabelOutput, PlatformError, never>;
+    ) => Effect.Effect<BabelOutput, PlatformError.PlatformError, never>;
 
     readonly memberExpressionIsReactImport: (
       path: NodePath<t.MemberExpression>,

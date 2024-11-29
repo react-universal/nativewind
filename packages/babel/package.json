@@ -39,7 +39,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@babel/helper-module-imports": "^7.22.15",
+    "@babel/helper-module-imports": "^7.25.9",
     "@native-twin/compiler": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "effect": "catalog:effect"

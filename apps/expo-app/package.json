@@ -38,10 +38,9 @@
     "react-native-web": "catalog:"
   },
   "devDependencies": {
-    "@types/babel__generator": "^7",
     "@types/react": "catalog:",
-    "next": "catalog:",
     "expo-atlas": "^0.3.0",
+    "next": "catalog:",
     "sharp-cli": "2.1.0"
   }
 }

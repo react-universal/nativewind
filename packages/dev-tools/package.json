@@ -17,6 +17,7 @@
     "directory": "packages/dev-tools"
   },
   "license": "MIT",
+  "type": "module",
   "files": [
     "build",
     "dist",

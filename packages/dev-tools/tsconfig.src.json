@@ -2,10 +2,18 @@
   "extends": "../../tsconfig.base.json",
   "include": ["src"],
   "references": [
+    { "path": "../arc-parser" },
+    { "path": "../helpers" },
+    { "path": "../css" },
+    { "path": "../native-twin" },
+    { "path": "../preset-tailwind" },
+    { "path": "../jsx" }
   ],
   "compilerOptions": {
-    "types": ["node"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node", "jest"],
     "outDir": "build/src",
+    "jsx": "preserve",
     "tsBuildInfoFile": ".tsbuildinfo/src.tsbuildinfo",
     "rootDir": "src"
   }
