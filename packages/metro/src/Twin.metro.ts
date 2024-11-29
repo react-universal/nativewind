@@ -14,8 +14,8 @@ import {
   TwinFileSystem,
 } from '@native-twin/compiler/node';
 import { LaunchTwinServer } from '@native-twin/compiler/server';
-import { TwinMetroConfig } from './models/Metro.models';
-import { getMetroSettings } from './programs/getMetroSettings';
+import { TwinMetroConfig } from './models/Metro.models.js';
+import { getMetroSettings } from './programs/getMetroSettings.js';
 
 export function withNativeTwin(
   metroConfig: TwinMetroConfig,

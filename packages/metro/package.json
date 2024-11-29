@@ -38,13 +38,9 @@
   },
   "dependencies": {
     "@native-twin/compiler": "workspace:*",
+    "@native-twin/css": "workspace:*",
     "effect": "catalog:effect",
     "portfinder": "^1.0.32"
-  },
-  "peerDependencies": {
-    "react": "catalog:",
-    "react-native": "catalog:",
-    "react-native-safe-area-context": "*"
   },
   "optionalDependencies": {
     "jest": "*"

@@ -1,1 +1,1 @@
-export { withNativeTwin } from './Twin.metro';
+export { withNativeTwin } from './Twin.metro.js';

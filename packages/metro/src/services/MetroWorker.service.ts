@@ -4,7 +4,7 @@ import * as Layer from 'effect/Layer';
 import worker from 'metro-transform-worker';
 import { CompilerConfig, TwinNodeContext } from '@native-twin/compiler/node';
 import { ensureBuffer } from '@native-twin/helpers/server';
-import type { MetroWorkerInput, NativeTwinTransformerOpts } from '../models/Metro.models';
+import type { MetroWorkerInput, NativeTwinTransformerOpts } from '../models/Metro.models.js';
 
 export class MetroWorkerService extends Context.Tag('metro/worker/context')<
   MetroWorkerService,

@@ -9,6 +9,7 @@
     { "path": "../compiler/tsconfig.build.json" }
   ],
   "compilerOptions": {
+    "lib": ["ES2022"],
     "tsBuildInfoFile": ".tsbuildinfo/build.tsbuildinfo",
     "outDir": "build/esm",
     "declarationDir": "build/dts",

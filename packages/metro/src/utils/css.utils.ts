@@ -1,12 +1,12 @@
-import { transformPostCssModule } from '@expo/metro-config/build/transform-worker/postcss';
-import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
+import { transformPostCssModule } from '@expo/metro-config/build/transform-worker/postcss.js';
+import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput.js';
 import CodeBlockWriter from 'code-block-writer';
 import worker from 'metro-transform-worker';
 // @ts-expect-error untyped
 import countLines from 'metro/src/lib/countLines';
 import { escapeBackticksAndOctals } from '@native-twin/helpers';
 import { pathToHtmlSafeName } from '@native-twin/helpers/server';
-import type { NativeTwinTransformerOpts } from '../models/Metro.models';
+import type { NativeTwinTransformerOpts } from '../models/Metro.models.js';
 
 export const transformCSSExpo = async (
   config: NativeTwinTransformerOpts,
@@ -15,7 +15,7 @@ export const transformCSSExpo = async (
   data: Buffer | string,
   options: worker.JsTransformOptions,
 ) => {
-  const reactServer = options.customTransformOptions?.environment === 'react-server';
+  const reactServer = options.customTransformOptions?.['environment'] === 'react-server';
 
   // eslint-disable-next-line prefer-const
   let code = data.toString('utf-8');
@@ -26,7 +26,6 @@ export const transformCSSExpo = async (
     filename,
   });
 
-  // @ts-expect-error untyped
   const { transform } = require('lightningcss') as typeof import('lightningcss');
 
   // TODO: Add bundling to resolve imports

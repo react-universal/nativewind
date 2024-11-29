@@ -1,4 +1,4 @@
-import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
+import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput.js';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import fs from 'fs';
@@ -20,7 +20,6 @@ export const transformCSS = Effect.gen(function* () {
   }
 
   const { transform: lightningcssTransform } =
-    // @ts-expect-error untyped
     require('lightningcss') as typeof import('lightningcss');
 
   const files = yield* twinFS.getAllFiles;
@@ -51,7 +50,7 @@ export const transformCSS = Effect.gen(function* () {
               src: input.data.toString('utf-8'),
               filename: input.filename,
               reactServer:
-                input.options.customTransformOptions?.environment === 'react-server',
+                input.options.customTransformOptions?.['environment'] === 'react-server',
             }),
           )
         : Buffer.from(''),
