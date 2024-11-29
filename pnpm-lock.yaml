@@ -551,6 +551,12 @@ importers:
         specifier: '*'
         version: 29.7.0(@types/node@22.10.1)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.10.1)(typescript@5.7.2))
     devDependencies:
+      '@babel/core':
+        specifier: ^7.24.0
+        version: 7.26.0
+      '@types/babel__core':
+        specifier: ^7.20.5
+        version: 7.20.5
       '@types/babel__helper-module-imports':
         specifier: ^7.18.3
         version: 7.18.3

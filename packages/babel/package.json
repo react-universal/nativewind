@@ -45,6 +45,8 @@
     "effect": "catalog:effect"
   },
   "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@types/babel__core": "^7.20.5",
     "@types/babel__helper-module-imports": "^7.18.3",
     "babel-plugin-tester": "^11.0.4"
   },

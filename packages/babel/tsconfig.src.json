@@ -2,6 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "include": ["src"],
   "references": [
+    { "path": "../helpers" },
+    { "path": "../native-twin" },
+    { "path": "../preset-tailwind" },
+    { "path": "../css" },
+    { "path": "../compiler" }
   ],
   "compilerOptions": {
     "types": ["node"],

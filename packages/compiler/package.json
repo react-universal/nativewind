@@ -75,12 +75,7 @@
   "effect": {
     "generateExports": {
       "include": [
-        "**/*.ts"
-      ]
-    },
-    "generateIndex": {
-      "include": [
-        "**/*.ts"
+        "*.ts"
       ]
     }
   }
