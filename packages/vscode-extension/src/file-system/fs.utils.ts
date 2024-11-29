@@ -10,17 +10,17 @@ import {
   NativeTwinManagerService,
   NativeTwinPluginConfiguration,
 } from '@native-twin/language-service';
-import { VscodeContext } from '../extension/extension.service';
-import { thenable } from '../extension/extension.utils';
-import { TwinTextDocument } from '../language/models/TwinTextDocument.model';
-import * as fsPredicates from './fs.predicates';
+import { VscodeContext } from '../extension/extension.service.js';
+import { thenable } from '../extension/extension.utils.js';
+import { TwinTextDocument } from '../language/models/TwinTextDocument.model.js';
+import * as fsPredicates from './fs.predicates.js';
 import {
   createVirtualEntryID,
   VirtualEntryType,
   VirtualEntryTreeRoot,
   VirtualEntryTreeNode,
   VirtualFile,
-} from './models/FileSystem.models';
+} from './models/FileSystem.models.js';
 
 export const findEntryByUri = (
   root: VirtualEntryTreeRoot,

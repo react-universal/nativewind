@@ -3,8 +3,8 @@ import * as Option from 'effect/Option';
 import * as ScopedRef from 'effect/ScopedRef';
 import * as vscode from 'vscode';
 import { NativeTwinManagerService } from '@native-twin/language-service';
-import { TreeDataProvider } from '../models/VscodeTree.models';
-import { makeTreeDataProvider } from '../tree.utils';
+import { TreeDataProvider } from '../models/VscodeTree.models.js';
+import { makeTreeDataProvider } from '../tree.utils.js';
 
 class TreeInfoNode {
   readonly _tag = 'TreeInfoNode';

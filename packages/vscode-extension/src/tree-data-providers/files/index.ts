@@ -1,2 +1,2 @@
-export * from './TreeFileData.model';
-export * from './TreeFilesData.provider';
+export * from './TreeFileData.model.js';
+export * from './TreeFilesData.provider.js';

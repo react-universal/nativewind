@@ -1,29 +1,29 @@
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import * as Option from 'effect/Option';
-import path from 'node:path';
 import * as vscode from 'vscode';
 import {
   TransportKind,
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
-} from 'vscode-languageclient/node';
+} from 'vscode-languageclient/node.js';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
+import path from 'node:path';
 import { NativeTwinManagerService, Constants } from '@native-twin/language-service';
-import { VscodeContext } from '../../extension/extension.service';
-import { registerCommand } from '../../extension/extension.utils';
+import { VscodeContext } from '../../extension/extension.service.js';
+import { registerCommand } from '../../extension/extension.utils.js';
 import {
   getDefaultLanguageClientOptions,
   onLanguageClientClosed,
   onLanguageClientError,
   onProvideDocumentColors,
-} from '../language.fn';
+} from '../language.fn.js';
 import {
   createFileWatchers,
   getColorDecoration,
   getConfigFiles,
-} from '../language.utils';
-import { VscodeHightLightsProvider } from './DocumentHighLights.service';
+} from '../language.utils.js';
+import { VscodeHightLightsProvider } from './DocumentHighLights.service.js';
 
 export const LanguageClientLive = Effect.gen(function* () {
   const twin = yield* NativeTwinManagerService;

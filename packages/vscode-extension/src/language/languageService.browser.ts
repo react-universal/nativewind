@@ -1,24 +1,25 @@
+import * as vscode from 'vscode';
+import { LanguageClient, LanguageClientOptions } from 'vscode-languageclient/browser.js';
 import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import * as vscode from 'vscode';
-import { LanguageClient, LanguageClientOptions } from 'vscode-languageclient/browser';
 import { Constants } from '@native-twin/language-service';
-import { VscodeContext } from '../extension/extension.service';
-import {
-  extensionConfigValue,
-  registerCommand,
-} from '../extension/extension.utils';
+import { VscodeContext } from '../extension/extension.service.js';
+import { extensionConfigValue, registerCommand } from '../extension/extension.utils.js';
 import {
   getDefaultLanguageClientOptions,
   onLanguageClientClosed,
   onLanguageClientError,
   onProvideDocumentColors,
-} from './language.fn';
-import { createFileWatchers, getColorDecoration, getConfigFiles } from './language.utils';
+} from './language.fn.js';
+import {
+  createFileWatchers,
+  getColorDecoration,
+  getConfigFiles,
+} from './language.utils.js';
 
-// import TwinWorker from './twin.worker.js';
+// import TwinWorker from './twin.worker.js.js';
 
 const make = Effect.gen(function* () {
   const extensionCtx = yield* VscodeContext;

@@ -1,6 +1,6 @@
 import * as Effect from 'effect/Effect';
 import * as vscode from 'vscode';
-import { thenable } from '../extension/extension.utils';
+import { thenable } from '../extension/extension.utils.js';
 
 export const createFileWatchers = Effect.gen(function* () {
   return yield* Effect.acquireRelease(

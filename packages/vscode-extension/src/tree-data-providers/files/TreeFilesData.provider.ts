@@ -1,24 +1,24 @@
+import * as vscode from 'vscode';
 import * as Array from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { identity, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import * as vscode from 'vscode';
 import { Constants, NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import {
   extensionConfigState,
   listenForkEvent,
   registerCommand,
-} from '../../extension/extension.utils';
-import { getTwinTextDocumentByUri, getVscodeFS } from '../../file-system';
-import { TwinTextDocument } from '../../language';
-import { TreeDataProvider } from '../models';
-import { getTwinDocumentID, makeTreeDataProvider } from '../tree.utils';
+} from '../../extension/extension.utils.js';
+import { getTwinTextDocumentByUri, getVscodeFS } from '../../file-system/index.js';
+import { TwinTextDocument } from '../../language/index.js';
+import { TreeDataProvider } from '../models/index.js';
+import { getTwinDocumentID, makeTreeDataProvider } from '../tree.utils.js';
 import {
   TwinFileTreeNode,
   AnyTreeDataNode,
   FileTwinRegionTreeNode,
-} from './TreeFileData.model';
+} from './TreeFileData.model.js';
 
 class FileNodesManager {
   // private _nodes: AnyTreeDataNode[] = [];

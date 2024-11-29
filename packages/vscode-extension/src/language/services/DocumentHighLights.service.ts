@@ -10,8 +10,8 @@ import {
   parseTemplate, // TemplateTokenWithText,
   Constants,
 } from '@native-twin/language-service';
-import { extensionConfigState } from '../../extension/extension.utils';
-import { TwinTextDocument } from '../models/TwinTextDocument.model';
+import { extensionConfigState } from '../../extension/extension.utils.js';
+import { TwinTextDocument } from '../models/TwinTextDocument.model.js';
 
 // const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) =>
 //   RA.findFirst(nodes, (x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end);

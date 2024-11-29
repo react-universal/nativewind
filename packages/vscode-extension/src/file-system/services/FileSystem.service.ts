@@ -5,9 +5,9 @@
 // import * as path from 'node:path';
 // import * as vscode from 'vscode';
 // import * as Tree from '@native-twin/helpers/tree';
-// import * as fsPredicates from '../fs.predicates';
-// import * as fsUtils from '../fs.utils';
-// import * as fsModels from '../models/FileSystem.models';
+// import * as fsPredicates from '../fs.predicates.js';
+// import * as fsUtils from '../fs.utils.js';
+// import * as fsModels from '../models/FileSystem.models.js';
 
 // export class VscodeFileSystemProviderManager implements vscode.FileSystemProvider {
 //   static meta = {

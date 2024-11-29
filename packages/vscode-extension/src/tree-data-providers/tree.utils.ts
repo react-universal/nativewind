@@ -3,10 +3,10 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Scope from 'effect/Scope';
 import * as vscode from 'vscode';
-import { VscodeContext } from '../extension/extension.service';
-import { emitterOptional, runWithTokenDefault } from '../extension/extension.utils';
-import { TwinTextDocument } from '../language';
-import { TreeDataProvider } from './models/VscodeTree.models';
+import { VscodeContext } from '../extension/extension.service.js';
+import { emitterOptional, runWithTokenDefault } from '../extension/extension.utils.js';
+import { TwinTextDocument } from '../language/index.js';
+import { TreeDataProvider } from './models/VscodeTree.models.js';
 
 const uriToID = (uri: vscode.Uri) => uri.toString();
 

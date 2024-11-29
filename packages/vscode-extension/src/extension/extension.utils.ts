@@ -7,8 +7,8 @@ import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as vscode from 'vscode';
 import { Constants } from '@native-twin/language-service';
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
-import { ConfigRef, ConfigValue, Emitter, ExtensionConfigRef } from './extension.models';
-import { VscodeContext } from './extension.service';
+import { ConfigRef, ConfigValue, Emitter, ExtensionConfigRef } from './extension.models.js';
+import { VscodeContext } from './extension.service.js';
 
 export const executeCommand = (command: string, ...args: Array<any>) =>
   thenable(() => vscode.commands.executeCommand(command, ...args));

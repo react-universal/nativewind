@@ -12,9 +12,9 @@ import {
   TemplateTokenWithText,
   DEFAULT_PLUGIN_CONFIG,
 } from '@native-twin/language-service';
-import { extensionConfigState } from '../../extension/extension.utils';
-import { completionRulesToVscodeCompletionItems } from '../mappers/completion.mappers';
-import { TwinTextDocument } from '../models/TwinTextDocument.model';
+import { extensionConfigState } from '../../extension/extension.utils.js';
+import { completionRulesToVscodeCompletionItems } from '../mappers/completion.mappers.js';
+import { TwinTextDocument } from '../models/TwinTextDocument.model.js';
 
 const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) => {
   return RA.findFirst(nodes, (x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end);

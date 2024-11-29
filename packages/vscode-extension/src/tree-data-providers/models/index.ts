@@ -1,1 +1,1 @@
-export * from './VscodeTree.models';
+export * from './VscodeTree.models.js';

@@ -1,2 +1,2 @@
-export * from './fs.predicates';
-export * from './fs.utils';
+export * from './fs.predicates.js';
+export * from './fs.utils.js';

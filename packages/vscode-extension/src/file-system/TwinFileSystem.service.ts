@@ -9,9 +9,9 @@
 //   ConfigManagerService,
 //   NativeTwinManagerService,
 // } from '@native-twin/language-service';
-// import { VscodeContext } from '../extension/extension.service';
-// import { listenStreamEvent, thenable } from '../extension/extension.utils';
-// import { TwinTextDocument } from '../language/models/TwinTextDocument.model';
+// import { VscodeContext } from '../extension/extension.service.js';
+// import { listenStreamEvent, thenable } from '../extension/extension.utils.js';
+// import { TwinTextDocument } from '../language/models/TwinTextDocument.model.js';
 
 // const getValidFiles = Effect.flatMap(NativeTwinManagerService, (twin) => {
 //   return Stream.fromIterable(twin.tw.config.content).pipe(

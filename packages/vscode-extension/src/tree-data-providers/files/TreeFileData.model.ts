@@ -6,8 +6,8 @@ import path from 'path';
 import * as vscode from 'vscode';
 // import { JSXElementNode } from '@native-twin/compiler/babel';
 import { NativeTwinPluginConfiguration } from '@native-twin/language-service';
-import { thenable } from '../../extension/extension.utils';
-import { TwinTextDocument } from '../../language';
+import { thenable } from '../../extension/extension.utils.js';
+import { TwinTextDocument } from '../../language/index.js';
 
 export class TwinFileTreeNode {
   readonly _tag = 'FileTreeNode';

@@ -1,8 +1,8 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as vscode from 'vscode';
-import { registerCommand } from '../extension/extension.utils';
-import { TreeInfoNode } from './models/VscodeTree.models';
+import { registerCommand } from '../extension/extension.utils.js';
+import { TreeInfoNode } from './models/VscodeTree.models.js';
 
 export const VscodeTreeCommandsLive = Effect.gen(function* () {
   yield* registerCommand('nativeTwin.createTwinFiles', (infoNode: TreeInfoNode) =>

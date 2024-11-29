@@ -6,7 +6,7 @@ import {
   filterTokensFromRules,
   getCompletionEntryDetailsDisplayParts,
 } from '@native-twin/language-service';
-import { TwinTextDocument } from '../models/TwinTextDocument.model';
+import { TwinTextDocument } from '../models/TwinTextDocument.model.js';
 
 export const completionRulesToVscodeCompletionItems = (
   flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,

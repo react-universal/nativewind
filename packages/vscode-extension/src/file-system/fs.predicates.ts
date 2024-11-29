@@ -9,7 +9,7 @@ import {
   VirtualEntryType,
   VirtualFile,
   VirtualFSEntryID,
-} from './models/FileSystem.models';
+} from './models/FileSystem.models.js';
 
 export const isVirtualFile: Predicate.Refinement<VirtualEntryType, VirtualFile> = (
   x,
