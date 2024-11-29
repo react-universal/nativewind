@@ -8,10 +8,10 @@ import { PartialMessage, Plugin } from 'esbuild';
 import { existsSync, lstatSync } from 'node:fs';
 import { resolve } from 'node:path';
 import ts from 'typescript';
-import { BuilderLoggerService } from '../../../services/BuildLogger.service';
-import { loggerUtils } from '../../../utils/logger';
-import { DTSPluginOpts } from './plugins.types';
-import { formatBytes, getCompilerOptions, resolveTSConfig } from './utils/dts.utils';
+import { BuilderLoggerService } from '../../../services/BuildLogger.service.js';
+import { loggerUtils } from '../../../utils/logger.js';
+import { DTSPluginOpts } from './plugins.types.js';
+import { formatBytes, getCompilerOptions, resolveTSConfig } from './utils/dts.utils.js';
 
 const scopeText = Doc.text(`[dts-plugin]`).pipe(
   Doc.annotate(Ansi.combine(Ansi.bold, loggerUtils.getMessageColor(LogLevel.Info))),

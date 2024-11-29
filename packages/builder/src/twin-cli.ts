@@ -5,10 +5,10 @@ import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import fs from 'node:fs';
-import * as CliConfigs from './config/cli.config';
-import { buildCommandHandler } from './runners/build.program';
-import { BuilderConfig } from './services/Builder.service';
-import { TwinLogger } from './utils/logger';
+import * as CliConfigs from './config/cli.config.js';
+import { buildCommandHandler } from './runners/build.program.js';
+import { BuilderConfig } from './services/Builder.service.js';
+import { TwinLogger } from './utils/logger.js';
 
 const pkg = JSON.parse(
   fs.readFileSync(new URL('../package.json', import.meta.url).pathname).toString(),

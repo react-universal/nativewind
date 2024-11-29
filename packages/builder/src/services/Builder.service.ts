@@ -3,8 +3,8 @@ import * as NodePath from '@effect/platform-node/NodePath';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import { makeBuilderConfig } from '../config/cli.config';
-import { CliBuildConfigInput } from '../config/config.types';
+import { makeBuilderConfig } from '../config/cli.config.js';
+import { CliBuildConfigInput } from '../config/config.types.js';
 
 const FSContext = Layer.merge(NodePath.layer, NodeFileSystem.layer);
 

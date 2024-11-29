@@ -9,8 +9,8 @@ import {
   maybeOutputChunk,
   serializeBuildResult,
   serializeOutputChunks,
-} from './plugins/analyzer.plugin';
-import { createRollupConfig, rollupDefaultConfigs } from './rollup.config';
+} from './plugins/analyzer.plugin.js';
+import { createRollupConfig, rollupDefaultConfigs } from './rollup.config.js';
 
 type UniqueOutput = Exclude<
   rollup.RollupOptions['output'],

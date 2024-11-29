@@ -8,8 +8,8 @@ import {
   getBundleModules,
   serializeBuildResult,
   serializeOutputChunks,
-} from './plugins/analyzer.plugin';
-import { createRollupConfig, rollupDefaultConfigs } from './rollup.config';
+} from './plugins/analyzer.plugin.js';
+import { createRollupConfig, rollupDefaultConfigs } from './rollup.config.js';
 
 export const rollupWatcher = Effect.gen(function* () {
   const offerResult = (_message: string) => {

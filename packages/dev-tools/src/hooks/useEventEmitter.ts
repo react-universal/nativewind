@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import { EventSubscription } from 'expo/devtools';
-import { EventSubscriptionFn } from '../models/TwinEventEmitter.model';
-import { useDevToolsClient } from './useDevToolsClient';
+import { EventSubscription } from 'expo/devtools.js';
+import { EventSubscriptionFn } from '../models/TwinEventEmitter.model.js';
+import { useDevToolsClient } from './useDevToolsClient.js';
 
 export const useEventEmitter = () => {
   const maybeClient = useDevToolsClient();

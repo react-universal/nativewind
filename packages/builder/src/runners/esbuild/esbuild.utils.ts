@@ -3,9 +3,9 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import esbuild from 'esbuild';
-import { bundlerExternals } from '../../config/constants';
-import { BuilderConfig } from '../../services/Builder.service';
-import { getEsBuildPlugins } from './plugins';
+import { bundlerExternals } from '../../config/constants.js';
+import { BuilderConfig } from '../../services/Builder.service.js';
+import { getEsBuildPlugins } from './plugins/index.js';
 
 const resolveExtensions = ['.ts', '.js', '.tsx', '.jsx', '.cjs', '.mjs'];
 

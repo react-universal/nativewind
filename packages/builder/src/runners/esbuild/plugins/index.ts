@@ -1,6 +1,6 @@
 import * as Effect from 'effect/Effect';
-import { dtsPlugin } from './esbuild-dts.plugin';
-import { requireResolvePlugin } from './esbuild.requireResolve.plugin';
+import { dtsPlugin } from './esbuild-dts.plugin.js';
+import { requireResolvePlugin } from './esbuild.requireResolve.plugin.js';
 
 export const getEsBuildPlugins = () =>
   Effect.gen(function* () {

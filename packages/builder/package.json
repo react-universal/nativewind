@@ -41,21 +41,16 @@
     "lodash.merge": "4.6.2"
   },
   "devDependencies": {
-    "@babel/generator": "^7.25.6",
     "@chialab/esbuild-rna": "^0.18.2",
-    "@rollup/plugin-typescript": "^12.1.0",
+    "@rollup/plugin-typescript": "^12.1.1",
     "@types/fs-extra": "11.0.4",
     "@types/lodash.merge": "^4.6.9",
     "esbuild": "0.21.5",
-    "minimist": "^1.2.8"
+    "minimist": "^1.2.8",
+    "rollup": "^4.23.0"
   },
   "publishConfig": {
     "access": "public",
     "directory": "dist"
-  },
-  "peer": {
-    "@babel/generator": "*",
-    "@babel/parser": "*",
-    "@babel/traverse": "*"
   }
 }

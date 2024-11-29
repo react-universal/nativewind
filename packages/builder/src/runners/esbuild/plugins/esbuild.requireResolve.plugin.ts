@@ -1,11 +1,15 @@
+import {
+  traverse,
+  NodePath,
+  parseSync,
+  types as t,
+  transformFromAstAsync,
+} from '@babel/core';
+// import generate from '@babel/generator';
+// import t from '@babel/types';
+import { useRna } from '@chialab/esbuild-rna';
 import esbuild from 'esbuild';
 import path from 'path';
-import { traverse, transformFromAstAsync } from '@babel/core';
-// import generate from '@babel/generator';
-import { parse } from '@babel/parser';
-import { NodePath } from '@babel/traverse';
-import t from '@babel/types';
-import { useRna } from '@chialab/esbuild-rna';
 
 /**
  * A file loader plugin for esbuild for `require.resolve` statements.
@@ -23,16 +27,18 @@ export function requireResolvePlugin() {
           return;
         }
 
-        const sourceFilename = path.relative(workingDir, args.path);
-        const ast = parse(args.code, {
-          sourceFilename,
-          strictMode: false,
-          tokens: false,
-          sourceType: 'module',
+        const sourceFileName = path.relative(workingDir, args.path);
+        const ast = parseSync(args.code, {
           plugins: ['typescript', 'jsx'],
-          errorRecovery: true,
-          allowImportExportEverywhere: true,
+          sourceType: 'module',
+          // errorRecovery: true,
+          // allowImportExportEverywhere: true,
+          generatorOpts: {
+            // strictMode: false,
+            sourceFileName,
+          },
         });
+        if (!ast) return;
         const requireResolvePaths: NodePath<t.CallExpression>[] = [];
 
         traverse(ast, {
@@ -120,12 +126,12 @@ export function requireResolvePlugin() {
 
         const result = await transformFromAstAsync(ast, args.code, {
           sourceMaps: !!sourcemap,
-          sourceFileName: sourceFilename,
+          sourceFileName: sourceFileName,
           ast: false,
           generatorOpts: {
             sourceMaps: !!sourcemap,
-            filename: sourceFilename,
-            sourceFileName: sourceFilename,
+            filename: sourceFileName,
+            sourceFileName: sourceFileName,
             retainLines: true,
           },
         });

@@ -6,8 +6,8 @@ import * as Config from 'effect/Config';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import type { LogLevel } from 'esbuild';
-import { getTargetPackageEntries } from '../utils/builder.utils';
-import { CliBuildConfigInput } from './config.types';
+import { getTargetPackageEntries } from '../utils/builder.utils.js';
+import { CliBuildConfigInput } from './config.types.js';
 
 const configFile = Options.file('config').pipe(
   Options.withDefault('twin.config.json'),

@@ -3,10 +3,10 @@ import * as Effect from 'effect/Effect';
 import * as Fiber from 'effect/Fiber';
 import { pipe } from 'effect/Function';
 import * as Stream from 'effect/Stream';
-import { BuilderConfig } from '../services/Builder.service';
-import { EsbuildRunner } from './esbuild';
-import { RollupRunner } from './rollup';
-import { BuildRunnersMainLive } from './runners.make';
+import { BuilderConfig } from '../services/Builder.service.js';
+import { EsbuildRunner } from './esbuild/index.js';
+import { RollupRunner } from './rollup/index.js';
+import { BuildRunnersMainLive } from './runners.make.js';
 
 const program = Effect.gen(function* () {
   const config = yield* BuilderConfig;

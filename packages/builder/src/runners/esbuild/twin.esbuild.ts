@@ -4,9 +4,9 @@ import { pipe } from 'effect/Function';
 import * as Stream from 'effect/Stream';
 import * as Tuple from 'effect/Tuple';
 import esbuild from 'esbuild';
-import { BuilderLoggerService } from '../../services/BuildLogger.service';
-import { BuilderConfig } from '../../services/Builder.service';
-import { createEsbuildContext, getEsbuildConfig } from './esbuild.utils';
+import { BuilderLoggerService } from '../../services/BuildLogger.service.js';
+import { BuilderConfig } from '../../services/Builder.service.js';
+import { createEsbuildContext, getEsbuildConfig } from './esbuild.utils.js';
 
 export interface EsbuildSuccess extends esbuild.BuildResult {}
 

@@ -6,7 +6,7 @@ import * as Option from 'effect/Option';
 import * as Record from 'effect/Record';
 import { gzipSizeSync } from 'gzip-size';
 import type * as rollup from 'rollup';
-import { loggerUtils } from '../../../utils/logger';
+import { loggerUtils } from '../../../utils/logger.js';
 
 export const formatBytes = (bytes: number | string) => {
   if (typeof bytes === 'string' || bytes === 0) return '0 Byte';

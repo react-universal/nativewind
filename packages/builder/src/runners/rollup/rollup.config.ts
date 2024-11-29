@@ -3,7 +3,7 @@ import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Record from 'effect/Record';
 import * as Tuple from 'effect/Tuple';
-import glob from 'glob';
+import { glob } from 'glob';
 import fs from 'node:fs';
 import path from 'node:path';
 import * as rollup from 'rollup';
@@ -70,6 +70,7 @@ export const createRollupConfig = (
         plugins: [
           plugins,
           // preserveDirectives({ exclude: ['**/*.tsx'] }),
+          // @ts-expect-error asdasd
           tsPlugin({
             exclude: [...testPatterns],
             tsconfig: 'tsconfig.build.json',

@@ -57,7 +57,6 @@
 
       // Twin Builder
       "@native-twin/builder": ["packages/builder/src/twin-cli.js"],
-      "@native-twin/builder/*": ["packages/builder/src/*.js"],
 
       // Css Lib
       "@native-twin/css": ["packages/css/src/index.js"],
