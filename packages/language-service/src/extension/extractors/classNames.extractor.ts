@@ -1,5 +1,5 @@
 import { parse } from '@babel/parser';
-import traverse, { NodePath } from '@babel/traverse';
+import { traverse, type NodePath } from '@babel/core';
 import * as t from '@babel/types';
 import { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
 

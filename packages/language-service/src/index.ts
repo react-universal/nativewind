@@ -34,7 +34,7 @@ export { LSPConnectionService } from './services/LSPConnection.service.js';
 export {
   getDocumentLanguageLocations,
   LanguageCompiler,
-  LanguageInput,
+  type LanguageInput,
 } from './extension/index.js';
 
 /** Logger */

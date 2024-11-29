@@ -1,9 +1,6 @@
-import { packages } from '@babel/standalone';
-import type * as types from '@babel/types';
-
-const traverse = packages.traverse;
-
-const t = packages.types;
+import { parse } from '@babel/parser';
+import { traverse } from '@babel/core';
+import t from '@babel/types';
 
 export const extractLanguageRegions = (
   code: string,
@@ -11,10 +8,10 @@ export const extractLanguageRegions = (
     functions: string[];
     jsxAttributes: string[];
   },
-): types.SourceLocation[] => {
-  const sourceLocations: types.SourceLocation[] = [];
+): t.SourceLocation[] => {
+  const sourceLocations: t.SourceLocation[] = [];
   try {
-    const parsed = packages.parser.parse(code, {
+    const parsed = parse(code, {
       plugins: ['jsx', 'typescript'],
       sourceType: 'module',
       errorRecovery: true,
@@ -23,9 +20,9 @@ export const extractLanguageRegions = (
       tokens: false,
       ranges: true,
     });
-    traverse.default(parsed, {
+    traverse(parsed, {
       CallExpression: (path) => {
-        const sources: types.SourceLocation[] = [];
+        const sources: t.SourceLocation[] = [];
         if (
           t.isIdentifier(path.node.callee) &&
           config.functions.includes(path.node.callee.name)
@@ -41,7 +38,8 @@ export const extractLanguageRegions = (
       TaggedTemplateExpression: (path) => {
         if (
           t.isIdentifier(path.node.tag) &&
-          config.functions.includes(path.node.tag.name)
+          config.functions.includes(path.node.tag.name) &&
+          path.node.quasi.quasis
         ) {
           sourceLocations.push(...templateExpressionMatcher(path.node.quasi.quasis));
         }
@@ -83,9 +81,9 @@ export const extractLanguageRegions = (
 };
 
 const matchVariantsObject = (
-  properties: types.ObjectExpression['properties'],
-  results: types.SourceLocation[] = [],
-): types.SourceLocation[] => {
+  properties: t.ObjectExpression['properties'],
+  results: t.SourceLocation[] = [],
+): t.SourceLocation[] => {
   const nextProperty = properties.shift();
   if (!nextProperty) return results;
 
@@ -106,9 +104,9 @@ const matchVariantsObject = (
 };
 
 const templateExpressionMatcher = (
-  node: types.TemplateElement[],
-  results: types.SourceLocation[] = [],
-): types.SourceLocation[] => {
+  node: t.TemplateElement[],
+  results: t.SourceLocation[] = [],
+): t.SourceLocation[] => {
   const nextToken = node.shift();
   if (!nextToken) return results;
 
