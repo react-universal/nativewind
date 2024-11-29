@@ -39,7 +39,9 @@
     "@native-twin/compiler": "workspace:*",
     "effect": "catalog:effect"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/parser": "^7.26.2"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "dist"

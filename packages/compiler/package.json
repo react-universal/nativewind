@@ -31,12 +31,6 @@
     "gen:jsdocs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "@babel/core": "^7.24.0",
-    "@babel/generator": "^7.25.6",
-    "@babel/parser": "^7.26.2",
-    "@babel/template": "^7.25.9",
-    "@babel/traverse": "^7.25.9",
-    "@babel/types": "^7.24.0",
     "@effect/platform": "catalog:effect",
     "@effect/platform-node": "catalog:effect",
     "@effect/platform-node-shared": "catalog:effect",
@@ -59,10 +53,6 @@
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",
     "@babel/preset-typescript": "7.23.3",
-    "@types/babel__core": "^7.20.5",
-    "@types/babel__generator": "^7.6.8",
-    "@types/babel__template": "^7.4.4",
-    "@types/babel__traverse": "^7.20.6",
     "@types/connect": "3.4.38",
     "@types/js-beautify": "^1",
     "@types/micromatch": "^4.0.4",
@@ -75,7 +65,8 @@
   "effect": {
     "generateExports": {
       "include": [
-        "*.ts"
+        "*.ts",
+        "programs/*.ts"
       ]
     }
   }
