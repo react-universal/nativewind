@@ -5,7 +5,7 @@ import {
   LSPDocumentsService,
   languagePrograms,
 } from '@native-twin/language-service';
-import { LspMainLive } from './lsp.layer';
+import { LspMainLive } from './lsp.layer.js';
 
 const Runtime = ManagedRuntime.make(LspMainLive);
 

@@ -1,5 +1,5 @@
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import * as vscode from 'vscode-languageserver/node';
+import * as vscode from 'vscode-languageserver/node.js';
 import * as Layer from 'effect/Layer';
 import {
   LSPConnectionService,
@@ -9,7 +9,7 @@ import {
   TwinLSPDocument,
   NativeTwinManager,
 } from '@native-twin/language-service';
-import { LoggerLive } from './services/logger.service';
+import { LoggerLive } from './services/logger.service.js';
 
 const documentsHandler = new vscode.TextDocuments(TextDocument);
 const connectionHandler = vscode.createConnection();

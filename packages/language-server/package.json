@@ -13,6 +13,7 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
+  "type": "module",
   "files": [
     "LICENSE",
     "README.md",
