@@ -4,7 +4,7 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import micromatch from 'micromatch';
-import path from 'node:path';
+import * as path from 'node:path';
 import {
   createTailwind,
   createThemeContext,

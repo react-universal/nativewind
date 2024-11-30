@@ -1,4 +1,3 @@
-/* eslint-env node */
 import React from 'react';
 import type { DocumentContext, DocumentInitialProps } from 'next/document.js';
 import Document from 'next/document.js';

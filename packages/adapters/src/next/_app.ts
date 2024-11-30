@@ -1,4 +1,3 @@
-/* eslint-env node, browser */
 import type { ComponentType } from 'react';
 import React from 'react';
 import type { AppProps } from 'next/app.js';

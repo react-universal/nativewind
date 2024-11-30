@@ -1,6 +1,6 @@
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
-import { LogLevel } from 'effect';
 import * as Effect from 'effect/Effect';
+import { TwinEnvContextLive } from '@native-twin/compiler/TwinEnv';
 import {
   NodeMainLayerSync,
   setConfigLayerFromUser,
@@ -44,15 +44,8 @@ export const transform: BabelTransformerFn = async (params) => {
     });
   }).pipe(
     Effect.provide(NodeMainLayerSync),
-    Effect.provide(
-      setConfigLayerFromUser({
-        projectRoot: params.options.projectRoot,
-        twinConfigPath: params.options.customTransformOptions.twinConfigPath,
-        logLevel: LogLevel.fromLiteral(params.options.customTransformOptions.logLevel),
-        inputCSS: params.options.customTransformOptions.inputCSS,
-        outputDir: params.options.customTransformOptions.outputDir,
-      }),
-    ),
+    Effect.provide(setConfigLayerFromUser),
+    Effect.provide(TwinEnvContextLive),
     Effect.runPromise,
   );
 };

@@ -42,12 +42,9 @@ const getNativeFileOutput = (stringStyles: string, platform: string) =>
     writer.newLine();
 
     const outputFilePath =
-      env.platformPaths[platform as 'native'] ?? env.platformPaths.defaultFile;
+      env.platformPaths[platform as 'native'] ?? env.platformPaths.native;
 
-    let importTwinPath = path.relative(
-      path.dirname(outputFilePath),
-      env.twinConfigPath,
-    );
+    let importTwinPath = path.relative(path.dirname(outputFilePath), env.twinConfigPath);
 
     if (!importTwinPath.startsWith('.')) {
       importTwinPath = `./${importTwinPath}`;

@@ -1,4 +1,3 @@
-// import * as t from '@babel/types';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
 import * as RA from 'effect/Array';
@@ -6,8 +5,8 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as String from 'effect/String';
-import fs from 'node:fs';
-import path from 'node:path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { defineConfig, TailwindConfig } from '@native-twin/core';
 import {
   DEFAULT_TWIN_INPUT_CSS_FILE,
@@ -53,8 +52,11 @@ export const getTwinConfigPath = (rootDir: string, twinConfigPath = '') =>
     (x) => path.resolve(x),
   );
 
-export const getTwinCacheDir = () =>
-  path.join(path.dirname(require.resolve('@native-twin/core')), '.cache');
+export const getTwinCacheDir = () => {
+  const resolved = require.resolve('@native-twin/core');
+  const dirname = path.dirname(resolved);
+  return path.join(dirname, '.cache');
+};
 
 export const createTwinCSSFiles = ({
   outputDir,

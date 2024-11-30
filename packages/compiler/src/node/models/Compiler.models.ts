@@ -11,22 +11,22 @@ export interface NodeWithNativeTwinOptions {
    * __dirname
    * ```
    * */
-  projectRoot?: string;
+  projectRoot?: string | undefined;
   /**
    * Must be absolute
    * @example ```js
    * path.join(__dirname, 'public/out.css')
    * ```
    * */
-  outputDir?: string;
-  twinConfigPath?: string;
+  outputDir?: string | undefined;
+  twinConfigPath: string;
   /**
    * Must be absolute
    * @example ```js
    * path.join(__dirname, 'globals.css')
    * ```
    * */
-  inputCSS?: string;
+  inputCSS?: string | undefined;
   /**
    * @default `INFO`
    * */

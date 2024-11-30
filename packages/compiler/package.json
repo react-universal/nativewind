@@ -13,7 +13,13 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "type": "module",
+  "exports": {
+    ".": "./build/cjs/index.js",
+    "./node": "./build/cjs/node.js",
+    "./server": "./build/cjs/server.js",
+    "./TwinEnv": "./build/cjs/TwinEnv.js",
+    "./internal/*.js": "./build/cjs/internal/*.js"
+  },
   "files": [
     "build",
     "LICENSE",
@@ -22,11 +28,11 @@
     "README.md"
   ],
   "scripts": {
-    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build": "yarn build-esm && yarn build-annotate && yarn build-cjs && build-utils pack-v2",
     "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
     "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
     "build-esm": "tsc -b tsconfig.build.json",
-    "build:watch": "twin build -w",
+    "build:watch": "tsc -b tsconfig.dev.json -w",
     "clean": "rm -rf build",
     "gen:jsdocs": "jsdoc -c jsdoc.json"
   },
@@ -53,6 +59,7 @@
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",
     "@babel/preset-typescript": "7.23.3",
+    "@effect/typeclass": "^0.29.19",
     "@types/connect": "3.4.38",
     "@types/js-beautify": "^1",
     "@types/micromatch": "^4.0.4",

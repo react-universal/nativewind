@@ -1,9 +1,11 @@
+import { Option } from 'effect';
 import * as Config from 'effect/Config';
 import * as ConfigProvider from 'effect/ConfigProvider';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
-import path from 'node:path';
+import * as path from 'node:path';
+import { TwinEnvContext } from '@native-twin/compiler/TwinEnv';
 import { DEFAULT_TWIN_INPUT_CSS_FILE } from '../../shared/twin.constants.js';
 import { getTwinCacheDir } from '../utils/twin.utils.node.js';
 
@@ -16,7 +18,6 @@ interface CompilerConfigShape {
   inputCSS: string;
   outputDir: string;
   platformPaths: {
-    defaultFile: string;
     web: string;
     ios: string;
     android: string;
@@ -67,11 +68,11 @@ export const CompilerConfig = makeConfig({
         'android platform styles file default: twin.out.android.css.js',
       ),
     ),
-    defaultFile: Config.nonEmptyString('defaultFile').pipe(
-      Config.withDescription(
-        'default platform styles file default: twin.out.native.css.js',
-      ),
-    ),
+    // defaultFile: Config.nonEmptyString('defaultFile').pipe(
+    //   Config.withDescription(
+    //     'default platform styles file default: twin.out.native.css.js',
+    //   ),
+    // ),
     ios: Config.nonEmptyString('ios').pipe(
       Config.withDescription('ios platform styles file default: twin.out.ios.css.js'),
     ),
@@ -86,36 +87,37 @@ export const CompilerConfig = makeConfig({
   },
 });
 
-export const setConfigLayerFromUser = (partialConfig: Partial<CompilerConfigShape>) => {
-  return Effect.gen(function* () {
-    const defaultConfig = yield* getDefaultConfig();
-    const unwrapped: CompilerConfigShape = {
-      inputCSS: partialConfig.inputCSS ?? defaultConfig.inputCSS,
-      logLevel: partialConfig.logLevel ?? defaultConfig.logLevel,
-      outputDir: partialConfig.outputDir ?? defaultConfig.outputDir,
-      platformPaths: partialConfig.platformPaths ?? defaultConfig.platformPaths,
-      projectRoot: partialConfig.projectRoot ?? defaultConfig.projectRoot,
-      twinConfigPath: partialConfig.twinConfigPath ?? defaultConfig.twinConfigPath,
-    };
+export const setConfigLayerFromUser = Effect.gen(function* () {
+  const defaultConfig = yield* getDefaultConfig();
+  const config = yield* TwinEnvContext;
+  const unwrapped: CompilerConfigShape = {
+    inputCSS: config.inputCss.pipe(Option.getOrElse(() => defaultConfig.inputCSS)),
+    logLevel: defaultConfig.logLevel,
+    outputDir: config.outputDir ?? defaultConfig.outputDir,
+    platformPaths: config.platformOutputs ?? defaultConfig.platformPaths,
+    projectRoot: config.projectRoot ?? defaultConfig.projectRoot,
+    twinConfigPath: config.twinConfigPath.pipe(
+      Option.getOrElse(() => defaultConfig.twinConfigPath),
+    ),
+  };
 
-    const configProvider = ConfigProvider.fromMap(
-      new Map<string, string>(
-        Object.entries(unwrapped).flatMap(([key, value]) => {
-          if (typeof value === 'string') {
-            return [[key, value]];
-          }
-          if ('_tag' in value) {
-            return [[key, value.label]];
-          }
+  const configProvider = ConfigProvider.fromMap(
+    new Map<string, string>(
+      Object.entries(unwrapped).flatMap(([key, value]) => {
+        if (typeof value === 'string') {
+          return [[key, value]];
+        }
+        if ('_tag' in value) {
+          return [[key, value.label]];
+        }
 
-          return Object.entries(value);
-        }),
-      ),
-    );
+        return Object.entries(value);
+      }),
+    ),
+  );
 
-    return Layer.setConfigProvider(configProvider);
-  }).pipe(Layer.unwrapEffect);
-};
+  return Layer.setConfigProvider(configProvider);
+}).pipe(Layer.unwrapEffect);
 
 // export const CompilerConfig: Config.Config<CompilerConfigShape> = Config.all({
 //   projectRoot: Config.string('projectRoot').pipe(

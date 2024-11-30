@@ -4,6 +4,7 @@
   "compilerOptions": {
     "tsBuildInfoFile": ".tsbuildinfo/src.tsbuildinfo",
     "rootDir": "src",
+    "exactOptionalPropertyTypes": false,
     "outDir": "build/src"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "main": "../build/jsx-dev-runtime.js",
-  "module": "../build/esm/jsx-dev-runtime.js",
+  "main": "../build/cjs/jsx-dev-runtime.js",
+  "module": "../build/cjs/jsx-dev-runtime.js",
   "types": "../build/jsx-dev-runtime.d.ts"
 }

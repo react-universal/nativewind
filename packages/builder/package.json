@@ -14,6 +14,10 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "type": "module",
+  "main": "./build/twin-cli.js",
+  "bin": {
+    "twin": "./build/twin-cli.js"
+  },
   "files": [
     "LICENSE",
     "README.md",
@@ -22,11 +26,7 @@
     "src"
   ],
   "scripts": {
-    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
-    "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
-    "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
-    "build-esm": "tsc -b tsconfig.build.json",
-    "build:watch": "node --no-warnings esbuild.mjs --watch",
+    "build": "tsc -p tsconfig.build.json && node esbuild.mjs",
     "clean": "rm -rf build",
     "gen:schema": "node --loader ts-node/esm -r ts-node/register --no-warnings ./src/config/twin.schema",
     "lint": "eslint"

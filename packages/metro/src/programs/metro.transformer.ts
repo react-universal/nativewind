@@ -1,8 +1,9 @@
-import { LogLevel } from 'effect';
+import { Layer } from 'effect';
 import * as Effect from 'effect/Effect';
 import type { TransformResponse } from 'metro-transform-worker';
-import worker from 'metro-transform-worker';
-import path from 'node:path';
+import * as worker from 'metro-transform-worker';
+import * as path from 'node:path';
+import * as TwinEnv from '@native-twin/compiler/TwinEnv';
 import {
   TwinNodeContext,
   BabelCompiler,
@@ -24,6 +25,25 @@ export const transform: TwinMetroTransformFn = async (
 ) => {
   const twinConfig = config.twinConfig;
   const platform = options.platform ?? 'native';
+
+  const serverEnvLayer = Effect.gen(function* () {
+    yield* TwinEnv.modifyEnv(
+      TwinEnv.TWIN_ENV_KEYS.twinConfigPath,
+      config.twinConfig.twinConfigPath,
+    );
+    yield* TwinEnv.modifyEnv(TwinEnv.TWIN_ENV_KEYS.inputCSS, config.twinConfig.inputCSS);
+    yield* TwinEnv.modifyEnv(
+      TwinEnv.TWIN_ENV_KEYS.projectRoot,
+      config.twinConfig.projectRoot,
+    );
+
+    yield* TwinEnv.modifyEnv(
+      TwinEnv.TWIN_ENV_KEYS.outputDir,
+      config.twinConfig.outputDir,
+    );
+
+    return TwinEnv.TwinEnvContextLive;
+  }).pipe(Layer.unwrapScoped);
 
   return Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
@@ -74,15 +94,8 @@ export const transform: TwinMetroTransformFn = async (
     return transformed;
   }).pipe(
     Effect.provide(NodeMainLayerSync),
-    Effect.provide(
-      setConfigLayerFromUser({
-        twinConfigPath: config.twinConfig.twinConfigPath,
-        outputDir: config.twinConfig.outputDir,
-        projectRoot: config.twinConfig.projectRoot,
-        logLevel: LogLevel.fromLiteral(config.twinConfig.logLevel),
-        inputCSS: config.twinConfig.inputCSS,
-      }),
-    ),
+    Effect.provide(setConfigLayerFromUser),
+    Effect.provide(serverEnvLayer),
     Effect.runPromise,
   );
 

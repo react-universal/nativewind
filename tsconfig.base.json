@@ -1,74 +1,71 @@
 {
   "compilerOptions": {
+    // Emit config
+    "composite": true,
+    "incremental": true,
     "declaration": true,
-    "esModuleInterop": true,
     "sourceMap": true,
-    "module": "NodeNext",
-    "target": "ES2022",
-    "strictFunctionTypes": true,
-    "moduleDetection": "force",
-    "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
     "declarationMap": true,
-    "moduleResolution": "NodeNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "strict": true,
-    "types": ["node", "react-native", "jest"],
-    "skipLibCheck": true,
-    "strictNullChecks": true,
-    "disableReferencedProjectLoad": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noEmitOnError": false,
+    "downlevelIteration": true,
+    "removeComments": false,
+
+    // Modules Config
+    "module": "NodeNext",
+    "target": "ES2022",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "moduleDetection": "force",
+    "esModuleInterop": false,
+    "types": [],
+    "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "composite": true,
-    "noUncheckedIndexedAccess": false,
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "allowJs": false,
+    "checkJs": false,
+    // "moduleSuffixes": [".native", ".web", ".android", ".ios", ""],
+
+    // Lint
+    "strict": true,
+    "strictFunctionTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": false,
     "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
     "allowUnreachableCode": false,
     "noImplicitReturns": false,
-    "exactOptionalPropertyTypes": false,
-    "noEmitOnError": false,
-    "resolveJsonModule": true,
+    "exactOptionalPropertyTypes": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noImplicitOverride": true,
-    "allowJs": false,
-    "checkJs": false,
     "noErrorTruncation": false,
     "noUnusedParameters": false,
     "noUnusedLocals": true,
     "isolatedModules": true,
-    "downlevelIteration": true,
+
+    // PATHS
     "baseUrl": ".",
-    "incremental": true,
-    "removeComments": false,
-    "plugins": [
-      {
-        "name": "@effect/language-service"
-      }
-    ],
     "paths": {
-      // Adapters for NextJS
       "@native-twin/adapters/next/_app": ["packages/adapters/src/next/_app.js"],
       "@native-twin/adapters/next/_document": ["packages/adapters/src/next/_document.js"],
       "@native-twin/adapters/next/app": ["packages/adapters/src/next/app/index.js"],
       "@native-twin/adapters/next/app/*": ["packages/adapters/src/next/*.js"],
 
-      // Twin Builder
       "@native-twin/builder": ["packages/builder/src/twin-cli.js"],
 
-      // Css Lib
       "@native-twin/css": ["packages/css/src/index.js"],
       "@native-twin/css/*": ["packages/css/src/*.js"],
       "@native-twin/css/test/*": ["packages/css/test/*.js"],
 
-      // Core
       "@native-twin/core": ["packages/native-twin/src/index.js"],
       "@native-twin/core/*": ["packages/native-twin/src/*.js"],
       "@native-twin/core/test/*": ["packages/native-twin/src/test/*.js"],
 
-      // Twin Compiler
       "@native-twin/compiler": ["packages/compiler/src/index.js"],
       "@native-twin/compiler/*": ["packages/compiler/src/*.js"],
       "@native-twin/compiler/test/*": ["packages/compiler/test/*.js"],

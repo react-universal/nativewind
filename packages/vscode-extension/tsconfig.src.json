@@ -2,11 +2,13 @@
   "extends": "../../tsconfig.base.json",
   "include": ["src"],
   "references": [
+    { "path": "../language-service" }
   ],
   "compilerOptions": {
     "types": ["node"],
     "outDir": "build/src",
     "tsBuildInfoFile": ".tsbuildinfo/src.tsbuildinfo",
-    "rootDir": "src"
+    "rootDir": "src",
+    "exactOptionalPropertyTypes": false
   }
 }

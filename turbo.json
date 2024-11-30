@@ -3,13 +3,11 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
       "inputs": [
         "$TURBO_DEFAULT$",
         "!**/test",
-        "!**/tests"
+        "!**/tests",
+        "!**/tsconfig.*"
       ],
       "outputs": [
         "build/**",

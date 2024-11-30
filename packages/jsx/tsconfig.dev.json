@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.build.json",
+  "references": [
+    { "path": "../preset-tailwind/tsconfig.dev.json" }
+  ],
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "incremental": true,
+    "composite": true,
+    "tsBuildInfoFile": null,
+    "outDir": "build/cjs",
+    "declarationDir": "build/dts",
+    "stripInternal": false
+  }
+}

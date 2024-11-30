@@ -8,7 +8,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as monaco from 'monaco-editor';
-import path from 'path';
+import * as path from 'path';
 import { detectLanguageFromPath } from '@/utils/editor.utils';
 import { traceLayerLogs } from '@/utils/logger.utils';
 import { MonacoContext } from './MonacoContext.service';

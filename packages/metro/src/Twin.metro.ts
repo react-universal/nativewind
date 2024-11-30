@@ -1,9 +1,11 @@
+import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
+import { Config } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as LogLevel from 'effect/LogLevel';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import path from 'node:path';
+import * as path from 'node:path';
 import { inspect } from 'node:util';
+import * as TwinEnv from '@native-twin/compiler/TwinEnv';
 import {
   listenForkedStreamChanges,
   NodeMainLayerSync,
@@ -19,23 +21,53 @@ import { getMetroSettings } from './programs/getMetroSettings.js';
 
 export function withNativeTwin(
   metroConfig: TwinMetroConfig,
-  nativeTwinConfig: NodeWithNativeTwinOptions = {
-    logLevel: 'Info',
-  },
+  nativeTwinConfig: NodeWithNativeTwinOptions,
 ): TwinMetroConfig {
-  const configLayer = setConfigLayerFromUser({
-    logLevel: LogLevel.fromLiteral(nativeTwinConfig.logLevel),
-    inputCSS: nativeTwinConfig.inputCSS,
-    outputDir: nativeTwinConfig.outputDir,
-    projectRoot: nativeTwinConfig.projectRoot,
-    twinConfigPath: nativeTwinConfig.twinConfigPath,
-  });
+  const serverEnvLayer = Effect.gen(function* () {
+    yield* TwinEnv.modifyEnv(
+      TwinEnv.TWIN_ENV_KEYS.twinConfigPath,
+      nativeTwinConfig.twinConfigPath,
+    );
+    if (nativeTwinConfig.inputCSS) {
+      yield* TwinEnv.modifyEnv(TwinEnv.TWIN_ENV_KEYS.inputCSS, nativeTwinConfig.inputCSS);
+    }
+    if (nativeTwinConfig.projectRoot) {
+      yield* TwinEnv.modifyEnv(
+        TwinEnv.TWIN_ENV_KEYS.projectRoot,
+        nativeTwinConfig.projectRoot,
+      );
+    }
+
+    if (nativeTwinConfig.outputDir) {
+      yield* TwinEnv.modifyEnv(
+        TwinEnv.TWIN_ENV_KEYS.outputDir,
+        nativeTwinConfig.outputDir,
+      );
+    }
+
+    return TwinEnv.TwinEnvContextLive;
+  }).pipe(Layer.unwrapScoped);
+
+  // {
+  //   logLevel: LogLevel.fromLiteral(nativeTwinConfig.logLevel),
+  //   inputCSS: nativeTwinConfig.inputCSS,
+  //   outputDir: nativeTwinConfig.outputDir,
+  //   projectRoot: nativeTwinConfig.projectRoot,
+  //   twinConfigPath: nativeTwinConfig.twinConfigPath,
+  // }
 
   const runtimeSync = ManagedRuntime.make(
-    NodeMainLayerSync.pipe(Layer.provide(configLayer)),
+    NodeMainLayerSync.pipe(
+      Layer.provide(setConfigLayerFromUser),
+      Layer.provideMerge(serverEnvLayer),
+    ),
   );
+
   const runtimeAsync = ManagedRuntime.make(
-    NodeMainLayerAsync.pipe(Layer.provide(configLayer)),
+    NodeMainLayerAsync.pipe(
+      Layer.provide(setConfigLayerFromUser),
+      Layer.provideMerge(serverEnvLayer),
+    ),
   );
 
   const metroSettings = runtimeSync.runSync(getMetroSettings);
@@ -43,7 +75,35 @@ export function withNativeTwin(
   const originalResolver = metroConfig.resolver.resolveRequest;
   const originalGetTransformerOptions = metroConfig.transformer.getTransformOptions;
 
-  runtimeAsync.runFork(LaunchTwinServer);
+  NodeRuntime.runMain(
+    LaunchTwinServer.pipe(
+      Effect.catchAll((error) => Effect.log('ERROR: ', error)),
+      Effect.provide(setConfigLayerFromUser),
+      Effect.provide(serverEnvLayer),
+    ),
+  );
+
+  // console.log('PROCESS: ', inspect(process.env, false, null, true));
+
+  // console.log('METRO: ', inspect(metroConfig.resolver, false, null, true));
+
+  runtimeSync.runSync(
+    Effect.gen(function* () {
+      const ctx = yield* TwinEnv.TwinEnvContext;
+
+      console.log('ENV_CONFIG: ', ctx);
+      // console.log('MOD_ENV: ', yield* ctx.env);
+    }),
+  );
+
+  console.log(
+    'TEST: ',
+    Effect.runSync(
+      Effect.all({
+        env: Config.string('PWD'),
+      }),
+    ),
+  );
 
   return {
     ...metroConfig,

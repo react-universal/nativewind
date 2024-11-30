@@ -18,10 +18,17 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/react-universal/native-twin",
-    "directory": "packages/native-tailwind"
+    "directory": "packages/native-twin"
   },
   "license": "MIT",
-  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./build/dts/index.d.ts",
+      "default": "./build/cjs/index.js"
+    }
+  },
+  "main": "./build/cjs/index.js",
+  "types": "./build/dts/index.d.ts",
   "files": [
     "build",
     "types.d.ts",
@@ -32,11 +39,11 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
+    "build": "yarn build-esm && yarn build-annotate && yarn build-cjs && build-utils pack-v2",
     "build-annotate": "babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
     "build-cjs": "babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
     "build-esm": "tsc -b tsconfig.build.json",
-    "build:watch": "twin build -w",
+    "build:watch": "tsc -b tsconfig.dev.json -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",

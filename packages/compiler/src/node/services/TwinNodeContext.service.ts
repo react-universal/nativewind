@@ -6,8 +6,8 @@ import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import micromatch from 'micromatch';
-import path from 'node:path';
+import * as micromatch from 'micromatch';
+import * as path from 'node:path';
 import {
   createTwinProcessor,
   extractTwinConfig,
@@ -72,7 +72,7 @@ const TwinNodeContextLive = Effect.gen(function* () {
         return envConfig.platformPaths.native;
       default:
         console.warn('[WARN]: cant determine outputCSS fallback to default');
-        return envConfig.platformPaths.defaultFile;
+        return envConfig.platformPaths.native;
     }
   };
   return {

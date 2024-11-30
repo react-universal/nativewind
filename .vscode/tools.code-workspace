@@ -9,6 +9,14 @@
       "path": "../sites/twin.run"
     },
     {
+      "name": "📦 @lib/compiler",
+      "path": "../packages/compiler"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
       "name": "📦 @lib/language-service",
       "path": "../packages/language-service"
     },
@@ -17,16 +25,8 @@
       "path": "../packages/language-server"
     },
     {
-      "name": "📦 @lib/compiler",
-      "path": "../packages/compiler"
-    },
-    {
       "name": "📦 @lib/adapters",
       "path": "../packages/adapters"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
     },
     {
       "name": "📦 @lib/babel",
@@ -43,6 +43,14 @@
     {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "expo-app",
+      "path": "../apps/expo-app"
+    },
+    {
+      "name": "native-twin",
+      "path": "../packages/native-twin"
     }
   ],
   "settings": {
@@ -72,7 +80,8 @@
     "search.exclude": {
       "**/node_modules": true,
       "**/*.code-search": true,
-      "**/build": true
+      "**/build": true,
+      "**/dist": true
     },
     "editor.fontSize": 16,
     "typescript.tsdk": "root/node_modules/typescript/lib",

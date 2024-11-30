@@ -7,8 +7,8 @@ import {
   type BabelAPI,
   BABEL_JSX_PLUGIN_IMPORT_RUNTIME,
   NodeMainLayerSync,
+  BabelCompiler,
 } from '@native-twin/compiler/node';
-import { BabelCompiler } from '@native-twin/compiler/node';
 
 const allowed = new Set<string>();
 const program = Effect.scoped(

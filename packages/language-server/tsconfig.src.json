@@ -11,6 +11,7 @@
     { "path": "../language-service" }
   ],
   "compilerOptions": {
+    "exactOptionalPropertyTypes": false,
     "tsBuildInfoFile": ".tsbuildinfo/src.tsbuildinfo",
     "rootDir": "src",
     "outDir": "build/src"

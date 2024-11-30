@@ -1,14 +1,10 @@
 import * as Effect from 'effect/Effect';
 import * as fs from 'fs';
 import * as fsp from 'fs/promises';
-import {
-  CompilerConfig,
-  NodeMainLayerAsync,
-  setConfigLayerFromUser,
-} from '@native-twin/compiler/node';
+import { TwinEnvContextLive } from '@native-twin/compiler/TwinEnv';
+import { CompilerConfig, NodeMainLayerAsync } from '@native-twin/compiler/node';
 import { TwinNodeContext } from '@native-twin/compiler/node';
 import { TwinCSSExtractor } from '@native-twin/compiler/programs/css.extractor';
-import { LogLevel } from 'effect';
 
 export interface TwinVitePluginConfig {
   inputCSS: string;
@@ -49,12 +45,13 @@ export const createTwinExtractor = (viteConfig: TwinVitePluginConfig) => {
       return runExtractorEffect(code, filePath).pipe(
         Effect.provide(NodeMainLayerAsync),
         Effect.provide(
-          setConfigLayerFromUser({
-            twinConfigPath: viteConfig.twinConfigPath,
-            logLevel: LogLevel.Info,
-            inputCSS: viteConfig.inputCSS,
-            projectRoot: viteConfig.projectRoot,
-          }),
+          TwinEnvContextLive,
+          // setConfigLayerFromUser({
+          //   twinConfigPath: viteConfig.twinConfigPath,
+          //   logLevel: LogLevel.Info,
+          //   inputCSS: viteConfig.inputCSS,
+          //   projectRoot: viteConfig.projectRoot,
+          // }),
         ),
 
         Effect.runPromise,
