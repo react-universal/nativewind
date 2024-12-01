@@ -1,32 +1,20 @@
-import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
-import * as NodePath from '@effect/platform-node/NodePath';
-import { FileSystem } from '@effect/platform/FileSystem';
-import { Path } from '@effect/platform/Path';
-import * as Array from 'effect/Array';
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import * as Order from 'effect/Order';
-import * as Record from 'effect/Record';
-import * as String from 'effect/String';
-import { FsUtils, FsUtilsLive } from '../../utils/fs.utils.js';
-import type { PackageJson } from './Package.service.js';
-import { PackageContext, PackageContextLive } from './Package.service.js';
+import { Path, FileSystem } from '@effect/platform';
+import { NodeFileSystem, NodePath } from '@effect/platform-node';
+import { Context, Array, Effect, Layer, Order, Record, String } from 'effect';
+import { FsUtils, FsUtilsLive } from './FsUtils.service.js';
+import { PackageContext, PackageJson } from './Package.service.js';
 
-export const run = Effect.gen(function* () {
+const make = Effect.gen(function* () {
   const fsUtils = yield* FsUtils;
-  const fs = yield* FileSystem;
-  const path = yield* Path;
+  const fs = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
   const ctx = yield* PackageContext;
 
   const modules = yield* fsUtils
     .glob(ctx.packageJson.effect.generateExports.include, {
       nodir: true,
       cwd: 'src',
-      ignore: [
-        ...ctx.packageJson.effect.generateExports.exclude,
-        '**/internal/**',
-        '**/index.ts',
-      ],
+      ignore: [...ctx.packageJson.effect.generateExports.exclude],
     })
     .pipe(
       Effect.map(Array.map(String.replace(/\.ts$/, ''))),
@@ -151,7 +139,7 @@ export const run = Effect.gen(function* () {
     Effect.withSpan('BabelPack/buildPackageJson'),
   );
 
-  const mkDist = fsUtils.rmAndMkdir('dist');
+  const mkDist = yield* fsUtils.rmAndMkdir('dist');
   const copyReadme = fs.copy('README.md', 'dist/README.md');
   const copyLicense = fs.copy('LICENSE', 'dist/LICENSE');
 
@@ -184,18 +172,79 @@ export const run = Effect.gen(function* () {
     discard: true,
   }).pipe(Effect.withSpan('BabelPack/copySources'));
 
-  yield* mkDist;
   yield* Effect.all(
     [writePackageJson, copyReadme, copyLicense, copySources, createProxies],
     { concurrency: 'inherit', discard: true },
   ).pipe(Effect.withConcurrency(10));
-}).pipe(
-  Effect.provide(
-    Layer.mergeAll(
-      NodeFileSystem.layer,
-      NodePath.layerPosix,
-      FsUtilsLive,
-      PackageContextLive,
-    ),
-  ),
+
+  const createProxiesDev = Effect.forEach(
+    modules,
+    (_) =>
+      fsUtils.mkdirCached(`build/dev/${_}`).pipe(
+        Effect.zipRight(
+          fsUtils.writeJson(`build/dev/${_}/package.json`, {
+            main: path.relative(`dist/${_}`, `dist/dist/cjs/${_}.js`),
+            module: path.relative(`dist/${_}`, `dist/dist/esm/${_}.js`),
+            types: path.relative(`dist/${_}`, `dist/dist/dts/${_}.d.ts`),
+            sideEffects: [],
+          }),
+        ),
+      ),
+    {
+      concurrency: 'inherit',
+      discard: true,
+    },
+  );
+
+  yield* createProxiesDev;
+
+  const devPackage = buildPackageJson.pipe(
+    Effect.map((_) => JSON.stringify(_, null, 2)),
+    Effect.map((x) => x.replaceAll(/\/dist\//g, '/build/')),
+    Effect.map((x) => JSON.parse(x)),
+    Effect.flatMap((incoming) => {
+      return Effect.gen(function* () {
+        const original = yield* fs
+          .readFile('./package.json')
+          .pipe(Effect.map((x) => new TextDecoder().decode(x)));
+
+        const originalJSON = JSON.parse(original);
+
+        originalJSON['exports'] = incoming.exports;
+        originalJSON['main'] = incoming.main;
+        originalJSON['module'] = incoming.module;
+        originalJSON['types'] = incoming.types;
+
+        const result = JSON.stringify(originalJSON, null, 2).replaceAll(
+          '/dist/',
+          '/build/',
+        );
+        yield* fs.writeFileString('./package.json', result);
+        return JSON.parse(result);
+      });
+    }),
+  );
+
+  return {
+    copyCommonFiles: Effect.all([copyReadme, copyLicense, copySources], {
+      concurrency: 'inherit',
+      discard: true,
+    }).pipe(Effect.withConcurrency(10)),
+    writePackageJson,
+    createProxies,
+    mkDist,
+    modules,
+    buildPackageJson,
+    devPackage,
+  };
+});
+
+export interface BabelPackContext extends Effect.Effect.Success<typeof make> {}
+export const BabelPackContext = Context.GenericTag<BabelPackContext>(
+  'twin-build/BabelPackContext',
+);
+export const BabelPackContextLive = Layer.effect(BabelPackContext, make).pipe(
+  Layer.provide(FsUtilsLive),
+  Layer.provide(NodeFileSystem.layer),
+  Layer.provide(NodePath.layerPosix),
 );

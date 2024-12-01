@@ -9,23 +9,23 @@ const args = minimist(process.argv.slice(2), {
 esbuild
   .context({
     entryPoints: [
-      path.join(process.cwd(), './src/twin-cli.ts'),
+      path.join(process.cwd(), './src/main.ts'),
       path.join(process.cwd(), './src/config/twin.schema.ts'),
     ],
     outdir: 'build',
-    sourcemap: true,
+    sourcemap: 'external',
+    sourcesContent: true,
+    minifySyntax: false,
     platform: 'node',
     format: 'esm',
     logLevel: 'info',
-    packages: 'external',
     bundle: true,
     external: [
       'esbuild',
       'tsup',
       '@babel/*',
-      'effect',
-      '@effect/*',
       'rollup',
+      'typescript',
       'rollup-plugin-dts',
       '@rollup/plugin-terser',
       '@rollup/plugin-typescript',

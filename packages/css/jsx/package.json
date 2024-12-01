@@ -1,3 +1,4 @@
 {
-  "main": "../build/cjs/jsx.js"
+  "main": "../build/cjs/jsx.js",
+  "module": "../build/esm/jsx.js"
 }

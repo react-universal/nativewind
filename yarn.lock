@@ -4580,6 +4580,8 @@ __metadata:
     lodash.merge: "npm:4.6.2"
     minimist: "npm:^1.2.8"
     rollup: "npm:^4.23.0"
+  bin:
+    twin: ./build/main.js
   languageName: unknown
   linkType: soft
 

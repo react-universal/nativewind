@@ -3,17 +3,16 @@ import { Config } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import * as path from 'node:path';
-import { inspect } from 'node:util';
+// import * as path from 'node:path';
+// import { inspect } from 'node:util';
 import * as TwinEnv from '@native-twin/compiler/TwinEnv';
 import {
-  listenForkedStreamChanges,
+  // listenForkedStreamChanges,
   NodeMainLayerSync,
   NodeMainLayerAsync,
   NodeWithNativeTwinOptions,
   setConfigLayerFromUser,
-  twinLoggerLayer,
-  TwinFileSystem,
+  twinLoggerLayer, // TwinFileSystem,
 } from '@native-twin/compiler/node';
 import { LaunchTwinServer } from '@native-twin/compiler/server';
 import { TwinMetroConfig } from './models/Metro.models.js';
@@ -75,13 +74,13 @@ export function withNativeTwin(
   const originalResolver = metroConfig.resolver.resolveRequest;
   const originalGetTransformerOptions = metroConfig.transformer.getTransformOptions;
 
-  NodeRuntime.runMain(
-    LaunchTwinServer.pipe(
-      Effect.catchAll((error) => Effect.log('ERROR: ', error)),
-      Effect.provide(setConfigLayerFromUser),
-      Effect.provide(serverEnvLayer),
-    ),
-  );
+  // NodeRuntime.runMain(
+  //   LaunchTwinServer.pipe(
+  //     Effect.catchAll((error) => Effect.log('ERROR: ', error)),
+  //     Effect.provide(setConfigLayerFromUser),
+  //     Effect.provide(serverEnvLayer),
+  //   ),
+  // );
 
   // console.log('PROCESS: ', inspect(process.env, false, null, true));
 
@@ -115,15 +114,16 @@ export function withNativeTwin(
         const resolved = resolver(context, moduleName, platform);
         if (!platform) return resolved;
 
-        const platformOutput = metroSettings.ctx.getOutputCSSPath(platform);
-        const platformInput = metroSettings.env.inputCSS;
+        // const platformOutput = metroSettings.ctx.getOutputCSSPath(platform);
+        // const platformInput = metroSettings.env.inputCSS;
 
-        if ('filePath' in resolved && resolved.filePath === platformInput) {
-          return {
-            ...resolved,
-            filePath: path.resolve(platformOutput),
-          };
-        }
+        // if ('filePath' in resolved && resolved.filePath === platformInput) {
+        //   console.log('ASDASDASDAD: ', resolved, path.resolve(platformOutput));
+        //   return {
+        //     ...resolved,
+        //     filePath: path.resolve(platformOutput),
+        //   };
+        // }
 
         return resolved;
       },
@@ -139,19 +139,19 @@ export function withNativeTwin(
           );
 
           if (!options.platform) return result;
-          const watcher = yield* TwinFileSystem;
+          // const watcher = yield* TwinFileSystem;
 
           // const allFiles = yield* watcher.getAllFiles;
           // yield* watcher.runTwinForFiles(allFiles, config.platform);
           yield* Effect.logDebug('CHECK_DEBUG_LOGGER');
 
-          yield* listenForkedStreamChanges(watcher.fsWatcher, (event) => {
-            return Effect.logTrace(
-              'FILE_CHANGE_DETECTED',
-              inspect(event, false, null, true),
-            );
-          });
-          yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
+          // yield* listenForkedStreamChanges(watcher.fsWatcher, (event) => {
+          //   return Effect.logTrace(
+          //     'FILE_CHANGE_DETECTED',
+          //     inspect(event, false, null, true),
+          //   );
+          // });
+          // yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
 
           // const fsMetrics = yield* TwinFileSystem.metrics.providedFreq.value;
 

@@ -1,15 +1,11 @@
-import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
-import * as NodePath from '@effect/platform-node/NodePath';
-import { FileSystem } from '@effect/platform/FileSystem';
-import { Path } from '@effect/platform/Path';
-import * as Context from 'effect/Context';
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
+import { Path, FileSystem } from '@effect/platform';
+import { NodePath, NodeFileSystem } from '@effect/platform-node';
+import { Context, Effect, Layer } from 'effect';
 import * as Glob from 'glob';
 
 const make = Effect.gen(function* (_) {
-  const fs = yield* _(FileSystem);
-  const path_ = yield* _(Path);
+  const fs = yield* _(FileSystem.FileSystem);
+  const path_ = yield* _(Path.Path);
 
   const glob = (pattern: string | ReadonlyArray<string>, options?: Glob.GlobOptions) =>
     Effect.tryPromise({
@@ -112,12 +108,20 @@ const make = Effect.gen(function* (_) {
   const writeJson = (path: string, json: unknown) =>
     fs.writeFileString(path, JSON.stringify(json, null, 2) + '\n');
 
+  const mkDirIfNotExists = (path: string) =>
+    fs.exists(path).pipe(
+      Effect.if({
+        onTrue: () => Effect.void,
+        onFalse: () => fs.makeDirectory(path, { recursive: true }),
+      }),
+    );
   return {
     glob,
     globFiles,
     modifyFile,
     modifyGlob,
     copyIfExists,
+    mkDirIfNotExists,
     rmAndMkdir,
     rmAndCopy,
     mkdirCached,

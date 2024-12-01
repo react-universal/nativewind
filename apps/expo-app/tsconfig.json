@@ -7,10 +7,6 @@
     ],
     "exactOptionalPropertyTypes": false,
     "allowJs": true,
-    "moduleDetection": "force",
-    "moduleResolution": "nodenext",
-    "module": "NodeNext",
-    "target": "ESNext",
     "noEmit": true
   },
   "exclude": [

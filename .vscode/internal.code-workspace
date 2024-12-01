@@ -5,6 +5,14 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
+    },
+    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
     },
@@ -33,10 +41,6 @@
       "path": "../packages/native-twin"
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
-    },
-    {
       "name": "📦 @lib/language-service",
       "path": "../packages/language-service"
     },
@@ -51,10 +55,6 @@
     {
       "name": "📦 @lib/preset-tw",
       "path": "../packages/preset-tailwind"
-    },
-    {
-      "name": "📦 @lib/arc-parser",
-      "path": "../packages/arc-parser"
     },
     {
       "name": "📦 @lib/vite-plugin",

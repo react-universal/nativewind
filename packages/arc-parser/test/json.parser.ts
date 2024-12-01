@@ -1,4 +1,4 @@
-// import * as P from '../src';
+// import * as P from '../src/index.js';
 
 // type AnyType = string | number | boolean | number | null | object | AnyType[];
 
@@ -80,7 +80,7 @@
 // }
 // JSON.parse(test1); //?
 
-// const getObject = (token: JsonObject | AnyToken): any => {
+// const getObject = (token: any | any): any => {
 //   if (token.type === 'OBJECT') return fromObject(token);
 //   if (token.type === 'ARRAY') {
 //     return fromArray(token);
@@ -88,14 +88,15 @@
 
 //   return token.value;
 
-//   function fromObject(token: JsonObject) {
+//   function fromObject(token: any) {
 //     const tuples = token.value.map((x) => [x[0], getObject(x[1])]);
 //     return Object.fromEntries(tuples);
 //   }
-//   function fromArray(token: ArrayToken): any[] {
+//   function fromArray(token: any): any[] {
 //     return token.value.map((x) => getObject(x));
 //   }
 // };
+// 'asd'
 // if (!result.isError) {
-//   getObject(result.result);
+//   getObject(result.result); //?
 // }

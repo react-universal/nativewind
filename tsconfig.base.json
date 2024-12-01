@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
     // Emit config
-    "composite": true,
-    "incremental": true,
     "declaration": true,
     "sourceMap": true,
     "declarationMap": true,
@@ -43,72 +41,12 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noImplicitOverride": true,
+    "disableReferencedProjectLoad": true,
+    "resolvePackageJsonExports": true,
     "noErrorTruncation": false,
     "noUnusedParameters": false,
     "noUnusedLocals": true,
     "isolatedModules": true,
-
-    // PATHS
-    "baseUrl": ".",
-    "paths": {
-      "@native-twin/adapters/next/_app": ["packages/adapters/src/next/_app.js"],
-      "@native-twin/adapters/next/_document": ["packages/adapters/src/next/_document.js"],
-      "@native-twin/adapters/next/app": ["packages/adapters/src/next/app/index.js"],
-      "@native-twin/adapters/next/app/*": ["packages/adapters/src/next/*.js"],
-
-      "@native-twin/builder": ["packages/builder/src/twin-cli.js"],
-
-      "@native-twin/css": ["packages/css/src/index.js"],
-      "@native-twin/css/*": ["packages/css/src/*.js"],
-      "@native-twin/css/test/*": ["packages/css/test/*.js"],
-
-      "@native-twin/core": ["packages/native-twin/src/index.js"],
-      "@native-twin/core/*": ["packages/native-twin/src/*.js"],
-      "@native-twin/core/test/*": ["packages/native-twin/src/test/*.js"],
-
-      "@native-twin/compiler": ["packages/compiler/src/index.js"],
-      "@native-twin/compiler/*": ["packages/compiler/src/*.js"],
-      "@native-twin/compiler/test/*": ["packages/compiler/test/*.js"],
-
-      "@native-twin/arc-parser": ["packages/arc-parser/src/index.js"],
-      "@native-twin/arc-parser/*": ["packages/arc-parser/src/*.js"],
-      "@native-twin/arc-parser/test*": ["packages/arc-parser/test/*.js"],
-
-      "@native-twin/helpers": ["packages/helpers/src/index.js"],
-      "@native-twin/helpers/*": ["packages/helpers/src/*.js"],
-      "@native-twin/helpers/test/*": ["packages/helpers/test/*.js"],
-
-      "@native-twin/jsx": ["packages/jsx/src/index.js"],
-      "@native-twin/jsx/*": ["packages/jsx/src/*.js"],
-      "@native-twin/jsx/test/*": ["packages/jsx/__tests__/*.js"],
-
-      "@native-twin/babel": ["packages/babel/src/index.js"],
-      "@native-twin/babel/*": ["packages/babel/src/*.js"],
-
-      "@native-twin/dev-tools": ["packages/dev-tools/src/index.js"],
-      "@native-twin/dev-tools/*": ["packages/dev-tools/src/*.js"],
-      
-      "@native-twin/language-server": ["packages/language-server/src/index.js"],
-      "@native-twin/language-server/*": ["packages/language-server/src/*.js"],
-
-      "@native-twin/language-service": ["packages/language-service/src/index.js"],
-      "@native-twin/language-service/*": ["packages/language-service/src/*.js"],
-
-      "@native-twin/metro": ["packages/metro/src/index.js"],
-      "@native-twin/metro*": ["packages/metro/src/*.js"],
-
-      "@native-twin/preset-tailwind": ["packages/preset-tailwind/src/index.js"],
-      "@native-twin/preset-tailwind/*": ["packages/preset-tailwind/src/*.js"],
-
-      "@native-twin/styled": ["packages/styled/src/index.js"],
-      "@native-twin/styled*": ["packages/styled/src/*.js"],
-
-      "@native-twin/vite-plugin": ["packages/vite-plugin/src/index.js"],
-      "@native-twin/vite-plugin/*": ["packages/vite-plugin/src/*.js"],
-
-      "@native-twin/vscode-extension": ["packages/vscode-extension/src/index.js"],
-      "@native-twin/vscode-extension/*": ["packages/vscode-extension/src/*.js"],
-    }
   },
   "exclude": ["**/eslint.config.js"]
 }

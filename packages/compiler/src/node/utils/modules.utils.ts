@@ -1,5 +1,5 @@
 import * as Option from 'effect/Option';
-import { readFileSync } from 'fs';
+import * as fs from 'fs';
 import { createJiti } from 'jiti';
 import { transform } from 'sucrase';
 
@@ -30,7 +30,7 @@ export function nodeRequireJS<T = unknown>(path: string): T {
     } catch {
       // const resolved = lazyJiti().esmResolve(path);
       // console.log('JJJJ', lazyJiti());
-      const code = readFileSync(path, 'utf-8');
+      const code = fs.readFileSync(path, 'utf-8');
       // lazyJiti().import(path, { default: true });
       return lazyJiti().evalModule(code, {
         async: false,

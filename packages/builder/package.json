@@ -14,9 +14,9 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "type": "module",
-  "main": "./build/twin-cli.js",
+  "main": "./build/main.js",
   "bin": {
-    "twin": "./build/twin-cli.js"
+    "twin": "./build/main.js"
   },
   "files": [
     "LICENSE",
@@ -26,7 +26,7 @@
     "src"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node esbuild.mjs",
+    "build": "node esbuild.mjs",
     "clean": "rm -rf build",
     "gen:schema": "node --loader ts-node/esm -r ts-node/register --no-warnings ./src/config/twin.schema",
     "lint": "eslint"

@@ -14,6 +14,7 @@ import { matchCss } from '@native-twin/helpers/server';
 import type { TwinMetroTransformFn } from '../models/Metro.models.js';
 import { transformCSSExpo } from '../utils/css.utils.js';
 
+console.log('WORKER: ', worker);
 type MetroTransformFn = typeof worker.transform;
 
 export const transform: TwinMetroTransformFn = async (
@@ -63,6 +64,7 @@ export const transform: TwinMetroTransformFn = async (
       const result: TransformResponse = yield* Effect.promise(() =>
         transformCSSExpo(config, projectRoot, filename, data, options),
       );
+      console.log('RESULT: ', result);
       return result;
     }
 
@@ -81,9 +83,11 @@ export const transform: TwinMetroTransformFn = async (
     });
 
     const result = yield* compiler.mutateAST(output.ast);
+    // yield* Effect.log('MUTATE: ');
 
     if (result?.code) {
       // console.log('OPTIONS: ', params.options);
+      console.log('TRANSFORMED: ', result?.code);
       code = result.code;
     }
 
@@ -96,6 +100,7 @@ export const transform: TwinMetroTransformFn = async (
     Effect.provide(NodeMainLayerSync),
     Effect.provide(setConfigLayerFromUser),
     Effect.provide(serverEnvLayer),
+    Effect.onError((x) => Effect.log('asdadasd', x)),
     Effect.runPromise,
   );
 

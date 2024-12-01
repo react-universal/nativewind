@@ -1,5 +1,5 @@
 {
   "main": "../build/cjs/jsx-runtime.js",
-  "module": "../build/cjs/jsx-runtime.js",
-  "types": "../build/jsx-runtime.d.ts"
+  "module": "../build/esm/jsx-runtime.js",
+  "types": "../build/dts/jsx-runtime.d.ts"
 }

@@ -1,3 +1,4 @@
 {
-  "main": "../build/cjs/react.js"
+  "main": "../build/cjs/react.js",
+  "module": "../build/esm/react.js"
 }

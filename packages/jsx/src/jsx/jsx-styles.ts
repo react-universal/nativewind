@@ -12,6 +12,7 @@ import type { JSXInternalProps } from '../types/jsx.types.js';
 export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
   const componentSheet = props?.['_twinComponentSheet'];
   const componentID = props?.['_twinComponentID'];
+  console.log('RUNTIME: ', componentSheet, componentID);
   if (componentID && componentSheet) {
     let finalEntries = componentSheet;
     if (

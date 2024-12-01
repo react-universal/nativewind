@@ -98,8 +98,6 @@ export function getCompilerOptions(opts: {
     );
   }
 
-  compilerOptions['listEmittedFiles'] = true;
-
   return compilerOptions;
 }
 

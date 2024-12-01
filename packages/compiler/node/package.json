@@ -1,0 +1,4 @@
+{
+  "main": "../build/cjs/node.js",
+  "module": "../build/esm/node.js"
+}

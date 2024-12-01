@@ -1,8 +1,8 @@
 import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput.js';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import fs from 'fs';
-import worker, { type TransformResponse } from 'metro-transform-worker';
+import * as fs from 'fs';
+import * as worker from 'metro-transform-worker';
 import { TwinNodeContext, TwinFileSystem } from '@native-twin/compiler/node';
 import { pathToHtmlSafeName, countLines } from '@native-twin/helpers/server';
 import { MetroWorkerService } from '../services/MetroWorker.service.js';
@@ -16,7 +16,7 @@ export const transformCSS = Effect.gen(function* () {
   const outputPath = twin.getOutputCSSPath('web');
 
   if (platform !== 'web') {
-    return Option.none() as Option.Option<TransformResponse>;
+    return Option.none() as Option.Option<worker.TransformResponse>;
   }
 
   const { transform: lightningcssTransform } =
@@ -87,7 +87,7 @@ export const transformCSS = Effect.gen(function* () {
   return Option.some({
     dependencies: jsModuleResults.dependencies,
     output: outputCode,
-  }) as Option.Option<TransformResponse>;
+  }) as Option.Option<worker.TransformResponse>;
 });
 
 export function wrapDevelopmentCSS(props: {
