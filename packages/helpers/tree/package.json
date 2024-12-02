@@ -1,4 +1,5 @@
 {
   "main": "../build/cjs/tree.js",
-  "module": "../build/esm/tree.js"
+  "module": "../build/esm/tree.js",
+  "types": "../build/dts/tree.d.ts"
 }

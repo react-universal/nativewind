@@ -1,6 +1,6 @@
 import { transformPostCssModule } from '@expo/metro-config/build/transform-worker/postcss.js';
 import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput.js';
-import CodeBlockWriter from 'code-block-writer';
+import * as CodeBlockWriter from 'code-block-writer';
 import worker from 'metro-transform-worker';
 // @ts-expect-error untyped
 import countLines from 'metro/src/lib/countLines';
@@ -91,7 +91,7 @@ export function getHotReplaceTemplate(id: string) {
   // use the path as the expo-css-hmr attribute to find the style tag
   // to replace.
   const attr = JSON.stringify(pathToHtmlSafeName(id));
-  const writer = new CodeBlockWriter();
+  const writer = new CodeBlockWriter.default();
   writer.writeLine(`style.setAttribute('data-expo-css-hmr', ${attr});`);
   writer.writeLine(`style.setAttribute('data-native-twin', "");`);
   writer.writeLine(
@@ -109,7 +109,7 @@ export function getHotReplaceTemplate(id: string) {
 }
 
 const getDomStyleInjector = (filename: string, code: string) => {
-  const writer = new CodeBlockWriter();
+  const writer = new CodeBlockWriter.default();
   const withBackTicksEscaped = escapeBackticksAndOctals(code);
   writer.writeLine(
     `const head = document.head || document.getElementsByTagName('head')[0];`,
@@ -135,14 +135,14 @@ const getDomStyleInjector = (filename: string, code: string) => {
 
 const getServerStylesInjector = (styles: string) => {
   // (()=>{${injectClientStyle}})();`
-  const writer = new CodeBlockWriter();
+  const writer = new CodeBlockWriter.default();
 
   writer.write(`(()=>{${styles}})();`);
   return writer.toString();
 };
 
 export const getClientRuntimeInjector = (filename: string, styles: string) => {
-  const writer = new CodeBlockWriter();
+  const writer = new CodeBlockWriter.default();
   writer
     .write(`(() => `)
     .block(() => {

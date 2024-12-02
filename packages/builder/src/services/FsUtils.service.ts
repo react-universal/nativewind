@@ -116,6 +116,14 @@ const make = Effect.gen(function* (_) {
       }),
     );
   return {
+    getTsFiles: () =>
+      glob('src/**/*.ts', {
+        nodir: true,
+        absolute: true,
+        cwd: process.cwd(),
+        dotRelative: true,
+        ignore: '**/*.d.ts',
+      }),
     glob,
     globFiles,
     modifyFile,

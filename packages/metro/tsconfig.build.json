@@ -1,12 +1,6 @@
 {
-  "extends": "./tsconfig.src.json",
-  "references": [
-    { "path": "../helpers/tsconfig.build.json" },
-    { "path": "../compiler/tsconfig.build.json" }
-  ],
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "lib": ["ES2022"],
-    "tsBuildInfoFile": ".tsbuildinfo/build.tsbuildinfo",
     "outDir": "build/esm",
     "declarationDir": "build/dts",
     "stripInternal": true

@@ -1,4 +1,4 @@
-import CodeBlockWriter from 'code-block-writer';
+import * as CodeBlockWriter from 'code-block-writer';
 import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { expressionFactory } from './writer.factory.js';
 
@@ -7,7 +7,7 @@ const runtimeEntryToCode = (
   entry: RuntimeComponentEntry,
   produceTemplateFn = false,
 ) => {
-  const w = expressionFactory(new CodeBlockWriter());
+  const w = expressionFactory(new CodeBlockWriter.default());
   let templateEntries: null | string = null;
   if (
     entry.templateLiteral !== null &&

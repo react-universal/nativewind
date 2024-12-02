@@ -1,6 +1,6 @@
 import * as NodePath from '@effect/platform-node/NodePath';
 import * as Path from '@effect/platform/Path';
-import { Config, Console, Context, Effect, Layer } from 'effect';
+import { Config, Console, Context, Effect, Layer, Option, Schema } from 'effect';
 import { inspect } from 'util';
 
 export const TWIN_ENV_KEYS = {
@@ -72,26 +72,28 @@ const getPlatformFilename = (platform: string) => {
   return `twin.out.${platform}.${ext}`;
 };
 
-export const modifyEnv = (key: string, value: string, clear = false) =>
+export const modifyEnv = (key: string, value: string) =>
   Effect.gen(function* () {
     const isInEnv = key in process.env;
 
     const original = process.env[key];
     process.env[key] = value;
 
-    if (clear) {
-      yield* Effect.addFinalizer(() =>
-        Effect.sync(() => {
-          if (isInEnv) {
-            process.env[key] = original;
-          } else {
-            Reflect.deleteProperty(process.env, key);
-          }
-        }).pipe(
-          Effect.tap(() =>
-            Console.log(`${key} was ${isInEnv ? 'restored' : 'deleted'} from env`),
-          ),
+    yield* Effect.addFinalizer(() =>
+      Effect.sync(() => {
+        if (isInEnv) {
+          process.env[key] = original;
+        } else {
+          Reflect.deleteProperty(process.env, key);
+        }
+      }).pipe(
+        Effect.tap(() =>
+          Console.log(`${key} was ${isInEnv ? 'restored' : 'deleted'} from env`),
         ),
-      );
-    }
+      ),
+    );
   });
+
+const StringData = Schema.String;
+
+const a = StringData;

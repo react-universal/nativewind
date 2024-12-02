@@ -1,4 +1,5 @@
 {
   "main": "../build/cjs/jsx.js",
-  "module": "../build/esm/jsx.js"
+  "module": "../build/esm/jsx.js",
+  "types": "../build/dts/jsx.d.ts"
 }

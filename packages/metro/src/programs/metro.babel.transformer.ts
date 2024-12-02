@@ -5,14 +5,14 @@ import {
   NodeMainLayerSync,
   setConfigLayerFromUser,
   TwinNodeContext,
+  BabelCompiler,
 } from '@native-twin/compiler/node';
-import { BabelCompiler } from '@native-twin/compiler/node';
 import type { BabelTransformerFn } from '../models/Metro.models.js';
 
 export const transform: BabelTransformerFn = async (params) => {
   // console.log('[transform]: PARAMS: ', params);
 
-  return Effect.gen(function* () {
+  const program = Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
     const compiler = yield* BabelCompiler;
     let code = params.src;
@@ -48,4 +48,6 @@ export const transform: BabelTransformerFn = async (params) => {
     Effect.provide(TwinEnvContextLive),
     Effect.runPromise,
   );
+
+  return program;
 };

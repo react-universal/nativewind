@@ -1,4 +1,4 @@
-import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput.js';
+import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as fs from 'fs';

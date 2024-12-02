@@ -1,6 +1,6 @@
 import { HttpApiBuilder } from '@effect/platform';
 import { Array, Effect, Layer, pipe, Record } from 'effect';
-import { TwinEnvContext } from '@native-twin/compiler/TwinEnv';
+import { TwinEnvContext } from '../../TwinEnv.js';
 import { FsUtils } from '../../internal/fs.utils.js';
 import { TwinServerApi } from '../Api.js';
 import { TwinConfigNotFound } from '../Domain/TwinConfig.model.js';

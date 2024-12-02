@@ -1,6 +1,6 @@
 import * as t from '@babel/types';
 import * as Path from '@effect/platform/Path';
-import CodeBlockWriter from 'code-block-writer';
+import * as CodeBlockWriter from 'code-block-writer';
 import * as Effect from 'effect/Effect';
 import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
@@ -33,7 +33,7 @@ const getJSXElementOutput = (
 
 const getNativeFileOutput = (stringStyles: string, platform: string) =>
   Effect.gen(function* () {
-    const writer = new CodeBlockWriter();
+    const writer = new CodeBlockWriter.default();
     const path = yield* Path.Path;
     const env = yield* CompilerConfig;
 
@@ -71,7 +71,7 @@ export const getNativeStylesJSOutput = (
         ),
       ),
       Stream.map((x) =>
-        new CodeBlockWriter()
+        new CodeBlockWriter.default()
           .write(`['${x.node.id}']: `)
           .write(x.stringEntries)
           .write(',')
@@ -82,7 +82,7 @@ export const getNativeStylesJSOutput = (
         return `${current}${prev}`;
       }),
       Effect.map((x) => {
-        const writer = new CodeBlockWriter();
+        const writer = new CodeBlockWriter.default();
         return writer
           .write(`export const globalSheets = `)
           .block(() => {

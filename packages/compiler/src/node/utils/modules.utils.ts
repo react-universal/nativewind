@@ -1,9 +1,9 @@
 import * as Option from 'effect/Option';
 import * as fs from 'fs';
-import { createJiti } from 'jiti';
+import * as createJiti from 'jiti';
 import { transform } from 'sucrase';
 
-const jitiFactory = createJiti;
+const jitiFactory = createJiti.createJiti;
 let jiti: ReturnType<typeof jitiFactory> | null = null;
 
 function lazyJiti() {

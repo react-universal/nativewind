@@ -1,4 +1,3 @@
-import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';
 import * as Queue from 'effect/Queue';
 
@@ -9,7 +8,7 @@ export class BuilderLoggerService extends Effect.Service<BuilderLoggerService>()
       const logger = yield* Queue.unbounded<string>();
 
       yield* Queue.take(logger).pipe(
-        Effect.map(Console.log),
+        Effect.map((x) => Effect.log(x, '\n')),
         Effect.flatten,
         Effect.forever,
         Effect.fork,

@@ -1,4 +1,5 @@
 {
   "main": "../build/cjs/node.js",
-  "module": "../build/esm/node.js"
+  "module": "../build/esm/node.js",
+  "types": "../build/dts/node.js"
 }

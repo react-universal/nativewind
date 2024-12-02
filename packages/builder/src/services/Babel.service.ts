@@ -1,6 +1,6 @@
 import { transformAsync, TransformOptions } from '@babel/core';
 import { FileSystem, Path } from '@effect/platform';
-import { Array, Context, Effect, Layer, Option } from 'effect';
+import { Array, Context, Effect, Layer, Logger, LogLevel, Option } from 'effect';
 import { FsUtils } from './FsUtils.service.js';
 import { TsEmitSource } from './Typescript.service.js';
 
@@ -175,7 +175,7 @@ const make = Effect.gen(function* () {
     getCJSPath,
     annotationsAndCjsCompose,
   };
-});
+}).pipe(Logger.withMinimumLogLevel(LogLevel.None));
 
 export interface BabelContext extends Effect.Effect.Success<typeof make> {}
 export const BabelContext = Context.GenericTag<BabelContext>('runner/BabelContext');

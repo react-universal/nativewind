@@ -10,9 +10,9 @@ export function matchCss(filename: string): boolean {
 
 export function bufferToString(
   input: Buffer,
-  encoding: BufferEncoding = 'utf-8',
+  _encoding = 'utf-8',
 ): string {
-  return input.toString(encoding);
+  return input.toString('utf-8');
 }
 
 export const toBufferThenString = compose(ensureBuffer, bufferToString);

@@ -12,12 +12,12 @@
 
     // Modules Config
     "module": "NodeNext",
-    "target": "ES2022",
-    "moduleResolution": "NodeNext",
+    "target": "ESNext",
+    "moduleResolution": "nodenext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "moduleDetection": "force",
     "esModuleInterop": false,
-    "types": [],
+    "types": ["node", "react-native", "jest"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "allowSyntheticDefaultImports": true,
@@ -37,16 +37,14 @@
     "forceConsistentCasingInFileNames": true,
     "allowUnreachableCode": false,
     "noImplicitReturns": false,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noImplicitOverride": true,
-    "disableReferencedProjectLoad": true,
-    "resolvePackageJsonExports": true,
     "noErrorTruncation": false,
     "noUnusedParameters": false,
     "noUnusedLocals": true,
-    "isolatedModules": true,
+    "isolatedModules": true
   },
-  "exclude": ["**/eslint.config.js"]
+  "exclude": ["**/eslint.config.js", "node_modules"]
 }

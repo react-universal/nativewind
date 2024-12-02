@@ -14,11 +14,25 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "exports": {
-    ".": "./build/cjs/index.js",
-    "./tree": "./build/cjs/tree.js",
-    "./server": "./build/cjs/server.js"
+    ".": {
+      "types": "./build/dts/index.d.ts",
+      "import": "./build/esm/index.js",
+      "default": "./build/cjs/index.js"
+    },
+    "./tree": {
+      "types": "./build/dts/tree.d.ts",
+      "import": "./build/esm/tree.js",
+      "default": "./build/cjs/tree.js"
+    },
+    "./server": {
+      "types": "./build/dts/server.d.ts",
+      "import": "./build/esm/server.js",
+      "default": "./build/cjs/server.js"
+    }
   },
   "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/dts/index.d.ts",
   "files": [
     "build",
     "src",

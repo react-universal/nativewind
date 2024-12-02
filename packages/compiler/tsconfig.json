@@ -1,8 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": [],
-  "references": [
-    { "path": "tsconfig.src.json" },
-    { "path": "tsconfig.test.json" }
-  ]
+  "compilerOptions": {
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "module": "ES2022",
+    "resolvePackageJsonExports": false,
+    "esModuleInterop": true
+  },
+  "include": ["src"],
+  "exclude": ["build"]
 }

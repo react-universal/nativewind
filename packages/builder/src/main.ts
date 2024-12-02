@@ -4,6 +4,7 @@ import { FileSystem, Path } from '@effect/platform';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Logger, Effect, LogLevel, Queue } from 'effect';
 import { BabelContext, BabelContextLive } from './services/Babel.service.js';
+import { BuilderLoggerService } from './services/BuildLogger.service.js';
 import { FsUtils, FsUtilsLive } from './services/FsUtils.service.js';
 import {
   TsEmitResult,
@@ -37,7 +38,7 @@ const PackDev = Effect.gen(function* () {
       yield* babelRunner.annotationsAndCjsCompose(sources, original);
 
       yield* Effect.logDebug('Compiled succeed: ', original.path);
-    });
+    }).pipe(Logger.withMinimumLogLevel(LogLevel.Debug));
 
   yield* Queue.take(tsRunner.compiledFiles).pipe(
     Effect.map((result) =>
@@ -52,7 +53,12 @@ const PackDev = Effect.gen(function* () {
   );
   yield* Effect.logDebug('FINISH');
   return tsRunner;
-}).pipe(Effect.provide(BabelContextLive), Effect.provide(TypescriptContextLive));
+}).pipe(
+  Effect.catchAllDefect((x) => Effect.logError('UNHANDLED_ERROR; ', x)),
+  Effect.provide(BabelContextLive),
+  Effect.provide(TypescriptContextLive),
+  Effect.provide(BuilderLoggerService.Default),
+);
 
 const run = Command.make('twin').pipe(
   Command.withSubcommands([Command.make('pack-dev', {}, () => PackDev)]),

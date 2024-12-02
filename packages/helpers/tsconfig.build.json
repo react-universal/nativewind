@@ -1,9 +1,10 @@
 {
-  "extends": "./tsconfig.src.json",
+  "extends": "../../tsconfig.base.json",
+  "include": ["src"],
   "compilerOptions": {
-    "tsBuildInfoFile": ".tsbuildinfo/build.tsbuildinfo",
+    "moduleResolution": "node",
+    "module": "ES2022",
     "outDir": "build/esm",
-    "declarationDir": "build/dts",
-    "stripInternal": true
+    "declarationDir": "build/dts"
   }
 }

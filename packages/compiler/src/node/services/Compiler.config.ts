@@ -5,7 +5,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as path from 'node:path';
-import { TwinEnvContext } from '@native-twin/compiler/TwinEnv';
+import { TwinEnvContext } from '../../TwinEnv.js';
 import { DEFAULT_TWIN_INPUT_CSS_FILE } from '../../shared/twin.constants.js';
 import { getTwinCacheDir } from '../utils/twin.utils.node.js';
 

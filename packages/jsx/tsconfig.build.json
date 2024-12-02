@@ -1,15 +1,6 @@
 {
-  "extends": "./tsconfig.src.json",
-  "references": [
-    { "path": "../arc-parser/tsconfig.build.json" },
-    { "path": "../helpers/tsconfig.build.json" },
-    { "path": "../css/tsconfig.build.json" },
-    { "path": "../native-twin/tsconfig.build.json" },
-    { "path": "../preset-tailwind/tsconfig.build.json" },
-  ],
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["node", "jest"],
-    "tsBuildInfoFile": ".tsbuildinfo/build.tsbuildinfo",
     "outDir": "build/esm",
     "declarationDir": "build/dts",
     "stripInternal": true
