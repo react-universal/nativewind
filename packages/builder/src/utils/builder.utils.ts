@@ -14,9 +14,7 @@ interface IPackageJson {
 export const getTargetPackageEntries = (packagePath: string) =>
   Effect.gen(function* () {
     const importedPackage = yield* Effect.promise(async (): Promise<IPackageJson> => {
-      return import(packagePath, {
-        with: { type: 'json' },
-      }).then((x) => x.default);
+      return import(packagePath).then((x) => x.default);
     });
 
     return yield* getExportsFromPackage(importedPackage);

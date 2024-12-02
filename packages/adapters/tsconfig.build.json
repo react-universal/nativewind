@@ -1,13 +1,7 @@
 {
-  "extends": "./tsconfig.src.json",
-  "references": [
-    { "path": "../helpers/tsconfig.build.json" },
-    { "path": "../css/tsconfig.build.json" },
-    { "path": "../native-twin/tsconfig.build.json" }
-  ],
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "jsx": "preserve",
-    "tsBuildInfoFile": ".tsbuildinfo/build.tsbuildinfo",
+    
     "outDir": "build/esm",
     "declarationDir": "build/dts",
     "stripInternal": true

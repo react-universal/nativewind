@@ -1,8 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": [],
-  "references": [
-    { "path": "tsconfig.src.json" },
-    { "path": "tsconfig.test.json" }
-  ]
+  "compilerOptions": {
+    "module": "NodeNext",
+    "jsx": "react-native",
+    "moduleResolution": "nodenext",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["build"]
 }

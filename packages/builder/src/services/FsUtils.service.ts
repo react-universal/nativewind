@@ -6,7 +6,7 @@ import * as Glob from 'glob';
 const make = Effect.gen(function* (_) {
   const fs = yield* _(FileSystem.FileSystem);
   const path_ = yield* _(Path.Path);
-
+  
   const glob = (pattern: string | ReadonlyArray<string>, options?: Glob.GlobOptions) =>
     Effect.tryPromise({
       try: () => Glob.glob(pattern as any, options as any),
@@ -115,15 +115,8 @@ const make = Effect.gen(function* (_) {
         onFalse: () => fs.makeDirectory(path, { recursive: true }),
       }),
     );
+
   return {
-    getTsFiles: () =>
-      glob('src/**/*.ts', {
-        nodir: true,
-        absolute: true,
-        cwd: process.cwd(),
-        dotRelative: true,
-        ignore: '**/*.d.ts',
-      }),
     glob,
     globFiles,
     modifyFile,

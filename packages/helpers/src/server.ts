@@ -5,4 +5,4 @@ export {
   matchCss,
   pathToHtmlSafeName,
   toBufferThenString,
-} from './server/file.utils.js';
+} from './internal/file.utils.js';

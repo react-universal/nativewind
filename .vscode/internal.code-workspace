@@ -5,12 +5,16 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
+    },
+    {
       "name": "📦 @lib/arc-parser",
       "path": "../packages/arc-parser"
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
     },
     {
       "name": "📦 @lib/compiler",
@@ -31,10 +35,6 @@
     {
       "name": "📦 @lib/dev-tools",
       "path": "../packages/dev-tools"
-    },
-    {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
     },
     {
       "name": "📦 @lib/native-twin",
@@ -69,16 +69,16 @@
       "path": "../packages/babel"
     },
     {
+      "name": "expo-app",
+      "path": "../apps/expo-app"
+    },
+    {
       "name": "expo-router",
       "path": "../apps/expo-router"
     },
     {
       "name": "twin.run",
       "path": "../sites/twin.run"
-    },
-    {
-      "name": "expo-app",
-      "path": "../apps/expo-app"
     },
     {
       "name": "next-pages-example",

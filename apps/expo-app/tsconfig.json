@@ -1,24 +1,14 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-native",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
+    "lib": ["DOM", "ESNext"],
     "exactOptionalPropertyTypes": false,
     "allowJs": true,
+    "moduleResolution": "node",
+    "target": "ESNext",
     "noEmit": true
   },
-  "exclude": [
-    "node_modules",
-    ".expo"
-  ],
-  "include": [
-    "index.js",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.json",
-    "wdyr.js"
-  ],
-  "extends": "expo/tsconfig.base"
+  "exclude": ["node_modules", ".expo"],
+  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json", "wdyr.js"]
 }
