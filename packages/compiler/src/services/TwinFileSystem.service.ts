@@ -4,6 +4,7 @@ import * as NodePath from '@effect/platform-node/NodePath';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
 import chokidar from 'chokidar';
+import { Option } from 'effect';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -24,7 +25,7 @@ import {
 import { getNativeStylesJSOutput } from '../utils/native.utils.js';
 import { extractTwinConfig } from '../utils/twin.utils.js';
 import { BabelCompiler } from './BabelCompiler.service.js';
-import { CompilerConfig } from './Compiler.config.js';
+import { CompilerConfigContext } from './CompilerConfig.service.js';
 import { TwinNodeContext } from './TwinNodeContext.service.js';
 
 const providedFrequency = new FrequencyMetric(
@@ -37,7 +38,7 @@ const providedFrequency = new FrequencyMetric(
 export const TwinFSMake = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const compiler = yield* BabelCompiler;
-  const env = yield* CompilerConfig;
+  const { env } = yield* CompilerConfigContext;
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
 
@@ -79,9 +80,9 @@ export const TwinFSMake = Effect.gen(function* () {
         }
         return;
       }
-      if (event.path === env.twinConfigPath) {
+      if (Option.isSome(env.twinConfigPath) && event.path === env.twinConfigPath.value) {
         if (event._tag === 'Update') {
-          const newConfig = extractTwinConfig(env.twinConfigPath);
+          const newConfig = extractTwinConfig(env.twinConfigPath.value);
           // const filesToSet = HashSet.fromIterable(allowedFiles.files);
           // const shouldReplace = currentFiles.pipe(HashSet.isSubset(filesToSet));
           // watcher.unwatch(Object.keys(watcher.getWatched()));

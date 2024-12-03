@@ -1,3 +1,4 @@
+import { Option } from 'effect';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -8,16 +9,19 @@ import * as Ref from 'effect/Ref';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as micromatch from 'micromatch';
 import * as path from 'node:path';
+import { defineConfig } from '@native-twin/core';
 import {
   createTwinProcessor,
   extractTwinConfig,
   getFilesFromGlobs,
 } from '../utils/twin.utils.js';
-import { CompilerConfig } from './Compiler.config.js';
+import { CompilerConfigContext } from './CompilerConfig.service.js';
 
 const TwinNodeContextLive = Effect.gen(function* () {
-  const envConfig = yield* CompilerConfig;
-  const initialConfig = extractTwinConfig(envConfig.twinConfigPath);
+  const { env } = yield* CompilerConfigContext;
+  const initialConfig = Option.map(env.twinConfigPath, (x) => extractTwinConfig(x)).pipe(
+    Option.getOrElse(() => defineConfig({ content: [] })),
+  );
   const projectFilesRef = yield* SubscriptionRef.make(HashSet.empty<string>());
   const twinConfigRef = yield* SubscriptionRef.make(initialConfig);
   const runningPlatformsRef = yield* SubscriptionRef.make(HashSet.empty<string>());
@@ -29,23 +33,21 @@ const TwinNodeContextLive = Effect.gen(function* () {
   const getAllowedGlobPatterns = Ref.get(twinConfigRef).pipe(
     Effect.map((x) =>
       pipe(
-        RA.map(x.content, (x) => path.join(envConfig.projectRoot, x)),
-        (x) => [envConfig.twinConfigPath, ...x],
+        RA.map(x.content, (x) => path.join(env.projectRoot, x)),
+        (x) => [env.twinConfigPath.pipe(Option.getOrElse(() => '')), ...x],
       ),
     ),
   );
 
   const scanAllowedPaths = getAllowedGlobPatterns.pipe(
-    Effect.map((globPatterns) =>
-      getFilesFromGlobs([...globPatterns, envConfig.twinConfigPath]),
-    ),
+    Effect.map((globPatterns) => getFilesFromGlobs(globPatterns)),
   );
 
   const isAllowedPath = (filePath: string) =>
     getAllowedGlobPatterns.pipe(
       Effect.map((globPatterns) => {
         return (
-          micromatch.isMatch(path.join(envConfig.projectRoot, filePath), globPatterns) ||
+          micromatch.isMatch(path.join(env.projectRoot, filePath), globPatterns) ||
           micromatch.isMatch(filePath, globPatterns)
         );
       }),
@@ -63,16 +65,16 @@ const TwinNodeContextLive = Effect.gen(function* () {
   const getOutputCSSPath = (platform: string) => {
     switch (platform) {
       case 'web':
-        return envConfig.platformPaths.web;
+        return env.platformPaths.web;
       case 'ios':
-        return envConfig.platformPaths.ios;
+        return env.platformPaths.ios;
       case 'android':
-        return envConfig.platformPaths.android;
+        return env.platformPaths.android;
       case 'native':
-        return envConfig.platformPaths.native;
+        return env.platformPaths.native;
       default:
         console.warn('[WARN]: cant determine outputCSS fallback to default');
-        return envConfig.platformPaths.native;
+        return env.platformPaths.native;
     }
   };
   return {

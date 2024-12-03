@@ -8,7 +8,7 @@ import * as Stream from 'effect/Stream';
 import { js_beautify } from 'js-beautify';
 import { getRawSheet } from '@native-twin/css/jsx';
 import type { JSXElementNode } from '../models/JSXElement.model.js';
-import { CompilerConfig } from '../services/Compiler.config.js';
+import { CompilerConfigContext } from '../services/CompilerConfig.service.js';
 import { getJSXCompiledTreeRuntime, runtimeEntriesToAst } from './babel/babel.jsx.js';
 import { entriesToComponentData } from './babel/code.utils.js';
 
@@ -35,7 +35,7 @@ const getNativeFileOutput = (stringStyles: string, platform: string) =>
   Effect.gen(function* () {
     const writer = new CodeBlockWriter.default();
     const path = yield* Path.Path;
-    const env = yield* CompilerConfig;
+    const { env } = yield* CompilerConfigContext;
 
     writer.writeLine(`const setup = require('@native-twin/core').setup;`);
     writer.writeLine(`const runtimeTW = require('@native-twin/core').tw;`);
@@ -44,7 +44,10 @@ const getNativeFileOutput = (stringStyles: string, platform: string) =>
     const outputFilePath =
       env.platformPaths[platform as 'native'] ?? env.platformPaths.native;
 
-    let importTwinPath = path.relative(path.dirname(outputFilePath), env.twinConfigPath);
+    let importTwinPath = path.relative(
+      path.dirname(outputFilePath),
+      env.twinConfigPath.pipe(Option.getOrElse(() => '')),
+    );
 
     if (!importTwinPath.startsWith('.')) {
       importTwinPath = `./${importTwinPath}`;

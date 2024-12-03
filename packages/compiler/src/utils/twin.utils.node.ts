@@ -8,11 +8,8 @@ import * as String from 'effect/String';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { defineConfig, TailwindConfig } from '@native-twin/core';
-import {
-  DEFAULT_TWIN_INPUT_CSS_FILE,
-  TWIN_DEFAULT_FILES,
-} from '../../shared/twin.constants.js';
 import { InternalTwinConfig } from '../models/twin.types.js';
+import { TWIN_DEFAULT_FILES } from '../shared/twin.constants.js';
 import { maybeLoadJS } from './modules.utils.js';
 
 const checkDefaultTwinConfigFiles = (rootDir: string) =>
@@ -69,10 +66,7 @@ export const createTwinCSSFiles = ({
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  if (!inputCSS) {
-    inputCSS = path.join(outputDir, DEFAULT_TWIN_INPUT_CSS_FILE);
-    fs.writeFileSync(inputCSS, '');
-  } else {
+  if (inputCSS) {
     if (!fs.existsSync(inputCSS)) {
       if (fs.existsSync(path.join(process.cwd(), inputCSS))) {
         inputCSS = path.join(process.cwd(), inputCSS);

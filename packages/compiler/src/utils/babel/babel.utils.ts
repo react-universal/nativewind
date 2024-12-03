@@ -9,7 +9,7 @@ import {
   createCommonMappedAttribute,
   MappedComponent,
   mappedComponents,
-} from '../../../shared/compiler.constants.js';
+} from '../../shared/compiler.constants.js';
 import { JSXChildElement, JSXMappedAttribute } from '../../models/jsx.models.js';
 import * as babelPredicates from './babel.predicates.js';
 

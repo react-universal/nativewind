@@ -1,7 +1,7 @@
 import { HttpApiBuilder } from '@effect/platform';
 import { Array, Effect, Layer, pipe, Record } from 'effect';
-import { TwinEnvContext } from '../../TwinEnv.js';
 import { FsUtils } from '../../internal/fs.utils.js';
+import { CompilerConfigContext } from '../../services/CompilerConfig.service.js';
 import { TwinServerApi } from '../Api.js';
 import { TwinConfigNotFound } from '../Domain/TwinConfig.model.js';
 import { TwinConfigService } from './Service.js';
@@ -12,13 +12,13 @@ export const HttpTwinConfigLive = HttpApiBuilder.group(
   (handlers) =>
     Effect.gen(function* () {
       const config = yield* TwinConfigService;
-      const env = yield* TwinEnvContext;
+      const { env } = yield* CompilerConfigContext;
       const fs = yield* FsUtils;
 
       yield* fs.mkdirCached(env.outputDir);
       yield* Effect.all(
         pipe(
-          Record.values(env.platformOutputs),
+          Record.values(env.platformPaths),
           Array.map((x) => fs.mkEmptyFileCached(x)),
         ),
       );

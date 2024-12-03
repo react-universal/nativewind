@@ -1,6 +1,6 @@
 import { sheetEntriesToCss } from '@native-twin/css';
 import * as Effect from 'effect/Effect';
-import { BabelCompiler } from '../node/services/BabelCompiler.service.js';
+import { BabelCompiler } from '../services/BabelCompiler.service.js';
 
 export const TwinCSSExtractor = (code: string, filePath: string) =>
   Effect.flatMap(BabelCompiler, (babelBuilder) =>
