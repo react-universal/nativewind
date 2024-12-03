@@ -1,9 +1,12 @@
 import { Path, FileSystem } from '@effect/platform';
 import { NodePath, NodeFileSystem } from '@effect/platform-node';
-import { Context, Effect, Layer } from 'effect';
+import chokidar from 'chokidar';
+import { Context, Effect, Layer, Stream } from 'effect';
 import * as Glob from 'glob';
+import { createChokidarWatcher } from '../utils/effect.utils';
 
 const make = Effect.gen(function* (_) {
+  const rootDir = process.cwd();
   const fs = yield* _(FileSystem.FileSystem);
   const path_ = yield* _(Path.Path);
 
@@ -60,6 +63,25 @@ const make = Effect.gen(function* (_) {
   const writeFileSource = (file: { path: string; content: string }) =>
     fs.writeFileString(file.path, file.content);
 
+  const createWatcher = (sourceFiles: string[]) =>
+    Effect.sync(() =>
+      createChokidarWatcher(
+        rootDir,
+        chokidar.watch(sourceFiles, {
+          cwd: rootDir,
+          followSymlinks: false,
+          persistent: true,
+          ignoreInitial: true,
+        }),
+      ).pipe(
+        Stream.filter(
+          (x) =>
+            (!x.path.endsWith('.d.ts') && path_.extname(x.path) === '.ts') ||
+            path_.extname(x.path) === '.tsx',
+        ),
+      ),
+    );
+
   return {
     glob,
     writeFileSource,
@@ -69,11 +91,12 @@ const make = Effect.gen(function* (_) {
     mkdirCached,
     readJson,
     writeJson,
+    createWatcher,
   } as const;
 });
 
 export interface FsUtils extends Effect.Effect.Success<typeof make> {}
-export const FsUtils = Context.GenericTag<FsUtils>('@effect/build-tools/FsUtils');
+export const FsUtils = Context.GenericTag<FsUtils>('twin/FsUtils');
 export const FsUtilsLive = Layer.effect(FsUtils, make).pipe(
   Layer.provide(NodeFileSystem.layer),
   Layer.provide(NodePath.layerPosix),

@@ -47,7 +47,7 @@
   ],
   "scripts": {
     "build": "npx twin pack-dev",
-    "build:watch": "npx twin pack-dev",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "gen:jsdocs": "jsdoc -c jsdoc.json"
   },

@@ -3,7 +3,7 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^build:compiler"],
+      "dependsOn": ["^build:compiler", "^build"],
       "inputs": [
         "$TURBO_DEFAULT$",
         "!**/test",
@@ -55,6 +55,7 @@
       "interactive": true
     },
     "build:watch": {
+      "dependsOn": ["build:compiler"],
       "persistent": true,
       "cache": false
     },

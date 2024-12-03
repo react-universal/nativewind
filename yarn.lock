@@ -4375,7 +4375,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@native-twin/cli@workspace:packages/builder":
+"@native-twin/cli@workspace:*, @native-twin/cli@workspace:packages/builder":
   version: 0.0.0-use.local
   resolution: "@native-twin/cli@workspace:packages/builder"
   dependencies:
@@ -16424,6 +16424,7 @@ __metadata:
     "@changesets/cli": "npm:^2.27.9"
     "@effect/build-utils": "npm:^0.7.8"
     "@effect/experimental": "npm:^0.32.12"
+    "@native-twin/cli": "workspace:*"
     "@nx/eslint": "npm:^20.1.3"
     "@nx/eslint-plugin": "npm:^20.1.3"
     "@rollup/plugin-typescript": "npm:^12.1.1"

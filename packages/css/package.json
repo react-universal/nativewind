@@ -53,7 +53,7 @@
   ],
   "scripts": {
     "build": "npx twin pack-dev",
-    "build:watch": "npx twin pack-dev",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "docgen": "docgen",

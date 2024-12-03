@@ -117,3 +117,50 @@ export const TSCompilerOptions: ts.CompilerOptions = {
   outDir: './build/esm',
   declarationDir: './build/dts',
 };
+
+export interface TsCompilerOutput {
+  diagnostics: readonly ts.Diagnostic[];
+  source: ts.SourceFile;
+  file: {
+    sourcemaps: {
+      path: string;
+      content: string;
+    };
+    esm: {
+      path: string;
+      content: string;
+    };
+    dts: {
+      path: string;
+      content: string;
+    };
+    dtsMap: {
+      path: string;
+      content: string;
+    };
+  };
+}
+
+export interface TwinCompilerOutput {
+  cjs: {
+    readonly sourcemap: Option.Option<BabelSourceMap>;
+    readonly sourcemapFilePath: string;
+    readonly filePath: string;
+    readonly content: Option.Option<string>;
+  };
+  esm: {
+    readonly sourcemap: Option.Option<BabelSourceMap>;
+    readonly sourcemapFilePath: string;
+    readonly filePath: string;
+    readonly content: Option.Option<string>;
+  };
+  dts: {
+    readonly path: string;
+    readonly content: string;
+  };
+  dtsMaps: {
+    readonly path: string;
+    readonly content: string;
+  };
+  sourcePath: string;
+}

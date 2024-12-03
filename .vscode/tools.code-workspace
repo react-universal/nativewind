@@ -5,10 +5,6 @@
       "path": ".."
     },
     {
-      "name": "twin.run",
-      "path": "../sites/twin.run"
-    },
-    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
     },
@@ -33,6 +29,10 @@
       "path": "../packages/babel"
     },
     {
+      "name": "📦 @lib/core",
+      "path": "../packages/native-twin"
+    },
+    {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
     },
@@ -49,8 +49,8 @@
       "path": "../apps/expo-app"
     },
     {
-      "name": "native-twin",
-      "path": "../packages/native-twin"
+      "name": "twin.run",
+      "path": "../sites/twin.run"
     }
   ],
   "settings": {

@@ -2,16 +2,17 @@ import { Config } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-// import * as path from 'node:path';
-// import { inspect } from 'node:util';
+import path from 'node:path';
+import { inspect } from 'node:util';
 import * as TwinEnv from '@native-twin/compiler/TwinEnv';
 import {
-  // listenForkedStreamChanges,
   NodeMainLayerSync,
   NodeMainLayerAsync,
   NodeWithNativeTwinOptions,
   setConfigLayerFromUser,
-  twinLoggerLayer, // TwinFileSystem,
+  twinLoggerLayer,
+  listenForkedStreamChanges,
+  TwinFileSystem,
 } from '@native-twin/compiler/node';
 import { TwinMetroConfig } from './models/Metro.models.js';
 import { getMetroSettings } from './programs/getMetroSettings.js';
@@ -112,16 +113,16 @@ export function withNativeTwin(
         const resolved = resolver(context, moduleName, platform);
         if (!platform) return resolved;
 
-        // const platformOutput = metroSettings.ctx.getOutputCSSPath(platform);
-        // const platformInput = metroSettings.env.inputCSS;
+        const platformOutput = metroSettings.ctx.getOutputCSSPath(platform);
+        const platformInput = metroSettings.env.inputCSS;
 
-        // if ('filePath' in resolved && resolved.filePath === platformInput) {
-        //   console.log('ASDASDASDAD: ', resolved, path.resolve(platformOutput));
-        //   return {
-        //     ...resolved,
-        //     filePath: path.resolve(platformOutput),
-        //   };
-        // }
+        if ('filePath' in resolved && resolved.filePath === platformInput) {
+          // console.log('ASDASDASDAD: ', resolved, path.resolve(platformOutput));
+          return {
+            ...resolved,
+            filePath: path.resolve(platformOutput),
+          };
+        }
 
         return resolved;
       },
@@ -137,21 +138,21 @@ export function withNativeTwin(
           );
 
           if (!options.platform) return result;
-          // const watcher = yield* TwinFileSystem;
+          const watcher = yield* TwinFileSystem;
 
-          // const allFiles = yield* watcher.getAllFiles;
-          // yield* watcher.runTwinForFiles(allFiles, config.platform);
+          const allFiles = yield* watcher.getAllFiles;
+          yield* watcher.runTwinForFiles(allFiles, options.platform);
           yield* Effect.logDebug('CHECK_DEBUG_LOGGER');
 
-          // yield* listenForkedStreamChanges(watcher.fsWatcher, (event) => {
-          //   return Effect.logTrace(
-          //     'FILE_CHANGE_DETECTED',
-          //     inspect(event, false, null, true),
-          //   );
-          // });
-          // yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
+          yield* listenForkedStreamChanges(watcher.fsWatcher, (event) => {
+            return Effect.logTrace(
+              'FILE_CHANGE_DETECTED',
+              inspect(event, false, null, true),
+            );
+          });
+          yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
 
-          // const fsMetrics = yield* TwinFileSystem.metrics.providedFreq.value;
+          // yield* TwinFileSystem.metrics.providedFreq.value;
 
           return result;
         }).pipe(

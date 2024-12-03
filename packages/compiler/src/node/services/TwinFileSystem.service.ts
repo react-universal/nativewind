@@ -41,6 +41,20 @@ export const TwinFSMake = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
 
+  yield* fs
+    .makeDirectory(env.outputDir, { recursive: true })
+    .pipe(Effect.tap(() => Effect.logInfo('TWIN_OUTPUT_CREATED')));
+
+  yield* fs.exists(env.platformPaths.ios).pipe(
+    Effect.flatMap((x) => {
+      if (!x) {
+        return fs.writeFileString(env.platformPaths.ios, '');
+      }
+      return Effect.void;
+    }),
+    Effect.tap(() => Effect.logInfo('TWIN_IOS_CREATED')),
+  );
+
   const watcher = yield* Effect.sync(() =>
     chokidar.watch(ctx.twinConfig.content, {
       cwd: env.projectRoot,
@@ -185,7 +199,7 @@ export const TwinFSMake = Effect.gen(function* () {
 
       const registry = yield* createCompilerRegistry(params.trees);
       return yield* getNativeStylesJSOutput(registry, params.platform);
-    });
+    }).pipe(Effect.provide(NodePath.layerPosix));
   }
 
   function compileFiles(files: Iterable<string>, platform: string) {

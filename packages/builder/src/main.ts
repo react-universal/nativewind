@@ -1,11 +1,27 @@
 #!/usr/bin/env node
 import * as Command from '@effect/cli/Command';
+import * as Options from '@effect/cli/Options';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
-import { Logger, Effect, LogLevel } from 'effect';
+import { Effect } from 'effect';
 import { CompilerRun } from './compiler.program.js';
 
 const run = Command.make('twin').pipe(
-  Command.withSubcommands([Command.make('pack-dev', {}, () => CompilerRun)]),
+  Command.withSubcommands([
+    Command.make(
+      'pack-dev',
+      {
+        watch: Options.boolean('watch').pipe(
+          Options.withAlias('w'),
+          Options.withDefault(false),
+        ),
+        verbose: Options.boolean('verbose').pipe(
+          Options.withAlias('vbs'),
+          Options.withDefault(false),
+        ),
+      },
+      CompilerRun,
+    ),
+  ]),
   Command.run({
     name: 'Twin Cli',
     version: '1.0.1',
@@ -14,7 +30,6 @@ const run = Command.make('twin').pipe(
 
 run(process.argv).pipe(
   Effect.provide(NodeContext.layer),
-  Logger.withMinimumLogLevel(LogLevel.All),
   NodeRuntime.runMain({
     teardown: (_exit, onExit) => {
       // console.log('EXIT: ', exit);
