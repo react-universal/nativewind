@@ -36,18 +36,10 @@
     "@effect/platform": "^0.69.3",
     "@effect/platform-node": "^0.64.4",
     "effect": "^3.10.0",
-    "fs-extra": "11.2.0",
-    "gzip-size": "^7.0.0",
     "lodash.merge": "4.6.2"
   },
   "devDependencies": {
-    "@chialab/esbuild-rna": "^0.18.2",
-    "@rollup/plugin-typescript": "^12.1.1",
-    "@types/fs-extra": "11.0.4",
-    "@types/lodash.merge": "^4.6.9",
-    "esbuild": "0.21.5",
-    "minimist": "^1.2.8",
-    "rollup": "^4.23.0"
+    "@types/lodash.merge": "^4.6.9"
   },
   "publishConfig": {
     "access": "public",

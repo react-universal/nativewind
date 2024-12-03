@@ -8,10 +8,7 @@ const args = minimist(process.argv.slice(2), {
 
 esbuild
   .context({
-    entryPoints: [
-      path.join(process.cwd(), './src/main.ts'),
-      path.join(process.cwd(), './src/config/twin.schema.ts'),
-    ],
+    entryPoints: [path.join(process.cwd(), './src/main.ts')],
     outdir: 'build',
     sourcemap: 'external',
     sourcesContent: true,

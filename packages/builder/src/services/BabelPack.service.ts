@@ -1,8 +1,9 @@
 import { Path, FileSystem } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
 import { Context, Array, Effect, Layer, Order, Record, String } from 'effect';
+import { PackageJson } from '../models/PackageJson.model.js';
 import { FsUtils, FsUtilsLive } from './FsUtils.service.js';
-import { PackageContext, PackageJson } from './Package.service.js';
+import { PackageContext } from './Package.service.js';
 
 const make = Effect.gen(function* () {
   const fsUtils = yield* FsUtils;

@@ -1,8 +1,8 @@
 import { Deferred, Effect } from 'effect';
-import { BuilderLoggerService } from '../services/BuildLogger.service';
-import { CompilerContext, CompilerContextLive } from '../services/Compiler.service';
-import { VirtualFSLive } from '../services/VirtualFS.service';
-import { listenForkedStreamChanges } from '../utils/effect.utils';
+import { BuilderLoggerService } from './services/BuildLogger.service.js';
+import { CompilerContext, CompilerContextLive } from './services/Compiler.service.js';
+import { VirtualFSLive } from './services/VirtualFS.service.js';
+import { listenForkedStreamChanges } from './utils/effect.utils.js';
 
 export const CompilerRun = Effect.gen(function* () {
   const compiler = yield* CompilerContext;

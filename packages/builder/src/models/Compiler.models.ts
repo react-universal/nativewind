@@ -19,6 +19,12 @@ export interface CompiledSource {
     readonly path: string;
     readonly content: string;
   };
+  readonly dtsFile: {
+    readonly sourcemap: Option.Option<BabelSourceMap>;
+    readonly sourcemapFilePath: string;
+    readonly filePath: string;
+    readonly content: Option.Option<string>;
+  };
   readonly esmFile: {
     readonly sourcemapFilePath: string;
     readonly sourcemap: Option.Option<string>;

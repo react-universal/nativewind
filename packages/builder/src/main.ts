@@ -2,7 +2,7 @@
 import * as Command from '@effect/cli/Command';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Logger, Effect, LogLevel } from 'effect';
-import { CompilerRun } from './runners/compiler.program.js';
+import { CompilerRun } from './compiler.program.js';
 
 const run = Command.make('twin').pipe(
   Command.withSubcommands([Command.make('pack-dev', {}, () => CompilerRun)]),

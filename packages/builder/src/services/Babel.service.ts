@@ -1,8 +1,9 @@
 import { transformAsync, TransformOptions } from '@babel/core';
 import { FileSystem, Path } from '@effect/platform';
+import { NodeFileSystem, NodePath } from '@effect/platform-node';
 import { Context, Effect, Layer, Logger, LogLevel, Option } from 'effect';
 import type { CompiledSource } from '../models/Compiler.models.js';
-import { FsUtils } from './FsUtils.service.js';
+import { FsUtils, FsUtilsLive } from './FsUtils.service.js';
 
 const make = Effect.gen(function* () {
   const path_ = yield* Path.Path;
@@ -309,4 +310,8 @@ const make = Effect.gen(function* () {
 
 export interface BabelContext extends Effect.Effect.Success<typeof make> {}
 export const BabelContext = Context.GenericTag<BabelContext>('runner/BabelContext');
-export const BabelContextLive = Layer.effect(BabelContext, make);
+export const BabelContextLive = Layer.effect(BabelContext, make).pipe(
+  Layer.provide(NodePath.layerPosix),
+  Layer.provide(NodeFileSystem.layer),
+  Layer.provide(FsUtilsLive),
+);

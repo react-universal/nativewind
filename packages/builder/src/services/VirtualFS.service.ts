@@ -49,7 +49,6 @@ const make = Effect.gen(function* () {
           folders: Array.dedupe(Array.map(x, (file) => path_.dirname(file))),
         };
       }),
-      Effect.tap((x) => Effect.logDebug('[FS] Scanned files: ', x.folders)),
     );
   const watcher = createChokidarWatcher(
     rootDir,
@@ -83,13 +82,8 @@ const make = Effect.gen(function* () {
   const createFiles = (files: CompiledSource) => {
     return Effect.gen(function* () {
       yield* writeCompiledSource(files.cjsFile);
-      // yield* writeCompiledSource({
-      //   content: Option.some(files.esmFile.output.outputText),
-      //   sourcemap: files.esmFile.sourcemap.pipe(Option.map((x) => JSON.parse(x))),
-      //   filePath: files.esmFile.filePath,
-      //   sourcemapFilePath: files.esmFile.sourcemapFilePath,
-      // });
       yield* writeCompiledSource(files.annotatedESMFile);
+      yield* writeCompiledSource(files.dtsFile);
     });
   };
 
