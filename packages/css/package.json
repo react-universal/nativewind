@@ -52,10 +52,8 @@
     "tailwind-parser"
   ],
   "scripts": {
-    "build-annotate": "npx babel build/esm --plugins annotate-pure-calls --out-dir build/esm --source-maps",
-    "build-cjs": "npx babel build/esm --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir build/cjs --source-maps",
-    "build-esm": "tsc -b tsconfig.build.json",
-    "build:watch": "tsc -b tsconfig.dev.json -w",
+    "build": "npx twin pack-dev",
+    "build:watch": "npx twin pack-dev",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "docgen": "docgen",
