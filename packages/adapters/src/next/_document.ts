@@ -1,6 +1,6 @@
 import React from 'react';
-import type { DocumentContext, DocumentInitialProps } from 'next/document.js';
-import Document from 'next/document.js';
+import type { DocumentContext, DocumentInitialProps } from 'next/document';
+import Document from 'next/document';
 import { extract } from '@native-twin/core';
 
 // import { createStylableComponent } from '@native-twin/jsx';
@@ -47,7 +47,7 @@ function installDocument<Component extends typeof Document = typeof Document>(
 
 function installDocument<Component extends typeof Document = typeof Document>(
   BaseComponent: Component = Document as Component,
-): Component {
+) {
   // @ts-expect-error
   return class NativeTailwindDocument extends BaseComponent {
     static async getInitialProps(
@@ -81,7 +81,6 @@ function installDocument<Component extends typeof Document = typeof Document>(
         return { ...props, html, styles };
       };
 
-      // @ts-expect-error asd
       return BaseComponent.getInitialProps(ctx);
     }
   };

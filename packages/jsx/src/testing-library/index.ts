@@ -71,7 +71,7 @@ export const createMockComponent = <
   // return createStylableComponent(Component, mapping);
 
   const mock: any = jest.fn(({ ...props }, ref) => {
-    props.ref = ref;
+    props['ref'] = ref;
     return renderJSX(Component, props, '', false, undefined, undefined);
   });
 

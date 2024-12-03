@@ -3,6 +3,19 @@
   "ui": "tui",
   "tasks": {
     "build": {
+      "dependsOn": ["^build:compiler"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests",
+        "!**/tsconfig.*"
+      ],
+      "outputs": [
+        "build/**",
+        "dist/**"
+      ]
+    },
+    "build:compiler": {
       "inputs": [
         "$TURBO_DEFAULT$",
         "!**/test",

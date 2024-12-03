@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
-    "rootDir": "src"
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "noImplicitOverride": false
   },
   "include": ["src"],
   "exclude": ["build"]

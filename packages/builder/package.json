@@ -27,6 +27,7 @@
   ],
   "scripts": {
     "build": "node esbuild.mjs",
+    "build:compiler": "node esbuild.mjs",
     "clean": "rm -rf build",
     "gen:schema": "node --loader ts-node/esm -r ts-node/register --no-warnings ./src/config/twin.schema",
     "lint": "eslint"

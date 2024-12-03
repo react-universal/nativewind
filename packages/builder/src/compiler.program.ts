@@ -1,41 +1,98 @@
-import { Deferred, Effect } from 'effect';
-import { BuilderLoggerService } from './services/BuildLogger.service.js';
-import { CompilerContext, CompilerContextLive } from './services/Compiler.service.js';
-import { VirtualFSLive } from './services/VirtualFS.service.js';
-import { listenForkedStreamChanges } from './utils/effect.utils.js';
+import { FileSystem, Path } from '@effect/platform';
+import { NodeFileSystem, NodePath } from '@effect/platform-node';
+import { Effect, Layer, Option, Stream } from 'effect';
+import { BabelContext, BabelContextLive } from './services/Babel.service.js';
+import { FsUtils, FsUtilsLive } from './services/FsUtils.service.js';
+import {
+  TypescriptContext,
+  TypescriptContextLive,
+} from './services/Typescript.service.js';
+
+const MainLive = Layer.empty.pipe(
+  // Layer.provideMerge(CompilerContextLive),
+  Layer.provideMerge(BabelContextLive),
+  Layer.provideMerge(TypescriptContextLive),
+  Layer.provideMerge(FsUtilsLive),
+  Layer.provideMerge(NodeFileSystem.layer),
+  Layer.provideMerge(NodePath.layerPosix),
+);
 
 export const CompilerRun = Effect.gen(function* () {
-  const compiler = yield* CompilerContext;
-  const latch = yield* Deferred.make();
-  // yield* Effect.logDebug('FOLDER: ', virtualFS.virtualFolder);
+  const babelRunner = yield* BabelContext;
+  const path_ = yield* Path.Path;
+  const tsRunner = yield* TypescriptContext;
+  const fsUtils = yield* FsUtils;
+  const fs = yield* FileSystem.FileSystem;
 
-  yield* listenForkedStreamChanges(compiler.compilerStream, (x) =>
-    Effect.gen(function* () {
-      return 0;
-      // Effect.log({
-      //   event: x.event,
-      //   ts: x.tsFile.path,
-      //   esm: {
-      //     path: x.esmFile.filePath,
-      //     sourcemap: x.esmFile.sourcemapFilePath,
-      //   },
-      //   annotatedESM: {
-      //     path: x.annotatedESMFile.filePath,
-      //     sourcemap: x.annotatedESMFile.sourcemapFilePath,
-      //   },
-      //   cjs: {
-      //     path: x.cjsFile.filePath,
-      //     sourcemap: x.cjsFile.sourcemapFilePath,
-      //   },
-      // });
-    }),
+  const output = yield* tsRunner.makeSourcesCompiler(tsRunner.sourceFiles).pipe(
+    Stream.mapEffect(({ file, source }) =>
+      Effect.gen(function* () {
+        const esm = yield* babelRunner.addAnnotationsToESM(
+          {
+            filePath: file.esm.path,
+            content: file.esm.content,
+            sourcemap: file.sourcemaps.content,
+            sourcemapFilePath: file.sourcemaps.path,
+          },
+          source.fileName,
+        );
+        const cjs = yield* babelRunner.transpileESMToCJS(esm, source.fileName);
+        return {
+          cjs,
+          esm,
+          dts: file.dts,
+          dtsMaps: file.dtsMap,
+          sourcePath: source.fileName,
+        };
+      }),
+    ),
+    Stream.runCollect,
+    Effect.withLogSpan('COMPILER'),
   );
 
-  yield* Deferred.await(latch);
-  yield* Effect.logDebug('FINISH');
+  const reported = new Set<string>();
+  const createSourceFile = (filePath: string, content: string, fromSource: string) => {
+    if (reported.has(fromSource)) return Effect.void;
+    if (filePath === '') {
+      reported.add(fromSource);
+      return Effect.logWarning('Empty path cant emit this file for source: ', fromSource);
+    }
+    return Effect.all([
+      fsUtils.mkdirCached(path_.dirname(filePath)),
+      fs.writeFileString(filePath, content),
+    ]);
+  };
+
+  yield* Effect.forEach(
+    output,
+    ({ cjs, dts, dtsMaps, esm, sourcePath }) => {
+      return Effect.all([
+        createSourceFile(dts.path, dts.content, sourcePath),
+        createSourceFile(dtsMaps.path, dtsMaps.content, sourcePath),
+        createSourceFile(esm.filePath, esm.content.pipe(Option.getOrThrow), sourcePath),
+        createSourceFile(
+          esm.sourcemapFilePath,
+          esm.sourcemap.pipe(Option.map(JSON.stringify), Option.getOrThrow),
+          sourcePath,
+        ),
+        createSourceFile(cjs.filePath, cjs.content.pipe(Option.getOrThrow), sourcePath),
+        createSourceFile(
+          cjs.sourcemapFilePath,
+          cjs.sourcemap.pipe(Option.map(JSON.stringify), Option.getOrThrow),
+          sourcePath,
+        ),
+      ]);
+    },
+    { concurrency: 'inherit' },
+  ).pipe(
+    Effect.tap(() => Effect.logDebug('Compiling Success!', '\n')),
+    Effect.tapError((error) => Effect.logError('[FS] cant write file: ', error, '\n')),
+    Effect.catchAllCause(() => Effect.void),
+    Effect.withLogSpan('WRITE_OUTPUTS'),
+    Effect.withSpan('WRITE_OUTPUTS'),
+  );
 }).pipe(
-  Effect.catchAllDefect((x) => Effect.logError('UNHANDLED_ERROR; ', x)),
-  Effect.provide(CompilerContextLive),
-  Effect.provide(VirtualFSLive),
-  Effect.provide(BuilderLoggerService.Default),
+  Effect.catchAllDefect((x) => Effect.logError('UNHANDLED_ERROR; ', x, '\n')),
+  Effect.provide(MainLive),
+  // Effect.provide(BuilderLoggerService.Default),
 );

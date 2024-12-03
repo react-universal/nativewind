@@ -6,7 +6,7 @@ import * as Glob from 'glob';
 const make = Effect.gen(function* (_) {
   const fs = yield* _(FileSystem.FileSystem);
   const path_ = yield* _(Path.Path);
-  
+
   const glob = (pattern: string | ReadonlyArray<string>, options?: Glob.GlobOptions) =>
     Effect.tryPromise({
       try: () => Glob.glob(pattern as any, options as any),
@@ -30,40 +30,6 @@ const make = Effect.gen(function* (_) {
       Effect.withSpan('FsUtils.modifyFile', { attributes: { path } }),
     );
 
-  const modifyGlob = (
-    pattern: string | ReadonlyArray<string>,
-    f: (s: string, path: string) => string,
-    options?: Glob.GlobOptions,
-  ) =>
-    globFiles(pattern, options).pipe(
-      Effect.flatMap((paths) =>
-        Effect.forEach(paths, (path) => modifyFile(path, f), {
-          concurrency: 'inherit',
-          discard: true,
-        }),
-      ),
-      Effect.withSpan('FsUtils.modifyGlob', { attributes: { pattern } }),
-    );
-
-  const rmAndCopy = (from: string, to: string) =>
-    fs
-      .remove(to, { recursive: true })
-      .pipe(
-        Effect.ignore,
-        Effect.zipRight(fs.copy(from, to)),
-        Effect.withSpan('FsUtils.rmAndCopy', { attributes: { from, to } }),
-      );
-
-  const copyIfExists = (from: string, to: string) =>
-    fs.access(from).pipe(
-      Effect.zipRight(Effect.ignore(fs.remove(to, { recursive: true }))),
-      Effect.zipRight(fs.copy(from, to)),
-      Effect.catchTag('SystemError', (e) =>
-        e.reason === 'NotFound' ? Effect.void : Effect.fail(e),
-      ),
-      Effect.withSpan('FsUtils.copyIfExists', { attributes: { from, to } }),
-    );
-
   const mkdirCached_ = yield* _(
     Effect.cachedFunction((path: string) =>
       fs
@@ -71,33 +37,8 @@ const make = Effect.gen(function* (_) {
         .pipe(Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } })),
     ),
   );
+
   const mkdirCached = (path: string) => mkdirCached_(path_.resolve(path));
-
-  const copyGlobCached = (baseDir: string, pattern: string, to: string) =>
-    globFiles(path_.join(baseDir, pattern)).pipe(
-      Effect.flatMap(
-        Effect.forEach(
-          (path) => {
-            const dest = path_.join(to, path_.relative(baseDir, path));
-            const destDir = path_.dirname(dest);
-            return mkdirCached(destDir).pipe(Effect.zipRight(fs.copyFile(path, dest)));
-          },
-          { concurrency: 'inherit', discard: true },
-        ),
-      ),
-      Effect.withSpan('FsUtils.copyGlobCached', {
-        attributes: { baseDir, pattern, to },
-      }),
-    );
-
-  const rmAndMkdir = (path: string) =>
-    fs
-      .remove(path, { recursive: true })
-      .pipe(
-        Effect.ignore,
-        Effect.zipRight(mkdirCached(path)),
-        Effect.withSpan('FsUtils.rmAndMkdir', { attributes: { path } }),
-      );
 
   const readJson = (path: string) =>
     Effect.tryMap(fs.readFileString(path), {
@@ -116,17 +57,16 @@ const make = Effect.gen(function* (_) {
       }),
     );
 
+  const writeFileSource = (file: { path: string; content: string }) =>
+    fs.writeFileString(file.path, file.content);
+
   return {
     glob,
+    writeFileSource,
     globFiles,
     modifyFile,
-    modifyGlob,
-    copyIfExists,
     mkDirIfNotExists,
-    rmAndMkdir,
-    rmAndCopy,
     mkdirCached,
-    copyGlobCached,
     readJson,
     writeJson,
   } as const;

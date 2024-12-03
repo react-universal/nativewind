@@ -27,9 +27,10 @@ export interface CompiledSource {
   };
   readonly esmFile: {
     readonly sourcemapFilePath: string;
-    readonly sourcemap: Option.Option<string>;
+    readonly sourcemap: string;
     readonly filePath: string;
-    readonly output: ts.TranspileOutput;
+    readonly content: string;
+    // readonly output: ts.TranspileOutput;
   };
   readonly annotatedESMFile: {
     readonly sourcemap: Option.Option<BabelSourceMap>;
@@ -88,7 +89,7 @@ export const TSCompilerOptions: ts.CompilerOptions = {
   moduleDetection: ts.ModuleDetectionKind.Force,
   esModuleInterop: false,
   stripInternal: false,
-  types: ['node', 'react-native'],
+  types: ['node', 'react-native', 'jest'],
   skipLibCheck: true,
   skipDefaultLibCheck: true,
   allowSyntheticDefaultImports: true,
@@ -108,9 +109,11 @@ export const TSCompilerOptions: ts.CompilerOptions = {
   exactOptionalPropertyTypes: false,
   noImplicitAny: true,
   noImplicitThis: true,
-  noImplicitOverride: true,
+  noImplicitOverride: false,
   noErrorTruncation: false,
   noUnusedParameters: false,
   noUnusedLocals: true,
   isolatedModules: false,
+  outDir: './build/esm',
+  declarationDir: './build/dts',
 };

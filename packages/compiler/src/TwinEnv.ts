@@ -1,6 +1,6 @@
 import * as NodePath from '@effect/platform-node/NodePath';
 import * as Path from '@effect/platform/Path';
-import { Config, Console, Context, Effect, Layer, Option, Schema } from 'effect';
+import { Config, Console, Context, Effect, Layer } from 'effect';
 import { inspect } from 'util';
 
 export const TWIN_ENV_KEYS = {
@@ -93,7 +93,3 @@ export const modifyEnv = (key: string, value: string) =>
       ),
     );
   });
-
-const StringData = Schema.String;
-
-const a = StringData;

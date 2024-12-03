@@ -12,21 +12,27 @@ const run = Command.make('twin').pipe(
   }),
 );
 
-Effect.suspend(() => run(process.argv)).pipe(
+run(process.argv).pipe(
   Effect.provide(NodeContext.layer),
-  Effect.scoped,
   Logger.withMinimumLogLevel(LogLevel.All),
-  NodeRuntime.runMain,
+  NodeRuntime.runMain({
+    teardown: (_exit, onExit) => {
+      // console.log('EXIT: ', exit);
+      onExit(0);
+      process.exit(0);
+    },
+  }),
 );
 
-let callAmount = 0;
-process.on('SIGINT', function (event) {
-  if (callAmount < 1) {
-    console.log(
-      `\n✅ The server has been stopped`,
-      'Shutdown information',
-      'This shutdown was initiated by CTRL+C.',
-    );
-  }
-  callAmount++;
-});
+// let callAmount = 0;
+// process.on('SIGINT', function (event) {
+//   if (callAmount < 1) {
+//     console.log(
+//       `\n✅ The server has been stopped`,
+//       'Shutdown information',
+//       'This shutdown was initiated by CTRL+C.',
+//     );
+//     setTimeout(() => process.exit(), 100);
+//   }
+//   callAmount++;
+// });

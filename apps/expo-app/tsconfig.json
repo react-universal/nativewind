@@ -5,6 +5,7 @@
     "lib": ["DOM", "ESNext"],
     "exactOptionalPropertyTypes": false,
     "allowJs": true,
+    "module": "ESNext",
     "moduleResolution": "node",
     "target": "ESNext",
     "noEmit": true
