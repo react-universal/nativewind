@@ -5,6 +5,14 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
+    },
+    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
     },
@@ -31,10 +39,6 @@
     {
       "name": "📦 @lib/core",
       "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
     },
     {
       "name": "📦 @lib/vite-plugin",

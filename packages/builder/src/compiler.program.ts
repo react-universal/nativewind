@@ -1,57 +1,115 @@
-import { Chunk, Deferred, Effect, Layer, Logger, LogLevel, Stream } from 'effect';
-import { CompilerContext, CompilerContextLive } from './services/Compiler.service.js';
-import { FsUtils, FsUtilsLive } from './services/FsUtils.service.js';
-import {
-  TypescriptContext,
-  TypescriptContextLive,
-} from './services/Typescript.service.js';
+import { Deferred, Effect, Option, pipe, Stream } from 'effect';
+import { TSCompiler } from './models/TSCompiler.model.js';
+import { CompilerContext } from './services/Compiler.service.js';
+import { FsUtils } from './services/FsUtils.service.js';
 import { listenForkedStreamChanges } from './utils/effect.utils.js';
-
-const MainLive = Layer.empty.pipe(
-  Layer.provideMerge(CompilerContextLive),
-  Layer.provideMerge(TypescriptContextLive),
-  Layer.provideMerge(FsUtilsLive),
-);
 
 export const CompilerRun = (config: { watch: boolean; verbose: boolean }) =>
   Effect.gen(function* () {
-    const tsRunner = yield* TypescriptContext;
-    const fsUtils = yield* FsUtils;
     const compiler = yield* CompilerContext;
+    const fsUtils = yield* FsUtils;
     const latch = yield* Deferred.make();
+    const tsCompiler = new TSCompiler();
 
-    const output = yield* tsRunner
-      .makeSourcesCompiler(tsRunner.sourceFiles)
+    const sourceFiles = yield* tsCompiler.getProjectFiles();
+    yield* Stream.fromIterable(sourceFiles)
       .pipe(
-        Stream.mapEffect(compiler.runCompiler),
-        Stream.runCollect,
-        Effect.withLogSpan('COMPILER'),
+        Stream.mapEffect((x) => tsCompiler.getFileAt(x)),
+        Stream.mapEffect((x) => tsCompiler.emit(x)),
+        Stream.filterMap((x) => tsCompiler.resolveEmittedFile(x.getFiles())),
+        Stream.mapEffect((x) =>
+          compiler.runCompiler({
+            diagnostics: [],
+            file: x,
+            source: x.sourcePath,
+          }),
+        ),
+        Stream.runForEach(({ cjs, dts, dtsMaps, esm }) =>
+          Effect.all(
+            [
+              tsCompiler.writeFile(
+                cjs.filePath,
+                cjs.content.pipe(
+                  Option.getOrThrowWith(() => new Error(`WRITE_ERROR: ${cjs}`)),
+                ),
+              ),
+              tsCompiler.writeFile(
+                cjs.sourcemapFilePath,
+                cjs.sourcemap.pipe(
+                  Option.map((x) => JSON.stringify(x)),
+                  Option.getOrThrowWith(() => new Error(`WRITE_ERROR: ${cjs}`)),
+                ),
+              ),
+              tsCompiler.writeFile(esm.filePath, esm.content.pipe(Option.getOrThrow)),
+              tsCompiler.writeFile(
+                esm.sourcemapFilePath,
+                esm.sourcemap.pipe(
+                  Option.map((x) => JSON.stringify(x)),
+                  Option.getOrThrowWith(() => new Error(`WRITE_ERROR: ${cjs}`)),
+                ),
+              ),
+              tsCompiler.writeFile(
+                esm.filePath,
+                esm.content.pipe(
+                  Option.getOrThrowWith(() => new Error(`WRITE_ERROR: ${cjs}`)),
+                ),
+              ),
+              tsCompiler.writeFile(dts.path, dts.content),
+              tsCompiler.writeFile(dtsMaps.path, dtsMaps.content),
+            ],
+            {
+              concurrency: 'unbounded',
+              discard: true,
+            },
+          )
+        ),
+      )
+      .pipe(
+        Effect.tap(() => Effect.logDebug('[FS] Finish emit ESM, CJS, DTS')),
+        Effect.withSpan('WRITE_FILES'),
       );
 
-    yield* compiler.createCompilerSourceFiles(output);
-
     if (config.watch) {
-      yield* Effect.logInfo('[FS] Starting file watcher...');
-      const watcher = yield* fsUtils.createWatcher(tsRunner.sourceFiles);
-      yield* listenForkedStreamChanges(
-        watcher.pipe(
-          Stream.mapEffect((x) => tsRunner.getCompilerFile(x.path)),
-          Stream.mapEffect((x) => tsRunner.tsCompileSource(x)),
-          Stream.mapEffect(compiler.runCompiler),
-        ),
-        (data) =>
-          Effect.gen(function* () {
-            yield* Effect.logInfo(
-              `[watcher] Detected change in ${data.sourcePath} Recompiling... `,
-            );
-            yield* compiler.createCompilerSourceFiles(Chunk.make(data));
+      const watcher = pipe(
+        yield* fsUtils.createWatcher(sourceFiles),
+        Stream.mapEffect((event) => tsCompiler.refreshFileAt(event.path)),
+        Stream.mapEffect((x) => tsCompiler.emit(x)),
+        Stream.mapEffect((x) => tsCompiler.resolveEmittedFile(x.getFiles())),
+        Stream.mapEffect((result) =>
+          compiler.runCompiler({
+            diagnostics: [],
+            file: result,
+            source: result.sourcePath,
           }),
-      ).pipe(Effect.tap(() => Effect.logInfo('[twin] Watching files...')));
+        ),
+      );
+      yield* listenForkedStreamChanges(watcher, ({ cjs, dts, dtsMaps, esm }) =>
+        Effect.all([
+          tsCompiler.writeFile(cjs.filePath, cjs.content.pipe(Option.getOrThrow)),
+          tsCompiler.writeFile(
+            cjs.sourcemapFilePath,
+            cjs.sourcemap.pipe(
+              Option.map((x) => JSON.stringify(x)),
+              Option.getOrThrow,
+            ),
+          ),
+          tsCompiler.writeFile(esm.filePath, esm.content.pipe(Option.getOrThrow)),
+          tsCompiler.writeFile(
+            esm.sourcemapFilePath,
+            esm.sourcemap.pipe(
+              Option.map((x) => JSON.stringify(x)),
+              Option.getOrThrow,
+            ),
+          ),
+          tsCompiler.writeFile(esm.filePath, esm.content.pipe(Option.getOrThrow)),
+          tsCompiler.writeFile(dts.path, dts.content),
+          tsCompiler.writeFile(dtsMaps.path, dtsMaps.content),
+        ]),
+      );
       yield* Deferred.await(latch);
     }
   }).pipe(
-    Effect.scoped,
+    Effect.tap(() => Effect.logDebug('Compiler finished!')),
     Effect.catchAllDefect((x) => Effect.logError('UNHANDLED_ERROR; ', x, '\n')),
-    Effect.provide(MainLive),
-    Logger.withMinimumLogLevel(config.verbose ? LogLevel.All : LogLevel.Info),
+    Effect.withLogSpan('TWIN_CLI'),
   );

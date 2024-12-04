@@ -1,7 +1,6 @@
 import { Data } from 'effect';
 import type { Option } from 'effect';
-import type { GlobOptions } from 'glob';
-import ts from 'typescript';
+import { ts } from 'ts-morph';
 
 export const tsHostFormatter: ts.FormatDiagnosticsHost = {
   getCanonicalFileName: (path) => path,
@@ -46,13 +45,13 @@ export interface CompiledSource {
   };
 }
 
-export const getTsGlobOptions: GlobOptions = {
-  nodir: true,
-  absolute: true,
-  cwd: process.cwd(),
-  dotRelative: true,
-  ignore: '**/*.d.ts',
-};
+// export const getTsGlobOptions: GlobOptions = {
+//   nodir: true,
+//   absolute: true,
+//   cwd: yield* Config.string("PROJECT_DIR"),
+//   dotRelative: true,
+//   ignore: '**/*.d.ts',
+// };
 
 export interface BabelSourceMap {
   version: number;
@@ -120,7 +119,7 @@ export const TSCompilerOptions: ts.CompilerOptions = {
 
 export interface TsCompilerOutput {
   diagnostics: readonly ts.Diagnostic[];
-  source: ts.SourceFile;
+  source: string;
   file: {
     sourcemaps: {
       path: string;

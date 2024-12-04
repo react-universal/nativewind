@@ -1,13 +1,18 @@
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
+import { Layer } from 'effect';
 import * as Effect from 'effect/Effect';
-import { TwinEnvContextLive } from '@native-twin/compiler/TwinEnv';
 import {
-  NodeMainLayerSync,
-  setConfigLayerFromUser,
   TwinNodeContext,
   BabelCompiler,
-} from '@native-twin/compiler/node';
+  TwinFileSystem,
+  CompilerConfigContextLive,
+} from '@native-twin/compiler';
 import type { BabelTransformerFn } from '../models/Metro.models.js';
+
+const NodeMainLayerSync = TwinFileSystem.Live.pipe(
+  Layer.provideMerge(TwinNodeContext.Live),
+  Layer.provideMerge(CompilerConfigContextLive),
+);
 
 export const transform: BabelTransformerFn = async (params) => {
   // console.log('[transform]: PARAMS: ', params);
@@ -44,8 +49,6 @@ export const transform: BabelTransformerFn = async (params) => {
     });
   }).pipe(
     Effect.provide(NodeMainLayerSync),
-    Effect.provide(setConfigLayerFromUser),
-    Effect.provide(TwinEnvContextLive),
     Effect.runPromise,
   );
 

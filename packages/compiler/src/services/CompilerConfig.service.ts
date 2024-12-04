@@ -1,3 +1,4 @@
+import { Ref, SynchronizedRef } from 'effect';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -15,40 +16,42 @@ const getPlatformOutputs = (baseDir: string) => ({
 });
 const make = Effect.gen(function* () {
   const mainOutputDir = yield* Effect.try(() => require.resolve('@native-twin/core'));
-
-  const defaultConfig = {
+  const currentConfig = yield* SynchronizedRef.make({
     inputCSS: Option.none<string>(),
     logLevel: LogLevel.All,
     outputDir: mainOutputDir,
     projectRoot: process.cwd(),
     twinConfigPath: Option.none<string>(),
     platformPaths: getPlatformOutputs(mainOutputDir),
-  };
+  });
 
   // const configProvider = ConfigProvider.fromJson(defaultConfig);
 
   // return Layer.setConfigProvider(configProvider);
 
   return {
-    env: defaultConfig,
-    getUserConfig: (input: NodeWithNativeTwinOptions): CompilerConfigContext['env'] => {
-      const inputCSS = Option.fromNullable(input.inputCSS);
-      const projectRoot = Option.fromNullable(input.projectRoot).pipe(
-        Option.getOrElse(() => defaultConfig.projectRoot),
-      );
-      const outputDir = Option.fromNullable(input.outputDir).pipe(
-        Option.getOrElse(() => defaultConfig.outputDir),
-      );
-      const twinConfigPath = Option.fromNullable(input.twinConfigPath);
+    env: Effect.suspend(() => Ref.get(currentConfig)),
+    setConfigByUser: (input: NodeWithNativeTwinOptions) => {
+      return Effect.gen(function* () {
+        const config = yield* Ref.get(currentConfig);
+        const inputCSS = Option.fromNullable(input.inputCSS);
+        const projectRoot = Option.fromNullable(input.projectRoot).pipe(
+          Option.getOrElse(() => config.projectRoot),
+        );
+        const outputDir = Option.fromNullable(input.outputDir).pipe(
+          Option.getOrElse(() => config.outputDir),
+        );
+        const twinConfigPath = Option.fromNullable(input.twinConfigPath);
 
-      return {
-        ...defaultConfig,
-        projectRoot,
-        outputDir,
-        twinConfigPath,
-        inputCSS,
-        platformPaths: getPlatformOutputs(outputDir),
-      };
+        return yield* Ref.updateAndGet(currentConfig, (config) => ({
+          ...config,
+          projectRoot,
+          outputDir,
+          twinConfigPath,
+          inputCSS,
+          platformPaths: getPlatformOutputs(outputDir),
+        }));
+      });
     },
   };
 });

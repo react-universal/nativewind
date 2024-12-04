@@ -3,19 +3,23 @@ import * as Effect from 'effect/Effect';
 import type { TransformResponse } from 'metro-transform-worker';
 import * as worker from 'metro-transform-worker';
 import * as path from 'node:path';
-import * as TwinEnv from '@native-twin/compiler/TwinEnv';
 import {
   TwinNodeContext,
   BabelCompiler,
-  NodeMainLayerSync,
-  setConfigLayerFromUser,
-} from '@native-twin/compiler/node';
+  TwinFileSystem,
+  CompilerConfigContextLive,
+} from '@native-twin/compiler';
 import { matchCss } from '@native-twin/helpers/server';
 import type { TwinMetroTransformFn } from '../models/Metro.models.js';
 import { transformCSSExpo } from '../utils/css.utils.js';
 
 console.log('WORKER: ', worker);
 type MetroTransformFn = typeof worker.transform;
+
+const NodeMainLayerSync = TwinFileSystem.Live.pipe(
+  Layer.provideMerge(TwinNodeContext.Live),
+  Layer.provideMerge(CompilerConfigContextLive),
+);
 
 export const transform: TwinMetroTransformFn = async (
   config,
@@ -27,24 +31,24 @@ export const transform: TwinMetroTransformFn = async (
   const twinConfig = config.twinConfig;
   const platform = options.platform ?? 'native';
 
-  const serverEnvLayer = Effect.gen(function* () {
-    yield* TwinEnv.modifyEnv(
-      TwinEnv.TWIN_ENV_KEYS.twinConfigPath,
-      config.twinConfig.twinConfigPath,
-    );
-    yield* TwinEnv.modifyEnv(TwinEnv.TWIN_ENV_KEYS.inputCSS, config.twinConfig.inputCSS);
-    yield* TwinEnv.modifyEnv(
-      TwinEnv.TWIN_ENV_KEYS.projectRoot,
-      config.twinConfig.projectRoot,
-    );
+  // const serverEnvLayer = Effect.gen(function* () {
+  //   yield* TwinEnv.modifyEnv(
+  //     TwinEnv.TWIN_ENV_KEYS.twinConfigPath,
+  //     config.twinConfig.twinConfigPath,
+  //   );
+  //   yield* TwinEnv.modifyEnv(TwinEnv.TWIN_ENV_KEYS.inputCSS, config.twinConfig.inputCSS);
+  //   yield* TwinEnv.modifyEnv(
+  //     TwinEnv.TWIN_ENV_KEYS.projectRoot,
+  //     config.twinConfig.projectRoot,
+  //   );
 
-    yield* TwinEnv.modifyEnv(
-      TwinEnv.TWIN_ENV_KEYS.outputDir,
-      config.twinConfig.outputDir,
-    );
+  //   yield* TwinEnv.modifyEnv(
+  //     TwinEnv.TWIN_ENV_KEYS.outputDir,
+  //     config.twinConfig.outputDir,
+  //   );
 
-    return TwinEnv.TwinEnvContextLive;
-  }).pipe(Layer.unwrapScoped);
+  //   return TwinEnv.TwinEnvContextLive;
+  // }).pipe(Layer.unwrapScoped);
 
   return Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
@@ -98,9 +102,9 @@ export const transform: TwinMetroTransformFn = async (
     return transformed;
   }).pipe(
     Effect.provide(NodeMainLayerSync),
-    Effect.provide(setConfigLayerFromUser),
-    Effect.provide(serverEnvLayer),
-    Effect.onError((x) => Effect.log('asdadasd', x)),
+    // Effect.provide(setConfigLayerFromUser),
+    // Effect.provide(serverEnvLayer),
+    // Effect.onError((x) => Effect.log('asdadasd', x)),
     Effect.runPromise,
   );
 

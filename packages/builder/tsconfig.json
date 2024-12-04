@@ -6,8 +6,8 @@
     "moduleResolution": "node",
     "resolvePackageJsonExports": false,
     "module": "ES2022",
-    "declarationDir": "build/dts",
     "rootDir": "src",
+    "declarationDir": "build/dts",
     "outDir": "build/esm"
   }
 }

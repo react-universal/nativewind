@@ -1,18 +1,30 @@
 import { Path } from '@effect/platform';
-import { Context, Effect, Layer, Queue, Stream } from 'effect';
-import ts from 'typescript';
-import { TSCompilerOptions, TsEmitResult } from '../models/Compiler.models';
+import {
+  Array,
+  Config,
+  Context,
+  Effect,
+  GroupBy,
+  Layer,
+  Option,
+  pipe,
+  Stream,
+} from 'effect';
+import * as ts from 'typescript';
+import { TSCompilerOptions } from '../models/Compiler.models';
+import {
+  createFileToEmit,
+  EmittedFile,
+  getEmittedFileKind,
+} from '../models/CompilerFile.models';
 import { FsUtils, FsUtilsLive } from './FsUtils.service';
 
 const make = Effect.gen(function* () {
-  const compiledFiles = yield* Queue.unbounded<TsEmitResult>();
   const path_ = yield* Path.Path;
   const fsUtils = yield* FsUtils;
-  const rootDir = process.cwd();
+  const rootDir = yield* Config.string('PROJECT_DIR');
   const tsSourcesDir = path_.join(rootDir, 'src');
   const buildOutDir = path_.join(rootDir, 'build');
-  const tsCompilerHost = ts.createCompilerHost(TSCompilerOptions, false);
-
   const sourceFiles = yield* fsUtils.globFiles('src/**/*.{!d.,ts,js}', {
     dot: false,
     absolute: false,
@@ -20,15 +32,55 @@ const make = Effect.gen(function* () {
     mark: false,
   });
 
+  const tsCompilerHost = ts.createCompilerHost(TSCompilerOptions, false);
   const compilerProgram = ts.createProgram(
     sourceFiles,
     TSCompilerOptions,
     tsCompilerHost,
   );
 
+  // WATCH COMPILER
+
+  const compiler = Stream.async<EmittedFile>((emit) => {
+    const program = createWatcherProgram(
+      (filename: string, content, _, __, sourceFiles) => {
+        const source = pipe(
+          sourceFiles ?? [],
+          Array.head,
+          Option.map((x) => x.fileName),
+          Option.getOrElse(() => 'Unknown'),
+        )
+          .replace(rootDir, '')
+          .replace(/^\//, '');
+
+        emit.single({
+          _tag: getEmittedFileKind(filename),
+          path: filename,
+          content,
+          source,
+        });
+      },
+    );
+
+    program.getProgram().emit();
+    // emit.end();
+    return Effect.promise(() => emit.end());
+  });
+
+  const tsCompilerStream = compiler.pipe(
+    Stream.groupBy((a) => Effect.succeed([a.source.replace(rootDir, ''), a] as const)),
+    GroupBy.evaluate((key, stream) =>
+      pipe(
+        Stream.runCollect(stream),
+        Effect.map((leftOver) => [key, createFileToEmit(leftOver)] as const),
+        Stream.fromEffect,
+      ),
+    ),
+  );
+
   return {
-    compiledFiles,
     sourceFiles,
+    tsCompilerStream,
     reportDiagnostic,
     buildOutDir,
     tsSourcesDir,
@@ -36,6 +88,39 @@ const make = Effect.gen(function* () {
     getCompilerFile,
     tsCompileSource,
   };
+
+  function createWatcherProgram(onWriteFile: ts.WriteFileCallback) {
+    const createProgram = ts.createEmitAndSemanticDiagnosticsBuilderProgram;
+    const tsWatchHost = ts.createWatchCompilerHost(
+      sourceFiles,
+      TSCompilerOptions,
+      ts.sys,
+      createProgram,
+      () => {},
+      (x, n, o, e) => {
+        console.log(x);
+      },
+    );
+    const origCreateProgram = tsWatchHost.createProgram;
+
+    tsWatchHost.createProgram = (rootNames, options, host, oldProgram) => {
+      if (host) {
+        console.log('SET_COMPILER_HOST');
+        host.writeFile = onWriteFile;
+      }
+      console.log("** We're about to create the program! **");
+      return origCreateProgram(rootNames, options, host, oldProgram);
+    };
+
+    const origPostProgramCreate = tsWatchHost.afterProgramCreate;
+    tsWatchHost.afterProgramCreate = (program) => {
+      console.log('** We finished making the program! **');
+      origPostProgramCreate!(program);
+    };
+    // `createWatchProgram` creates an initial program, watches files, and updates
+    // the program over time.
+    return ts.createWatchProgram(tsWatchHost);
+  }
 
   function makeSourcesCompiler(sources: string[]) {
     return Stream.fromIterable(sources).pipe(

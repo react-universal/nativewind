@@ -38,7 +38,8 @@ const providedFrequency = new FrequencyMetric(
 export const TwinFSMake = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const compiler = yield* BabelCompiler;
-  const { env } = yield* CompilerConfigContext;
+  const config = yield* CompilerConfigContext;
+  const env = yield* config.env;
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
 

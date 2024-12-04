@@ -1,14 +1,13 @@
 import { transformAsync, TransformOptions } from '@babel/core';
-import { FileSystem, Path } from '@effect/platform';
+import { Path } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
-import { Context, Effect, Layer, Logger, LogLevel, Option } from 'effect';
+import { Context, Effect, Layer, Option } from 'effect';
 import type { BabelSourceMap, CompiledSource } from '../models/Compiler.models.js';
 import { FsUtils, FsUtilsLive } from './FsUtils.service.js';
 
 const make = Effect.gen(function* () {
   const path_ = yield* Path.Path;
   const fsUtils = yield* FsUtils;
-  const fs = yield* FileSystem.FileSystem;
 
   const getCJSPath = (path: string) => path.replace('/esm/', '/cjs/');
 
@@ -74,7 +73,7 @@ const make = Effect.gen(function* () {
       const cjsFileDir = path_.dirname(cjsFilePath);
       const cjsMapsFilePath = getCJSPath(esmFile.sourcemapFilePath);
 
-      yield* fsUtils.mkDirIfNotExists(cjsFileDir);
+      yield* fsUtils.mkdirCached(cjsFileDir);
 
       const babelFile = yield* babelTranspile({
         content: esmFile.content.pipe(Option.getOrThrow),
@@ -128,7 +127,7 @@ const make = Effect.gen(function* () {
 
       const cjsFileDir = path_.dirname(esmFile.filePath);
 
-      yield* fsUtils.mkDirIfNotExists(cjsFileDir);
+      yield* fsUtils.mkdirCached(cjsFileDir);
 
       const babelFile = yield* babelTranspile({
         content: esmFile.content,
@@ -158,9 +157,10 @@ const make = Effect.gen(function* () {
     getCJSPath,
     transpileESMToCJS,
     addAnnotationsToESM,
-    fs,
+    getTranspilerPlugins,
+    babelTranspile,
   };
-}).pipe(Logger.withMinimumLogLevel(LogLevel.None));
+});
 
 export interface BabelContext extends Effect.Effect.Success<typeof make> {}
 export const BabelContext = Context.GenericTag<BabelContext>('runner/BabelContext');

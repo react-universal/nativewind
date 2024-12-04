@@ -1,27 +1,11 @@
 #!/usr/bin/env node
 import * as Command from '@effect/cli/Command';
-import * as Options from '@effect/cli/Options';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
-import { Effect } from 'effect';
-import { CompilerRun } from './compiler.program.js';
+import { Effect, Logger, LogLevel } from 'effect';
+import { TwinCli } from './command';
 
-const run = Command.make('twin').pipe(
-  Command.withSubcommands([
-    Command.make(
-      'pack-dev',
-      {
-        watch: Options.boolean('watch').pipe(
-          Options.withAlias('w'),
-          Options.withDefault(false),
-        ),
-        verbose: Options.boolean('verbose').pipe(
-          Options.withAlias('vbs'),
-          Options.withDefault(false),
-        ),
-      },
-      CompilerRun,
-    ),
-  ]),
+const run = TwinCli.pipe(
+  // Command.provide(Layer.empty),
   Command.run({
     name: 'Twin Cli',
     version: '1.0.1',
@@ -30,6 +14,8 @@ const run = Command.make('twin').pipe(
 
 run(process.argv).pipe(
   Effect.provide(NodeContext.layer),
+  Logger.withMinimumLogLevel(LogLevel.Debug),
+  Effect.scoped,
   NodeRuntime.runMain({
     teardown: (_exit, onExit) => {
       // console.log('EXIT: ', exit);

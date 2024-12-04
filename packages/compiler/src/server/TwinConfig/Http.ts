@@ -12,7 +12,8 @@ export const HttpTwinConfigLive = HttpApiBuilder.group(
   (handlers) =>
     Effect.gen(function* () {
       const config = yield* TwinConfigService;
-      const { env } = yield* CompilerConfigContext;
+      const ctx = yield* CompilerConfigContext;
+      const env = yield* ctx.env;
       const fs = yield* FsUtils;
 
       yield* fs.mkdirCached(env.outputDir);

@@ -2,7 +2,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as worker from 'metro-transform-worker';
-import { CompilerConfig, TwinNodeContext } from '@native-twin/compiler/node';
+import { CompilerConfigContext, TwinNodeContext } from '@native-twin/compiler';
 import { ensureBuffer } from '@native-twin/helpers/server';
 import type {
   MetroWorkerInput,
@@ -24,7 +24,8 @@ type MetroTransformFn = typeof worker.transform;
 export const createWorkerService = (input: MetroWorkerInput) => {
   return Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
-    const env = yield* CompilerConfig;
+    const config = yield* CompilerConfigContext;
+    const env = yield* config.env;
     const allowedPaths = yield* ctx.scanAllowedPaths;
     const allowedPathsGlob = yield* ctx.getAllowedGlobPatterns;
     console.log('ORIGINAL: ', input.config.twinConfig.originalTransformerPath);

@@ -22,6 +22,7 @@ esbuild
       'tsup',
       '@babel/*',
       'rollup',
+      "ts-morph",
       'typescript',
       'rollup-plugin-dts',
       '@rollup/plugin-terser',

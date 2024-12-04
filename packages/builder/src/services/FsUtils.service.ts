@@ -1,12 +1,12 @@
 import { Path, FileSystem } from '@effect/platform';
 import { NodePath, NodeFileSystem } from '@effect/platform-node';
 import chokidar from 'chokidar';
-import { Context, Effect, Layer, Stream } from 'effect';
+import { Config, Context, Effect, Layer, Stream } from 'effect';
 import * as Glob from 'glob';
 import { createChokidarWatcher } from '../utils/effect.utils';
 
 const make = Effect.gen(function* (_) {
-  const rootDir = process.cwd();
+  const rootDir = yield* Config.string('PROJECT_DIR');
   const fs = yield* _(FileSystem.FileSystem);
   const path_ = yield* _(Path.Path);
 
@@ -36,8 +36,11 @@ const make = Effect.gen(function* (_) {
   const mkdirCached_ = yield* _(
     Effect.cachedFunction((path: string) =>
       fs
-        .makeDirectory(path, { recursive: true })
-        .pipe(Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } })),
+        .makeDirectory(path)
+        .pipe(
+          Effect.catchAllCause(() => Effect.void),
+          Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } })
+        ),
     ),
   );
 
@@ -51,14 +54,6 @@ const make = Effect.gen(function* (_) {
 
   const writeJson = (path: string, json: unknown) =>
     fs.writeFileString(path, JSON.stringify(json, null, 2) + '\n');
-
-  const mkDirIfNotExists = (path: string) =>
-    fs.exists(path).pipe(
-      Effect.if({
-        onTrue: () => Effect.void,
-        onFalse: () => fs.makeDirectory(path, { recursive: true }),
-      }),
-    );
 
   const writeFileSource = (file: { path: string; content: string }) =>
     fs.writeFileString(file.path, file.content);
@@ -87,7 +82,6 @@ const make = Effect.gen(function* (_) {
     writeFileSource,
     globFiles,
     modifyFile,
-    mkDirIfNotExists,
     mkdirCached,
     readJson,
     writeJson,

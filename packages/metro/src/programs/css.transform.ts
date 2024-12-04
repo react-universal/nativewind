@@ -3,7 +3,7 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as fs from 'fs';
 import * as worker from 'metro-transform-worker';
-import { TwinNodeContext, TwinFileSystem } from '@native-twin/compiler/node';
+import { TwinNodeContext, TwinFileSystem } from '@native-twin/compiler';
 import { pathToHtmlSafeName, countLines } from '@native-twin/helpers/server';
 import { MetroWorkerService } from '../services/MetroWorker.service.js';
 

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
-import { extractLanguageRegions } from '@native-twin/compiler/node';
+import { extractLanguageRegions } from '@native-twin/compiler';
 import { type NativeTwinPluginConfiguration } from '@native-twin/language-service';
 
 interface TwinTextDocumentShape {

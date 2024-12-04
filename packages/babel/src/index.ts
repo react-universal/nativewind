@@ -1,14 +1,22 @@
 import type { PluginObj } from '@babel/core';
 import { addNamed } from '@babel/helper-module-imports';
+import { Layer } from 'effect';
 import * as Effect from 'effect/Effect';
 import {
   JSXImportPluginContext,
   type TwinBabelPluginOptions,
   type BabelAPI,
   BABEL_JSX_PLUGIN_IMPORT_RUNTIME,
-  NodeMainLayerSync,
   BabelCompiler,
-} from '@native-twin/compiler/node';
+  TwinNodeContext,
+  CompilerConfigContextLive,
+} from '@native-twin/compiler';
+
+const NodeMainLayerSync = Layer.empty.pipe(
+  Layer.provideMerge(BabelCompiler.Live),
+  Layer.provideMerge(TwinNodeContext.Live),
+  Layer.provideMerge(CompilerConfigContextLive),
+);
 
 const allowed = new Set<string>();
 const program = Effect.scoped(
