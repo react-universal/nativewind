@@ -35,8 +35,7 @@ const getNativeFileOutput = (stringStyles: string, platform: string) =>
   Effect.gen(function* () {
     const writer = new CodeBlockWriter.default();
     const path = yield* Path.Path;
-    const config = yield* CompilerConfigContext;
-    const env = yield* config.env;
+    const env = yield* CompilerConfigContext;
 
     writer.writeLine(`const setup = require('@native-twin/core').setup;`);
     writer.writeLine(`const runtimeTW = require('@native-twin/core').tw;`);

@@ -1,11 +1,7 @@
-import { Ref, SynchronizedRef } from 'effect';
 import * as Context from 'effect/Context';
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
 import * as path from 'node:path';
-import { NodeWithNativeTwinOptions } from '../models/Compiler.models.js';
 
 const getPlatformOutputs = (baseDir: string) => ({
   defaultFile: path.posix.join(baseDir, 'twin.out.native.css'),
@@ -14,53 +10,84 @@ const getPlatformOutputs = (baseDir: string) => ({
   android: path.posix.join(baseDir, 'twin.out.android.css.js'),
   native: path.posix.join(baseDir, 'twin.out.native.css.js'),
 });
-const make = Effect.gen(function* () {
-  const mainOutputDir = yield* Effect.try(() => require.resolve('@native-twin/core'));
-  const currentConfig = yield* SynchronizedRef.make({
-    inputCSS: Option.none<string>(),
-    logLevel: LogLevel.All,
-    outputDir: mainOutputDir,
-    projectRoot: process.cwd(),
-    twinConfigPath: Option.none<string>(),
-    platformPaths: getPlatformOutputs(mainOutputDir),
+
+export const createCompilerConfig = (params: {
+  rootDir: string;
+  outDir: string;
+  twinConfigPath?: string;
+  inputCSS?: string;
+}): CompilerConfigContext => {
+  return CompilerConfigContext.of({
+    inputCSS: Option.fromNullable(params.inputCSS).pipe(
+      Option.getOrElse(() => path.join(params.outDir, 'twin.in.css')),
+    ),
+    logLevel: LogLevel.Debug,
+    outputDir: params.outDir,
+    projectRoot: params.rootDir,
+    twinConfigPath: Option.fromNullable(params.twinConfigPath),
+    platformPaths: getPlatformOutputs(params.outDir),
   });
+};
 
-  // const configProvider = ConfigProvider.fromJson(defaultConfig);
-
-  // return Layer.setConfigProvider(configProvider);
-
-  return {
-    env: Effect.suspend(() => Ref.get(currentConfig)),
-    setConfigByUser: (input: NodeWithNativeTwinOptions) => {
-      return Effect.gen(function* () {
-        const config = yield* Ref.get(currentConfig);
-        const inputCSS = Option.fromNullable(input.inputCSS);
-        const projectRoot = Option.fromNullable(input.projectRoot).pipe(
-          Option.getOrElse(() => config.projectRoot),
-        );
-        const outputDir = Option.fromNullable(input.outputDir).pipe(
-          Option.getOrElse(() => config.outputDir),
-        );
-        const twinConfigPath = Option.fromNullable(input.twinConfigPath);
-
-        return yield* Ref.updateAndGet(currentConfig, (config) => ({
-          ...config,
-          projectRoot,
-          outputDir,
-          twinConfigPath,
-          inputCSS,
-          platformPaths: getPlatformOutputs(outputDir),
-        }));
-      });
-    },
+export interface CompilerConfigContext {
+  inputCSS: string;
+  logLevel: LogLevel.LogLevel;
+  outputDir: string;
+  projectRoot: string;
+  twinConfigPath: Option.Option<string>;
+  platformPaths: {
+    defaultFile: string;
+    web: string;
+    ios: string;
+    android: string;
+    native: string;
   };
-});
-
-export interface CompilerConfigContext extends Effect.Effect.Success<typeof make> {}
+}
 export const CompilerConfigContext = Context.GenericTag<CompilerConfigContext>(
   'compiler/CompilerConfigContext',
 );
-export const CompilerConfigContextLive = Layer.effect(CompilerConfigContext, make);
+
+// const make = Effect.gen(function* () {
+//   const mainOutputDir = yield* Effect.try(() => require.resolve('@native-twin/core'));
+//   const currentConfig = yield* SynchronizedRef.make({
+//     inputCSS: Option.none<string>(),
+//     logLevel: LogLevel.All,
+//     outputDir: mainOutputDir,
+//     projectRoot: process.cwd(),
+//     twinConfigPath: Option.none<string>(),
+//     platformPaths: getPlatformOutputs(mainOutputDir),
+//   });
+
+//   // const configProvider = ConfigProvider.fromJson(defaultConfig);
+
+//   // return Layer.setConfigProvider(configProvider);
+
+//   return {
+//     env: Effect.suspend(() => Ref.get(currentConfig)),
+//     setConfigByUser: (input: NodeWithNativeTwinOptions) => {
+//       return Effect.gen(function* () {
+//         const config = yield* Ref.get(currentConfig);
+//         const inputCSS = Option.fromNullable(input.inputCSS);
+//         const projectRoot = Option.fromNullable(input.projectRoot).pipe(
+//           Option.getOrElse(() => config.projectRoot),
+//         );
+//         const outputDir = Option.fromNullable(input.outputDir).pipe(
+//           Option.getOrElse(() => config.outputDir),
+//         );
+//         const twinConfigPath = Option.fromNullable(input.twinConfigPath);
+
+//         return yield* Ref.updateAndGet(currentConfig, (config) => ({
+//           ...config,
+//           projectRoot,
+//           outputDir,
+//           twinConfigPath,
+//           inputCSS,
+//           platformPaths: getPlatformOutputs(outputDir),
+//         }));
+//       });
+//     },
+//   };
+// });
 
 // const makeConfig = <A extends CompilerConfigShape>(config: Config.Config.Wrap<A>) => {
 //   return Config.unwrap(config);

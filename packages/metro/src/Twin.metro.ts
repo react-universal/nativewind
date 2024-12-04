@@ -1,4 +1,3 @@
-import { Config, Option } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
@@ -6,45 +5,48 @@ import path from 'node:path';
 import { inspect } from 'node:util';
 import {
   CompilerConfigContext,
-  CompilerConfigContextLive,
   NodeWithNativeTwinOptions,
   TwinFileSystem,
   TwinNodeContext,
   listenForkedStreamChanges,
   twinLoggerLayer,
+  createCompilerConfig,
 } from '@native-twin/compiler';
 import { TwinMetroConfig } from './models/Metro.models.js';
 import { getMetroSettings } from './programs/getMetroSettings.js';
 
-// Layer.provideMerge(TwinFileSystem.Live),
+const MainLive = Layer.empty.pipe(Layer.provideMerge(TwinNodeContext.Live));
 
-const MainLive = Layer.empty.pipe(
-  Layer.provideMerge(TwinNodeContext.Live),
-  Layer.provideMerge(CompilerConfigContextLive),
-);
-
-const MainLiveAsync = TwinFileSystem.Live.pipe(Layer.provideMerge(MainLive));
 export function withNativeTwin(
   metroConfig: TwinMetroConfig,
   nativeTwinConfig: NodeWithNativeTwinOptions,
 ): TwinMetroConfig {
-  // {
-  //   logLevel: LogLevel.fromLiteral(nativeTwinConfig.logLevel),
-  //   inputCSS: nativeTwinConfig.inputCSS,
-  //   outputDir: nativeTwinConfig.outputDir,
-  //   projectRoot: nativeTwinConfig.projectRoot,
-  //   twinConfigPath: nativeTwinConfig.twinConfigPath,
-  // }
+  const outDir =
+    nativeTwinConfig.outputDir ??
+    path.join(path.dirname(require.resolve('@native-twin/core')), '../..', '.cache');
 
-  const runtimeSync = ManagedRuntime.make(MainLive);
-
-  const metroSettings = runtimeSync.runSync(
-    Effect.flatMap(CompilerConfigContext, (x) =>
-      x.setConfigByUser(nativeTwinConfig).pipe(Effect.flatMap(() => getMetroSettings)),
+  const MetroLive = Layer.provideMerge(
+    MainLive,
+    Layer.succeed(
+      CompilerConfigContext,
+      createCompilerConfig({
+        rootDir: nativeTwinConfig.projectRoot ?? process.cwd(),
+        outDir,
+        inputCSS: nativeTwinConfig.inputCSS,
+        twinConfigPath: nativeTwinConfig.twinConfigPath,
+      }),
     ),
   );
 
-  const runtimeAsync = ManagedRuntime.make(MainLiveAsync);
+  const runtimeSync = ManagedRuntime.make(MetroLive);
+
+  const metroSettings = runtimeSync.runSync(
+    getMetroSettings.pipe(Effect.provide(MetroLive)),
+  );
+
+  const runtimeAsync = ManagedRuntime.make(
+    TwinFileSystem.Live.pipe(Layer.provideMerge(MetroLive)),
+  );
 
   const originalResolver = metroConfig.resolver.resolveRequest;
   const originalGetTransformerOptions = metroConfig.transformer.getTransformOptions;
@@ -57,28 +59,6 @@ export function withNativeTwin(
   //   ),
   // );
 
-  // console.log('PROCESS: ', inspect(process.env, false, null, true));
-
-  // console.log('METRO: ', inspect(metroConfig.resolver, false, null, true));
-
-  runtimeSync.runSync(
-    Effect.gen(function* () {
-      const ctx = yield* CompilerConfigContext;
-
-      console.log('ENV_CONFIG: ', ctx);
-      // console.log('MOD_ENV: ', yield* ctx.env);
-    }),
-  );
-
-  console.log(
-    'TEST: ',
-    Effect.runSync(
-      Effect.all({
-        env: Config.string('PWD'),
-      }),
-    ),
-  );
-
   return {
     ...metroConfig,
     transformerPath: require.resolve('./programs/metro.transformer'),
@@ -87,13 +67,12 @@ export function withNativeTwin(
       resolveRequest: (context, moduleName, platform) => {
         const resolver = originalResolver ?? context.resolveRequest;
         const resolved = resolver(context, moduleName, platform);
-        if (!platform || !Option.isSome(metroSettings.env.inputCSS)) return resolved;
+        if (!platform) return resolved;
 
         const platformOutput = metroSettings.ctx.getOutputCSSPath(platform);
-        const platformInput = metroSettings.env.inputCSS.value;
+        const platformInput = metroSettings.env.inputCSS;
 
         if ('filePath' in resolved && resolved.filePath === platformInput) {
-          // console.log('ASDASDASDAD: ', resolved, path.resolve(platformOutput));
           return {
             ...resolved,
             filePath: path.resolve(platformOutput),
@@ -120,50 +99,20 @@ export function withNativeTwin(
           yield* watcher.runTwinForFiles(allFiles, options.platform);
           yield* Effect.logDebug('CHECK_DEBUG_LOGGER');
 
-          yield* listenForkedStreamChanges(watcher.fsWatcher, (event) => {
-            return Effect.logTrace(
-              'FILE_CHANGE_DETECTED',
-              inspect(event, false, null, true),
-            );
-          });
+          yield* listenForkedStreamChanges(watcher.fsWatcher, (event) =>
+            Effect.logTrace('FILE_CHANGE_DETECTED', inspect(event, false, null, true)),
+          );
           yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
-
-          // yield* TwinFileSystem.metrics.providedFreq.value;
 
           return result;
         }).pipe(
+          Effect.scoped,
           Effect.annotateLogs('platform', options.platform),
           Effect.withSpan('Transformer', { attributes: { ...options } }),
           Effect.provide(twinLoggerLayer),
-          Effect.scoped,
           runtimeAsync.runPromise,
         );
       },
     },
   };
 }
-
-// const serverEnvLayer = Effect.gen(function* () {
-//   yield* TwinEnv.modifyEnv(
-//     TwinEnv.TWIN_ENV_KEYS.twinConfigPath,
-//     nativeTwinConfig.twinConfigPath,
-//   );
-//   if (nativeTwinConfig.inputCSS) {
-//     yield* TwinEnv.modifyEnv(TwinEnv.TWIN_ENV_KEYS.inputCSS, nativeTwinConfig.inputCSS);
-//   }
-//   if (nativeTwinConfig.projectRoot) {
-//     yield* TwinEnv.modifyEnv(
-//       TwinEnv.TWIN_ENV_KEYS.projectRoot,
-//       nativeTwinConfig.projectRoot,
-//     );
-//   }
-
-//   if (nativeTwinConfig.outputDir) {
-//     yield* TwinEnv.modifyEnv(
-//       TwinEnv.TWIN_ENV_KEYS.outputDir,
-//       nativeTwinConfig.outputDir,
-//     );
-//   }
-
-//   return TwinEnv.TwinEnvContextLive;
-// }).pipe(Layer.unwrapScoped);

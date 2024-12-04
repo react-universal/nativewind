@@ -47,6 +47,14 @@ export class TSCompiler {
     return Effect.try(() => this.fs.readDirSync(path));
   }
 
+  rmFile(path: string) {
+    return Effect.promise(() => this.fs.delete(path));
+  }
+
+  addFile(path: string) {
+    return Effect.sync(() => this.compiler.addSourceFileAtPathIfExists(path));
+  }
+
   fileExists(path: string) {
     return Effect.promise(() => this.fs.fileExists(path));
   }

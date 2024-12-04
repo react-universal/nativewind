@@ -38,8 +38,7 @@ const providedFrequency = new FrequencyMetric(
 export const TwinFSMake = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const compiler = yield* BabelCompiler;
-  const config = yield* CompilerConfigContext;
-  const env = yield* config.env;
+  const env = yield* CompilerConfigContext;
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
 
@@ -265,7 +264,7 @@ const createCompilerRegistry = (trees: HashMap.HashMap<string, JSXElementNode>[]
     }),
   );
 
-export const FSLive = Layer.mergeAll(NodeFileSystem.layer, NodePath.layer);
+export const FSLive = Layer.mergeAll(NodeFileSystem.layer, NodePath.layerPosix);
 export class TwinFileSystem extends Context.Tag('metro/fs/service')<
   TwinFileSystem,
   Effect.Effect.Success<typeof TwinFSMake>

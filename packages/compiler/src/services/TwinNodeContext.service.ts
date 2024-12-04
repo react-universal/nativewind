@@ -18,8 +18,7 @@ import {
 import { CompilerConfigContext } from './CompilerConfig.service.js';
 
 const TwinNodeContextLive = Effect.gen(function* () {
-  const ctx = yield* CompilerConfigContext;
-  const env = yield* ctx.env;
+  const env = yield* CompilerConfigContext;
 
   const initialConfig = Option.map(env.twinConfigPath, (x) => extractTwinConfig(x)).pipe(
     Option.getOrElse(() => defineConfig({ content: [] })),

@@ -61,7 +61,7 @@ export const CompilerRun = (config: { watch: boolean; verbose: boolean }) =>
               concurrency: 'unbounded',
               discard: true,
             },
-          )
+          ),
         ),
       )
       .pipe(
@@ -72,7 +72,21 @@ export const CompilerRun = (config: { watch: boolean; verbose: boolean }) =>
     if (config.watch) {
       const watcher = pipe(
         yield* fsUtils.createWatcher(sourceFiles),
-        Stream.mapEffect((event) => tsCompiler.refreshFileAt(event.path)),
+        Stream.tap((x) =>
+          Effect.logDebug(
+            `[watcher] Detected ${x._tag} change in: ${x.path.replace(process.cwd(), '')}`,
+          ),
+        ),
+        Stream.filterMapEffect((event) => {
+          if (event._tag === 'Remove') {
+            tsCompiler.rmFile(event.path);
+            return Option.some(tsCompiler.rmFile(event.path).pipe(Effect.as(undefined)));
+          }
+          if (event._tag === 'Create') {
+            return Option.some(tsCompiler.addFile(event.path));
+          }
+          return Option.some(tsCompiler.refreshFileAt(event.path));
+        }),
         Stream.mapEffect((x) => tsCompiler.emit(x)),
         Stream.mapEffect((x) => tsCompiler.resolveEmittedFile(x.getFiles())),
         Stream.mapEffect((result) =>

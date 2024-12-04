@@ -1,5 +1,7 @@
-import { Layer } from 'effect';
 import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as LogLevel from 'effect/LogLevel';
+import * as Option from 'effect/Option';
 import type { TransformResponse } from 'metro-transform-worker';
 import * as worker from 'metro-transform-worker';
 import * as path from 'node:path';
@@ -7,18 +9,16 @@ import {
   TwinNodeContext,
   BabelCompiler,
   TwinFileSystem,
-  CompilerConfigContextLive,
+  CompilerConfigContext,
 } from '@native-twin/compiler';
 import { matchCss } from '@native-twin/helpers/server';
 import type { TwinMetroTransformFn } from '../models/Metro.models.js';
 import { transformCSSExpo } from '../utils/css.utils.js';
 
-console.log('WORKER: ', worker);
 type MetroTransformFn = typeof worker.transform;
 
 const NodeMainLayerSync = TwinFileSystem.Live.pipe(
   Layer.provideMerge(TwinNodeContext.Live),
-  Layer.provideMerge(CompilerConfigContextLive),
 );
 
 export const transform: TwinMetroTransformFn = async (
@@ -30,25 +30,6 @@ export const transform: TwinMetroTransformFn = async (
 ) => {
   const twinConfig = config.twinConfig;
   const platform = options.platform ?? 'native';
-
-  // const serverEnvLayer = Effect.gen(function* () {
-  //   yield* TwinEnv.modifyEnv(
-  //     TwinEnv.TWIN_ENV_KEYS.twinConfigPath,
-  //     config.twinConfig.twinConfigPath,
-  //   );
-  //   yield* TwinEnv.modifyEnv(TwinEnv.TWIN_ENV_KEYS.inputCSS, config.twinConfig.inputCSS);
-  //   yield* TwinEnv.modifyEnv(
-  //     TwinEnv.TWIN_ENV_KEYS.projectRoot,
-  //     config.twinConfig.projectRoot,
-  //   );
-
-  //   yield* TwinEnv.modifyEnv(
-  //     TwinEnv.TWIN_ENV_KEYS.outputDir,
-  //     config.twinConfig.outputDir,
-  //   );
-
-  //   return TwinEnv.TwinEnvContextLive;
-  // }).pipe(Layer.unwrapScoped);
 
   return Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
@@ -102,14 +83,17 @@ export const transform: TwinMetroTransformFn = async (
     return transformed;
   }).pipe(
     Effect.provide(NodeMainLayerSync),
-    // Effect.provide(setConfigLayerFromUser),
-    // Effect.provide(serverEnvLayer),
-    // Effect.onError((x) => Effect.log('asdadasd', x)),
+    Effect.provide(
+      Layer.succeed(CompilerConfigContext, {
+        inputCSS: config.twinConfig.inputCSS,
+        logLevel: LogLevel.fromLiteral(config.twinConfig.logLevel),
+        outputDir: config.twinConfig.outputDir,
+        // @ts-expect-error
+        platformPaths: config.twinConfig.platformOutputs,
+        projectRoot: config.twinConfig.projectRoot,
+        twinConfigPath: Option.fromNullable(config.twinConfig.twinConfigPath),
+      }),
+    ),
     Effect.runPromise,
   );
-
-  // return metroRunnable.pipe(Effect.provide(layer), Effect.runPromise).catch((error) => {
-  //   console.log('ERROR: ', error);
-  //   throw new Error(error);
-  // });
 };

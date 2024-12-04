@@ -1,17 +1,18 @@
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
-import { Layer } from 'effect';
 import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as LogLevel from 'effect/LogLevel';
+import * as Option from 'effect/Option';
 import {
   TwinNodeContext,
   BabelCompiler,
   TwinFileSystem,
-  CompilerConfigContextLive,
+  CompilerConfigContext,
 } from '@native-twin/compiler';
 import type { BabelTransformerFn } from '../models/Metro.models.js';
 
 const NodeMainLayerSync = TwinFileSystem.Live.pipe(
   Layer.provideMerge(TwinNodeContext.Live),
-  Layer.provideMerge(CompilerConfigContextLive),
 );
 
 export const transform: BabelTransformerFn = async (params) => {
@@ -41,14 +42,24 @@ export const transform: BabelTransformerFn = async (params) => {
     // @ts-expect-error untyped
     return upstreamTransformer.transform({
       src: code,
-      options: {
-        ...params.options,
-        adsasda: 1,
-      },
+      options: params.options,
       filename: params.filename,
     });
   }).pipe(
     Effect.provide(NodeMainLayerSync),
+    Effect.provide(
+      Layer.succeed(CompilerConfigContext, {
+        inputCSS: params.options.customTransformOptions.inputCSS,
+        logLevel: LogLevel.fromLiteral(params.options.customTransformOptions.logLevel),
+        outputDir: params.options.customTransformOptions.outputCSS,
+        // @ts-expect-error
+        platformPaths: params.options.customTransformOptions.twinConfigPath,
+        projectRoot: params.options.customTransformOptions.environment,
+        twinConfigPath: Option.fromNullable(
+          params.options.customTransformOptions.twinConfigPath,
+        ),
+      }),
+    ),
     Effect.runPromise,
   );
 

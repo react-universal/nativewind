@@ -1,6 +1,6 @@
-import { Iterable } from 'effect';
 import * as Chunk from 'effect/Chunk';
 import * as Effect from 'effect/Effect';
+import * as Iterable from 'effect/Iterable';
 import * as Stream from 'effect/Stream';
 import { TwinFileSystem } from '@native-twin/compiler';
 

@@ -24,11 +24,9 @@ type MetroTransformFn = typeof worker.transform;
 export const createWorkerService = (input: MetroWorkerInput) => {
   return Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
-    const config = yield* CompilerConfigContext;
-    const env = yield* config.env;
+    const env = yield* CompilerConfigContext;
     const allowedPaths = yield* ctx.scanAllowedPaths;
     const allowedPathsGlob = yield* ctx.getAllowedGlobPatterns;
-    console.log('ORIGINAL: ', input.config.twinConfig.originalTransformerPath);
     const transform: MetroTransformFn = input.config.twinConfig.originalTransformerPath
       ? require(input.config.twinConfig.originalTransformerPath).transform
       : worker.transform;

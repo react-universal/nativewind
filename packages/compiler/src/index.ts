@@ -1,6 +1,6 @@
 export {
   CompilerConfigContext,
-  CompilerConfigContextLive,
+  createCompilerConfig,
 } from './services/CompilerConfig.service.js';
 export { BabelCompiler } from './services/BabelCompiler.service.js';
 export { FSLive, TwinFSMake, TwinFileSystem } from './services/TwinFileSystem.service.js';
@@ -10,6 +10,7 @@ export { twinLoggerLayer } from './services/Logger.service.js';
 export { JSXImportPluginContext } from './services/TwinBabelPlugin.service.js';
 export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from './shared/twin.constants.js';
 export { extractLanguageRegions } from './services/BabelCompiler.service.js';
+export { DevToolsLive } from './services/NodeMainLayer.js';
 
 export type { BabelAPI, TwinBabelPluginOptions } from './models/Babel.models.js';
 export type { NodeContextShape } from './services/TwinNodeContext.service.js';
