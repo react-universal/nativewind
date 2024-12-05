@@ -1,3 +1,4 @@
+import { NodeRuntime } from '@effect/platform-node';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
@@ -12,6 +13,7 @@ import {
   twinLoggerLayer,
   createCompilerConfig,
 } from '@native-twin/compiler';
+import { LaunchTwinServer } from '@native-twin/compiler/server';
 import { TwinMetroConfig } from './models/Metro.models.js';
 import { getMetroSettings } from './programs/getMetroSettings.js';
 
@@ -51,13 +53,12 @@ export function withNativeTwin(
   const originalResolver = metroConfig.resolver.resolveRequest;
   const originalGetTransformerOptions = metroConfig.transformer.getTransformOptions;
 
-  // NodeRuntime.runMain(
-  //   LaunchTwinServer.pipe(
-  //     Effect.catchAll((error) => Effect.log('ERROR: ', error)),
-  //     Effect.provide(setConfigLayerFromUser),
-  //     Effect.provide(serverEnvLayer),
-  //   ),
-  // );
+  NodeRuntime.runMain(
+    LaunchTwinServer.pipe(
+      Effect.catchAll((error) => Effect.log('ERROR: ', error)),
+      Effect.provide(MetroLive),
+    ),
+  );
 
   return {
     ...metroConfig,

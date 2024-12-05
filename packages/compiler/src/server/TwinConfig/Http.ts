@@ -22,7 +22,7 @@ export const HttpTwinConfigLive = HttpApiBuilder.group(
           Array.map((x) => fs.mkEmptyFileCached(x)),
         ),
       );
-      console.log('SERVER_ENV: ', env);
+      // console.log('SERVER_ENV: ', env);
       return handlers
         .handle('updateConfig', ({ payload, path }) => {
           return config.with(path.platformID, (data) =>

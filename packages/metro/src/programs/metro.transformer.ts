@@ -72,7 +72,6 @@ export const transform: TwinMetroTransformFn = async (
 
     if (result?.code) {
       // console.log('OPTIONS: ', params.options);
-      console.log('TRANSFORMED: ', result?.code);
       code = result.code;
     }
 

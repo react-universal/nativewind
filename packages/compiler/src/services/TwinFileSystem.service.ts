@@ -214,6 +214,7 @@ export const TwinFSMake = Effect.gen(function* () {
       ),
       // Stream.map((x) => x.entries),
       // Stream.flattenIterables,
+      Stream.tap((trees) => Effect.log(trees.trees)),
       Stream.tapError((error) => Effect.log(error)),
       Stream.runCollect,
       Effect.map((x) => RA.fromIterable(x)),
