@@ -18,7 +18,7 @@ import * as TwinConfigModel from '../Domain/TwinConfig.model.js';
  */
 export class TwinConfigApi extends HttpApiGroup.make('twinConfig')
   .add(
-    HttpApiEndpoint.post('updateConfig', '/:platformID')
+    HttpApiEndpoint.post('create', '/:platformID')
       .setPath(Schema.Struct({ platformID: TwinConfigModel.PlatformIDFromString }))
       .addSuccess(TwinConfigModel.TwinConfigModel.json)
       .setPayload(TwinConfigModel.TwinConfigModel.jsonCreate)

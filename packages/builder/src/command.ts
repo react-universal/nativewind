@@ -5,9 +5,11 @@ import { Config, ConfigProvider, Effect, Layer } from 'effect';
 import { CompilerRun } from './compiler.program.js';
 import { CompilerContextLive } from './services/Compiler.service.js';
 import { FsUtilsLive } from './services/FsUtils.service.js';
+import { TypescriptContextLive } from './services/Typescript.service.js';
 
 const MainLive = Layer.empty.pipe(
   Layer.provideMerge(CompilerContextLive),
+  Layer.provideMerge(TypescriptContextLive),
   Layer.provideMerge(FsUtilsLive),
   Layer.provideMerge(NodePath.layerPosix),
 );

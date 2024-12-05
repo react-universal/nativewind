@@ -1,7 +1,6 @@
 import { Array, Effect, Option } from 'effect';
 import path from 'node:path';
-import { FileSystemHost, MemoryEmitResultFile, Project, SourceFile } from 'ts-morph';
-import { TSCompilerOptions } from './Compiler.models';
+import { FileSystemHost, ts, MemoryEmitResultFile, Project, SourceFile } from 'ts-morph';
 
 export class TSCompiler {
   private readonly compiler: Project;
@@ -108,3 +107,49 @@ export class TSCompiler {
     );
   }
 }
+
+export const TSCompilerOptions: ts.CompilerOptions = {
+  declaration: true,
+  sourceMap: true,
+  declarationMap: true,
+  emitDecoratorMetadata: true,
+  experimentalDecorators: true,
+  noEmitOnError: true,
+  downlevelIteration: true,
+  removeComments: false,
+  jsx: ts.JsxEmit.ReactNative,
+  module: ts.ModuleKind.ESNext,
+  target: ts.ScriptTarget.ES2022,
+  moduleResolution: ts.ModuleResolutionKind.Node10,
+  lib: ['lib.es2022.d.ts', 'lib.dom.d.ts', 'lib.dom.iterable.d.ts'],
+  moduleDetection: ts.ModuleDetectionKind.Force,
+  esModuleInterop: false,
+  stripInternal: false,
+  types: ['node', 'react-native', 'jest'],
+  skipLibCheck: true,
+  skipDefaultLibCheck: true,
+  allowSyntheticDefaultImports: true,
+  resolveJsonModule: true,
+  allowJs: false,
+  checkJs: false,
+  strict: true,
+  strictFunctionTypes: true,
+  noFallthroughCasesInSwitch: true,
+  noPropertyAccessFromIndexSignature: true,
+  strictNullChecks: true,
+  noUncheckedIndexedAccess: false,
+  alwaysStrict: true,
+  forceConsistentCasingInFileNames: true,
+  allowUnreachableCode: false,
+  noImplicitReturns: false,
+  exactOptionalPropertyTypes: false,
+  noImplicitAny: true,
+  noImplicitThis: true,
+  noImplicitOverride: false,
+  noErrorTruncation: false,
+  noUnusedParameters: false,
+  noUnusedLocals: true,
+  isolatedModules: false,
+  outDir: './build/esm',
+  declarationDir: './build/dts',
+};

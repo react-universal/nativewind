@@ -5,6 +5,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Glob from 'glob';
+import * as Crypto from 'node:crypto';
 
 const make = Effect.gen(function* (_) {
   const fs = yield* _(FileSystem.FileSystem);
@@ -77,6 +78,10 @@ const make = Effect.gen(function* (_) {
   const writeFileSource = (file: { path: string; content: string }) =>
     fs.writeFileString(file.path, file.content);
 
+  const getFileMD5 = (filePath: string) => {
+    return fs.readFile(filePath).pipe(Effect.map((x) => Crypto.hash('md5', x)));
+  };
+
   return {
     glob,
     writeFileSource,
@@ -84,6 +89,7 @@ const make = Effect.gen(function* (_) {
     writeFileCached,
     globFiles,
     modifyFile,
+    getFileMD5,
     mkdirCached,
     readFile,
   } as const;

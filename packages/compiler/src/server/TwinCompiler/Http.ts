@@ -3,15 +3,14 @@ import { Array, Effect, Layer, pipe, Record } from 'effect';
 import { FsUtils } from '../../internal/fs.utils.js';
 import { CompilerConfigContext } from '../../services/CompilerConfig.service.js';
 import { TwinServerApi } from '../Api.js';
-import { TwinConfigNotFound } from '../Domain/TwinConfig.model.js';
-import { TwinConfigService } from './Service.js';
+import { TwinCompilerService } from './Service.js';
 
-export const HttpTwinConfigLive = HttpApiBuilder.group(
+export const HttpTwinCompilerLive = HttpApiBuilder.group(
   TwinServerApi,
-  'twinConfig',
+  'twinCompiler',
   (handlers) =>
     Effect.gen(function* () {
-      const config = yield* TwinConfigService;
+      const compilerService = yield* TwinCompilerService;
       const env = yield* CompilerConfigContext;
       const fs = yield* FsUtils;
 
@@ -23,24 +22,11 @@ export const HttpTwinConfigLive = HttpApiBuilder.group(
         ),
       );
       // console.log('SERVER_ENV: ', env);
-      return handlers
-        .handle('create', ({ payload, path }) => {
-          return config.with(path.platformID, (data) =>
-            config.create(data.platformID, payload),
-          );
-        })
-        .handle('getCurrentConfig', ({ path }) => {
-          return config.with(path.platformID, (data) => {
-            return config.findByPlatform(path.platformID).pipe(
-              Effect.flatten,
-              Effect.mapError(
-                () => new TwinConfigNotFound({ message: `Notfound: ${path.platformID}` }),
-              ),
-            );
-          });
-        });
+      return handlers.handle('compile-file', ({ payload }) => {
+        return compilerService.getOrCreateFile(payload.path, payload.platformID);
+      });
     }),
-).pipe(Layer.provide(TwinConfigService.Default));
+).pipe(Layer.provide(TwinCompilerService.Default));
 // handlers
 //   .handle('updateConfig', ({ payload }) =>
 //     Effect.gen(function* () {

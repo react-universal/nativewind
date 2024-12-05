@@ -11,4 +11,14 @@ export default Effect.gen(function* () {
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
       )
     `;
+    yield* sql`
+    CREATE TABLE twinFiles (
+      id SERIAL PRIMARY KEY,
+      platformID STRING,
+      path STRING,
+      compiledHash STRING,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+      updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    )
+  `;
 });

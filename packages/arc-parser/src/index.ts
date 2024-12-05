@@ -5,7 +5,7 @@ export * from './parsers/composed.parsers.js';
 export * from './parsers/coroutine.parser.js';
 export * from './parsers/data.parser.js';
 export * from './parsers/debug.parser.js';
-export * from './parsers/either.parser.js';
+export * from './parsers/either.parser.js'; 
 export * from './parsers/lookahead.js';
 export * from './parsers/many.parser.js';
 export * from './parsers/maybe.parser.js';

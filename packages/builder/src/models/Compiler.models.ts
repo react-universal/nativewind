@@ -1,6 +1,5 @@
-import { Data } from 'effect';
-import type { Option } from 'effect';
-import { ts } from 'ts-morph';
+import { Data, Schema, type Option } from 'effect';
+import { ts, OutputFile } from 'ts-morph';
 
 export const tsHostFormatter: ts.FormatDiagnosticsHost = {
   getCanonicalFileName: (path) => path,
@@ -8,158 +7,41 @@ export const tsHostFormatter: ts.FormatDiagnosticsHost = {
   getNewLine: () => ts.sys.newLine,
 };
 
-export interface TsEmitSource {
+export class BuildSource extends Data.Class<{
   path: string;
   content: string;
-}
-
-export interface CompiledSource {
-  readonly tsFile: {
-    readonly path: string;
-    readonly content: string;
-  };
-  readonly dtsFile: {
-    readonly sourcemap: Option.Option<BabelSourceMap>;
-    readonly sourcemapFilePath: string;
-    readonly filePath: string;
-    readonly content: Option.Option<string>;
-  };
-  readonly esmFile: {
-    readonly sourcemapFilePath: string;
-    readonly sourcemap: string;
-    readonly filePath: string;
-    readonly content: string;
-    // readonly output: ts.TranspileOutput;
-  };
-  readonly annotatedESMFile: {
-    readonly sourcemap: Option.Option<BabelSourceMap>;
-    readonly sourcemapFilePath: string;
-    readonly filePath: string;
-    readonly content: Option.Option<string>;
-  };
-  readonly cjsFile: {
-    readonly sourcemap: Option.Option<BabelSourceMap>;
-    readonly sourcemapFilePath: string;
-    readonly filePath: string;
-    readonly content: Option.Option<string>;
-  };
-}
-
-// export const getTsGlobOptions: GlobOptions = {
-//   nodir: true,
-//   absolute: true,
-//   cwd: yield* Config.string("PROJECT_DIR"),
-//   dotRelative: true,
-//   ignore: '**/*.d.ts',
-// };
-
-export interface BabelSourceMap {
-  version: number;
-  sources: string[];
-  names: string[];
-  sourceRoot?: string | undefined;
-  sourcesContent?: string[] | undefined;
-  mappings: string;
-  file: string;
-}
-
-export type TsEmitResult = Data.TaggedEnum<{
-  File: { readonly value: TsEmitSource[]; original: TsEmitSource };
-  Compiled: CompiledSource;
-  Diagnostic: { readonly value: ts.Diagnostic; readonly filePath: string };
-  Message: { readonly value: string };
-}>;
-export const TsEmitResult = Data.taggedEnum<TsEmitResult>();
-
-export const TSCompilerOptions: ts.CompilerOptions = {
-  declaration: true,
-  sourceMap: true,
-  declarationMap: true,
-  emitDecoratorMetadata: true,
-  experimentalDecorators: true,
-  noEmitOnError: true,
-  downlevelIteration: true,
-  removeComments: false,
-  jsx: ts.JsxEmit.ReactNative,
-  module: ts.ModuleKind.ESNext,
-  target: ts.ScriptTarget.ES2022,
-  moduleResolution: ts.ModuleResolutionKind.Node10,
-  lib: ['lib.es2022.d.ts', 'lib.dom.d.ts', 'lib.dom.iterable.d.ts'],
-  moduleDetection: ts.ModuleDetectionKind.Force,
-  esModuleInterop: false,
-  stripInternal: false,
-  types: ['node', 'react-native', 'jest'],
-  skipLibCheck: true,
-  skipDefaultLibCheck: true,
-  allowSyntheticDefaultImports: true,
-  resolveJsonModule: true,
-  allowJs: false,
-  checkJs: false,
-  strict: true,
-  strictFunctionTypes: true,
-  noFallthroughCasesInSwitch: true,
-  noPropertyAccessFromIndexSignature: true,
-  strictNullChecks: true,
-  noUncheckedIndexedAccess: false,
-  alwaysStrict: true,
-  forceConsistentCasingInFileNames: true,
-  allowUnreachableCode: false,
-  noImplicitReturns: false,
-  exactOptionalPropertyTypes: false,
-  noImplicitAny: true,
-  noImplicitThis: true,
-  noImplicitOverride: false,
-  noErrorTruncation: false,
-  noUnusedParameters: false,
-  noUnusedLocals: true,
-  isolatedModules: false,
-  outDir: './build/esm',
-  declarationDir: './build/dts',
-};
-
-export interface TsCompilerOutput {
-  diagnostics: readonly ts.Diagnostic[];
-  source: string;
-  file: {
-    sourcemaps: {
-      path: string;
-      content: string;
-    };
-    esm: {
-      path: string;
-      content: string;
-    };
-    dts: {
-      path: string;
-      content: string;
-    };
-    dtsMap: {
-      path: string;
-      content: string;
-    };
-  };
-}
-
-export interface TwinCompilerOutput {
-  cjs: {
-    readonly sourcemap: Option.Option<BabelSourceMap>;
-    readonly sourcemapFilePath: string;
-    readonly filePath: string;
-    readonly content: Option.Option<string>;
-  };
-  esm: {
-    readonly sourcemap: Option.Option<BabelSourceMap>;
-    readonly sourcemapFilePath: string;
-    readonly filePath: string;
-    readonly content: Option.Option<string>;
-  };
-  dts: {
-    readonly path: string;
-    readonly content: string;
-  };
-  dtsMaps: {
-    readonly path: string;
-    readonly content: string;
-  };
   sourcePath: string;
+}> {}
+
+export class BuildSourceWithMaps extends Data.Class<
+  BuildSource & {
+    sourcemap: Option.Option<string>;
+    sourcemapPath: string;
+  }
+> {}
+
+export interface CompilerOutput {
+  readonly tsFile: BuildSource;
+  readonly dtsFile: BuildSourceWithMaps;
+  readonly esmFile: BuildSourceWithMaps;
+  readonly annotatedESMFile: BuildSourceWithMaps;
+  readonly cjsFile: BuildSourceWithMaps;
+}
+
+export const BabelSourceMapSchema = Schema.Struct({
+  version: Schema.Number,
+  sources: Schema.Array(Schema.String),
+  names: Schema.Array(Schema.String),
+  sourceRoot: Schema.String.pipe(Schema.optional),
+  sourcesContent: Schema.Array(Schema.String).pipe(Schema.optional),
+  mappings: Schema.String,
+  file: Schema.String,
+});
+
+export interface BuildOutputFiles {
+  esm: OutputFile;
+  relativeSourcePath: string;
+  sourcemaps: OutputFile;
+  dts: OutputFile;
+  dtsMap: OutputFile;
 }

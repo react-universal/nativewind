@@ -4565,7 +4565,7 @@ __metadata:
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
     showdown: "npm:2.1.0"
-    ts-morph: "npm:^23.0.0"
+    ts-morph: "npm:^24.0.0"
     vscode-css-languageservice: "npm:^6.2.14"
     vscode-languageserver: "npm:^9.0.1"
     vscode-languageserver-protocol: "npm:^3.17.5"
@@ -4602,7 +4602,7 @@ __metadata:
     markdown-it: "npm:^14.1.0"
     match-sorter: "npm:6.3.4"
     showdown: "npm:2.1.0"
-    ts-morph: "npm:^23.0.0"
+    ts-morph: "npm:^24.0.0"
     vscode-css-languageservice: "npm:^6.2.14"
     vscode-languageserver: "npm:^9.0.1"
     vscode-languageserver-protocol: "npm:^3.17.5"
@@ -6148,18 +6148,6 @@ __metadata:
     "@vue/compiler-sfc":
       optional: true
   checksum: 10/eb25cbeeaf85d3acd54019d1f3563447337a2faee7a35558adb69dff44ce3b93714a5b64ba4d0374f3df3191c32c993d441493fdc43a2c97c9b8a0e3d58702cf
-  languageName: node
-  linkType: hard
-
-"@ts-morph/common@npm:~0.24.0":
-  version: 0.24.0
-  resolution: "@ts-morph/common@npm:0.24.0"
-  dependencies:
-    fast-glob: "npm:^3.3.2"
-    minimatch: "npm:^9.0.4"
-    mkdirp: "npm:^3.0.1"
-    path-browserify: "npm:^1.0.1"
-  checksum: 10/5b732789868e92689c86a902c8f4528d998ac2e183a02cfeff6cf7731075d254cf3dd1e7bb73f2943ec1fcde6f2fb1caa19ee47a17a4289be08c224d68a902d4
   languageName: node
   linkType: hard
 
@@ -16129,15 +16117,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "mkdirp@npm:3.0.1"
-  bin:
-    mkdirp: dist/cjs/src/bin.js
-  checksum: 10/16fd79c28645759505914561e249b9a1f5fe3362279ad95487a4501e4467abeb714fd35b95307326b8fd03f3c7719065ef11a6f97b7285d7888306d1bd2232ba
-  languageName: node
-  linkType: hard
-
 "mocha@npm:^10.2.0":
   version: 10.8.2
   resolution: "mocha@npm:10.8.2"
@@ -20790,16 +20769,6 @@ __metadata:
   bin:
     ts-jest: cli.js
   checksum: 10/f89e562816861ec4510840a6b439be6145f688b999679328de8080dc8e66481325fc5879519b662163e33b7578f35243071c38beb761af34e5fe58e3e326a958
-  languageName: node
-  linkType: hard
-
-"ts-morph@npm:^23.0.0":
-  version: 23.0.0
-  resolution: "ts-morph@npm:23.0.0"
-  dependencies:
-    "@ts-morph/common": "npm:~0.24.0"
-    code-block-writer: "npm:^13.0.1"
-  checksum: 10/2ac0e615021b9d4115df60be02fce0b9b80cb0db173b7836ac70f60f987d9f055ec6a4b2233cf6ed9bdd7f1d8854e8266f5af2d4d40ca738cd7374246e163da3
   languageName: node
   linkType: hard
 

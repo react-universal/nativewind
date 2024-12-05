@@ -37,7 +37,8 @@
     "@effect/platform": "^0.69.3",
     "@effect/platform-node": "^0.64.4",
     "effect": "^3.10.0",
-    "lodash.merge": "4.6.2"
+    "lodash.merge": "4.6.2",
+    "ts-morph": "^24.0.0"
   },
   "devDependencies": {
     "@types/lodash.merge": "^4.6.9"

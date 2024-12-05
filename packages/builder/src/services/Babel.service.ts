@@ -2,14 +2,13 @@ import { transformAsync, TransformOptions } from '@babel/core';
 import { Path } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
 import { Context, Effect, Layer, Option } from 'effect';
-import type { BabelSourceMap, CompiledSource } from '../models/Compiler.models.js';
+import { OutputFile } from 'ts-morph';
+import type { BuildSourceWithMaps, CompilerOutput } from '../models/Compiler.models.js';
 import { FsUtils, FsUtilsLive } from './FsUtils.service.js';
 
 const make = Effect.gen(function* () {
   const path_ = yield* Path.Path;
   const fsUtils = yield* FsUtils;
-
-  const getCJSPath = (path: string) => path.replace('/esm/', '/cjs/');
 
   const getTranspilerPlugins = (
     originalFilename: string,
@@ -59,35 +58,36 @@ const make = Effect.gen(function* () {
     );
   };
 
-  const transpileESMToCJS = (
-    esmFile: CompiledSource['annotatedESMFile'],
-    tsFilePath: string,
-  ) => {
+  const transpileESMToCJS = (esmFile: BuildSourceWithMaps, tsFilePath: string) => {
     return Effect.gen(function* () {
       // const emittedSourcemaps = esmFile.sourcemap;
-      const sourcemapPath = getCJSPath(esmFile.sourcemapFilePath);
-      const cjsFilePath = getCJSPath(esmFile.filePath);
+      const sourcemapPath = fsUtils.getCJSPath(esmFile.sourcePath);
+      const cjsFilePath = fsUtils.getCJSPath(esmFile.path);
 
       const relativeSourceFile = path_.relative(path_.dirname(sourcemapPath), tsFilePath);
 
       const cjsFileDir = path_.dirname(cjsFilePath);
-      const cjsMapsFilePath = getCJSPath(esmFile.sourcemapFilePath);
+      const cjsMapsFilePath = fsUtils.getCJSPath(esmFile.sourcemapPath);
 
       yield* fsUtils.mkdirCached(cjsFileDir);
 
       const babelFile = yield* babelTranspile({
-        content: esmFile.content.pipe(Option.getOrThrow),
+        content: esmFile.content,
         filePath: cjsFilePath,
-        inputSourceMaps: Option.getOrUndefined(esmFile.sourcemap),
+        inputSourceMaps: esmFile.sourcemap.pipe(
+          Option.map(JSON.parse),
+          Option.getOrUndefined,
+        ),
         relativeSourceFile,
         plugins: getTranspilerPlugins(tsFilePath, 'esm-to-cjs'),
       });
 
-      const result: CompiledSource['cjsFile'] = {
-        content: Option.fromNullable(babelFile?.code),
-        sourcemapFilePath: cjsMapsFilePath,
-        filePath: cjsFilePath,
-        sourcemap: Option.fromNullable(babelFile?.map),
+      const result: BuildSourceWithMaps = {
+        content: Option.fromNullable(babelFile?.code).pipe(Option.getOrElse(() => '')),
+        sourcemapPath: cjsMapsFilePath,
+        path: cjsFilePath,
+        sourcemap: Option.fromNullable(babelFile?.map).pipe(Option.map(JSON.stringify)),
+        sourcePath: tsFilePath,
       };
 
       return result;
@@ -100,24 +100,25 @@ const make = Effect.gen(function* () {
   };
 
   const addAnnotationsToESM = (
-    esmFile: CompiledSource['esmFile'],
+    esmFile: OutputFile,
+    sourcemaps: OutputFile,
     tsFilePath: string,
   ) => {
     return Effect.gen(function* () {
       const relativeSourceFile = path_.relative(
-        path_.dirname(esmFile.sourcemapFilePath),
+        path_.dirname(sourcemaps.getFilePath()),
         tsFilePath,
       );
-      const inputSourceMaps: BabelSourceMap = yield* Effect.try({
-        try: () => JSON.parse(esmFile.sourcemap),
+      const inputSourceMaps = yield* Effect.try({
+        try: () => JSON.parse(sourcemaps.getText()),
         catch: (x) => `Something bad happen ${x}`,
       }).pipe(
         Effect.tapError((x) =>
           Effect.logWarning(
             'Cant parse sourcemap: ',
             {
-              sourcemapFilePath: esmFile.sourcemapFilePath,
-              sourcemap: esmFile.sourcemap,
+              sourcemapFilePath: sourcemaps.getFilePath(),
+              sourcemap: sourcemaps.getText(),
             },
             '\n',
           ),
@@ -125,23 +126,26 @@ const make = Effect.gen(function* () {
         Effect.catchAll(() => Effect.succeed(undefined)),
       );
 
-      const cjsFileDir = path_.dirname(esmFile.filePath);
+      const cjsFileDir = path_.dirname(esmFile.getFilePath());
 
       yield* fsUtils.mkdirCached(cjsFileDir);
 
       const babelFile = yield* babelTranspile({
-        content: esmFile.content,
-        filePath: esmFile.filePath,
+        content: esmFile.getText(),
+        filePath: esmFile.getFilePath(),
         inputSourceMaps,
         relativeSourceFile,
         plugins: getTranspilerPlugins(tsFilePath, 'esm-annotations'),
       });
 
-      const result: CompiledSource['cjsFile'] = {
-        content: Option.fromNullable(babelFile?.code),
-        sourcemapFilePath: esmFile.sourcemapFilePath,
-        filePath: esmFile.filePath,
-        sourcemap: Option.fromNullable(babelFile?.map),
+      const result: CompilerOutput['cjsFile'] = {
+        content: Option.fromNullable(babelFile?.code).pipe(
+          Option.getOrElse(() => esmFile.getText()),
+        ),
+        sourcemapPath: sourcemaps.getFilePath(),
+        path: esmFile.getFilePath(),
+        sourcemap: Option.fromNullable(babelFile?.map).pipe(Option.map(JSON.stringify)),
+        sourcePath: tsFilePath,
       };
 
       return result;
@@ -154,7 +158,6 @@ const make = Effect.gen(function* () {
   };
 
   return {
-    getCJSPath,
     transpileESMToCJS,
     addAnnotationsToESM,
     getTranspilerPlugins,

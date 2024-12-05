@@ -61,7 +61,7 @@
     "markdown-it": "^14.1.0",
     "match-sorter": "6.3.4",
     "showdown": "2.1.0",
-    "ts-morph": "^23.0.0",
+    "ts-morph": "^24.0.0",
     "vscode-css-languageservice": "^6.2.14",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-protocol": "^3.17.5",

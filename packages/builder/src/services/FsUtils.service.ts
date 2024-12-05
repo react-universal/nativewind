@@ -35,28 +35,14 @@ const make = Effect.gen(function* (_) {
 
   const mkdirCached_ = yield* _(
     Effect.cachedFunction((path: string) =>
-      fs
-        .makeDirectory(path)
-        .pipe(
-          Effect.catchAllCause(() => Effect.void),
-          Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } })
-        ),
+      fs.makeDirectory(path).pipe(
+        Effect.catchAllCause(() => Effect.void),
+        Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } }),
+      ),
     ),
   );
 
   const mkdirCached = (path: string) => mkdirCached_(path_.resolve(path));
-
-  const readJson = (path: string) =>
-    Effect.tryMap(fs.readFileString(path), {
-      try: (_) => JSON.parse(_),
-      catch: (e) => new Error(`readJson failed (${path}): ${e}`),
-    });
-
-  const writeJson = (path: string, json: unknown) =>
-    fs.writeFileString(path, JSON.stringify(json, null, 2) + '\n');
-
-  const writeFileSource = (file: { path: string; content: string }) =>
-    fs.writeFileString(file.path, file.content);
 
   const createWatcher = (sourceFiles: string[]) =>
     Effect.sync(() =>
@@ -77,15 +63,22 @@ const make = Effect.gen(function* (_) {
       ),
     );
 
+  const getRelativePath = (path: string) => path.replace(rootDir, '').replace(/^\//, '');
+
+  const getCJSPath = (path: string) => path.replace('/esm/', '/cjs/');
+
+  const getOriginalSourceForESM = (path: string) =>
+    path.replace('/build/esm/', '/src/').replace(/.js$/, '.ts');
+
   return {
     glob,
-    writeFileSource,
     globFiles,
     modifyFile,
     mkdirCached,
-    readJson,
-    writeJson,
     createWatcher,
+    getRelativePath,
+    getCJSPath,
+    getOriginalSourceForESM,
   } as const;
 });
 

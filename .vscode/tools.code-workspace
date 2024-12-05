@@ -5,20 +5,16 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
     },
     {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
     },
     {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
     },
     {
       "name": "📦 @lib/language-service",
@@ -35,6 +31,10 @@
     {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
     },
     {
       "name": "📦 @lib/core",
