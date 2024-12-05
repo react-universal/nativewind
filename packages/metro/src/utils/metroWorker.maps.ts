@@ -24,10 +24,9 @@ export const metroWorkerInputToCompilerCtx = ({
           baseUrl,
           environment,
           inputCSS: twinConfig.inputCSS,
-          outputCSS:
-            twinConfig.platformOutputs.find((x) =>
-              x.includes(`${options.platform ?? 'native'}.`),
-            ),
+          outputCSS: Object.values(twinConfig.platformOutputs).find((x) =>
+            x.includes(`${options.platform ?? 'native'}.`),
+          ),
           routerRoot,
         },
         dev: options.dev,

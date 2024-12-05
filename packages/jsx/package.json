@@ -14,7 +14,6 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
       "types": "./build/dts/index.d.ts",
       "import": "./build/esm/index.js",

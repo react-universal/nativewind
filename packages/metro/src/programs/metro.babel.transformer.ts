@@ -52,8 +52,7 @@ export const transform: BabelTransformerFn = async (params) => {
         inputCSS: params.options.customTransformOptions.inputCSS,
         logLevel: LogLevel.fromLiteral(params.options.customTransformOptions.logLevel),
         outputDir: params.options.customTransformOptions.outputCSS,
-        // @ts-expect-error
-        platformPaths: params.options.customTransformOptions.twinConfigPath,
+        platformPaths: params.options.customTransformOptions.platformPaths,
         projectRoot: params.options.customTransformOptions.environment,
         twinConfigPath: Option.fromNullable(
           params.options.customTransformOptions.twinConfigPath,

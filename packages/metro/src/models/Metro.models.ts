@@ -1,3 +1,4 @@
+import { CompilerConfigContext } from '@native-twin/compiler';
 import type { SheetEntry } from '@native-twin/css';
 import type * as LogLevel from 'effect/LogLevel';
 import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
@@ -34,7 +35,7 @@ export interface BaseTwinTransformerOptions {
   projectRoot: string;
   inputCSS: string;
   logLevel: LogLevel.Literal;
-  platformOutputs: string[];
+  platformOutputs: CompilerConfigContext['platformPaths'];
   runtimeEntries: SheetEntry[];
 }
 export interface NativeTwinTransformerOpts extends JsTransformerConfig {
@@ -65,6 +66,7 @@ export interface BabelTransformerOptions {
     outputCSS: string;
     environment: string;
     baseUrl: string;
+    platformPaths: CompilerConfigContext['platformPaths'];
     twinConfigPath: string;
     logLevel: LogLevel.Literal;
     outputDir: string;

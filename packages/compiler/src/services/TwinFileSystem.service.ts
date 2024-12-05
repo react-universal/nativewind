@@ -1,7 +1,6 @@
 import { sheetEntriesToCss, type SheetEntry } from '@native-twin/css';
 import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
 import * as NodePath from '@effect/platform-node/NodePath';
-import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
 import chokidar from 'chokidar';
 import { Option } from 'effect';
@@ -26,6 +25,7 @@ import { getNativeStylesJSOutput } from '../utils/native.utils.js';
 import { extractTwinConfig } from '../utils/twin.utils.js';
 import { BabelCompiler } from './BabelCompiler.service.js';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
+import { FsUtils, FsUtilsLive } from './FsUtils.service.js';
 import { TwinNodeContext } from './TwinNodeContext.service.js';
 
 const providedFrequency = new FrequencyMetric(
@@ -39,22 +39,21 @@ export const TwinFSMake = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const compiler = yield* BabelCompiler;
   const env = yield* CompilerConfigContext;
-  const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
+  const fsUtils = yield* FsUtils;
 
-  yield* fs
-    .makeDirectory(env.outputDir, { recursive: true })
-    .pipe(Effect.tap(() => Effect.logInfo('TWIN_OUTPUT_CREATED')));
+  yield* fsUtils
+    .mkdirCached(env.outputDir)
+    .pipe(Effect.tapError(() => Effect.logError('cant create twin output')));
 
-  yield* fs.exists(env.platformPaths.ios).pipe(
-    Effect.flatMap((x) => {
-      if (!x) {
-        return fs.writeFileString(env.platformPaths.ios, '');
-      }
-      return Effect.void;
-    }),
-    Effect.tap(() => Effect.logInfo('TWIN_IOS_CREATED')),
-  );
+  yield* fsUtils.writeFileCached({ path: env.platformPaths.ios, override: false });
+  yield* fsUtils.writeFileCached({ path: env.platformPaths.android, override: false });
+  yield* fsUtils.writeFileCached({
+    path: env.platformPaths.defaultFile,
+    override: false,
+  });
+  yield* fsUtils.writeFileCached({ path: env.platformPaths.native, override: false });
+  yield* fsUtils.writeFileCached({ path: env.platformPaths.web, override: false });
 
   const watcher = yield* Effect.sync(() =>
     chokidar.watch(ctx.twinConfig.content, {
@@ -94,7 +93,7 @@ export const TwinFSMake = Effect.gen(function* () {
         yield* Effect.log('TW_CONFIG_MODIFIED');
         return;
       }
-      yield* Effect.log('OTHER_EVENT: ', Object.keys(watcher.getWatched()));
+      // yield* Effect.log('OTHER_EVENT: ', Object.keys(watcher.getWatched()));
     }).pipe(
       Effect.withSpanScoped('TwinFS', {
         attributes: {
@@ -141,10 +140,10 @@ export const TwinFSMake = Effect.gen(function* () {
     .pipe(Effect.map((x) => sheetEntriesToCss(x.target, false)));
 
   const readPlatformCSSFile = (platform: string) =>
-    fs.readFile(ctx.getOutputCSSPath(platform));
+    fsUtils.readFile(ctx.getOutputCSSPath(platform));
 
   const directoryWatchers = getWatchedDirectories.pipe(
-    Effect.map((x) => HashSet.map(x, (a) => fs.watch(a))),
+    Effect.map((x) => HashSet.map(x, (a) => fsUtils.watch(a))),
     Effect.map((x) => Stream.mergeAll(x, { concurrency: 'unbounded' })),
   );
 
@@ -163,7 +162,7 @@ export const TwinFSMake = Effect.gen(function* () {
   };
 
   function createWatcherFor(basePath: string) {
-    return fs.watch(basePath).pipe(
+    return fsUtils.watch(basePath).pipe(
       Stream.map((watchEvent) => ({
         ...watchEvent,
         path: path.resolve(basePath, watchEvent.path),
@@ -180,8 +179,8 @@ export const TwinFSMake = Effect.gen(function* () {
   }) {
     return Effect.gen(function* () {
       const jsOutput = yield* getTwinCssOutput(params);
-      const output = new TextEncoder().encode(jsOutput);
-      yield* fs.writeFile(params.filepath, output);
+      // const output = new TextEncoder().encode(jsOutput);
+      yield* fsUtils.modifyFile(params.filepath, () => jsOutput);
     });
   }
 
@@ -271,7 +270,7 @@ export class TwinFileSystem extends Context.Tag('metro/fs/service')<
 >() {
   static Live = Layer.scoped(TwinFileSystem, TwinFSMake)
     .pipe(Layer.provideMerge(BabelCompiler.Live))
-    .pipe(Layer.provide(FSLive));
+    .pipe(Layer.provide(FsUtilsLive), Layer.provide(FSLive));
   static metrics = {
     providedFreq: providedFrequency,
   };

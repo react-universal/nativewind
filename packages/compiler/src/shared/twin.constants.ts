@@ -7,12 +7,12 @@ export const TWIN_DEFAULT_FILES = [
   'native-twin.config.js',
 ];
 
-export const TWIN_CSS_FILES = [
-  'twin.out.css',
-  'twin.out.web.css',
-  'twin.out.ios.css.js',
-  'twin.out.android.css.js',
-  'twin.out.native.css.js',
-];
+// export const TWIN_CSS_FILES = [
+//   'twin.out.css',
+//   'twin.out.web.css',
+//   'twin.out.ios.css.js',
+//   'twin.out.android.css.js',
+//   'twin.out.native.css.js',
+// ];
 
 export const BABEL_JSX_PLUGIN_IMPORT_RUNTIME = ['createTwinElement', '@native-twin/jsx'] as const;

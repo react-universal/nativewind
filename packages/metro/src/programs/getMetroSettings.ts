@@ -14,7 +14,7 @@ export const getMetroSettings = Effect.gen(function* () {
     allowedPathsGlob: yield* ctx.getAllowedGlobPatterns,
     outputDir: env.outputDir,
     projectRoot: env.projectRoot,
-    platformOutputs: Array.from(Object.values(env.platformPaths)),
+    platformOutputs: env.platformPaths,
     twinConfigPath: env.twinConfigPath.pipe(Option.getOrThrow),
     runtimeEntries: [],
   };

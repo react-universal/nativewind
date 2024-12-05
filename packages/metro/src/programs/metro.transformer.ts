@@ -88,7 +88,6 @@ export const transform: TwinMetroTransformFn = async (
         inputCSS: config.twinConfig.inputCSS,
         logLevel: LogLevel.fromLiteral(config.twinConfig.logLevel),
         outputDir: config.twinConfig.outputDir,
-        // @ts-expect-error
         platformPaths: config.twinConfig.platformOutputs,
         projectRoot: config.twinConfig.projectRoot,
         twinConfigPath: Option.fromNullable(config.twinConfig.twinConfigPath),

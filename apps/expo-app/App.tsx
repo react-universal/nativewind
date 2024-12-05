@@ -4,7 +4,7 @@ import { setup } from '@native-twin/core';
 import tailwindConfig from './tailwind.config';
 
 const config = setup(tailwindConfig);
-console.log('ccc. ', config);
+// console.log('ccc. ', config.config);
 export default function App() {
   return (
     <View className='bg-gray-900 flex-1 items-center justify-center first:bg-green'>

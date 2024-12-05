@@ -5,9 +5,11 @@ import * as HttpServer from '@effect/platform/HttpServer';
 import * as Layer from 'effect/Layer';
 import { createServer } from 'node:http';
 import { TwinServerApiLive } from './Http.js';
+import { HttpApiSwagger } from '@effect/platform';
 
 export const LaunchTwinServer = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
   // Layer.provide(HttpApiBuilder.middlewareOpenApi()),
+  Layer.provide(HttpApiSwagger.layer()),
   Layer.provide(HttpApiBuilder.middlewareCors()),
   Layer.provide(TwinServerApiLive),
   // Layer.provide(HttpServerRequest.),

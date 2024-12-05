@@ -28,6 +28,11 @@
       "types": "./build/dts/server.d.ts",
       "import": "./build/esm/server.js",
       "default": "./build/cjs/server.js"
+    },
+    "./react": {
+      "types": "./build/dts/react.d.ts",
+      "import": "./build/esm/react.js",
+      "default": "./build/cjs/react.js"
     }
   },
   "main": "./build/cjs/index.js",

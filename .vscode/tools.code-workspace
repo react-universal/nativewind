@@ -94,6 +94,7 @@
       "TRBL",
       "xytrbl"
     ],
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
     "jest.enable": false,
     "jest.runMode": "on-demand",
     "jest.debugMode": false,
