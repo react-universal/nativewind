@@ -1,5 +1,8 @@
-import { Data, Schema, type Option } from 'effect';
-import { ts, OutputFile } from 'ts-morph';
+import { BabelFileMetadata, BabelFile } from '@babel/core';
+import { Option, Schema } from 'effect';
+import { OutputFile, ts } from 'ts-morph';
+
+type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> };
 
 export const tsHostFormatter: ts.FormatDiagnosticsHost = {
   getCanonicalFileName: (path) => path,
@@ -7,18 +10,15 @@ export const tsHostFormatter: ts.FormatDiagnosticsHost = {
   getNewLine: () => ts.sys.newLine,
 };
 
-export class BuildSource extends Data.Class<{
+export interface BuildSource {
   path: string;
   content: string;
   sourcePath: string;
-}> {}
-
-export class BuildSourceWithMaps extends Data.Class<
-  BuildSource & {
-    sourcemap: Option.Option<string>;
-    sourcemapPath: string;
-  }
-> {}
+}
+export interface BuildSourceWithMaps extends BuildSource {
+  sourcemap: Option.Option<string>;
+  sourcemapPath: string;
+}
 
 export interface CompilerOutput {
   readonly tsFile: BuildSource;
@@ -38,6 +38,18 @@ export const BabelSourceMapSchema = Schema.Struct({
   file: Schema.String,
 });
 
+export type BabelSourceMapSchemaType = DeepWriteable<
+  (typeof BabelSourceMapSchema)['Type']
+>;
+
+export interface BabelTranspilerResult {
+  code: string;
+  map: Option.Option<string>;
+  ast?: BabelFile['ast'] | null | undefined;
+  ignored?: boolean | undefined;
+  metadata?: BabelFileMetadata | undefined;
+}
+
 export interface BuildOutputFiles {
   esm: OutputFile;
   relativeSourcePath: string;
@@ -45,3 +57,11 @@ export interface BuildOutputFiles {
   dts: OutputFile;
   dtsMap: OutputFile;
 }
+
+// export interface BabelOutputFiles {
+//   cjs: BuildSourceWithMaps;
+//   esm: BuildSourceWithMaps;
+//   dts: OutputFile;
+//   dtsMap: OutputFile;
+//   relativeSourcePath: string;
+// }

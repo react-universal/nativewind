@@ -1,7 +1,8 @@
 import { FileSystem, Path } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
 import { Config, Context, Effect, Layer } from 'effect';
-import { BuildOutputFiles } from '../models/Compiler.models';
+import { OutputFile } from 'ts-morph';
+import { BuildSourceWithMaps } from '../models/Compiler.models';
 import { BabelContext, BabelContextLive } from './Babel.service';
 import { FsUtils, FsUtilsLive } from './FsUtils.service';
 
@@ -31,7 +32,8 @@ const make = Effect.gen(function* () {
       esmDir,
       dtsDir,
     },
-    runCompiler,
+    annotateESMFile,
+    esmToCJS,
     createSourceFile,
   };
 
@@ -52,26 +54,11 @@ const make = Effect.gen(function* () {
     );
   }
 
-  function runCompiler(
-    { dts, dtsMap, esm, relativeSourcePath, sourcemaps }: BuildOutputFiles,
-    sourcePath: string,
-  ) {
-    return Effect.gen(function* () {
-      // yield* fsUtils.mkdirCached(path_.dirname(file.dts.path));
-      // yield* fsUtils.mkdirCached(path_.dirname(file.esm.path));
-      const esmFile = yield* babelRunner.addAnnotationsToESM(esm, sourcemaps, sourcePath);
-      const cjs = yield* babelRunner.transpileESMToCJS(esmFile, sourcePath);
-      return {
-        cjs,
-        esm: esmFile,
-        dts,
-        dtsMap,
-        relativeSourcePath,
-      };
-    }).pipe(
-      // Effect.tap(() => Effect.logDebug('[BABEL] compiled sources with babel')),
-      Effect.withLogSpan('BABEL'),
-    );
+  function annotateESMFile(esm: OutputFile, sourcemaps: OutputFile, tsFilePath: string) {
+    return babelRunner.addAnnotationsToESM(esm, sourcemaps, tsFilePath);
+  }
+  function esmToCJS(esm: BuildSourceWithMaps, tsFilePath: string) {
+    return babelRunner.transpileESMToCJS(esm, tsFilePath);
   }
 });
 

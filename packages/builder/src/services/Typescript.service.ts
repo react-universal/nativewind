@@ -18,9 +18,7 @@ import { FsUtils, FsUtilsLive } from './FsUtils.service';
 const make = Effect.gen(function* () {
   const diagnostics = yield* Queue.unbounded<Diagnostic>();
   const fileEmitter =
-    yield* Queue.unbounded<
-      [sourceFile: SourceFile, outputFiles: BuildOutputFiles]
-    >();
+    yield* Queue.unbounded<[sourceFile: SourceFile, outputFiles: BuildOutputFiles]>();
   const path_ = yield* Path.Path;
   const fsUtils = yield* FsUtils;
   const compiler = new Project({
@@ -32,7 +30,9 @@ const make = Effect.gen(function* () {
   const sourceFiles = yield* getProjectFiles();
 
   const tsBuild = Stream.fromIterable(compiler.getSourceFiles()).pipe(
+    // Stream.tap((x) => Effect.logDebug('Before emit outputs', x.getFilePath())),
     Stream.mapEffect(getSourceOutputs),
+    // Stream.tap(() => Effect.logDebug('After emit outputs')),
   );
 
   const tsWatch = pipe(
@@ -87,6 +87,7 @@ const make = Effect.gen(function* () {
   function getSourceOutputs(source: SourceFile) {
     return Effect.sync(() => source.getEmitOutput()).pipe(
       Effect.map((x) => Tuple.make(source, mapToCompilerOutput(x.getOutputFiles()))),
+      // Effect.tap(() => Effect.logDebug('Source output emitted')),
     );
   }
 

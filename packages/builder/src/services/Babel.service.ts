@@ -1,9 +1,14 @@
-import { transformAsync, TransformOptions } from '@babel/core';
+import { transformAsync } from '@babel/core';
 import { Path } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
-import { Context, Effect, Layer, Option } from 'effect';
+import { Cause, Context, Effect, Layer, Option } from 'effect';
 import { OutputFile } from 'ts-morph';
-import type { BuildSourceWithMaps, CompilerOutput } from '../models/Compiler.models.js';
+import {
+  BabelSourceMapSchemaType,
+  BabelTranspilerResult,
+  BuildSourceWithMaps,
+  CompilerOutput,
+} from '../models/Compiler.models.js';
 import { FsUtils, FsUtilsLive } from './FsUtils.service.js';
 
 const make = Effect.gen(function* () {
@@ -35,27 +40,51 @@ const make = Effect.gen(function* () {
     content: string;
     filePath: string;
     relativeSourceFile: string;
-    inputSourceMaps: TransformOptions['inputSourceMap'] | undefined;
+    inputSourceMaps: Option.Option<string>;
     plugins: string[];
   }) => {
-    return Effect.tryPromise(() =>
-      transformAsync(file.content, {
-        plugins: file.plugins,
-        ast: true,
-        code: true,
-        configFile: false,
-        babelrc: false,
-        filename: file.filePath,
-        sourceType: 'module',
-        sourceFileName: file.relativeSourceFile,
-        sourceMaps: true,
-        inputSourceMap: file.inputSourceMaps,
-        generatorOpts: {
+    return Effect.gen(function* () {
+      const sourcemaps = yield* parseSourceMapsFile(file.inputSourceMaps);
+      return yield* Effect.promise(() =>
+        transformAsync(file.content, {
+          plugins: file.plugins,
+          ast: true,
+          code: true,
+          configFile: false,
+          babelrc: false,
           filename: file.filePath,
+          sourceType: 'module',
+          sourceFileName: file.relativeSourceFile,
           sourceMaps: true,
-        },
-      }),
-    );
+          inputSourceMap: sourcemaps.pipe(
+            Option.map((x) => ({
+              ...x,
+              sourcesContent: x.sourcesContent?.filter(Boolean),
+            })),
+            Option.getOrUndefined,
+          ),
+          generatorOpts: {
+            filename: file.filePath,
+            sourceMaps: true,
+          },
+        }),
+      ).pipe(
+        Effect.flatMap((value) =>
+          Effect.gen(function* () {
+            if (!value) return Option.none<BabelTranspilerResult>();
+
+            const sourceMaps = yield* encodeSourceMapsFile(
+              Option.fromNullable(value.map),
+            );
+            return Option.some<BabelTranspilerResult>({
+              ...value,
+              code: value.code ?? file.content,
+              map: sourceMaps,
+            });
+          }),
+        ),
+      );
+    });
   };
 
   const transpileESMToCJS = (esmFile: BuildSourceWithMaps, tsFilePath: string) => {
@@ -74,24 +103,34 @@ const make = Effect.gen(function* () {
       const babelFile = yield* babelTranspile({
         content: esmFile.content,
         filePath: cjsFilePath,
-        inputSourceMaps: esmFile.sourcemap.pipe(
-          Option.map(JSON.parse),
-          Option.getOrUndefined,
-        ),
+        inputSourceMaps: esmFile.sourcemap,
         relativeSourceFile,
         plugins: getTranspilerPlugins(tsFilePath, 'esm-to-cjs'),
       });
 
-      const result: BuildSourceWithMaps = {
-        content: Option.fromNullable(babelFile?.code).pipe(Option.getOrElse(() => '')),
-        sourcemapPath: cjsMapsFilePath,
-        path: cjsFilePath,
-        sourcemap: Option.fromNullable(babelFile?.map).pipe(Option.map(JSON.stringify)),
-        sourcePath: tsFilePath,
-      };
-
-      return result;
+      return babelFile.pipe(
+        Option.map(
+          (result): BuildSourceWithMaps => ({
+            content: result.code,
+            sourcemapPath: cjsMapsFilePath,
+            path: cjsFilePath,
+            sourcemap: result.map,
+            sourcePath: tsFilePath,
+          }),
+        ),
+        Option.getOrThrow,
+      );
     }).pipe(
+      Effect.catchAllCause((x) => {
+        return Effect.die(x).pipe(
+          Effect.tap(() =>
+            Effect.logError(
+              () => '[BABEL] Cant emit CJS files, reason: ',
+              Cause.prettyErrors(x),
+            ),
+          ),
+        );
+      }),
       Effect.tapError((x) =>
         Effect.logWarning(`[BABEL] error transpiling to CJS `, x, '\n'),
       ),
@@ -109,22 +148,6 @@ const make = Effect.gen(function* () {
         path_.dirname(sourcemaps.getFilePath()),
         tsFilePath,
       );
-      const inputSourceMaps = yield* Effect.try({
-        try: () => JSON.parse(sourcemaps.getText()),
-        catch: (x) => `Something bad happen ${x}`,
-      }).pipe(
-        Effect.tapError((x) =>
-          Effect.logWarning(
-            'Cant parse sourcemap: ',
-            {
-              sourcemapFilePath: sourcemaps.getFilePath(),
-              sourcemap: sourcemaps.getText(),
-            },
-            '\n',
-          ),
-        ),
-        Effect.catchAll(() => Effect.succeed(undefined)),
-      );
 
       const cjsFileDir = path_.dirname(esmFile.getFilePath());
 
@@ -133,29 +156,49 @@ const make = Effect.gen(function* () {
       const babelFile = yield* babelTranspile({
         content: esmFile.getText(),
         filePath: esmFile.getFilePath(),
-        inputSourceMaps,
+        inputSourceMaps: Option.some(sourcemaps.getText()),
         relativeSourceFile,
         plugins: getTranspilerPlugins(tsFilePath, 'esm-annotations'),
       });
 
-      const result: CompilerOutput['cjsFile'] = {
-        content: Option.fromNullable(babelFile?.code).pipe(
-          Option.getOrElse(() => esmFile.getText()),
-        ),
-        sourcemapPath: sourcemaps.getFilePath(),
-        path: esmFile.getFilePath(),
-        sourcemap: Option.fromNullable(babelFile?.map).pipe(Option.map(JSON.stringify)),
-        sourcePath: tsFilePath,
-      };
-
-      return result;
+      return babelFile.pipe(
+        Option.map((x): CompilerOutput['cjsFile'] => ({
+          content: x.code,
+          sourcemapPath: sourcemaps.getFilePath(),
+          path: esmFile.getFilePath(),
+          sourcemap: x.map,
+          sourcePath: tsFilePath,
+        })),
+        Option.getOrThrow,
+      );
     }).pipe(
       Effect.tapError((x) =>
         Effect.logWarning(`[BABEL] error adding annotations to ESM `, x, '\n'),
       ),
       Effect.withLogSpan('BABEL/ESM-annotations'),
+      Effect.catchAllCause((x) => {
+        return Effect.gen(function* () {
+          const result: CompilerOutput['cjsFile'] = {
+            content: esmFile.getText(),
+            path: esmFile.getFilePath(),
+            sourcemap: Option.some(sourcemaps.getText()),
+            sourcemapPath: sourcemaps.getFilePath(),
+            sourcePath: tsFilePath,
+          };
+
+          return result;
+        });
+      }),
     );
   };
+
+  function encodeSourceMapsFile(content: Option.Option<BabelSourceMapSchemaType>) {
+    return Effect.try(() => content.pipe(Option.map(JSON.stringify)));
+  }
+
+  function parseSourceMapsFile(content: Option.Option<string>) {
+    return Effect.try(() => Option.map(content, JSON.parse));
+  }
 
   return {
     transpileESMToCJS,
