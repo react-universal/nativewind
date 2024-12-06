@@ -1,15 +1,14 @@
-import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
-import * as NodePath from '@effect/platform-node/NodePath';
-import { FileSystem } from '@effect/platform/FileSystem';
-import { Path } from '@effect/platform/Path';
+import { Path, FileSystem } from '@effect/platform';
+import { NodePath, NodeFileSystem } from '@effect/platform-node';
+import { Hash, Stream } from 'effect';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Glob from 'glob';
 
-const make = Effect.gen(function* () {
-  const fs = yield* FileSystem;
-  const path_ = yield* Path;
+const make = Effect.gen(function* (_) {
+  const fs = yield* _(FileSystem.FileSystem);
+  const path_ = yield* _(Path.Path);
 
   const glob = (pattern: string | ReadonlyArray<string>, options?: Glob.GlobOptions) =>
     Effect.tryPromise({
@@ -34,61 +33,70 @@ const make = Effect.gen(function* () {
       Effect.withSpan('FsUtils.modifyFile', { attributes: { path } }),
     );
 
-  const modifyGlob = (
-    pattern: string | ReadonlyArray<string>,
-    f: (s: string, path: string) => string,
-    options?: Glob.GlobOptions,
-  ) =>
-    globFiles(pattern, options).pipe(
-      Effect.flatMap((paths) =>
-        Effect.forEach(paths, (path) => modifyFile(path, f), {
-          concurrency: 'inherit',
-          discard: true,
-        }),
+  const mkdirCached_ = yield* _(
+    Effect.cachedFunction((path: string) =>
+      fs.makeDirectory(path).pipe(
+        Effect.catchAllCause(() => Effect.void),
+        Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } }),
       ),
-      Effect.withSpan('FsUtils.modifyGlob', { attributes: { pattern } }),
-    );
-
-  const mkdirCached_ = yield* Effect.cachedFunction((path: string) =>
-    fs
-      .makeDirectory(path, { recursive: true })
-      .pipe(Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } })),
+    ),
   );
 
   const mkdirCached = (path: string) => mkdirCached_(path_.resolve(path));
 
-  const rmAndMkdir = (path: string) =>
+  const writeFileCached_ = yield* _(
+    Effect.cachedFunction(
+      (data: { path: string; contents?: string; override?: boolean }) =>
+        Effect.if(fs.exists(data.path), {
+          onFalse: () =>
+            fs.writeFileString(data.path, data.contents ?? '').pipe(
+              Effect.catchAllCause(() => Effect.void),
+              Effect.withSpan('FsUtils.writeFileCached', { attributes: { data } }),
+            ),
+          onTrue: () => Effect.void,
+        }),
+    ),
+  );
+
+  const readFile = (path: string) =>
     fs
-      .remove(path, { recursive: true })
-      .pipe(
-        Effect.ignore,
-        Effect.zipRight(mkdirCached(path)),
-        Effect.withSpan('FsUtils.rmAndMkdir', { attributes: { path } }),
-      );
+      .readFileString(path)
+      .pipe(Effect.tapError(() => Effect.logError(`Cannot read file at: ${path}`)));
 
-  const readJson = (path: string) =>
-    Effect.tryMap(fs.readFileString(path), {
-      try: (_) => JSON.parse(_),
-      catch: (e) => new Error(`readJson failed (${path}): ${e}`),
-    });
+  const watch = (path: string) =>
+    fs
+      .watch(path)
+      .pipe(Stream.tapError(() => Effect.logError(`Cannot watch file at: ${path}`)));
 
-  const writeJson = (path: string, json: unknown) =>
-    fs.writeFileString(path, JSON.stringify(json, null, 2) + '\n');
+  const writeFileCached = (data: {
+    path: string;
+    contents?: string;
+    override?: boolean;
+  }) => writeFileCached_(data);
+
+  const writeFileSource = (file: { path: string; content: string }) =>
+    fs.writeFileString(file.path, file.content);
+
+  const getFileMD5 = (filePath: string) => {
+    return fs
+      .readFile(filePath)
+      .pipe(Effect.map((x) => `${Hash.string(new TextDecoder().decode(x))}`));
+  };
 
   const mkEmptyFileCached = (path: string) =>
     Effect.cached(fs.writeFile(path_.resolve(path), new TextEncoder().encode('')));
 
   return {
     glob,
+    mkEmptyFileCached,
+    writeFileSource,
+    watch,
+    writeFileCached,
     globFiles,
     modifyFile,
-    mkEmptyFileCached,
-    modifyGlob,
-    rmAndMkdir,
+    getFileMD5,
     mkdirCached,
-    readJson,
-    writeJson,
-    path: path_,
+    readFile,
   } as const;
 });
 

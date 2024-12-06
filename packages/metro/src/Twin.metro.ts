@@ -12,9 +12,12 @@ import {
   listenForkedStreamChanges,
   twinLoggerLayer,
   createCompilerConfig,
-
 } from '@native-twin/compiler';
-import { LaunchTwinServer,TwinServerClient } from '@native-twin/compiler/server';
+import {
+  LaunchTwinServer,
+  TwinServerClient,
+  PlatformID,
+} from '@native-twin/compiler/server';
 import { TwinMetroConfig } from './models/Metro.models.js';
 import { getMetroSettings } from './programs/getMetroSettings.js';
 
@@ -28,6 +31,9 @@ export function withNativeTwin(
     nativeTwinConfig.outputDir ??
     path.join(path.dirname(require.resolve('@native-twin/core')), '../..', '.cache');
 
+  // fs.rm(outDir, { force: true, recursive: true }, (error) => {
+  //   console.log('ERROR: ', error);
+  // });
   const MetroLive = Layer.provideMerge(
     MainLive,
     Layer.succeed(
@@ -56,6 +62,7 @@ export function withNativeTwin(
 
   NodeRuntime.runMain(
     LaunchTwinServer.pipe(
+      Effect.tap(Effect.logInfo),
       Effect.catchAll((error) => Effect.log('ERROR: ', error)),
       Effect.provide(MetroLive),
     ),
@@ -105,6 +112,17 @@ export function withNativeTwin(
             Effect.logTrace('FILE_CHANGE_DETECTED', inspect(event, false, null, true)),
           );
           yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
+
+          const { client } = yield* TwinServerClient;
+          const response = yield* client.twinCompiler['compile-file']({
+            payload: {
+              path: 'index.js',
+              platformID: PlatformID.make('iOS'),
+            },
+            withResponse: true,
+          });
+
+          yield* Effect.logDebug('RESPONSE: ', response);
 
           return result;
         }).pipe(

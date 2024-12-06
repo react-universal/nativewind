@@ -1,6 +1,6 @@
 // import { SqlClient } from '@effect/sql';
 import { Effect, Option, pipe } from 'effect';
-import { FsUtils, FsUtilsLive } from '../../services/FsUtils.service.js';
+import { FsUtils, FsUtilsLive } from '../../internal/fs.utils.js';
 import * as TwinFileModel from '../Domain/TwinCompiler.model.js';
 import { PlatformID } from '../Domain/TwinConfig.model.js';
 import { SqlLive } from '../Sql.js';
@@ -24,9 +24,7 @@ export class TwinCompilerService extends Effect.Service<TwinCompilerService>()(
           return record.value;
         }).pipe(
           Effect.mapError((error) => {
-            return TwinFileModel.TwinCompilerFileModelNotFound.make({
-              message: 'asd',
-            });
+            return TwinFileModel.TwinCompilerFileModelNotFound.make(error);
           }),
         );
 
@@ -35,7 +33,7 @@ export class TwinCompilerService extends Effect.Service<TwinCompilerService>()(
       ) =>
         pipe(
           repo.insert(TwinFileModel.TwinCompilerFileModel.insert.make(twinFile)),
-          Effect.withSpan('TwinConfigModel.create', {
+          Effect.withSpan('TwinCompilerRepo.create', {
             attributes: { twinFile },
           }),
         );
@@ -43,7 +41,7 @@ export class TwinCompilerService extends Effect.Service<TwinCompilerService>()(
       const findByPlatform = (id: string) => {
         return repo
           .findByPath(id)
-          .pipe(Effect.withSpan('TwinConfigModel.findByID', { attributes: { id } }));
+          .pipe(Effect.withSpan('TwinCompilerRepo.findByID', { attributes: { id } }));
       };
 
       return { create, findByPlatform, getOrCreateFile };

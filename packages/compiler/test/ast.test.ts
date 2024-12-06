@@ -1,4 +1,5 @@
 import path from 'path';
+import { describe, expect, it } from 'vitest';
 import { runFixture, writeFixtureOutput } from './test.utils';
 
 describe('run react compiler', () => {
@@ -17,7 +18,7 @@ describe('run react compiler', () => {
       return;
     }
 
-    writeFixtureOutput(result, {
+    writeFixtureOutput(result.code, {
       fixturePath: path.dirname(fixturePath),
       outputFile: 'out.jsx',
     });

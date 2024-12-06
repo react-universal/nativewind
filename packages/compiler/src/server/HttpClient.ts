@@ -12,4 +12,4 @@ export const TwinServerClient = Effect.gen(function* () {
   return {
     client,
   };
-}).pipe(Effect.provide(NodeHttpClient.layerUndici));
+}).pipe(Effect.provide(NodeHttpClient.layer));

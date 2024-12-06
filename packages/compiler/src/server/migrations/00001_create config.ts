@@ -5,7 +5,7 @@ export default Effect.gen(function* () {
   const sql = yield* SqlClient.SqlClient;
   yield* sql`
       CREATE TABLE twinConfigs (
-        id SERIAL PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         platformID STRING,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -13,7 +13,7 @@ export default Effect.gen(function* () {
     `;
     yield* sql`
     CREATE TABLE twinFiles (
-      id SERIAL PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       platformID STRING,
       path STRING,
       compiledHash STRING,

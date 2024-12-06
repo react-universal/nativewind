@@ -14,6 +14,7 @@ import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
+import { FsUtils, FsUtilsLive } from '../internal/fs.utils.js';
 import type { JSXElementNode } from '../models/JSXElement.model.js';
 import { FrequencyMetric } from '../models/Metrics.models.js';
 import { listenForkedStreamChanges } from '../utils/effect.utils.js';
@@ -25,7 +26,6 @@ import { getNativeStylesJSOutput } from '../utils/native.utils.js';
 import { extractTwinConfig } from '../utils/twin.utils.js';
 import { BabelCompiler } from './BabelCompiler.service.js';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
-import { FsUtils, FsUtilsLive } from './FsUtils.service.js';
 import { TwinNodeContext } from './TwinNodeContext.service.js';
 
 const providedFrequency = new FrequencyMetric(

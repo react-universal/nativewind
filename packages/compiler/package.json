@@ -49,7 +49,8 @@
     "build": "npx twin pack-dev",
     "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
-    "gen:jsdocs": "jsdoc -c jsdoc.json"
+    "gen:jsdocs": "jsdoc -c jsdoc.json",
+    "test": "npx vitest"
   },
   "dependencies": {
     "@effect/platform": "^0.69.3",

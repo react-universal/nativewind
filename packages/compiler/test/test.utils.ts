@@ -1,45 +1,54 @@
+import { ManagedRuntime } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import fs from 'fs';
 import path from 'path';
-import { makeNodeLayer } from '../src/node';
-import { BabelCompiler, CompilerInput, makeBabelConfig } from '../src/node/babel';
-import { compileReactCode } from '../src/node/babel/programs/react.program';
+import {
+  BabelCompiler,
+  CompilerConfigContext,
+  createCompilerConfig,
+  TwinFileSystem,
+  TwinNodeContext,
+} from '../src';
 
-const reactProgram = Effect.gen(function* () {
-  const babel = yield* BabelCompiler;
-  const result = yield* compileReactCode.pipe(
-    Effect.flatMap((x) => babel.buildFile(x.ast)),
-  );
+const outputDir = path.join(__dirname, '.cache');
+const compilerContext = Layer.succeed(
+  CompilerConfigContext,
+  createCompilerConfig({
+    outDir: outputDir,
+    rootDir: __dirname,
+    twinConfigPath: path.join(__dirname, 'tailwind.config.ts'),
+  }),
+);
+// const tw = createTailwind(tailwindConfig, createVirtualSheet());
+const TestMainLive = Layer.empty.pipe(
+  Layer.provideMerge(TwinFileSystem.Live),
+  Layer.provideMerge(BabelCompiler.Live),
+  Layer.provide(TwinNodeContext.Live),
+  Layer.provideMerge(compilerContext),
+);
 
-  return result;
-}).pipe(Effect.scoped);
+export const TestRuntime = ManagedRuntime.make(TestMainLive);
 
-export const createTestLayer = (input: CompilerInput) => {
-  const nodeLayer = makeNodeLayer({
-    configPath: input.twinConfigPath,
-    logLevel: true,
-    inputCSS: input.inputCSS,
-    outputDir: path.dirname(input.outputCSS),
-    projectRoot: input.projectRoot,
-  });
-  return makeBabelConfig(input).pipe(Layer.provideMerge(nodeLayer.MainLayer));
-};
+const reactProgram = (file: string) =>
+  Effect.gen(function* () {
+    const babel = yield* BabelCompiler;
+    const result = yield* babel.getBabelOutput({
+      _tag: 'BabelFileEntry',
+      filename: file,
+      platform: 'ios',
+    });
+
+    return result;
+  }).pipe(Effect.scoped);
 
 export const runFixture = (fixturePath: string) => {
   const filePath = path.join(__dirname, 'fixtures', fixturePath);
   const code = fs.readFileSync(filePath);
-  const layer = createTestLayer({
-    code: code.toString(),
-    filename: filePath,
-    inputCSS: '',
-    outputCSS: '',
-    platform: 'ios',
-    projectRoot: process.cwd(),
-    twinConfigPath: path.join(__dirname, './tailwind.config.ts'),
-  });
 
-  return reactProgram.pipe(Effect.provide(layer), Effect.runPromise);
+  return reactProgram(path.join(__dirname, './tailwind.config.ts')).pipe(
+    TestRuntime.runPromise,
+  );
 };
 
 export const writeFixtureOutput = (

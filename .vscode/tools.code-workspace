@@ -5,12 +5,12 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
     },
     {
       "name": "📦 @lib/helpers",
