@@ -7,7 +7,7 @@ export const twinConfig = defineConfig({
   root: {
     rem: 16,
   },
-  mode: 'web',
+  mode: 'native',
   theme: {
     extend: {
       screens: {

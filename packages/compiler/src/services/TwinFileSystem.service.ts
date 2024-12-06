@@ -24,7 +24,10 @@ import {
 } from '../utils/fileWatcher.util.js';
 import { getNativeStylesJSOutput } from '../utils/native.utils.js';
 import { extractTwinConfig } from '../utils/twin.utils.js';
-import { BabelCompiler } from './BabelCompiler.service.js';
+import {
+  BabelCompilerContext,
+  BabelCompilerContextLive,
+} from './BabelCompiler.service.js';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
 import { TwinNodeContext } from './TwinNodeContext.service.js';
 
@@ -37,7 +40,7 @@ const providedFrequency = new FrequencyMetric(
 
 export const TwinFSMake = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
-  const compiler = yield* BabelCompiler;
+  const compiler = yield* BabelCompilerContext;
   const env = yield* CompilerConfigContext;
   const path = yield* Path.Path;
   const fsUtils = yield* FsUtils;
@@ -212,6 +215,7 @@ export const TwinFSMake = Effect.gen(function* () {
           platform,
         }),
       ),
+      Stream.tap((x) => compiler.transformAST(x.treeNodes, platform)),
       // Stream.map((x) => x.entries),
       // Stream.flattenIterables,
       Stream.tap((trees) => Effect.log(trees.trees)),
@@ -269,9 +273,12 @@ export class TwinFileSystem extends Context.Tag('metro/fs/service')<
   TwinFileSystem,
   Effect.Effect.Success<typeof TwinFSMake>
 >() {
-  static Live = Layer.scoped(TwinFileSystem, TwinFSMake)
-    .pipe(Layer.provideMerge(BabelCompiler.Live))
-    .pipe(Layer.provide(FsUtilsLive), Layer.provide(FSLive));
+  static Live = Layer.scoped(TwinFileSystem, TwinFSMake).pipe(
+    Layer.provideMerge(BabelCompilerContextLive),
+    Layer.provide(FsUtilsLive),
+    Layer.provide(FSLive),
+    Layer.provide(TwinNodeContext.Live),
+  );
   static metrics = {
     providedFreq: providedFrequency,
   };

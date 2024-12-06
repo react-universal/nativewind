@@ -7,7 +7,7 @@ import * as worker from 'metro-transform-worker';
 import * as path from 'node:path';
 import {
   TwinNodeContext,
-  BabelCompiler,
+  BabelCompilerContext,
   TwinFileSystem,
   CompilerConfigContext,
 } from '@native-twin/compiler';
@@ -33,7 +33,7 @@ export const transform: TwinMetroTransformFn = async (
 
   return Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
-    const compiler = yield* BabelCompiler;
+    const compiler = yield* BabelCompilerContext;
     const platformOutput = ctx.getOutputCSSPath(platform);
 
     const transform: MetroTransformFn = twinConfig.originalTransformerPath
@@ -45,11 +45,11 @@ export const transform: TwinMetroTransformFn = async (
       matchCss(filename) &&
       filename.includes(path.basename(platformOutput))
     ) {
-      // console.log('[METRO_TRANSFORMER]: Detect css file', input.filename);
+      console.log('[METRO_TRANSFORMER]: Detect css file', filename);
       const result: TransformResponse = yield* Effect.promise(() =>
         transformCSSExpo(config, projectRoot, filename, data, options),
       );
-      console.log('RESULT: ', result);
+      // console.log('RESULT: ', result);
       return result;
     }
 
@@ -67,12 +67,13 @@ export const transform: TwinMetroTransformFn = async (
       platform,
     });
 
+    yield* compiler.transformAST(output.treeNodes, 'ios');
     const result = yield* compiler.mutateAST(output.ast);
     // yield* Effect.log('MUTATE: ');
 
     if (result?.code) {
       // console.log('OPTIONS: ', params.options);
-      code = result.code;
+      code = `const runtimeTW = require('@native-twin/core').tw;\n\n${result.code}`;
     }
 
     const transformed = yield* Effect.promise(() =>

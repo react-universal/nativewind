@@ -1,14 +1,14 @@
 import { sheetEntriesToCss } from '@native-twin/css';
 import * as Effect from 'effect/Effect';
-import { BabelCompiler } from '../services/BabelCompiler.service.js';
+import { BabelCompilerContext } from '../services/BabelCompiler.service.js';
 
-export const TwinCSSExtractor = (code: string, filePath: string) =>
-  Effect.flatMap(BabelCompiler, (babelBuilder) =>
+export const TwinCSSExtractor = (code: string, filename: string) =>
+  Effect.flatMap(BabelCompilerContext, (babelBuilder) =>
     babelBuilder
       .getBabelOutput({
         _tag: 'BabelCodeEntry',
         code,
-        filename: filePath,
+        filename,
         platform: 'web',
       })
       .pipe(

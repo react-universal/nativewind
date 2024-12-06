@@ -4,7 +4,8 @@ import * as Layer from 'effect/Layer';
 import fs from 'fs';
 import path from 'path';
 import {
-  BabelCompiler,
+  BabelCompilerContext,
+  BabelCompilerContextLive,
   CompilerConfigContext,
   createCompilerConfig,
   TwinFileSystem,
@@ -23,7 +24,7 @@ const compilerContext = Layer.succeed(
 // const tw = createTailwind(tailwindConfig, createVirtualSheet());
 const TestMainLive = Layer.empty.pipe(
   Layer.provideMerge(TwinFileSystem.Live),
-  Layer.provideMerge(BabelCompiler.Live),
+  Layer.provideMerge(BabelCompilerContextLive),
   Layer.provide(TwinNodeContext.Live),
   Layer.provideMerge(compilerContext),
 );
@@ -32,7 +33,7 @@ export const TestRuntime = ManagedRuntime.make(TestMainLive);
 
 const reactProgram = (file: string) =>
   Effect.gen(function* () {
-    const babel = yield* BabelCompiler;
+    const babel = yield* BabelCompilerContext;
     const result = yield* babel.getBabelOutput({
       _tag: 'BabelFileEntry',
       filename: file,

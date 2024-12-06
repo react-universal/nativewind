@@ -5,12 +5,12 @@ import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import type { AnyPrimitive } from '@native-twin/helpers';
+import { JSXChildElement, JSXMappedAttribute } from '../../models/jsx.models.js';
 import {
   createCommonMappedAttribute,
   MappedComponent,
   mappedComponents,
 } from '../../shared/compiler.constants.js';
-import { JSXChildElement, JSXMappedAttribute } from '../../models/jsx.models.js';
 import * as babelPredicates from './babel.predicates.js';
 
 export const getJSXElementName = (
@@ -183,7 +183,6 @@ export const addJsxExpressionAttribute = (
   );
 
   if (JSXElementHasAttribute(element, name)) {
-    console.log('ALREADY_HAS: ', name);
     element.openingElement.attributes = element.openingElement.attributes.map((x) => {
       if (x.type === 'JSXSpreadAttribute') return x;
       if (
@@ -313,8 +312,8 @@ export const identifierIsReactImport = (path: NodePath<t.Identifier>) => {
 export const extractMappedAttributes = (node: t.JSXElement): JSXMappedAttribute[] => {
   const attributes = getJSXElementAttrs(node);
   return Option.fromNullable(
-    node.openingElement.name.type === 'JSXNamespacedName'
-      ? node.openingElement.name.name.name
+    node.openingElement.name.type === 'JSXIdentifier'
+      ? node.openingElement.name.name
       : undefined,
   ).pipe(
     Option.flatMap((x) => Option.fromNullable(getJSXElementConfig(x))),

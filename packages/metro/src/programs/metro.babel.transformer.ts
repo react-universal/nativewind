@@ -5,7 +5,7 @@ import * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
 import {
   TwinNodeContext,
-  BabelCompiler,
+  BabelCompilerContext,
   TwinFileSystem,
   CompilerConfigContext,
 } from '@native-twin/compiler';
@@ -20,7 +20,7 @@ export const transform: BabelTransformerFn = async (params) => {
 
   const program = Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
-    const compiler = yield* BabelCompiler;
+    const compiler = yield* BabelCompilerContext;
     let code = params.src;
 
     if (yield* ctx.isAllowedPath(params.filename)) {

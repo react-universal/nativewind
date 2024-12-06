@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { setup } from '@native-twin/core';
 import tailwindConfig from './tailwind.config';
 
-const config = setup(tailwindConfig);
+setup(tailwindConfig);
 // console.log('ccc. ', config.config);
 export default function App() {
   return (
