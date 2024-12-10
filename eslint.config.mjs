@@ -1,6 +1,6 @@
-module.exports = {
-  root: true,
-  ignorePatterns: ['**/*'],
+/** @type {import('eslint').ESLint.ConfigData} */
+export default {
+  ignores: ['**/*'],
   plugins: ['@nx'],
   overrides: [
     {

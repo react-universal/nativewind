@@ -1,28 +1,29 @@
 import type { PluginObj } from '@babel/core';
 import { addNamed } from '@babel/helper-module-imports';
-import { Layer } from 'effect';
 import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 import {
   JSXImportPluginContext,
   type TwinBabelPluginOptions,
   type BabelAPI,
   BABEL_JSX_PLUGIN_IMPORT_RUNTIME,
-  BabelCompiler,
+  BabelCompilerContextLive,
   TwinNodeContext,
-  CompilerConfigContextLive,
+  createCompilerConfig,
+  CompilerConfigContext,
+  BabelCompilerContext,
 } from '@native-twin/compiler';
 
 const NodeMainLayerSync = Layer.empty.pipe(
-  Layer.provideMerge(BabelCompiler.Live),
+  Layer.provideMerge(BabelCompilerContextLive),
   Layer.provideMerge(TwinNodeContext.Live),
-  Layer.provideMerge(CompilerConfigContextLive),
 );
 
 const allowed = new Set<string>();
 const program = Effect.scoped(
   Effect.gen(function* () {
     const ctx = yield* JSXImportPluginContext;
-    const reactCompiler = yield* BabelCompiler;
+    const reactCompiler = yield* BabelCompilerContext;
     return {
       name: '@native-twin/babel-plugin',
       manipulateOptions(opts, parserOpts) {
@@ -93,6 +94,17 @@ function nativeTwinBabelPlugin(
     // Effect.provide(layer),
     Effect.provide(JSXImportPluginContext.make(options, cwd)),
     Effect.provide(NodeMainLayerSync),
+    Effect.provide(
+      Layer.succeed(
+        CompilerConfigContext,
+        createCompilerConfig({
+          outDir: options.outputDir ?? '.',
+          rootDir: cwd,
+          inputCSS: options.inputCSS,
+          twinConfigPath: options.twinConfigPath,
+        }),
+      ),
+    ),
     // Effect.provide(MainLayer),
     Effect.runSync,
   );

@@ -366,7 +366,7 @@ const getJSXElementConfig = (tagName: string) => {
  * @domain Babel
  * @description Extract the {@link JSXMappedAttribute} from any {@link t.JSXAttribute}
  * */
-export const extractStyledProp = (
+const extractStyledProp = (
   attribute: t.JSXAttribute,
   config: MappedComponent,
 ): JSXMappedAttribute | null => {

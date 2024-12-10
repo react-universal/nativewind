@@ -9,7 +9,7 @@ export const getMetroSettings = Effect.gen(function* () {
 
   const transformerOptions: BaseTwinTransformerOptions = {
     inputCSS: env.inputCSS,
-    allowedPaths: (yield* ctx.scanAllowedPaths).directories,
+    allowedPaths: (yield* ctx.scanAllowedPaths),
     logLevel: env.logLevel._tag,
     allowedPathsGlob: yield* ctx.getAllowedGlobPatterns,
     outputDir: env.outputDir,

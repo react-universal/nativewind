@@ -6,7 +6,7 @@ export {
   BabelCompilerContext,
   BabelCompilerContextLive,
 } from './services/BabelCompiler.service.js';
-export { FSLive, TwinFSMake, TwinFileSystem } from './services/TwinFileSystem.service.js';
+export { TwinFSMake, TwinFileSystem } from './services/TwinFileSystem.service.js';
 export { TwinNodeContext } from './services/TwinNodeContext.service.js';
 export { listenForkedStreamChanges } from './utils/effect.utils.js';
 export { twinLoggerLayer } from './services/Logger.service.js';

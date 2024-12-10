@@ -1,8 +1,5 @@
 import { createVirtualSheet } from '@native-twin/css';
-import * as RA from 'effect/Array';
-import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import * as glob from 'glob';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as vm from 'node:vm';
@@ -57,51 +54,3 @@ export const createTwinProcessor = (
     context,
   );
 };
-
-export const getFilesFromGlobs = (globs: string[]) =>
-  pipe(
-    RA.map(globs, (x) =>
-      glob.sync(x, {
-        absolute: true,
-      }),
-    ),
-    RA.flatten,
-    RA.map((file) => {
-      const type = path.extname(file) === '' ? 'directory' : 'file';
-      return {
-        type,
-        path: file,
-      } as const;
-    }),
-    RA.flatMap((data) => {
-      if (data.type === 'directory') return [data];
-      const dir = {
-        type: 'directory',
-        path: path.dirname(data.path),
-      } as const;
-      return [data, dir];
-    }),
-    RA.dedupeWith((a, b) => a.path === b.path),
-    RA.reduce(
-      {
-        directories: RA.empty<string>(),
-        files: RA.empty<string>(),
-      },
-      (prev, current) => {
-        switch (current.type) {
-          case 'directory':
-            return {
-              ...prev,
-              directories: [current.path, ...prev.directories],
-            };
-          case 'file':
-            return {
-              ...prev,
-              files: [current.path, ...prev.files],
-            };
-        }
-      },
-    ),
-    // RA.groupBy((x): 'directory' | 'file' => x.type),
-    // Record.map((x) => x.map((_) => _.path)),
-  );

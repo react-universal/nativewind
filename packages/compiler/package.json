@@ -70,7 +70,8 @@
     "jiti": "^2.4.0",
     "js-beautify": "^1.15.1",
     "micromatch": "4.0.5",
-    "sucrase": "^3.35.0"
+    "sucrase": "^3.35.0",
+    "vscode-languageserver-textdocument": "^1.0.12"
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",

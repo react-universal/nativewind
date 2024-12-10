@@ -2,7 +2,7 @@ import * as VSCDocument from 'vscode-languageserver-textdocument';
 import type * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
-import { extractLanguageRegions } from '@native-twin/compiler/node';
+import { extractLanguageRegions } from '@native-twin/compiler';
 import { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
 import { BaseTwinTextDocument } from './BaseTwinDocument.js';
 import { DocumentLanguageRegion } from './LanguageRegion.model.js';

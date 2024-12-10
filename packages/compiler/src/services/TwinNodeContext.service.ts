@@ -10,15 +10,14 @@ import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as micromatch from 'micromatch';
 import * as path from 'node:path';
 import { defineConfig } from '@native-twin/core';
-import {
-  createTwinProcessor,
-  extractTwinConfig,
-  getFilesFromGlobs,
-} from '../utils/twin.utils.js';
+import { CompilerContext } from '@native-twin/css/build/dts/jsx.js';
+import { FsUtils, FsUtilsLive } from '../internal/fs.utils.js';
+import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
 
 const TwinNodeContextLive = Effect.gen(function* () {
   const env = yield* CompilerConfigContext;
+  const fs = yield* FsUtils;
 
   const initialConfig = Option.map(env.twinConfigPath, (x) => extractTwinConfig(x)).pipe(
     Option.getOrElse(() => defineConfig({ content: [] })),
@@ -41,7 +40,7 @@ const TwinNodeContextLive = Effect.gen(function* () {
   );
 
   const scanAllowedPaths = getAllowedGlobPatterns.pipe(
-    Effect.map((globPatterns) => getFilesFromGlobs(globPatterns)),
+    Effect.flatMap((globPatterns) => fs.globFilesSync(globPatterns)),
   );
 
   const isAllowedPath = (filePath: string) =>
@@ -78,6 +77,22 @@ const TwinNodeContextLive = Effect.gen(function* () {
         return env.platformPaths.native;
     }
   };
+
+  const getTwinRuntime = (platform: string) => {
+    return getTwForPlatform(platform).pipe(
+      Effect.map((tw) => {
+        const compilerContext: CompilerContext = {
+          baseRem: tw.config.root.rem ?? 16,
+          platform,
+        };
+        return {
+          tw,
+          compilerContext,
+        };
+      }),
+    );
+  };
+
   return {
     projectFilesRef,
     twinConfigRef,
@@ -88,6 +103,7 @@ const TwinNodeContextLive = Effect.gen(function* () {
     isAllowedPath,
     getTwForPlatform,
     getOutputCSSPath,
+    getTwinRuntime,
     scanAllowedPaths,
   };
 });
@@ -96,18 +112,9 @@ export class TwinNodeContext extends Context.Tag('node/shared/context')<
   TwinNodeContext,
   Effect.Effect.Success<typeof TwinNodeContextLive>
 >() {
-  static Live = Layer.scoped(TwinNodeContext, TwinNodeContextLive);
+  static Live = Layer.scoped(TwinNodeContext, TwinNodeContextLive).pipe(
+    Layer.provide(FsUtilsLive),
+  );
 }
-
-// export const TwinNodeUserConfig = Effect.Tag('TwinNodeUserConfig')<
-//   'twin/TwinNodeUserConfig',
-//   {
-//     projectRoot: string;
-//     outputDir: string;
-//     configPath: string;
-//     inputCSS: string;
-//     debug: boolean;
-//   }
-// >();
 
 export type NodeContextShape = TwinNodeContext['Type'];

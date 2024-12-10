@@ -1,5 +1,6 @@
-// import { SqlClient } from '@effect/sql';
-import { Effect, Option, pipe } from 'effect';
+import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import * as Option from 'effect/Option';
 import { FsUtils, FsUtilsLive } from '../../internal/fs.utils.js';
 import * as TwinFileModel from '../Domain/TwinCompiler.model.js';
 import { PlatformID } from '../Domain/TwinConfig.model.js';
@@ -11,13 +12,12 @@ export class TwinCompilerService extends Effect.Service<TwinCompilerService>()(
   {
     effect: Effect.gen(function* () {
       const repo = yield* TwinCompilerRepo.TwinCompilerRepo;
-      // const sql = yield* SqlClient.SqlClient;
-      const fsUtils = yield* FsUtils;
+      const fs = yield* FsUtils;
 
       const getOrCreateFile = (path: string, platformID: PlatformID) =>
         Effect.gen(function* () {
           const record = yield* findByPlatform(path);
-          const compiledHash = yield* fsUtils.getFileMD5(path);
+          const compiledHash = yield* fs.getFileMD5(path);
           if (Option.isNone(record)) {
             return yield* create({ compiledHash, path, platformID });
           }

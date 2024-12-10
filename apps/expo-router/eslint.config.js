@@ -1,6 +1,6 @@
 module.exports = {
   extends: '../../eslint.config.js',
-  ignorePatterns: ['!**/*', '.expo', 'metro-test'],
+  ignores: ['!**/*', '.expo', 'metro-test'],
   overrides: [
     {
       files: ['*.ts'],

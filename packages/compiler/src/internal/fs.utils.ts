@@ -1,14 +1,15 @@
 import { Path, FileSystem } from '@effect/platform';
 import { NodePath, NodeFileSystem } from '@effect/platform-node';
-import { Hash, Stream } from 'effect';
+import chokidar, { FSWatcher } from 'chokidar';
+import { Hash, Stream, Array as RA, pipe } from 'effect';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Glob from 'glob';
 
-const make = Effect.gen(function* (_) {
-  const fs = yield* _(FileSystem.FileSystem);
-  const path_ = yield* _(Path.Path);
+const make = Effect.gen(function* () {
+  const fs = yield* FileSystem.FileSystem;
+  const path_ = yield* Path.Path;
 
   const glob = (pattern: string | ReadonlyArray<string>, options?: Glob.GlobOptions) =>
     Effect.tryPromise({
@@ -16,10 +17,25 @@ const make = Effect.gen(function* (_) {
       catch: (e) => new Error(`glob failed: ${e}`),
     }).pipe(Effect.withSpan('FsUtils.glob'));
 
-  const globFiles = (
+  const globFilesSync = (pattern: string | string[], options: Glob.GlobOptions = {}) =>
+    Effect.sync(() =>
+      Glob.globSync(pattern, { ...options, nodir: true }).filter(
+        (x) => typeof x === 'string',
+      ),
+    );
+
+  const globDirectories = (
     pattern: string | ReadonlyArray<string>,
     options: Glob.GlobOptions = {},
-  ) => glob(pattern, { ...options, nodir: true });
+  ) =>
+    glob(pattern, { ...options, nodir: true }).pipe(
+      Effect.map((files) =>
+        pipe(
+          RA.map(files, (x) => path_.dirname(x)),
+          RA.dedupe,
+        ),
+      ),
+    );
 
   const modifyFile = (path: string, f: (s: string, path: string) => string) =>
     fs.readFileString(path).pipe(
@@ -33,40 +49,31 @@ const make = Effect.gen(function* (_) {
       Effect.withSpan('FsUtils.modifyFile', { attributes: { path } }),
     );
 
-  const mkdirCached_ = yield* _(
-    Effect.cachedFunction((path: string) =>
-      fs.makeDirectory(path).pipe(
-        Effect.catchAllCause(() => Effect.void),
-        Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } }),
-      ),
+  const mkdirCached_ = yield* Effect.cachedFunction((path: string) =>
+    fs.makeDirectory(path).pipe(
+      Effect.catchAllCause(() => Effect.void),
+      Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } }),
     ),
   );
 
   const mkdirCached = (path: string) => mkdirCached_(path_.resolve(path));
 
-  const writeFileCached_ = yield* _(
-    Effect.cachedFunction(
-      (data: { path: string; contents?: string; override?: boolean }) =>
-        Effect.if(fs.exists(data.path), {
-          onFalse: () =>
-            fs.writeFileString(data.path, data.contents ?? '').pipe(
-              Effect.catchAllCause(() => Effect.void),
-              Effect.withSpan('FsUtils.writeFileCached', { attributes: { data } }),
-            ),
-          onTrue: () => Effect.void,
-        }),
-    ),
+  const writeFileCached_ = yield* Effect.cachedFunction(
+    (data: { path: string; contents?: string; override?: boolean }) =>
+      Effect.if(fs.exists(data.path), {
+        onFalse: () =>
+          fs.writeFileString(data.path, data.contents ?? '').pipe(
+            Effect.catchAllCause(() => Effect.void),
+            Effect.withSpan('FsUtils.writeFileCached', { attributes: { data } }),
+          ),
+        onTrue: () => Effect.void,
+      }),
   );
 
   const readFile = (path: string) =>
     fs
       .readFileString(path)
       .pipe(Effect.tapError(() => Effect.logError(`Cannot read file at: ${path}`)));
-
-  const watch = (path: string) =>
-    fs
-      .watch(path)
-      .pipe(Stream.tapError(() => Effect.logError(`Cannot watch file at: ${path}`)));
 
   const writeFileCached = (data: {
     path: string;
@@ -77,27 +84,78 @@ const make = Effect.gen(function* (_) {
   const writeFileSource = (file: { path: string; content: string }) =>
     fs.writeFileString(file.path, file.content);
 
-  const getFileMD5 = (filePath: string) => {
-    return fs
+  const getFileMD5 = (filePath: string) =>
+    fs
       .readFile(filePath)
       .pipe(Effect.map((x) => `${Hash.string(new TextDecoder().decode(x))}`));
-  };
 
   const mkEmptyFileCached = (path: string) =>
     Effect.cached(fs.writeFile(path_.resolve(path), new TextEncoder().encode('')));
 
   return {
+    path_,
     glob,
     mkEmptyFileCached,
     writeFileSource,
-    watch,
     writeFileCached,
-    globFiles,
+    globFilesSync,
     modifyFile,
     getFileMD5,
     mkdirCached,
     readFile,
+    globDirectories,
+    createWatcher,
   } as const;
+
+  function createWatcher(rootDir: string, sourceFiles: string[]) {
+    return createChokidarWatcher(
+      rootDir,
+      chokidar.watch(sourceFiles, {
+        cwd: rootDir,
+        followSymlinks: false,
+        persistent: true,
+        ignoreInitial: true,
+      }),
+    ).pipe(
+      Stream.filter(
+        (x) =>
+          (!x.path.endsWith('.d.ts') && path_.extname(x.path) === '.ts') ||
+          path_.extname(x.path) === '.tsx',
+      ),
+    );
+  }
+
+  function createChokidarWatcher(projectRoot: string, watcher: FSWatcher) {
+    return Stream.acquireRelease(Effect.succeed(watcher), (x) =>
+      Effect.promise(() => x.close()),
+    ).pipe(
+      Stream.flatMap((watcher) => {
+        return Stream.async<FileSystem.WatchEvent>((emit) => {
+          watcher.on('all', (event, filePath) => {
+            switch (event) {
+              case 'addDir':
+              case 'add':
+                return emit.single({
+                  _tag: 'Create',
+                  path: path_.join(projectRoot, filePath),
+                });
+              case 'change':
+                return emit.single({
+                  _tag: 'Update',
+                  path: path_.join(projectRoot, filePath),
+                });
+              case 'unlink':
+              case 'unlinkDir':
+                return emit.single({
+                  _tag: 'Remove',
+                  path: path_.join(projectRoot, filePath),
+                });
+            }
+          });
+        });
+      }),
+    );
+  }
 });
 
 export interface FsUtils extends Effect.Effect.Success<typeof make> {}

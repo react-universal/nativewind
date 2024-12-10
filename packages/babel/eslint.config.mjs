@@ -1,10 +1,13 @@
-module.exports = {
-  extends: '../../eslint.config.js',
-  ignorePatterns: ['!**/*', 'test/fixtures/**/*'],
+import tsPlugin from '@nx/eslint-plugin/typescript.js';
+import rootConfig from '../../eslint.config.mjs';
+
+export default {
+  extends: [rootConfig],
+  ignores: ['!**/*', 'test/fixtures/**/*'],
   overrides: [
     {
       files: ['*.ts'],
-      extends: ['plugin:@nx/typescript'],
+      extends: [...tsPlugin.configs.typescript],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-this-alias': 'off',

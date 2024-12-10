@@ -72,7 +72,10 @@ export const CompilerRun = (config: { watch: boolean; verbose: boolean }) =>
     if (config.watch) {
       yield* Effect.log('[watcher] Start Observing...');
       yield* listenForkedStreamChanges(ts.tsWatch, (result) =>
-        ts.fileEmitter.offer(result),
+        Effect.gen(function* () {
+          yield* ts.sendDiagnostics(...ts.compiler.getPreEmitDiagnostics());
+          yield* ts.fileEmitter.offer(result);
+        }),
       );
       yield* compileFile.pipe(Effect.forever, Effect.fork);
       yield* Deferred.await(latch);

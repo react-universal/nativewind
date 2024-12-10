@@ -2,13 +2,11 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
 import path from 'node:path';
-import { inspect } from 'node:util';
 import {
   CompilerConfigContext,
   NodeWithNativeTwinOptions,
   TwinFileSystem,
   TwinNodeContext,
-  listenForkedStreamChanges,
   twinLoggerLayer,
   createCompilerConfig,
 } from '@native-twin/compiler';
@@ -25,9 +23,6 @@ export function withNativeTwin(
     nativeTwinConfig.outputDir ??
     path.join(path.dirname(require.resolve('@native-twin/core')), '../..', '.cache');
 
-  // fs.rm(outDir, { force: true, recursive: true }, (error) => {
-  //   console.log('ERROR: ', error);
-  // });
   const MetroLive = Layer.provideMerge(
     MainLive,
     Layer.succeed(
@@ -53,14 +48,6 @@ export function withNativeTwin(
 
   const originalResolver = metroConfig.resolver.resolveRequest;
   const originalGetTransformerOptions = metroConfig.transformer.getTransformOptions;
-
-  // NodeRuntime.runMain(
-  //   LaunchTwinServer.pipe(
-  //     Effect.tap(Effect.logInfo),
-  //     Effect.catchAll((error) => Effect.log('ERROR: ', error)),
-  //     Effect.provide(MetroLive),
-  //   ),
-  // );
 
   return {
     ...metroConfig,
@@ -98,25 +85,10 @@ export function withNativeTwin(
           if (!options.platform) return result;
           const watcher = yield* TwinFileSystem;
 
-          const allFiles = yield* watcher.getAllFiles;
-          yield* watcher.runTwinForFiles(allFiles, options.platform);
+          yield* watcher.compileProjectFiles(options.platform);
           yield* Effect.logDebug('CHECK_DEBUG_LOGGER');
 
-          yield* listenForkedStreamChanges(watcher.fsWatcher, (event) =>
-            Effect.logTrace('FILE_CHANGE_DETECTED', inspect(event, false, null, true)),
-          );
           yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
-
-          // const { client } = yield* TwinServerClient;
-          // const response = yield* client.twinCompiler['compile-file']({
-          //   payload: {
-          //     path: 'index.js',
-          //     platformID: PlatformID.make('iOS'),
-          //   },
-          //   withResponse: true,
-          // });
-
-          // yield* Effect.logDebug('RESPONSE: ', response);
 
           return result;
         }).pipe(

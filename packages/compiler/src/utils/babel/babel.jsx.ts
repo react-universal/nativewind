@@ -2,7 +2,6 @@ import { template } from '@babel/core';
 import { CodeGenerator } from '@babel/generator';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
-import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import type { RuntimeTW } from '@native-twin/core';
@@ -14,15 +13,12 @@ import {
   type CompilerContext,
   type RuntimeComponentEntry,
 } from '@native-twin/css/jsx';
-import type { Tree, TreeNode } from '@native-twin/helpers/tree';
-import type { JSXElementNodePath, JSXElementTree } from '../../models/Babel.models.js';
+import type { JSXElementNodePath } from '../../models/Babel.models.js';
 import { JSXElementNode } from '../../models/JSXElement.model.js';
 import type { JSXMappedAttribute } from '../../models/jsx.models.js';
-import { TwinNodeContext } from '../../services/TwinNodeContext.service.js';
 import {
   addJsxAttribute,
   addJsxExpressionAttribute,
-  extractMappedAttributes,
   getBabelBindingImportSource,
   getJSXElementName,
   templateLiteralToStringLike,
@@ -105,30 +101,6 @@ export const runtimeEntriesToAst = (entries: string) => {
   }
 };
 
-export const extractSheetsFromTree = (
-  tree: Tree<JSXElementTree>,
-  fileName: string,
-  platform: string,
-) =>
-  Effect.gen(function* () {
-    const twin = yield* TwinNodeContext;
-    const tw = yield* twin.getTwForPlatform(platform);
-    const fileSheet = RA.empty<[string, JSXElementNode]>();
-
-    tree.traverse((leave) => {
-      const runtimeData = extractMappedAttributes(leave.value.babelNode);
-      const entries = getElementEntries(runtimeData, tw, {
-        baseRem: tw.config.root.rem ?? 16,
-        platform,
-      });
-      const model = jsxTreeNodeToJSXElementNode(leave, entries, fileName);
-
-      fileSheet.push([model.id, model]);
-    }, 'breadthFirst');
-
-    return fileSheet;
-  });
-
 export const getJSXCompiledTreeRuntime = (
   leave: JSXElementNode,
   parentLeave: Option.Option<JSXElementNode>,
@@ -152,8 +124,7 @@ export const getJSXCompiledTreeRuntime = (
   };
 };
 
-
-export function addTwinPropsToElement(
+export const addTwinPropsToElement = (
   elementNode: JSXElementNode,
   entries: RuntimeComponentEntry[],
   options: {
@@ -162,7 +133,7 @@ export function addTwinPropsToElement(
     styledProps: boolean;
     templateStyles: boolean;
   },
-) {
+) => {
   const stringEntries = entriesToComponentData(elementNode.id, entries);
   const astProps = runtimeEntriesToAst(stringEntries);
 
@@ -178,19 +149,4 @@ export function addTwinPropsToElement(
     addJsxExpressionAttribute(elementNode.path, '_twinComponentSheet', astProps);
   }
   return astProps;
-}
-
-export const jsxTreeNodeToJSXElementNode = (
-  leave: TreeNode<JSXElementTree>,
-  entries: RuntimeComponentEntry[],
-  filename: string,
-): JSXElementNode => {
-  const runtimeData = extractMappedAttributes(leave.value.babelNode);
-  return new JSXElementNode({
-    leave,
-    order: leave.value.order,
-    filename,
-    runtimeData,
-    entries,
-  });
 };

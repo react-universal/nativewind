@@ -1,8 +1,7 @@
 import { CodeGenerator } from '@babel/generator';
 import type { ParseResult } from '@babel/parser';
 import * as t from '@babel/types';
-import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
-import * as FileSystem from '@effect/platform/FileSystem';
+import { Chunk } from 'effect';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -13,12 +12,19 @@ import * as Option from 'effect/Option';
 import * as Sink from 'effect/Sink';
 import * as Stream from 'effect/Stream';
 import { CompilerContext, RuntimeComponentEntry } from '@native-twin/css/jsx';
-import { Tree, TreeNode } from '@native-twin/helpers/tree';
+import { Tree } from '@native-twin/helpers/tree';
+import {
+  NodeWithMappedAttributes,
+  TwinFileDocument,
+} from '../internal/TwinDocument/TwinDocument.model.js';
+import { FsUtils, FsUtilsLive } from '../internal/fs.utils.js';
 import { JSXElementTree } from '../models/Babel.models.js';
 import { JSXElementNode } from '../models/JSXElement.model.js';
-import { JSXMappedAttribute } from '../models/jsx.models.js';
 import { InternalTwFn } from '../models/twin.types.js';
-import { getElementEntries, getJSXCompiledTreeRuntime } from '../utils/babel/babel.jsx.js';
+import {
+  getElementEntries,
+  getJSXCompiledTreeRuntime,
+} from '../utils/babel/babel.jsx.js';
 import { streamJsxElementTrees, transformTrees } from '../utils/babel/babel.transform.js';
 import {
   extractMappedAttributes,
@@ -41,11 +47,6 @@ export interface BabelCodeEntry extends BaseEntry {
   readonly platform: string;
 }
 
-interface ExtractedAttributes {
-  runtimeData: JSXMappedAttribute[];
-  node: TreeNode<JSXElementTree>;
-}
-
 export interface BabelOutput {
   platform: string;
   filename: string;
@@ -60,7 +61,7 @@ export interface BabelOutput {
 
 const makeJSXElementNode = (
   filename: string,
-  extractedAttributes: ExtractedAttributes,
+  extractedAttributes: NodeWithMappedAttributes,
   entries: RuntimeComponentEntry[],
 ) =>
   new JSXElementNode({
@@ -70,9 +71,24 @@ const makeJSXElementNode = (
     runtimeData: extractedAttributes.runtimeData,
     entries,
   });
+
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
-  const fs = yield* FileSystem.FileSystem;
+  const fs = yield* FsUtils;
+
+  const compileTwinDocument = (twinFile: TwinFileDocument, platform: string) => {
+    return Effect.gen(function* () {
+      const { compilerContext, tw } = yield* ctx.getTwinRuntime(platform);
+      const { mappedElements } = yield* twinFile.JSXElementNodes;
+      return Chunk.map(mappedElements, (element) => {
+        return makeJSXElementNode(
+          twinFile.uri,
+          element,
+          getElementEntries(RA.fromIterable(element.runtimeData), tw, compilerContext),
+        );
+      }).pipe(RA.fromIterable);
+    });
+  };
 
   const getBabelOutput = (input: BabelCodeEntry | BabelFileEntry) =>
     Effect.Do.pipe(
@@ -126,6 +142,7 @@ const make = Effect.gen(function* () {
     getJSXCompiledTreeRuntime,
     memberExpressionIsReactImport,
     identifierIsReactImport,
+    compileTwinDocument,
     mutateAST: (ast: ParseResult<t.File>) =>
       Effect.sync(() => {
         const generate = new CodeGenerator(ast);
@@ -139,13 +156,13 @@ const make = Effect.gen(function* () {
         case 'BabelCodeEntry':
           return input.code;
         case 'BabelFileEntry':
-          return yield* fs.readFileString(input.filename, 'utf-8');
+          return yield* fs.readFile(input.filename);
       }
     });
   }
 
   function mappedAttributes(tree: Tree<JSXElementTree>) {
-    return Stream.async<ExtractedAttributes>((emit) => {
+    return Stream.async<NodeWithMappedAttributes>((emit) => {
       tree.traverse(async (leave) => {
         await emit.single({
           node: leave,
@@ -165,6 +182,6 @@ export const BabelCompilerContext = Context.GenericTag<BabelCompilerContext>(
 );
 
 export const BabelCompilerContextLive = Layer.effect(BabelCompilerContext, make).pipe(
-  Layer.provide(NodeFileSystem.layer),
   Layer.provide(TwinNodeContext.Live),
+  Layer.provide(FsUtilsLive),
 );

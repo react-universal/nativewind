@@ -1,6 +1,8 @@
-module.exports = {
-  extends: '../../eslintrc.config.js',
-  ignorePatterns: [
+import rootConfig from '../../eslint.config.mjs';
+
+export default {
+  extends: [rootConfig],
+  ignores: [
     '!**/*',
     'ts-extension',
     'project-fixture',

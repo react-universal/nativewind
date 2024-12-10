@@ -1,6 +1,8 @@
-module.exports = {
-  extends: '../../eslint.config.js',
-  ignorePatterns: ['!**/*', 'test/fixtures/*', 'build', 'bck'],
+import rootConfig from '../../eslint.config.mjs';
+
+export default {
+  extends: [rootConfig],
+  ignores: ['!**/*', 'test/fixtures/*', 'build', 'bck'],
   overrides: [
     {
       files: ['*.ts'],

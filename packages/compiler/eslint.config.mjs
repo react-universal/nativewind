@@ -1,6 +1,9 @@
-module.exports = {
-  extends: '../../eslint.config.js',
-  ignorePatterns: ['!**/*', 'build', 'esbuild.mjs'],
+import rootConfig from '../../eslint.config.mjs';
+
+/** @type {import('eslint').ESLint.ConfigData} */
+export default {
+  extends: [rootConfig],
+  ignores: ['!**/*', 'build', 'test/fixtures'],
   overrides: [
     {
       files: ['*.ts'],
@@ -9,6 +12,7 @@ module.exports = {
         'no-empty': 'off',
         '@typescript-eslint/no-unused-expressions': 'off',
         'require-yield': 'off',
+        'prefer-rest-params': 'off',
         'no-control-regex': 'off',
         '@typescript-eslint/no-empty-object-type': 'off',
         '@typescript-eslint/no-var-requires': 'off',

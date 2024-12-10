@@ -1,5 +1,4 @@
 import * as t from '@babel/types';
-import * as Path from '@effect/platform/Path';
 import * as CodeBlockWriter from 'code-block-writer';
 import * as Effect from 'effect/Effect';
 import * as HashMap from 'effect/HashMap';
@@ -7,6 +6,7 @@ import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import { js_beautify } from 'js-beautify';
 import { getRawSheet } from '@native-twin/css/jsx';
+import { FsUtils } from '../internal/fs.utils.js';
 import type { JSXElementNode } from '../models/JSXElement.model.js';
 import { CompilerConfigContext } from '../services/CompilerConfig.service.js';
 import { getJSXCompiledTreeRuntime, runtimeEntriesToAst } from './babel/babel.jsx.js';
@@ -34,7 +34,7 @@ const getJSXElementOutput = (
 const getNativeFileOutput = (stringStyles: string, platform: string) =>
   Effect.gen(function* () {
     const writer = new CodeBlockWriter.default();
-    const path = yield* Path.Path;
+    const { path_: path } = yield* FsUtils;
     const env = yield* CompilerConfigContext;
 
     writer.writeLine(`const setup = require('@native-twin/core').setup;`);

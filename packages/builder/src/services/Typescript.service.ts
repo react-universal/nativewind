@@ -76,6 +76,8 @@ const make = Effect.gen(function* () {
     tsBuild,
     tsWatch,
     fileEmitter,
+    sendDiagnostics,
+    compiler,
     writeFile,
     diagnostics,
   };

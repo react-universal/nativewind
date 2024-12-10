@@ -1,6 +1,6 @@
 module.exports = {
   extends: '../../eslint.config.js',
-  ignorePatterns: ['!**/*', 'src/fixtures/*', 'remaps'],
+  ignores: ['!**/*', 'src/fixtures/*', 'remaps'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],

@@ -35,7 +35,7 @@ export class JSXImportPluginContext extends Context.Tag('babel/plugin/context')<
           rootPath,
           twCtx,
           visitedElements,
-          allowedPaths: (yield* nodeContext.scanAllowedPaths).files,
+          allowedPaths: (yield* nodeContext.scanAllowedPaths),
           isValidFile(filename = '') {
             const allowedFileRegex =
               /^(?!.*[/\\](react|react-native|react-native-web|@native-twin\/*)[/\\]).*$/;

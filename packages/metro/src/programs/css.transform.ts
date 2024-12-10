@@ -3,14 +3,14 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as fs from 'fs';
 import * as worker from 'metro-transform-worker';
-import { TwinNodeContext, TwinFileSystem } from '@native-twin/compiler';
+import { TwinNodeContext } from '@native-twin/compiler';
 import { pathToHtmlSafeName, countLines } from '@native-twin/helpers/server';
 import { MetroWorkerService } from '../services/MetroWorker.service.js';
 
 export const transformCSS = Effect.gen(function* () {
   const { input } = yield* MetroWorkerService;
   const twin = yield* TwinNodeContext;
-  const twinFS = yield* TwinFileSystem;
+  // const twinFS = yield* TwinFileSystem;
   const platform = input.options.platform ?? 'native';
   // const tw = twin.utils.getTwForPlatform('web');
   const outputPath = twin.getOutputCSSPath('web');
@@ -22,8 +22,8 @@ export const transformCSS = Effect.gen(function* () {
   const { transform: lightningcssTransform } =
     require('lightningcss') as typeof import('lightningcss');
 
-  const files = yield* twinFS.getAllFiles;
-  yield* twinFS.runTwinForFiles(files, platform);
+  // const files = yield* twinFS.getAllFiles;
+  // yield* twinFS.runTwinForFiles(files, platform);
 
   const output = fs.readFileSync(outputPath, 'utf-8');
   // const twinCSS = sheetEntriesToCss(twin.sheetTarget, true);

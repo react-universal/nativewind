@@ -1,6 +1,8 @@
+import rootConfig from '../../eslint.config.mjs';
+
 module.exports = {
-  extends: '../../eslint.config.js',
-  ignorePatterns: ['!**/*'],
+  extends: [rootConfig],
+  ignores: ['!**/*'],
   overrides: [
     {
       files: ['*.ts'],
