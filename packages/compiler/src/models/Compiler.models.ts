@@ -1,5 +1,5 @@
-import { Data } from 'effect';
-import * as LogLevel from 'effect/LogLevel';
+import type { Data } from 'effect';
+import type * as LogLevel from 'effect/LogLevel';
 
 /**
  * @domain `TwinNodeContext` Common Input config options

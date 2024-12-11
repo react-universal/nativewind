@@ -1,16 +1,16 @@
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import * as ManagedRuntime from 'effect/ManagedRuntime';
 import path from 'node:path';
 import {
   CompilerConfigContext,
-  NodeWithNativeTwinOptions,
+  type NodeWithNativeTwinOptions,
   TwinFileSystem,
   TwinNodeContext,
-  twinLoggerLayer,
   createCompilerConfig,
+  twinLoggerLayer,
 } from '@native-twin/compiler';
-import { TwinMetroConfig } from './models/Metro.models.js';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
+import type { TwinMetroConfig } from './models/Metro.models.js';
 import { getMetroSettings } from './programs/getMetroSettings.js';
 
 const MainLive = Layer.empty.pipe(Layer.provideMerge(TwinNodeContext.Live));

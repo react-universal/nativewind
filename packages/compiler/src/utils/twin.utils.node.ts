@@ -1,14 +1,14 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
+import { type TailwindConfig, defineConfig } from '@native-twin/core';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
-import * as String from 'effect/String';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import { defineConfig, TailwindConfig } from '@native-twin/core';
-import { InternalTwinConfig } from '../models/twin.types.js';
+import * as Str from 'effect/String';
+import type { InternalTwinConfig } from '../models/twin.types.js';
 import { TWIN_DEFAULT_FILES } from '../shared/twin.constants.js';
 import { maybeLoadJS } from './modules.utils.js';
 
@@ -37,7 +37,7 @@ export const getTwinConfigPath = (rootDir: string, twinConfigPath = '') =>
     Option.orElse(
       Option.liftPredicate(
         twinConfigPath,
-        Predicate.compose(Predicate.isString, String.isNonEmpty),
+        Predicate.compose(Predicate.isString, Str.isNonEmpty),
       ),
       () =>
         Option.firstSomeOf(

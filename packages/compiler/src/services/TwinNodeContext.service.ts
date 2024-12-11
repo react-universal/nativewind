@@ -1,3 +1,6 @@
+import * as path from 'node:path';
+import { defineConfig } from '@native-twin/core';
+import type { CompilerContext } from '@native-twin/css/jsx';
 import { Option } from 'effect';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
@@ -8,9 +11,6 @@ import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as micromatch from 'micromatch';
-import * as path from 'node:path';
-import { defineConfig } from '@native-twin/core';
-import { CompilerContext } from '@native-twin/css/build/dts/jsx.js';
 import { FsUtils, FsUtilsLive } from '../internal/fs.utils.js';
 import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
@@ -43,56 +43,6 @@ const TwinNodeContextLive = Effect.gen(function* () {
     Effect.flatMap((globPatterns) => fs.globFilesSync(globPatterns)),
   );
 
-  const isAllowedPath = (filePath: string) =>
-    getAllowedGlobPatterns.pipe(
-      Effect.map((globPatterns) => {
-        return (
-          micromatch.isMatch(path.join(env.projectRoot, filePath), globPatterns) ||
-          micromatch.isMatch(filePath, globPatterns)
-        );
-      }),
-    );
-
-  const getTwForPlatform = (platform: string) => {
-    return Ref.get(twRunnersRef).pipe(
-      Effect.map((runners) => {
-        if (platform === 'web') return runners.web;
-        return runners.native;
-      }),
-    );
-  };
-
-  const getOutputCSSPath = (platform: string) => {
-    switch (platform) {
-      case 'web':
-        return env.platformPaths.web;
-      case 'ios':
-        return env.platformPaths.ios;
-      case 'android':
-        return env.platformPaths.android;
-      case 'native':
-        return env.platformPaths.native;
-      default:
-        console.warn('[WARN]: cant determine outputCSS fallback to default');
-        return env.platformPaths.native;
-    }
-  };
-
-  const getTwinRuntime = (platform: string) => {
-    return getTwForPlatform(platform).pipe(
-      Effect.map((tw) => {
-        const compilerContext: CompilerContext = {
-          baseRem: tw.config.root.rem ?? 16,
-          platform,
-        };
-        return {
-          tw,
-          compilerContext,
-        };
-      }),
-    );
-  };
-
   return {
     projectFilesRef,
     twinConfigRef,
@@ -106,6 +56,57 @@ const TwinNodeContextLive = Effect.gen(function* () {
     getTwinRuntime,
     scanAllowedPaths,
   };
+
+  function getTwForPlatform(platform: string) {
+    return Ref.get(twRunnersRef).pipe(
+      Effect.map((runners) => {
+        if (platform === 'web') return runners.web;
+        return runners.native;
+      }),
+    );
+  }
+
+  function getOutputCSSPath(platform: string) {
+    switch (platform) {
+      case 'web':
+        return env.platformPaths.web;
+      case 'ios':
+        return env.platformPaths.ios;
+      case 'android':
+        return env.platformPaths.android;
+      case 'native':
+        return env.platformPaths.native;
+      default:
+        console.warn('[WARN]: cant determine outputCSS fallback to default');
+        return env.platformPaths.native;
+    }
+  }
+
+  function getTwinRuntime(platform: string) {
+    return getTwForPlatform(platform).pipe(
+      Effect.map((tw) => {
+        const compilerContext: CompilerContext = {
+          baseRem: tw.config.root.rem ?? 16,
+          platform,
+        };
+        return {
+          tw,
+          compilerContext,
+        };
+      }),
+    );
+  }
+
+  function isAllowedPath(filePath: string) {
+    return getAllowedGlobPatterns.pipe(
+      Effect.map((globPatterns) => {
+        return (
+          micromatch.isMatch(path.join(env.projectRoot, filePath), globPatterns) ||
+          micromatch.isMatch(filePath, globPatterns)
+        );
+      }),
+    );
+  }
 });
 
 export class TwinNodeContext extends Context.Tag('node/shared/context')<

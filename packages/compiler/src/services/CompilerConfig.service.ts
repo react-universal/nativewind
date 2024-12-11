@@ -1,7 +1,7 @@
+import * as path from 'node:path';
 import * as Context from 'effect/Context';
 import * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
-import * as path from 'node:path';
 
 const getPlatformOutputs = (baseDir: string) => ({
   defaultFile: path.posix.join(baseDir, 'twin.out.native.css'),

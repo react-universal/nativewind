@@ -1,10 +1,10 @@
 import type { NodePath } from '@babel/traverse';
 import type * as BabelTypes from '@babel/types';
 import type * as t from '@babel/types';
-import * as Data from 'effect/Data';
-import type * as Option from 'effect/Option';
 import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import type { Tree } from '@native-twin/helpers/tree';
+import * as Data from 'effect/Data';
+import type * as Option from 'effect/Option';
 import type { JSXElementNode } from './JSXElement.model.js';
 
 export interface CompilerInput {

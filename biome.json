@@ -10,7 +10,12 @@
 		"ignoreUnknown": true,
 		"include": ["*/src/**/*.ts","*/src/**/*.tsx"],
 		"ignore": ["packages/*/build/**/*.js"]
-	 },
+	},
+	"linter": {
+		"rules": { 
+			"recommended": true
+		}
+	},
 	"formatter": {
 		"enabled": true,
 		"useEditorconfig": false,
@@ -19,7 +24,7 @@
 		"indentWidth": 2,
 		"lineEnding": "lf",
 		"lineWidth": 90,
-		"attributePosition": "auto",
+		"attributePosition": "multiline",
 		"bracketSpacing": true,
 		"ignore": [
 			"**/.eslintrc.json",
@@ -28,20 +33,7 @@
 			"./.nx/workspace-data"
 		]
 	},
-	"organizeImports": { "enabled": true },
-	"linter": {
-		"enabled": true,
-		"rules": { "recommended": false }
-	},
-	"json": {
-		"linter": {
-			"enabled": false
-		}
-	},
 	"javascript": {
-		"linter": {
-			"enabled": true
-		},
 		"formatter": {
 			"jsxQuoteStyle": "single",
 			"quoteProperties": "asNeeded",
@@ -51,7 +43,13 @@
 			"bracketSameLine": false,
 			"quoteStyle": "single",
 			"attributePosition": "auto",
-			"bracketSpacing": true
+			"bracketSpacing": true,
+			"enabled": true
+		}
+	},
+	"json": {
+		"linter": {
+			"enabled": false
 		}
 	}
 }

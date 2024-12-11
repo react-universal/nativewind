@@ -17,6 +17,11 @@
         "dist/**"
       ]
     },
+    "build:watch": {
+      "dependsOn": ["build:compiler"],
+      "persistent": true,
+      "cache": false
+    },
     "build:compiler": {
       "inputs": [
         "$TURBO_DEFAULT$",
@@ -47,19 +52,6 @@
         "build/**",
         "dist/**"
       ]
-    },
-    "mobile:dev": {
-      "cache": false,
-      "dependsOn": [
-        "^build"
-      ],
-      "persistent": true,
-      "interactive": true
-    },
-    "build:watch": {
-      "dependsOn": ["build:compiler"],
-      "persistent": true,
-      "cache": false
     },
     "lint": {
       "cache": true

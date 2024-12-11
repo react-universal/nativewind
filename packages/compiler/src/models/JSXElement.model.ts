@@ -1,16 +1,16 @@
-import * as t from '@babel/types';
+import type * as t from '@babel/types';
+import {
+  type ChildsSheet,
+  type RuntimeComponentEntry,
+  getChildRuntimeEntries,
+} from '@native-twin/css/jsx';
+import type { TreeNode } from '@native-twin/helpers/tree';
 import * as Equal from 'effect/Equal';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import {
-  getChildRuntimeEntries,
-  type ChildsSheet,
-  type RuntimeComponentEntry,
-} from '@native-twin/css/jsx';
-import type { TreeNode } from '@native-twin/helpers/tree';
 import { getJSXElementAttrs, getJSXElementName } from '../utils/babel/babel.utils.js';
-import { JSXElementTree } from './Babel.models.js';
+import type { JSXElementTree } from './Babel.models.js';
 import type { JSXMappedAttribute } from './jsx.models.js';
 
 const jsxElementHash = (path: t.JSXElement, filename: string): number => {
@@ -37,7 +37,7 @@ export class JSXElementNodeKey implements Equal.Equal {
       that instanceof JSXElementNodeKey &&
       this.path.loc === that.path.loc &&
       this.path.type === that.path.type &&
-      this.path.start == that.path.start
+      this.path.start === that.path.start
     );
   }
 }

@@ -1,14 +1,14 @@
 import { parse } from '@babel/parser';
 import type { Binding, NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
+import type { AnyPrimitive } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import type { AnyPrimitive } from '@native-twin/helpers';
-import { JSXChildElement, JSXMappedAttribute } from '../../models/jsx.models.js';
+import type { JSXChildElement, JSXMappedAttribute } from '../../models/jsx.models.js';
 import {
+  type MappedComponent,
   createCommonMappedAttribute,
-  MappedComponent,
   mappedComponents,
 } from '../../shared/compiler.constants.js';
 import * as babelPredicates from './babel.predicates.js';
@@ -269,7 +269,9 @@ export const isReactRequireBinding = (x: Binding) => {
       t.isStringLiteral(x.path.node.init.arguments[0], { value: 'react' })
     ) {
       return true;
-    } else if (
+    }
+
+    if (
       // const <name> = _interopRequireDefault(require("react"))
       t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireDefault' }) &&
       t.isCallExpression(x.path.node.init.arguments[0]) &&

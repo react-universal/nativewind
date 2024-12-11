@@ -1,11 +1,11 @@
-import * as t from '@babel/types';
+import type * as t from '@babel/types';
+import { getRawSheet } from '@native-twin/css/jsx';
 import * as CodeBlockWriter from 'code-block-writer';
 import * as Effect from 'effect/Effect';
 import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import { js_beautify } from 'js-beautify';
-import { getRawSheet } from '@native-twin/css/jsx';
 import { FsUtils } from '../internal/fs.utils.js';
 import type { JSXElementNode } from '../models/JSXElement.model.js';
 import { CompilerConfigContext } from '../services/CompilerConfig.service.js';
@@ -54,7 +54,7 @@ const getNativeFileOutput = (stringStyles: string, platform: string) =>
     }
 
     writer.writeLine(`const twinConfig = require('${importTwinPath}');`);
-    writer.writeLine(`setup(twinConfig);`);
+    writer.writeLine('setup(twinConfig);');
 
     writer.write(stringStyles);
     // writer.write(stringStyles.replaceAll("require('@native-twin/jsx').", ''));
@@ -87,7 +87,7 @@ export const getNativeStylesJSOutput = (
       Effect.map((x) => {
         const writer = new CodeBlockWriter.default();
         return writer
-          .write(`export const globalSheets = `)
+          .write('export const globalSheets = ')
           .block(() => {
             writer.write(`${x}`);
           })

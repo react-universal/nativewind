@@ -1,12 +1,12 @@
-import * as Array from 'effect/Array';
-import * as Duration from 'effect/Duration';
+import type { NegativeInteger, PositiveInteger } from '@native-twin/helpers';
+import * as RA from 'effect/Array';
+import type * as Duration from 'effect/Duration';
 import * as Effect from 'effect/Effect';
-import * as LogLevel from 'effect/LogLevel';
+import type * as LogLevel from 'effect/LogLevel';
 import * as Metric from 'effect/Metric';
 import * as MetricBoundaries from 'effect/MetricBoundaries';
 import * as MetricLabel from 'effect/MetricLabel';
-import { MetricState } from 'effect/MetricState';
-import { NegativeInteger, PositiveInteger } from '@native-twin/helpers';
+import type { MetricState } from 'effect/MetricState';
 
 export class CounterMetric<TLabel extends string> {
   readonly metric: Metric.Metric.Counter<number>;
@@ -74,7 +74,7 @@ export class TimerMetric<TLabel extends string> {
   ) {
     this.metric = Metric.timerWithBoundaries(
       this.label,
-      Array.range(...boundaries),
+      RA.range(...boundaries),
       description,
     );
     // this.value = Metric.value(this.metric);
@@ -90,6 +90,7 @@ export class TimerMetric<TLabel extends string> {
 export class SummaryMetric<TLabel extends string> {
   readonly metric: Metric.Metric.Summary<number>;
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   readonly track: <A extends Effect.Effect<any>>(
     task: A,
   ) => ReturnType<Metric.Metric.Summary<number>>;
@@ -129,6 +130,7 @@ export class SummaryMetric<TLabel extends string> {
 
 export class FrequencyMetric<TLabel extends string> {
   readonly metric: Metric.Metric.Frequency<string>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   readonly track: <A extends Effect.Effect<any>>(task: A) => Effect.Effect<string>;
   constructor(
     readonly label: TLabel,

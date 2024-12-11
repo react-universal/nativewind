@@ -1,7 +1,8 @@
 import { traverse } from '@babel/core';
 import type { ParseResult } from '@babel/parser';
-import { NodePath } from '@babel/traverse';
-import * as t from '@babel/types';
+import type { NodePath } from '@babel/traverse';
+import type * as t from '@babel/types';
+import { Tree, type TreeNode } from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { apply, pipe } from 'effect/Function';
@@ -9,13 +10,12 @@ import * as Hash from 'effect/Hash';
 import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import { Tree, TreeNode } from '@native-twin/helpers/tree';
 import {
-  JSXElementNodePath,
+  type JSXElementNodePath,
   JSXElementTree,
-  TransformedJSXElementTree,
+  type TransformedJSXElementTree,
 } from '../../models/Babel.models';
-import { JSXElementNode } from '../../models/JSXElement.model';
+import type { JSXElementNode } from '../../models/JSXElement.model';
 import {
   addTwinPropsToElement,
   getJSXCompiledTreeRuntime,
@@ -122,7 +122,7 @@ export const transformTrees = (
   registry: HashMap.HashMap<string, JSXElementNode>,
   platform: string,
 ) =>
-  Effect.gen(function* () {
+  Effect.sync(() => {
     if (platform === 'web') {
       return HashMap.empty<string, TransformedJSXElementTree>();
     }

@@ -1,5 +1,7 @@
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type Listener<T extends Array<any>> = (...args: T) => void;
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export class TwinEventEmitter<EventMap extends Record<string, Array<any>>> {
   private eventListeners: {
     [K in keyof EventMap]?: Set<Listener<EventMap[K]>>;

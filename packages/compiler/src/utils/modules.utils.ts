@@ -1,5 +1,5 @@
+import * as fs from 'node:fs';
 import * as Option from 'effect/Option';
-import * as fs from 'fs';
 import * as createJiti from 'jiti';
 import { transform } from 'sucrase';
 
@@ -9,6 +9,7 @@ let jiti: ReturnType<typeof jitiFactory> | null = null;
 function lazyJiti() {
   return (
     jiti ??
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     (jiti = jitiFactory(__filename, {
       interopDefault: true,
       cache: false,
@@ -24,6 +25,7 @@ function lazyJiti() {
 }
 
 export function nodeRequireJS<T = unknown>(path: string): T {
+  // biome-ignore lint/complexity/useArrowFunction: <explanation>
   const config = (function () {
     try {
       return path ? require(path) : {};
@@ -44,6 +46,7 @@ export function nodeRequireJS<T = unknown>(path: string): T {
 }
 
 export function requireResolveUtil(path: string): string {
+  // biome-ignore lint/complexity/useArrowFunction: <explanation>
   const result = (function () {
     try {
       return require.resolve(path);

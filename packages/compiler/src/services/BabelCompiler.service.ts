@@ -1,51 +1,32 @@
 import { CodeGenerator } from '@babel/generator';
 import type { ParseResult } from '@babel/parser';
-import * as t from '@babel/types';
-import { Chunk } from 'effect';
+import type * as t from '@babel/types';
+import type { CompilerContext, RuntimeComponentEntry } from '@native-twin/css/jsx';
+import type { Tree } from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
+import * as Chunk from 'effect/Chunk';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
-import * as HashMap from 'effect/HashMap';
+import type * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import * as Sink from 'effect/Sink';
-import * as Stream from 'effect/Stream';
-import { CompilerContext, RuntimeComponentEntry } from '@native-twin/css/jsx';
-import { Tree } from '@native-twin/helpers/tree';
-import {
+import type {
   NodeWithMappedAttributes,
   TwinFileDocument,
 } from '../internal/TwinDocument/TwinDocument.model.js';
-import { FsUtils, FsUtilsLive } from '../internal/fs.utils.js';
-import { JSXElementTree } from '../models/Babel.models.js';
+import type { JSXElementTree } from '../models/Babel.models.js';
 import { JSXElementNode } from '../models/JSXElement.model.js';
-import { InternalTwFn } from '../models/twin.types.js';
+import type { InternalTwFn } from '../models/twin.types.js';
 import {
   getElementEntries,
   getJSXCompiledTreeRuntime,
 } from '../utils/babel/babel.jsx.js';
 import { streamJsxElementTrees, transformTrees } from '../utils/babel/babel.transform.js';
 import {
-  extractMappedAttributes,
-  getBabelAST,
   identifierIsReactImport,
   memberExpressionIsReactImport,
 } from '../utils/babel/babel.utils.js';
 import { TwinNodeContext } from './TwinNodeContext.service.js';
-
-interface BaseEntry {
-  readonly filename: string;
-}
-export interface BabelFileEntry extends BaseEntry {
-  readonly _tag: 'BabelFileEntry';
-  readonly platform: string;
-}
-export interface BabelCodeEntry extends BaseEntry {
-  readonly _tag: 'BabelCodeEntry';
-  readonly code: string;
-  readonly platform: string;
-}
 
 export interface BabelOutput {
   platform: string;
@@ -74,69 +55,25 @@ const makeJSXElementNode = (
 
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
-  const fs = yield* FsUtils;
 
   const compileTwinDocument = (twinFile: TwinFileDocument, platform: string) => {
     return Effect.gen(function* () {
       const { compilerContext, tw } = yield* ctx.getTwinRuntime(platform);
-      const { mappedElements } = yield* twinFile.JSXElementNodes;
-      return Chunk.map(mappedElements, (element) => {
-        return makeJSXElementNode(
-          twinFile.uri,
-          element,
-          getElementEntries(RA.fromIterable(element.runtimeData), tw, compilerContext),
-        );
-      }).pipe(RA.fromIterable);
+      const { mappedElements, ast } = yield* twinFile.JSXElementNodes;
+      return {
+        nodes: Chunk.map(mappedElements, (element) => {
+          return makeJSXElementNode(
+            twinFile.uri,
+            element,
+            getElementEntries(RA.fromIterable(element.runtimeData), tw, compilerContext),
+          );
+        }).pipe(RA.fromIterable),
+        ast,
+      };
     });
   };
 
-  const getBabelOutput = (input: BabelCodeEntry | BabelFileEntry) =>
-    Effect.Do.pipe(
-      Effect.let('platform', () => input.platform),
-      Effect.let('filename', () => input.filename),
-      Effect.bind('code', () => getCompilerInputCode(input)),
-      Effect.bind('tw', ({ platform }) => ctx.getTwForPlatform(platform)),
-      Effect.let(
-        'styledCtx',
-        ({ platform, tw }): CompilerContext => ({
-          baseRem: tw.config.root.rem ?? 16,
-          platform,
-        }),
-      ),
-      Effect.let('ast', ({ code, filename }) => getBabelAST(code, filename)),
-      Effect.bind('trees', ({ ast, filename }) => streamJsxElementTrees(ast, filename)),
-      Effect.bind('treeNodes', ({ trees, filename, tw, styledCtx }) =>
-        Stream.mergeAll(
-          RA.map(trees, (tree) => mappedAttributes(tree)),
-          { concurrency: 'unbounded' },
-        ).pipe(
-          // Stream.tap((x) => Effect.logInfo('EXTRACTED_ATTRIBUTES: ', x.node)),
-          Stream.map((extracted) =>
-            makeJSXElementNode(
-              filename,
-              extracted,
-              getElementEntries(extracted.runtimeData, tw, styledCtx),
-            ),
-          ),
-          Stream.run(
-            Sink.collectAllToMap(
-              (x) => x.id,
-              (x) => x,
-            ),
-          ),
-        ),
-      ),
-      Effect.let('entries', ({ treeNodes }) =>
-        pipe(
-          RA.fromIterable(HashMap.values(treeNodes)),
-          RA.flatMap((x) => x.entries),
-        ),
-      ),
-    );
-
   return {
-    getCompilerInputCode,
-    getBabelOutput,
     transformAST: transformTrees,
     getJSXElementTrees: streamJsxElementTrees,
     getJSXCompiledTreeRuntime,
@@ -149,31 +86,6 @@ const make = Effect.gen(function* () {
         return Option.fromNullable(generate.generate()).pipe(Option.getOrNull);
       }),
   };
-
-  function getCompilerInputCode(input: BabelFileEntry | BabelCodeEntry) {
-    return Effect.gen(function* () {
-      switch (input._tag) {
-        case 'BabelCodeEntry':
-          return input.code;
-        case 'BabelFileEntry':
-          return yield* fs.readFile(input.filename);
-      }
-    });
-  }
-
-  function mappedAttributes(tree: Tree<JSXElementTree>) {
-    return Stream.async<NodeWithMappedAttributes>((emit) => {
-      tree.traverse(async (leave) => {
-        await emit.single({
-          node: leave,
-          runtimeData: extractMappedAttributes(leave.value.babelNode),
-        });
-        // const model = jsxTreeNodeToJSXElementNode(leave, entries, fileName);
-      }, 'breadthFirst');
-
-      emit.end();
-    });
-  }
 });
 
 export interface BabelCompilerContext extends Effect.Effect.Success<typeof make> {}
@@ -183,5 +95,4 @@ export const BabelCompilerContext = Context.GenericTag<BabelCompilerContext>(
 
 export const BabelCompilerContextLive = Layer.effect(BabelCompilerContext, make).pipe(
   Layer.provide(TwinNodeContext.Live),
-  Layer.provide(FsUtilsLive),
 );

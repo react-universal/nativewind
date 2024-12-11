@@ -14,6 +14,10 @@ export { JSXImportPluginContext } from './services/TwinBabelPlugin.service.js';
 export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from './shared/twin.constants.js';
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
 export { DevToolsLive } from './services/NodeMainLayer.js';
+export {
+  TwinDocumentsContext,
+  TwinDocumentsContextLive,
+} from './internal/TwinDocument/TwinDocuments.service.js';
 
 export type { BabelAPI, TwinBabelPluginOptions } from './models/Babel.models.js';
 export type { NodeContextShape } from './services/TwinNodeContext.service.js';

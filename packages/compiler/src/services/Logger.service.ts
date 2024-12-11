@@ -1,14 +1,14 @@
 import * as Ansi from '@effect/printer-ansi/Ansi';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
-import { List } from 'effect';
 import * as FiberId from 'effect/FiberId';
 import { apply, pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
+import * as List from 'effect/List';
 import * as LogLevel from 'effect/LogLevel';
 import * as LogSpan from 'effect/LogSpan';
 import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
-import * as String from 'effect/String';
+import * as Str from 'effect/String';
 
 const WEB_COLOR = pipe(
   Ansi.combine(Ansi.bgBlue),
@@ -55,7 +55,7 @@ const TwinCustomLogger = Logger.make((options) => {
     HashMap.get('platform'),
     Option.map((x) => `${x}`),
     Option.getOrElse(() => 'METRO'),
-    String.toUpperCase,
+    Str.toUpperCase,
     (x) => {
       return render(Doc.annotate(Doc.text(`[${x}]`), getPlatformColor(x)));
     },
@@ -96,7 +96,7 @@ const TwinCustomLogger = Logger.make((options) => {
       console.trace(message);
       return;
     case LogLevel.Debug:
-      console.debug(message + 'asdasda kasjdlaskdj lajsdlasjdlajdl jlasjdlasjdl');
+      console.debug(message);
       return;
     case LogLevel.Warning:
       console.warn(message);

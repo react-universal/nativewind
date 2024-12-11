@@ -1,4 +1,3 @@
-import { Position, Range, TextDocument } from 'vscode-languageserver-textdocument';
 import type * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Chunk from 'effect/Chunk';
@@ -6,6 +5,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
+import type { Position, Range, TextDocument } from 'vscode-languageserver-textdocument';
 import { JSXElementNode } from '../../models/JSXElement.model.js';
 import { TwinNodeContext } from '../../services/TwinNodeContext.service.js';
 import { getElementEntries } from '../../utils/babel/babel.jsx.js';
@@ -25,6 +25,8 @@ export const make = Effect.gen(function* () {
   return {
     twinDocuments,
     babelLocationToRange,
+    createDocument,
+    createDocumentByPath,
     compileDocument,
   };
 

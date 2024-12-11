@@ -1,8 +1,8 @@
-import CodeBlockWriter from 'code-block-writer';
+import type { AnyPrimitive } from '@native-twin/helpers';
+import type CodeBlockWriter from 'code-block-writer';
 import * as RA from 'effect/Array';
 import { apply, flip, pipe } from 'effect/Function';
 import * as Predicate from 'effect/Predicate';
-import type { AnyPrimitive } from '@native-twin/helpers';
 
 export function expressionFactory(writer: CodeBlockWriter) {
   const curried = {
@@ -52,6 +52,7 @@ export function expressionFactory(writer: CodeBlockWriter) {
   }
 
   function createKeyValuePair(writer: CodeBlockWriter) {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     return ([key, value]: [key: string, value: any]) => {
       return writer.hangingIndent(() =>
         pipe(writer.write(key).write(':').space(), flip(createNextToken)(value)),
@@ -60,6 +61,7 @@ export function expressionFactory(writer: CodeBlockWriter) {
   }
 
   function arrayWriter(writer: CodeBlockWriter) {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     return <A extends any[]>(arrayValue: A) => {
       return pipe(
         writer.write('['),

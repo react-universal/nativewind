@@ -18,21 +18,6 @@
       "types": "./build/dts/index.d.ts",
       "import": "./build/esm/index.js",
       "default": "./build/cjs/index.js"
-    },
-    "./node": {
-      "types": "./build/dts/node.d.ts",
-      "import": "./build/esm/node.js",
-      "default": "./build/cjs/node.js"
-    },
-    "./server": {
-      "types": "./build/dts/server.d.ts",
-      "import": "./build/esm/server.js",
-      "default": "./build/cjs/server.js"
-    },
-    "./TwinEnv": {
-      "types": "./build/dts/TwinEnv.d.ts",
-      "import": "./build/esm/TwinEnv.js",
-      "default": "./build/cjs/TwinEnv.js"
     }
   },
   "main": "./build/cjs/index.js",

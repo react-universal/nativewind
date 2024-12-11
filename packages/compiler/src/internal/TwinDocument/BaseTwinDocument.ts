@@ -1,8 +1,8 @@
-import * as VSCDocument from 'vscode-languageserver-textdocument';
 import type * as t from '@babel/types';
 import * as Data from 'effect/Data';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
+import * as VSCDocument from 'vscode-languageserver-textdocument';
 
 interface TwinTokenLocation {
   _tag: 'TwinTokenLocation';

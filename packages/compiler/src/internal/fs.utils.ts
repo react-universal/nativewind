@@ -1,39 +1,21 @@
-import { Path, FileSystem } from '@effect/platform';
-import { NodePath, NodeFileSystem } from '@effect/platform-node';
-import chokidar, { FSWatcher } from 'chokidar';
-import { Hash, Stream, Array as RA, pipe } from 'effect';
+import { FileSystem, Path } from '@effect/platform';
+import { NodeFileSystem, NodePath } from '@effect/platform-node';
+import chokidar, { type FSWatcher } from 'chokidar';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import * as Hash from 'effect/Hash';
 import * as Layer from 'effect/Layer';
+import * as Stream from 'effect/Stream';
 import * as Glob from 'glob';
 
 const make = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
   const path_ = yield* Path.Path;
 
-  const glob = (pattern: string | ReadonlyArray<string>, options?: Glob.GlobOptions) =>
-    Effect.tryPromise({
-      try: () => Glob.glob(pattern as any, options as any),
-      catch: (e) => new Error(`glob failed: ${e}`),
-    }).pipe(Effect.withSpan('FsUtils.glob'));
-
   const globFilesSync = (pattern: string | string[], options: Glob.GlobOptions = {}) =>
     Effect.sync(() =>
       Glob.globSync(pattern, { ...options, nodir: true }).filter(
         (x) => typeof x === 'string',
-      ),
-    );
-
-  const globDirectories = (
-    pattern: string | ReadonlyArray<string>,
-    options: Glob.GlobOptions = {},
-  ) =>
-    glob(pattern, { ...options, nodir: true }).pipe(
-      Effect.map((files) =>
-        pipe(
-          RA.map(files, (x) => path_.dirname(x)),
-          RA.dedupe,
-        ),
       ),
     );
 
@@ -103,9 +85,15 @@ const make = Effect.gen(function* () {
     getFileMD5,
     mkdirCached,
     readFile,
-    globDirectories,
     createWatcher,
   } as const;
+
+  function glob(pattern: string | string[], options?: Glob.GlobOptions) {
+    return Effect.tryPromise({
+      try: () => Glob.glob(pattern, options ?? {}),
+      catch: (e) => new Error(`glob failed: ${e}`),
+    }).pipe(Effect.withSpan('FsUtils.glob'));
+  }
 
   function createWatcher(rootDir: string, sourceFiles: string[]) {
     return createChokidarWatcher(

@@ -1,5 +1,5 @@
+import type { RuntimeTW, __Theme__ } from '@native-twin/core';
 import type { SelectorGroup, SheetEntry } from '@native-twin/css';
-import type { __Theme__, RuntimeTW } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 
 export interface PartialRule extends SheetEntry {

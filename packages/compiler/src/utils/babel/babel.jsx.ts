@@ -1,20 +1,20 @@
 import { template } from '@babel/core';
 import { CodeGenerator } from '@babel/generator';
 import * as t from '@babel/types';
-import * as RA from 'effect/Array';
-import { pipe } from 'effect/Function';
-import * as Option from 'effect/Option';
 import type { RuntimeTW } from '@native-twin/core';
 import {
+  type CompilerContext,
+  type RuntimeComponentEntry,
   applyParentEntries,
   compileSheetEntry,
   getGroupedEntries,
   sortSheetEntries,
-  type CompilerContext,
-  type RuntimeComponentEntry,
 } from '@native-twin/css/jsx';
+import * as RA from 'effect/Array';
+import { pipe } from 'effect/Function';
+import * as Option from 'effect/Option';
 import type { JSXElementNodePath } from '../../models/Babel.models.js';
-import { JSXElementNode } from '../../models/JSXElement.model.js';
+import type { JSXElementNode } from '../../models/JSXElement.model.js';
 import type { JSXMappedAttribute } from '../../models/jsx.models.js';
 import {
   addJsxAttribute,

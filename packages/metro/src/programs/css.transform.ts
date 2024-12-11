@@ -1,18 +1,16 @@
+import * as fs from 'node:fs';
 import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
+import { TwinNodeContext } from '@native-twin/compiler';
+import { countLines, pathToHtmlSafeName } from '@native-twin/helpers/server';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import * as fs from 'fs';
 import * as worker from 'metro-transform-worker';
-import { TwinNodeContext } from '@native-twin/compiler';
-import { pathToHtmlSafeName, countLines } from '@native-twin/helpers/server';
 import { MetroWorkerService } from '../services/MetroWorker.service.js';
 
 export const transformCSS = Effect.gen(function* () {
   const { input } = yield* MetroWorkerService;
   const twin = yield* TwinNodeContext;
-  // const twinFS = yield* TwinFileSystem;
   const platform = input.options.platform ?? 'native';
-  // const tw = twin.utils.getTwForPlatform('web');
   const outputPath = twin.getOutputCSSPath('web');
 
   if (platform !== 'web') {
@@ -50,6 +48,7 @@ export const transformCSS = Effect.gen(function* () {
               src: input.data.toString('utf-8'),
               filename: input.filename,
               reactServer:
+                // biome-ignore lint/complexity/useLiteralKeys: <explanation>
                 input.options.customTransformOptions?.['environment'] === 'react-server',
             }),
           )
@@ -152,5 +151,6 @@ function escapeBackticksAndOctals(str: string) {
   return str
     .replace(/\\/g, '\\\\')
     .replace(/`/g, '\\`')
+    // biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
     .replace(/[\0-\x07]/g, (match) => `\\0${match.charCodeAt(0).toString(8)}`);
 }

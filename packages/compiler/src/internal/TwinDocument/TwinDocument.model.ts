@@ -1,12 +1,12 @@
 import { CodeGenerator } from '@babel/generator';
 import type { ParseResult } from '@babel/parser';
-import * as t from '@babel/types';
+import type * as t from '@babel/types';
+import type { TreeNode } from '@native-twin/helpers/tree';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import { TreeNode } from '@native-twin/helpers/tree';
-import { JSXElementTree } from '../../models/Babel.models.js';
-import { JSXMappedAttribute } from '../../models/jsx.models.js';
+import type { JSXElementTree } from '../../models/Babel.models.js';
+import type { JSXMappedAttribute } from '../../models/jsx.models.js';
 import { streamJsxElementTrees } from '../../utils/babel/babel.transform.js';
 import { extractMappedAttributes, getBabelAST } from '../../utils/babel/babel.utils.js';
 import { BaseTwinTextDocument } from './BaseTwinDocument.js';

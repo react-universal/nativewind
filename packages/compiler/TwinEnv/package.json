@@ -1,5 +1,0 @@
-{
-  "main": "../build/cjs/TwinEnv.js",
-  "module": "../build/esm/TwinEnv.js",
-  "types": "../build/dts/TwinEnv.d.ts"
-}

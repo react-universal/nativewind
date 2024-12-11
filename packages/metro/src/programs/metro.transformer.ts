@@ -1,17 +1,18 @@
+import * as path from 'node:path';
+import {
+  BabelCompilerContext,
+  CompilerConfigContext,
+  TwinDocumentsContext,
+  TwinFileSystem,
+  TwinNodeContext,
+} from '@native-twin/compiler';
+import { matchCss } from '@native-twin/helpers/server';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
 import type { TransformResponse } from 'metro-transform-worker';
 import * as worker from 'metro-transform-worker';
-import * as path from 'node:path';
-import {
-  TwinNodeContext,
-  BabelCompilerContext,
-  TwinFileSystem,
-  CompilerConfigContext,
-} from '@native-twin/compiler';
-import { matchCss } from '@native-twin/helpers/server';
 import type { TwinMetroTransformFn } from '../models/Metro.models.js';
 import { transformCSSExpo } from '../utils/css.utils.js';
 
@@ -32,6 +33,7 @@ export const transform: TwinMetroTransformFn = async (
   const platform = options.platform ?? 'native';
 
   return Effect.gen(function* () {
+    const { createDocument } = yield* TwinDocumentsContext;
     const ctx = yield* TwinNodeContext;
     const compiler = yield* BabelCompilerContext;
     const platformOutput = ctx.getOutputCSSPath(platform);
@@ -60,14 +62,9 @@ export const transform: TwinMetroTransformFn = async (
     }
 
     let code = data.toString('utf-8');
-    const output = yield* compiler.getBabelOutput({
-      _tag: 'BabelCodeEntry',
-      filename: filename,
-      code,
-      platform,
-    });
+    const document = yield* createDocument(filename, code);
+    const output = yield* compiler.compileTwinDocument(document, platform);
 
-    yield* compiler.transformAST(output.treeNodes, 'ios');
     const result = yield* compiler.mutateAST(output.ast);
     // yield* Effect.log('MUTATE: ');
 
