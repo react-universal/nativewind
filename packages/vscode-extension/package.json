@@ -28,7 +28,7 @@
     "build:tsc": "tsc -b",
     "build:tsc:watch": "tsc -p tsconfig.cjs.json --watch",
     "clean": "rm -rf build",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "biome lint",
     "vsc-test": "vscode-test --watch",
     "vsc:test": "sh ./scripts/e2e.sh",
     "vscode:dev": "tsc -b -w",

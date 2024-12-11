@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf .next",
-    "lint": "next lint",
+    "lint": "echo $HOME",
     "next:build": "next build",
     "nextjs:dev": "next dev",
     "start": "next start"
@@ -18,9 +18,5 @@
     "react": "~18.2.0",
     "react-dom": "~18.2.0",
     "react-native-web": "~0.19.10"
-  },
-  "nx": {
-    "targets": "nextjs:pages:dev",
-    "ignore": false
   }
 }

@@ -36,7 +36,7 @@
     "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "lint": "biome lint",
     "test": "jest --detectOpenHandles=true",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand=true --detectOpenHandles=true",
     "test:watch": "jest --watch"

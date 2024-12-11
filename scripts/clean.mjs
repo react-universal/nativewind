@@ -14,7 +14,7 @@ const filesToDelete = dirs.flatMap((pkg) => {
     '.turbo',
     '.nx',
     '.expo',
-    '.rollup.cache',
+    '.rollup.cache'
   ];
 
   return files.flatMap((file) => {

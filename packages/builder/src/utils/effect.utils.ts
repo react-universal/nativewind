@@ -1,7 +1,7 @@
 import * as FileSystem from '@effect/platform/FileSystem';
 import type { FSWatcher } from 'chokidar';
-import { Fiber } from 'effect';
 import * as Effect from 'effect/Effect';
+import * as Fiber from 'effect/Fiber';
 import * as Runtime from 'effect/Runtime';
 import * as Stream from 'effect/Stream';
 import * as path from 'path';
@@ -31,7 +31,7 @@ export const createChokidarWatcher = (projectRoot: string, watcher: FSWatcher) =
             case 'unlinkDir':
               return emit.single({
                 _tag: 'Remove',
-                path: path.join(projectRoot, filePath),
+                path: path.posix.join(projectRoot, filePath),
               });
           }
         });

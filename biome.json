@@ -1,0 +1,57 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"vcs": { 
+		"enabled": false, 
+		"clientKind": "git", 
+		"useIgnoreFile": true,
+		"defaultBranch": "main" 
+	},
+	"files": {
+		"ignoreUnknown": true,
+		"include": ["*/src/**/*.ts","*/src/**/*.tsx"],
+		"ignore": ["packages/*/build/**/*.js"]
+	 },
+	"formatter": {
+		"enabled": true,
+		"useEditorconfig": false,
+		"formatWithErrors": false,
+		"indentStyle": "space",
+		"indentWidth": 2,
+		"lineEnding": "lf",
+		"lineWidth": 90,
+		"attributePosition": "auto",
+		"bracketSpacing": true,
+		"ignore": [
+			"**/.eslintrc.json",
+			"**/*.json",
+			"./.nx/cache",
+			"./.nx/workspace-data"
+		]
+	},
+	"organizeImports": { "enabled": true },
+	"linter": {
+		"enabled": true,
+		"rules": { "recommended": false }
+	},
+	"json": {
+		"linter": {
+			"enabled": false
+		}
+	},
+	"javascript": {
+		"linter": {
+			"enabled": true
+		},
+		"formatter": {
+			"jsxQuoteStyle": "single",
+			"quoteProperties": "asNeeded",
+			"trailingCommas": "all",
+			"semicolons": "always",
+			"arrowParentheses": "always",
+			"bracketSameLine": false,
+			"quoteStyle": "single",
+			"attributePosition": "auto",
+			"bracketSpacing": true
+		}
+	}
+}

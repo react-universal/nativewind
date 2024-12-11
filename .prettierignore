@@ -1,5 +1,0 @@
-**/.eslintrc.json
-*.json
-
-/.nx/cache
-/.nx/workspace-data

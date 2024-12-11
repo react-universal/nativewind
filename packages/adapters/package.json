@@ -37,7 +37,7 @@
     "build": "npx twin pack-dev",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\""
+    "lint": "biome lint"
   },
   "devDependencies": {
     "@native-twin/core": "workspace:*",

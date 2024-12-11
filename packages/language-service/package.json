@@ -43,7 +43,7 @@
     "build:tsc": "tsc -p tsconfig.build.json",
     "build:tsc:watch": "twin build -w",
     "clean": "rm -rf build",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "biome lint",
     "test": "echo \"Non tests\"",
     "vscode:dev": "tsc -p tsconfig.build.json --watch"
   },

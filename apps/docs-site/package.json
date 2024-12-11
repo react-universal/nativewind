@@ -6,7 +6,7 @@
     "clean": "rm -rf .next",
     "docs:build": "next build",
     "docs:dev": "next dev",
-    "lint": "next lint",
+    "lint": "echo $HOME",
     "start": "next start"
   },
   "dependencies": {

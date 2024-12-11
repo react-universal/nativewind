@@ -19,7 +19,7 @@
     "deprecated": "tsc -p tsconfig.build.json -w",
     "deprecated:bbb": "tsc -p tsconfig.build.json",
     "esbuild:build": "node ./build.js --production",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "biome lint",
     "test": "jest",
     "ts____b": "tsc -p tsconfig.build.json -w"
   },
