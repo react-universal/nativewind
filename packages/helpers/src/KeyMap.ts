@@ -15,11 +15,10 @@ export const get = dual<
 export const unsafeGet = dual<
   <K1>(key: K1) => <K, V>(self: KeyMap<K, V>) => V,
   <K, V, K1 extends K>(self: KeyMap<K, V>, key: K1) => V
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 >(2, (self, key) => {
   return pipe(
     get(self, key),
-    Option.getOrThrowWith(() => new Error('Expected map to contains key' + key)),
+    Option.getOrThrowWith(() => new Error(`Expected map to contains key${key}`)),
   );
 });
 

@@ -1,9 +1,9 @@
-import * as vscode from 'vscode';
-import * as t from '@babel/types';
+import type * as t from '@babel/types';
+import { extractLanguageRegions } from '@native-twin/compiler';
+import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
-import { extractLanguageRegions } from '@native-twin/compiler';
-import { type NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import * as vscode from 'vscode';
 
 interface TwinTextDocumentShape {
   document: vscode.TextDocument;

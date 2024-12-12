@@ -1,13 +1,13 @@
 import { CSS_COLORS } from '@native-twin/css';
+import { Constants } from '@native-twin/language-service';
 import * as vscode from 'vscode';
 import {
   CloseAction,
   ErrorAction,
-  ErrorHandler,
-  LanguageClientOptions,
-  ProvideDocumentColorsSignature,
+  type ErrorHandler,
+  type LanguageClientOptions,
+  type ProvideDocumentColorsSignature,
 } from 'vscode-languageclient';
-import { Constants } from '@native-twin/language-service';
 
 const colorNames = Object.keys(CSS_COLORS);
 

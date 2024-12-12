@@ -1,15 +1,15 @@
-import * as vscode from 'vscode';
-import {
-  TransportKind,
-  LanguageClient,
-  LanguageClientOptions,
-  ServerOptions,
-} from 'vscode-languageclient/node.js';
+import path from 'node:path';
+import { Constants, NativeTwinManagerService } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import path from 'node:path';
-import { NativeTwinManagerService, Constants } from '@native-twin/language-service';
+import * as vscode from 'vscode';
+import {
+  LanguageClient,
+  type LanguageClientOptions,
+  type ServerOptions,
+  TransportKind,
+} from 'vscode-languageclient/node.js';
 import { VscodeContext } from '../../extension/extension.service.js';
 import { registerCommand } from '../../extension/extension.utils.js';
 import {

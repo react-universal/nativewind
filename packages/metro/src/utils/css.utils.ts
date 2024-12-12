@@ -1,11 +1,11 @@
-import { transformPostCssModule } from '@expo/metro-config/build/transform-worker/postcss.js';
 import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput.js';
+import { transformPostCssModule } from '@expo/metro-config/build/transform-worker/postcss.js';
+import { escapeBackticksAndOctals } from '@native-twin/helpers';
+import { pathToHtmlSafeName } from '@native-twin/helpers/server';
 import * as CodeBlockWriter from 'code-block-writer';
 import worker from 'metro-transform-worker';
 // @ts-expect-error untyped
 import countLines from 'metro/src/lib/countLines';
-import { escapeBackticksAndOctals } from '@native-twin/helpers';
-import { pathToHtmlSafeName } from '@native-twin/helpers/server';
 import type { NativeTwinTransformerOpts } from '../models/Metro.models.js';
 
 export const transformCSSExpo = async (
@@ -18,7 +18,7 @@ export const transformCSSExpo = async (
   const reactServer = options.customTransformOptions?.['environment'] === 'react-server';
 
   // eslint-disable-next-line prefer-const
-  let code = data.toString('utf-8');
+  const code = data.toString('utf-8');
 
   // Apply postcss transforms
   const postcssResults = await transformPostCssModule(projectRoot, {
@@ -100,9 +100,9 @@ export function getHotReplaceTemplate(id: string) {
 
   writer.newLine();
 
-  writer.write(`if (previousStyle) `);
+  writer.write('if (previousStyle) ');
   writer.block(() => {
-    writer.indent().write(`previousStyle.parentNode.removeChild(previousStyle);`);
+    writer.indent().write('previousStyle.parentNode.removeChild(previousStyle);');
   });
 
   return writer.toString();
@@ -117,17 +117,17 @@ const getDomStyleInjector = (filename: string, code: string) => {
   writer.writeLine(`const style = document.createElement('style');`);
   writer.writeLine(`${getHotReplaceTemplate(filename)}`);
   writer.writeLine(`style.setAttribute('data-expo-loader', 'css');`);
-  writer.writeLine(`head.appendChild(style);`);
+  writer.writeLine('head.appendChild(style);');
   writer.writeLine(`const css = \`${withBackTicksEscaped}\`;`);
 
-  writer.write(`if (style.styleSheet)`).space();
+  writer.write('if (style.styleSheet)').space();
   writer.block(() => {
-    writer.indent().write(`style.styleSheet.cssText = css;`);
+    writer.indent().write('style.styleSheet.cssText = css;');
   });
   writer.space().write('else').space();
   writer
     .block(() => {
-      writer.write(`style.appendChild(document.createTextNode(css));`);
+      writer.write('style.appendChild(document.createTextNode(css));');
     })
     .newLine();
   return writer.toString();
@@ -144,7 +144,7 @@ const getServerStylesInjector = (styles: string) => {
 export const getClientRuntimeInjector = (filename: string, styles: string) => {
   const writer = new CodeBlockWriter.default();
   writer
-    .write(`(() => `)
+    .write('(() => ')
     .block(() => {
       writer.write(`if (typeof window === 'undefined') return;`);
       writer.write(styles);

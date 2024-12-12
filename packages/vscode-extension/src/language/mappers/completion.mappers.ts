@@ -1,12 +1,12 @@
-import * as RA from 'effect/Array';
-import * as vscode from 'vscode';
 import {
-  TemplateTokenData,
-  TwinRuleCompletion,
+  type TemplateTokenData,
+  type TwinRuleCompletion,
   filterTokensFromRules,
   getCompletionEntryDetailsDisplayParts,
 } from '@native-twin/language-service';
-import { TwinTextDocument } from '../models/TwinTextDocument.model.js';
+import * as RA from 'effect/Array';
+import * as vscode from 'vscode';
+import type { TwinTextDocument } from '../models/TwinTextDocument.model.js';
 
 export const completionRulesToVscodeCompletionItems = (
   flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,

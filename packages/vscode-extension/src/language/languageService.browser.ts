@@ -1,10 +1,10 @@
-import * as vscode from 'vscode';
-import { LanguageClient, LanguageClientOptions } from 'vscode-languageclient/browser.js';
+import { Constants } from '@native-twin/language-service';
 import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import { Constants } from '@native-twin/language-service';
+import * as vscode from 'vscode';
+import { LanguageClient, type LanguageClientOptions } from 'vscode-languageclient/browser.js';
 import { VscodeContext } from '../extension/extension.service.js';
 import { extensionConfigValue, registerCommand } from '../extension/extension.utils.js';
 import {

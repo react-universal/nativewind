@@ -6,18 +6,20 @@ export {
   BabelCompilerContext,
   BabelCompilerContextLive,
 } from './services/BabelCompiler.service.js';
-export { TwinFSMake, TwinFileSystem } from './services/TwinFileSystem.service.js';
+export { TwinFileSystem } from './services/TwinFileSystem.service.js';
 export { TwinNodeContext } from './services/TwinNodeContext.service.js';
 export { listenForkedStreamChanges } from './utils/effect.utils.js';
-export { twinLoggerLayer } from './services/Logger.service.js';
+export { TwinCustomLogger, twinLoggerLayer } from './internal/Logger.service.js';
 export { JSXImportPluginContext } from './services/TwinBabelPlugin.service.js';
 export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from './shared/twin.constants.js';
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
-export { DevToolsLive } from './services/NodeMainLayer.js';
 export {
   TwinDocumentsContext,
   TwinDocumentsContextLive,
-} from './internal/TwinDocument/TwinDocuments.service.js';
+} from './services/TwinDocuments.service.js';
+export { compileProjectFiles } from './programs/platform.programs.js';
+export { TwinWatcherContextLive } from './services/TwinWatcher.service.js';
+export { TwinFileDocument } from './models/TwinDocument.model.js';
 
 export type { BabelAPI, TwinBabelPluginOptions } from './models/Babel.models.js';
 export type { NodeContextShape } from './services/TwinNodeContext.service.js';
@@ -26,4 +28,5 @@ export type {
   InternalTwFn,
   InternalTwinConfig,
   PartialRule,
-} from './models/twin.types.js';
+  ExtractedTwinConfig,
+} from './models/Twin.models.js';

@@ -1,14 +1,14 @@
+import { inspect } from 'util';
 import * as Ansi from '@effect/printer-ansi/Ansi';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
 import * as AnsiColor from '@effect/printer-ansi/Color';
-import * as Array from 'effect/Array';
+import * as RA from 'effect/Array';
 import * as FiberId from 'effect/FiberId';
 import { apply, pipe } from 'effect/Function';
 import * as Iterable from 'effect/Iterable';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import * as String from 'effect/String';
-import { inspect } from 'util';
+import * as Str from 'effect/String';
 
 const scopeTextConfig = pipe(
   Ansi.combine(Ansi.bgBlue),
@@ -42,7 +42,7 @@ export const createLspLogger = (scope: string) =>
     if (typeof options.message === 'string') {
       msgFactory.push(Doc.text(options.message).pipe(Doc.annotate(messageConfig)));
     }
-    if (Array.isArray(options.message)) {
+    if (RA.isArray(options.message)) {
       msgFactory.push(
         Doc.text(options.message.join(' ')).pipe(Doc.annotate(messageConfig)),
       );
@@ -78,6 +78,7 @@ export const createLspLogger = (scope: string) =>
     }
   });
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const logFormat = (x: any) =>
   pipe(
     inspect(x, {
@@ -85,9 +86,9 @@ const logFormat = (x: any) =>
       sorted: true,
       compact: true,
     }),
-    String.linesIterator,
-    Iterable.map(String.padStart(5)),
-    Array.fromIterable,
+    Str.linesIterator,
+    Iterable.map(Str.padStart(5)),
+    RA.fromIterable,
   );
 
 export const loggerUtils = {

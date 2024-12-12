@@ -1,17 +1,17 @@
+import {
+  DEFAULT_PLUGIN_CONFIG,
+  NativeTwinManagerService,
+  type TemplateTokenWithText,
+  getCompletionsForTokens,
+  parseTemplate,
+} from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import * as vscode from 'vscode';
-import {
-  getCompletionsForTokens,
-  parseTemplate,
-  NativeTwinManagerService,
-  TemplateTokenWithText,
-  DEFAULT_PLUGIN_CONFIG,
-} from '@native-twin/language-service';
+import type * as vscode from 'vscode';
 import { extensionConfigState } from '../../extension/extension.utils.js';
 import { completionRulesToVscodeCompletionItems } from '../mappers/completion.mappers.js';
 import { TwinTextDocument } from '../models/TwinTextDocument.model.js';

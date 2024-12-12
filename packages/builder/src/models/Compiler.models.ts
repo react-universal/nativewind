@@ -1,6 +1,6 @@
-import { BabelFileMetadata, BabelFile } from '@babel/core';
-import { Option, Schema } from 'effect';
-import { OutputFile, ts } from 'ts-morph';
+import type { BabelFile, BabelFileMetadata } from '@babel/core';
+import { type Option, Schema } from 'effect';
+import { type OutputFile, ts } from 'ts-morph';
 
 type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> };
 

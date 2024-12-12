@@ -12258,6 +12258,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-legal@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "is-legal@npm:1.0.0"
+  checksum: 10/cb266e9abbf3ebba8efd155559309d5ad80f686118edd6926c6516f690f6f0f913c2b4d8115d069db9e6198ff98e0f27db0ccec478428805a80bf0be3d1dd806
+  languageName: node
+  linkType: hard
+
 "is-map@npm:^2.0.3":
   version: 2.0.3
   resolution: "is-map@npm:2.0.3"
@@ -15131,6 +15138,7 @@ __metadata:
     concurrently: "npm:^7.6.0"
     effect: "npm:^3.10.0"
     glob: "npm:^11.0.0"
+    is-legal: "npm:^1.0.0"
     jest: "npm:^29.7.0"
     jest-expo: "npm:^51.0.3"
     lightningcss: "npm:^1.28.2"

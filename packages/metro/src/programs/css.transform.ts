@@ -48,7 +48,6 @@ export const transformCSS = Effect.gen(function* () {
               src: input.data.toString('utf-8'),
               filename: input.filename,
               reactServer:
-                // biome-ignore lint/complexity/useLiteralKeys: <explanation>
                 input.options.customTransformOptions?.['environment'] === 'react-server',
             }),
           )

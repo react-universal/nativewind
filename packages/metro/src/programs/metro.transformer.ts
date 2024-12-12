@@ -3,7 +3,6 @@ import {
   BabelCompilerContext,
   CompilerConfigContext,
   TwinDocumentsContext,
-  TwinFileSystem,
   TwinNodeContext,
 } from '@native-twin/compiler';
 import { matchCss } from '@native-twin/helpers/server';
@@ -14,13 +13,10 @@ import * as Option from 'effect/Option';
 import type { TransformResponse } from 'metro-transform-worker';
 import * as worker from 'metro-transform-worker';
 import type { TwinMetroTransformFn } from '../models/Metro.models.js';
+import { MetroLayerWithTwinFS } from '../services/Metro.layers.js';
 import { transformCSSExpo } from '../utils/css.utils.js';
 
 type MetroTransformFn = typeof worker.transform;
-
-const NodeMainLayerSync = TwinFileSystem.Live.pipe(
-  Layer.provideMerge(TwinNodeContext.Live),
-);
 
 export const transform: TwinMetroTransformFn = async (
   config,
@@ -79,7 +75,7 @@ export const transform: TwinMetroTransformFn = async (
 
     return transformed;
   }).pipe(
-    Effect.provide(NodeMainLayerSync),
+    Effect.provide(MetroLayerWithTwinFS),
     Effect.provide(
       Layer.succeed(CompilerConfigContext, {
         inputCSS: config.twinConfig.inputCSS,

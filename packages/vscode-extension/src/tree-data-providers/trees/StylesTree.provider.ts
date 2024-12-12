@@ -1,8 +1,8 @@
+import { NativeTwinManagerService } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as ScopedRef from 'effect/ScopedRef';
 import * as vscode from 'vscode';
-import { NativeTwinManagerService } from '@native-twin/language-service';
 import { TreeDataProvider } from '../models/VscodeTree.models.js';
 import { makeTreeDataProvider } from '../tree.utils.js';
 
@@ -49,6 +49,7 @@ const children = (node: VscodeTreeNode): Option.Option<Array<VscodeTreeNode>> =>
 const treeItem = (node: VscodeTreeNode): vscode.TreeItem => {
   switch (node._tag) {
     case 'TreeInfoNode':
+      // biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
       const item = new vscode.TreeItem(node.key, vscode.TreeItemCollapsibleState.None);
       item.description = node.value;
       item.tooltip = node.value;

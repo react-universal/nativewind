@@ -1,5 +1,5 @@
-import { Text, Pressable, PressableProps } from 'react-native';
 import { VariantProps, createVariants } from '@native-twin/core';
+import { Pressable, PressableProps, Text } from 'react-native';
 
 // css`bg`;
 // styled('')``
@@ -16,7 +16,7 @@ const buttonVariants = createVariants({
       small: 'w-20',
     },
     isDisable: {
-      true: 'opacity-30',
+      true: 'opacity-30', 
       false: '',
     },
   },

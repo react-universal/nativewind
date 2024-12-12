@@ -1,25 +1,25 @@
+import path from 'path';
+import {
+  NativeTwinManagerService,
+  type NativeTwinPluginConfiguration,
+} from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Chunk from 'effect/Chunk';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import path from 'path';
 import * as vscode from 'vscode';
-import {
-  NativeTwinManagerService,
-  NativeTwinPluginConfiguration,
-} from '@native-twin/language-service';
 import { VscodeContext } from '../extension/extension.service.js';
 import { thenable } from '../extension/extension.utils.js';
 import { TwinTextDocument } from '../language/models/TwinTextDocument.model.js';
 import * as fsPredicates from './fs.predicates.js';
 import {
+  type VirtualEntryTreeNode,
+  type VirtualEntryTreeRoot,
+  type VirtualEntryType,
+  type VirtualFile,
   createVirtualEntryID,
-  VirtualEntryType,
-  VirtualEntryTreeRoot,
-  VirtualEntryTreeNode,
-  VirtualFile,
 } from './models/FileSystem.models.js';
 
 export const findEntryByUri = (

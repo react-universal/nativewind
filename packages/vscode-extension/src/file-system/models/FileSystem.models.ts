@@ -1,8 +1,8 @@
+import * as path from 'node:path';
+import type { Tree, TreeNode } from '@native-twin/helpers/tree';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import * as path from 'node:path';
 import * as vscode from 'vscode';
-import { Tree, TreeNode } from '@native-twin/helpers/tree';
 
 export class VirtualFSEntryID implements Equal.Equal {
   constructor(readonly uri: vscode.Uri) {}

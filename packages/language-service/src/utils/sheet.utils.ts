@@ -1,19 +1,21 @@
-import type { PlatformOSType } from 'react-native';
 import { parseCssValue } from '@native-twin/core';
 import {
-  AnyStyle,
-  FinalSheet,
+  type AnyStyle,
+  type FinalSheet,
+  type SheetEntry,
+  type SheetEntryDeclaration,
   getRuleSelectorGroup,
-  SheetEntry,
-  SheetEntryDeclaration,
 } from '@native-twin/css';
+import type { PlatformOSType } from 'react-native';
 
+// biome-ignore lint/style/useDefaultParameterLast: <explanation>
 export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
   return entries.reduce(
     (prev, current) => {
       const nextDecl = composeDeclarations(current.declarations, context);
       const group = getRuleSelectorGroup(current.selectors);
       if (nextDecl.transform && prev[group].transform) {
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
       }
       Object.assign(prev[group], nextDecl);
@@ -36,11 +38,12 @@ export function composeDeclarations(
   context: StyledContext,
 ) {
   return declarations.reduce((prev, current) => {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     let value: any = current.value;
     if (Array.isArray(current.value)) {
       value = [];
       for (const t of current.value) {
-        if (typeof t.value == 'string') {
+        if (typeof t.value === 'string') {
           value.push({
             [t.prop]: parseCssValue(t.prop, t.value, {
               rem: context.units.rem,
@@ -55,14 +58,14 @@ export function composeDeclarations(
       });
       return prev;
     }
-    if (typeof value == 'string') {
+    if (typeof value === 'string') {
       value = parseCssValue(current.prop, value, {
         rem: context.units.rem,
         deviceHeight: context.deviceHeight,
         deviceWidth: context.deviceWidth,
       });
     }
-    if (typeof value == 'object') {
+    if (typeof value === 'object') {
       Object.assign(prev, value);
     } else {
       Object.assign(prev, {

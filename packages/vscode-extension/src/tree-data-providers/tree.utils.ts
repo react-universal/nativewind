@@ -1,36 +1,16 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import * as Scope from 'effect/Scope';
+import type * as Scope from 'effect/Scope';
 import * as vscode from 'vscode';
 import { VscodeContext } from '../extension/extension.service.js';
 import { emitterOptional, runWithTokenDefault } from '../extension/extension.utils.js';
-import { TwinTextDocument } from '../language/index.js';
-import { TreeDataProvider } from './models/VscodeTree.models.js';
+import type { TwinTextDocument } from '../language/index.js';
+import type { TreeDataProvider } from './models/VscodeTree.models.js';
 
 const uriToID = (uri: vscode.Uri) => uri.toString();
 
 export const getTwinDocumentID = (doc: TwinTextDocument) => uriToID(doc.document.uri);
-
-// const getCompiledTwinDocument = (
-//   twinDocument: TwinTextDocument,
-//   root: string,
-//   configFilePath: string,
-// ) =>
-//   compileReactCode.pipe(
-//     Effect.provideService(BuildConfig, {
-//       code: twinDocument.document.getText(),
-//       filename: twinDocument.document.fileName,
-//       inputCSS: '',
-//       outputCSS: '',
-//       platform: 'ios',
-//       projectRoot: root,
-//       twinConfigPath: configFilePath,
-//     }),
-//     Effect.scoped,
-//     Effect.provide(makeBabelLayer),
-//     Effect.provide(NativeTwinServiceNode.Live(configFilePath, root, 'ios')),
-//   );
 
 export const makeTreeDataProvider =
   <A>(name: string) =>
@@ -58,12 +38,14 @@ export const makeTreeDataProvider =
         getParent: provider.parent
           ? (element) =>
               Effect.runPromise(
+                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 Effect.map(provider.parent!(element), Option.getOrUndefined),
               )
           : undefined,
         resolveTreeItem: (item, element, token) => {
           if (provider.resolve) {
             return runWithTokenDefault(
+              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               Effect.map(provider.resolve!(item, element), Option.getOrUndefined),
               token,
             );

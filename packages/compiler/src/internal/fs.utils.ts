@@ -105,6 +105,8 @@ const make = Effect.gen(function* () {
         ignoreInitial: true,
       }),
     ).pipe(
+      Stream.onStart(Effect.logDebug('Watcher started.')),
+      Stream.onEnd(Effect.logDebug('Watcher closed.')),
       Stream.filter(
         (x) =>
           (!x.path.endsWith('.d.ts') && path_.extname(x.path) === '.ts') ||
@@ -114,8 +116,9 @@ const make = Effect.gen(function* () {
   }
 
   function createChokidarWatcher(projectRoot: string, watcher: FSWatcher) {
-    return Stream.acquireRelease(Effect.succeed(watcher), (x) =>
-      Effect.promise(() => x.close()),
+    return Stream.acquireRelease(
+      Effect.succeed(watcher).pipe(Effect.annotateLogs('twin', 'watcher')),
+      (x) => Effect.promise(() => x.close()),
     ).pipe(
       Stream.flatMap((watcher) => {
         return Stream.async<FileSystem.WatchEvent>((emit) => {

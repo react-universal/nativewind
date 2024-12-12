@@ -2,8 +2,8 @@ import { transformAsync } from '@babel/core';
 import { Path } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
 import { Cause, Context, Effect, Layer, Option } from 'effect';
-import { OutputFile } from 'ts-morph';
-import {
+import type { OutputFile } from 'ts-morph';
+import type {
   BabelSourceMapSchemaType,
   BabelTranspilerResult,
   BuildSourceWithMaps,
@@ -132,7 +132,7 @@ const make = Effect.gen(function* () {
         );
       }),
       Effect.tapError((x) =>
-        Effect.logWarning(`[BABEL] error transpiling to CJS `, x, '\n'),
+        Effect.logWarning('[BABEL] error transpiling to CJS ', x, '\n'),
       ),
       Effect.withLogSpan('BABEL/ESM-to-CJS'),
     );
@@ -173,11 +173,11 @@ const make = Effect.gen(function* () {
       );
     }).pipe(
       Effect.tapError((x) =>
-        Effect.logWarning(`[BABEL] error adding annotations to ESM `, x, '\n'),
+        Effect.logWarning('[BABEL] error adding annotations to ESM ', x, '\n'),
       ),
       Effect.withLogSpan('BABEL/ESM-annotations'),
       Effect.catchAllCause((x) => {
-        return Effect.gen(function* () {
+        return Effect.sync(() => {
           const result: CompilerOutput['cjsFile'] = {
             content: esmFile.getText(),
             path: esmFile.getFilePath(),

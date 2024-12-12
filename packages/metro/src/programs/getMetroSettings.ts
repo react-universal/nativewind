@@ -6,12 +6,15 @@ import type { BaseTwinTransformerOptions } from '../models/Metro.models.js';
 export const getMetroSettings = Effect.gen(function* () {
   const env = yield* CompilerConfigContext;
   const ctx = yield* TwinNodeContext;
+  const allowedFiles = yield* ctx.state.twinConfig.get.pipe(
+    Effect.flatMap((config) => ctx.getProjectFilesFromConfigSync(config))
+  );
 
   const transformerOptions: BaseTwinTransformerOptions = {
     inputCSS: env.inputCSS,
-    allowedPaths: (yield* ctx.scanAllowedPaths),
+    allowedPaths: allowedFiles,
     logLevel: env.logLevel._tag,
-    allowedPathsGlob: yield* ctx.getAllowedGlobPatterns,
+    allowedPathsGlob: allowedFiles,
     outputDir: env.outputDir,
     projectRoot: env.projectRoot,
     platformOutputs: env.platformPaths,

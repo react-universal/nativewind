@@ -1,10 +1,10 @@
-import * as vscode from 'vscode';
+import {
+  NativeTwinManager,
+  NativeTwinManagerService,
+} from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import {
-  NativeTwinManagerService,
-  NativeTwinManager,
-} from '@native-twin/language-service';
+import type * as vscode from 'vscode';
 import { launchExtension } from './extension/extension.program.js';
 import { VscodeContext } from './extension/extension.service.js';
 import { LanguageClientLive, VscodeHightLightsProvider } from './language/index.js';

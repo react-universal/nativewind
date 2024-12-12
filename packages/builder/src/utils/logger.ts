@@ -72,7 +72,7 @@ const TwinCustomLogger = Logger.make((options) => {
   }
 
   const doc = Doc.hsep([
-    Doc.text(`[twin-builder]`).pipe(
+    Doc.text('[twin-builder]').pipe(
       Doc.annotate(scopeText),
       Doc.annotate(getMessageColor(options.logLevel)),
     ),

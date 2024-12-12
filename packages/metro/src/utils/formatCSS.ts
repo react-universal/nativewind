@@ -4,13 +4,15 @@ export const formatCSS = (css: string) => ({
     let match: RegExpExecArray | null;
     const props: { [key: string]: string | undefined } = {};
 
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     while ((match = propValueRegex.exec(content)) !== null) {
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       const { prop, value } = match.groups!;
       props[prop] = value;
     }
 
     return Object.entries(props).reduce(
-      (acc, [prop, value]) => acc + `${nested ? '\t' : ''}${prop}: ${value}; \n\r`,
+      (acc, [prop, value]) => `${acc}${nested ? '\t' : ''}${prop}: ${value}; \n\r`,
       '',
     );
   },
@@ -29,11 +31,14 @@ export const formatCSS = (css: string) => ({
 
     const mediaRegex = /(?<media>@media\s*\([^)]*\))\s*\{(?<content>[^}]*)\}/gm;
     let matchMedia: RegExpExecArray | null;
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     while ((matchMedia = mediaRegex.exec(css)) !== null) {
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       const { media, content } = matchMedia.groups!;
       mergedCSS += `\n\r${media} {\n\r${this.extractCSS(content, true)}}\n\r`;
     }
 
+    // biome-ignore lint/style/noParameterAssign: <explanation>
     css = mergedCSS;
 
     return this;
@@ -41,11 +46,13 @@ export const formatCSS = (css: string) => ({
   removeUndefined() {
     const undefinedPropRegex =
       /^[^{}]*(?:[.#][a-zA-Z0-9_-]+)[^{]*{[^}]*\b(?:[a-z-]+):\s*undefined\s*;?[^}]*}/gm;
+    // biome-ignore lint/style/noParameterAssign: <explanation>
     css = css.replace(undefinedPropRegex, '');
 
     return this;
   },
   combineMediaQueries() {
+    // biome-ignore lint/complexity/useRegexLiterals: <explanation>
     const regex = new RegExp(
       '@media\\s*(?<conditions>\\([^)]+\\))\\s*{(?<content>(?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})+)}',
       'gs',
@@ -66,12 +73,13 @@ export const formatCSS = (css: string) => ({
     parts.push(
       ...Array.from(medias, ([condition, content]) => `@media${condition}{${content}}`),
     );
-
+    // biome-ignore lint/style/noParameterAssign: <explanation>
     css = parts.join('');
 
     return this;
   },
   minify() {
+    // biome-ignore lint/style/noParameterAssign: <explanation>
     css = css
 
       // Remove comments
@@ -96,9 +104,12 @@ export const formatCSS = (css: string) => ({
       /rgb\(\s*(?<red>\d+)\s*(?<green>\d+)\s*(?<blue>\d+)(?:\s*\/\s*(?<alpha>[\d%.]+))?\s*\)/gm;
     let match: RegExpExecArray | null;
 
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     while ((match = regex.exec(css)) !== null) {
       const [matchString] = match;
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
       const { red, green, blue, alpha = 1 } = match.groups!;
+      // biome-ignore lint/style/noParameterAssign: <explanation>
       css = css.replace(
         matchString,
         alpha === '1' || alpha === 1
@@ -110,6 +121,7 @@ export const formatCSS = (css: string) => ({
     return this;
   },
   removeMediaQueries() {
+    // biome-ignore lint/style/noParameterAssign: <explanation>
     css = css.replace(/@media[^{]+\{[^@]+\}/g, '');
 
     return this;

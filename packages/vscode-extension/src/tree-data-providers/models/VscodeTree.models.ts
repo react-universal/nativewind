@@ -1,6 +1,6 @@
-import * as Effect from 'effect/Effect';
-import * as Option from 'effect/Option';
-import * as vscode from 'vscode';
+import type * as Effect from 'effect/Effect';
+import type * as Option from 'effect/Option';
+import type * as vscode from 'vscode';
 
 export interface TreeDataProvider<A> {
   readonly treeItem: (element: A) => Effect.Effect<vscode.TreeItem>;

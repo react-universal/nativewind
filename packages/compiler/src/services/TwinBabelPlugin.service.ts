@@ -22,9 +22,9 @@ export class JSXImportPluginContext extends Context.Tag('babel/plugin/context')<
       JSXImportPluginContext,
       Effect.gen(function* () {
         const nodeContext = yield* TwinNodeContext;
-
+        const twinConfig = yield* nodeContext.state.twinConfig.get;
         const twCtx: CompilerContext = {
-          baseRem: nodeContext.twinConfig.root.rem,
+          baseRem: twinConfig.root.rem,
           platform: options.platform,
         };
 
@@ -35,7 +35,7 @@ export class JSXImportPluginContext extends Context.Tag('babel/plugin/context')<
           rootPath,
           twCtx,
           visitedElements,
-          allowedPaths: (yield* nodeContext.scanAllowedPaths),
+          allowedPaths: yield* nodeContext.getProjectFilesFromConfig(twinConfig),
           isValidFile(filename = '') {
             const allowedFileRegex =
               /^(?!.*[/\\](react|react-native|react-native-web|@native-twin\/*)[/\\]).*$/;

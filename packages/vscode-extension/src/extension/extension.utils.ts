@@ -1,20 +1,27 @@
+import { Constants } from '@native-twin/language-service';
+import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Runtime from 'effect/Runtime';
-import * as Scope from 'effect/Scope';
+import type * as Scope from 'effect/Scope';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as vscode from 'vscode';
-import { Constants } from '@native-twin/language-service';
-import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
-import { ConfigRef, ConfigValue, Emitter, ExtensionConfigRef } from './extension.models.js';
+import type {
+  ConfigRef,
+  ConfigValue,
+  Emitter,
+  ExtensionConfigRef,
+} from './extension.models.js';
 import { VscodeContext } from './extension.service.js';
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const executeCommand = (command: string, ...args: Array<any>) =>
   thenable(() => vscode.commands.executeCommand(command, ...args));
 
 export const registerCommand = <R, E, A>(
   command: string,
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   f: (...args: Array<any>) => Effect.Effect<A, E, R>,
 ) => {
   return Effect.gen(function* () {
@@ -159,7 +166,7 @@ export const extensionConfigState = (
     const ref = yield* SubscriptionRef.make(get() ?? defaultValue);
 
     yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {
-      const affected = _.affectsConfiguration(`nativeTwin`);
+      const affected = _.affectsConfiguration('nativeTwin');
       if (affected) {
         return SubscriptionRef.set(ref, get() ?? defaultValue);
       }
@@ -206,6 +213,7 @@ const emitter = <A>() =>
   });
 
 export const emitterOptional = <A>() =>
+  // biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
   Effect.map(emitter<A | null | undefined | void>(), (emitter) => ({
     ...emitter,
     fire: (data: Option.Option<A>) => emitter.fire(Option.getOrUndefined(data)),

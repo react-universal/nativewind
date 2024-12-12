@@ -1,8 +1,8 @@
 import { FileSystem, Path } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
 import { Config, Context, Effect, Layer } from 'effect';
-import { OutputFile } from 'ts-morph';
-import { BuildSourceWithMaps } from '../models/Compiler.models';
+import type { OutputFile } from 'ts-morph';
+import type { BuildSourceWithMaps } from '../models/Compiler.models';
 import { BabelContext, BabelContextLive } from './Babel.service';
 import { FsUtils, FsUtilsLive } from './FsUtils.service';
 

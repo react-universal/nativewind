@@ -7,6 +7,7 @@ let jiti: ReturnType<typeof jitiFactory> | null = null;
 function lazyJiti() {
   return (
     jiti ??
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     (jiti = jitiFactory(__filename, {
       interopDefault: true,
       transform: (opts) => {
@@ -18,7 +19,9 @@ function lazyJiti() {
   );
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function requireJSThrowable(path: string): any {
+  // biome-ignore lint/complexity/useArrowFunction: <explanation>
   const config = (function () {
     try {
       return path ? require(path) : {};

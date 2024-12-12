@@ -1,17 +1,17 @@
 import { Path } from '@effect/platform';
 import {
-  Array,
   Context,
   Effect,
   Layer,
   Option,
-  pipe,
   Queue,
+  Array as RA,
   Stream,
   Tuple,
+  pipe,
 } from 'effect';
-import { Diagnostic, Project, SourceFile, OutputFile } from 'ts-morph';
-import { BuildOutputFiles } from '../models/Compiler.models';
+import { type Diagnostic, type OutputFile, Project, type SourceFile } from 'ts-morph';
+import type { BuildOutputFiles } from '../models/Compiler.models';
 import { TSCompilerOptions } from '../models/TSCompiler.model';
 import { FsUtils, FsUtilsLive } from './FsUtils.service';
 
@@ -36,7 +36,7 @@ const make = Effect.gen(function* () {
   );
 
   const tsWatch = pipe(
-    yield* fsUtils.createWatcher(Array.dedupe(sourceFiles.map((x) => path_.dirname(x)))),
+    yield* fsUtils.createWatcher(RA.dedupe(sourceFiles.map((x) => path_.dirname(x)))),
     Stream.tap((x) =>
       Effect.logDebug(
         `[watcher] Detected ${x._tag} change in: ${x.path.replace(process.cwd(), '')}`,
@@ -124,7 +124,7 @@ const make = Effect.gen(function* () {
   function mapToCompilerOutput(files: OutputFile[]): Option.Option<BuildOutputFiles> {
     return Option.Do.pipe(
       Option.bind('esm', () =>
-        Array.findFirst(files, (x) => x.getFilePath().endsWith('.js')),
+        RA.findFirst(files, (x) => x.getFilePath().endsWith('.js')),
       ),
       Option.let('sourcePath', ({ esm }) =>
         fsUtils.getOriginalSourceForESM(esm.getFilePath()),
@@ -133,13 +133,13 @@ const make = Effect.gen(function* () {
         path_.relative(path_.dirname(esm.getFilePath()), sourcePath),
       ),
       Option.bind('sourcemaps', () =>
-        Array.findFirst(files, (x) => x.getFilePath().endsWith('.js.map')),
+        RA.findFirst(files, (x) => x.getFilePath().endsWith('.js.map')),
       ),
       Option.bind('dts', () =>
-        Array.findFirst(files, (x) => x.getFilePath().endsWith('.d.ts')),
+        RA.findFirst(files, (x) => x.getFilePath().endsWith('.d.ts')),
       ),
       Option.bind('dtsMap', () =>
-        Array.findFirst(files, (x) => x.getFilePath().endsWith('.d.ts.map')),
+        RA.findFirst(files, (x) => x.getFilePath().endsWith('.d.ts.map')),
       ),
     );
   }

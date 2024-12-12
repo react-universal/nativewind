@@ -1,23 +1,23 @@
-import * as vscode from 'vscode';
-import * as Array from 'effect/Array';
+import { Constants, type NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { identity, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import { Constants, NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import * as vscode from 'vscode';
 import {
   extensionConfigState,
   listenForkEvent,
   registerCommand,
 } from '../../extension/extension.utils.js';
 import { getTwinTextDocumentByUri, getVscodeFS } from '../../file-system/index.js';
-import { TwinTextDocument } from '../../language/index.js';
+import type { TwinTextDocument } from '../../language/index.js';
 import { TreeDataProvider } from '../models/index.js';
 import { getTwinDocumentID, makeTreeDataProvider } from '../tree.utils.js';
 import {
+  type AnyTreeDataNode,
+  type FileTwinRegionTreeNode,
   TwinFileTreeNode,
-  AnyTreeDataNode,
-  FileTwinRegionTreeNode,
 } from './TreeFileData.model.js';
 
 class FileNodesManager {
@@ -71,9 +71,9 @@ export const TwinTreeDataFilesProvider = makeTreeDataProvider<AnyTreeDataNode>(
     const settings = yield* extensionConfigState(Constants.DEFAULT_PLUGIN_CONFIG);
 
     const workspaceRoot = pipe(
-      Array.ensure(vscode.workspace.workspaceFolders),
-      Array.flatMapNullable(identity),
-      Array.head,
+      RA.ensure(vscode.workspace.workspaceFolders),
+      RA.flatMapNullable(identity),
+      RA.head,
       Option.getOrThrow,
     );
 
@@ -119,6 +119,7 @@ export const TwinTreeDataFilesProvider = makeTreeDataProvider<AnyTreeDataNode>(
 const treeItem = (node: AnyTreeDataNode) => {
   switch (node._tag) {
     case 'FileTreeNode':
+      // biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
       const fileNode = new vscode.TreeItem(
         node.label,
         vscode.TreeItemCollapsibleState.Collapsed,
@@ -128,6 +129,7 @@ const treeItem = (node: AnyTreeDataNode) => {
       fileNode.id = node.id;
       return fileNode;
     case 'FileTwinRegionTreeNode':
+      // biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
       const regionNode = new vscode.TreeItem(
         'JSX Region',
         vscode.TreeItemCollapsibleState.None,
@@ -155,6 +157,7 @@ const children = (
 ): Option.Option<Array<AnyTreeDataNode>> => {
   switch (node._tag) {
     case 'FileTreeNode':
+      // biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
       const regions = node.getChilds(config);
       return Option.some(regions);
     case 'FileTwinRegionTreeNode':

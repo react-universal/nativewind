@@ -1,14 +1,14 @@
+import type { TreeNode } from '@native-twin/helpers/tree';
 import * as Equal from 'effect/Equal';
 import * as Equivalence from 'effect/Equivalence';
 import { pipe } from 'effect/Function';
-import * as Predicate from 'effect/Predicate';
-import * as vscode from 'vscode';
-import type { TreeNode } from '@native-twin/helpers/tree';
-import {
+import type * as Predicate from 'effect/Predicate';
+import type * as vscode from 'vscode';
+import type {
   VirtualDirectory,
   VirtualEntryType,
-  VirtualFile,
   VirtualFSEntryID,
+  VirtualFile,
 } from './models/FileSystem.models.js';
 
 export const isVirtualFile: Predicate.Refinement<VirtualEntryType, VirtualFile> = (

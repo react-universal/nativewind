@@ -13,7 +13,27 @@
 	},
 	"linter": {
 		"rules": { 
-			"recommended": true
+			"recommended": true,
+			"correctness": {
+				"noSwitchDeclarations": "off"
+			},
+			"style": {
+				"noUselessElse": "off",
+				"useNodejsImportProtocol": "off",
+				"noNonNullAssertion": {
+					"fix": "none",
+					"level": "info"
+				}
+			},
+			"security": {
+				"noDangerouslySetInnerHtml": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "off"
+			},
+			"complexity": {
+				"useLiteralKeys": "off"
+			}
 		}
 	},
 	"formatter": {

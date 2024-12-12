@@ -1,10 +1,10 @@
-import { CompilerConfigContext } from '@native-twin/compiler';
+import type { CompilerConfigContext } from '@native-twin/compiler';
 import type { SheetEntry } from '@native-twin/css';
 import type * as LogLevel from 'effect/LogLevel';
 import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
 import type {
-  JsTransformerConfig,
   JsTransformOptions,
+  JsTransformerConfig,
   TransformResponse,
 } from 'metro-transform-worker';
 

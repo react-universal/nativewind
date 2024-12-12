@@ -1,5 +1,5 @@
-import { Path, FileSystem } from '@effect/platform';
-import { NodePath, NodeFileSystem } from '@effect/platform-node';
+import { FileSystem, Path } from '@effect/platform';
+import { NodeFileSystem, NodePath } from '@effect/platform-node';
 import chokidar from 'chokidar';
 import { Config, Context, Effect, Layer, Stream } from 'effect';
 import * as Glob from 'glob';
@@ -12,6 +12,7 @@ const make = Effect.gen(function* (_) {
 
   const glob = (pattern: string | ReadonlyArray<string>, options?: Glob.GlobOptions) =>
     Effect.tryPromise({
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       try: () => Glob.glob(pattern as any, options as any),
       catch: (e) => new Error(`glob failed: ${e}`),
     }).pipe(Effect.withSpan('FsUtils.glob'));

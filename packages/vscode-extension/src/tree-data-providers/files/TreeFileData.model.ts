@@ -1,13 +1,13 @@
-import { pipe } from 'effect';
-import * as RA from 'effect/Array';
 // import { pipe } from 'effect/Function';
 // import * as Option from 'effect/Option';
 import path from 'path';
-import * as vscode from 'vscode';
 // import { JSXElementNode } from '@native-twin/compiler/babel';
-import { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import { pipe } from 'effect';
+import * as RA from 'effect/Array';
+import * as vscode from 'vscode';
 import { thenable } from '../../extension/extension.utils.js';
-import { TwinTextDocument } from '../../language/index.js';
+import type { TwinTextDocument } from '../../language/index.js';
 
 export class TwinFileTreeNode {
   readonly _tag = 'FileTreeNode';
