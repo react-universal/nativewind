@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import React from 'react';
-import { transform as _transform, Transform } from 'sucrase';
+import { type Transform, transform as _transform } from 'sucrase';
 
 const jsxConst = 'const _jsxFileName = "";';
 const trimCode = (code: string) => code.trim().replace(/;$/, '');

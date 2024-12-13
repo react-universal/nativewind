@@ -23,9 +23,9 @@ export {
   sortSheetEntriesByPrecedence,
 } from './SheetEntry.js';
 
-export {
+export type {
   /** @category — CSS Parsers */
-  type RawJSXElementTreeNode,
+  RawJSXElementTreeNode,
 } from './metro.runtime.js';
 
 export {

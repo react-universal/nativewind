@@ -1,12 +1,12 @@
-import {
-  AnyStyle,
-  CompleteStyle,
-  FinalSheet,
-  getRuleSelectorGroup,
-  SheetEntryDeclaration,
-} from '@native-twin/css';
 import { parseCssValue, tw } from '@native-twin/core';
-import { RuntimeSheetEntry } from '@native-twin/css/jsx';
+import {
+  type AnyStyle,
+  type CompleteStyle,
+  type FinalSheet,
+  type SheetEntryDeclaration,
+  getRuleSelectorGroup,
+} from '@native-twin/css';
+import type { RuntimeSheetEntry } from '@native-twin/css/jsx';
 import type { StyledContext } from '../store/observables/index.js';
 
 export const sheetEntryToStyle = (

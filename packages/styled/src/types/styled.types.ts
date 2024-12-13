@@ -1,14 +1,17 @@
-import type { ReactNode } from 'react';
 import type { CompleteStyle, FinalSheet } from '@native-twin/css';
 import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
 } from '@native-twin/css';
+import type { ReactNode } from 'react';
 
 export interface RegisteredComponent {
   id: string;
   groupID: string;
-  interactionState: Record<ValidInteractionPseudoSelector | ValidGroupPseudoSelector, boolean>;
+  interactionState: Record<
+    ValidInteractionPseudoSelector | ValidGroupPseudoSelector,
+    boolean
+  >;
 }
 
 export interface ClassNameProps {
@@ -33,18 +36,23 @@ export type ComponentStylesheet = {
   hasGroupEvents: boolean;
 };
 
-export type PropsFrom<TComponent> =
-  TComponent extends React.FC<infer Props>
+export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
+  ? Props
+  : TComponent extends React.Component<infer Props>
     ? Props
-    : TComponent extends React.Component<infer Props>
+    : TComponent extends React.ComponentType<infer Props>
       ? Props
-      : TComponent extends React.ComponentType<infer Props>
-        ? Props
-        : never;
+      : never;
 
-export interface DefaultTheme {}
+export type DefaultTheme = {};
 
-export type Primitive = number | (string & {}) | null | undefined | boolean | CompleteStyle;
+export type Primitive =
+  | number
+  | (string & {})
+  | null
+  | undefined
+  | boolean
+  | CompleteStyle;
 
 export type TemplateFunctions<T> = (
   arg: T & { theme?: DefaultTheme } & StyledComponentProps,

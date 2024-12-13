@@ -1,7 +1,7 @@
+import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import type * as Effect from 'effect/Effect';
 import type * as Stream from 'effect/Stream';
 import type * as vscode from 'vscode';
-import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 
 export interface ConfigValue<Section extends string, A> {
   section: Section;

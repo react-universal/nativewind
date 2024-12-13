@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import { useDevToolsPluginClient, type EventSubscription } from 'expo/devtools.js';
+import { type EventSubscription, useDevToolsPluginClient } from 'expo/devtools.js';
+import { useEffect, useMemo } from 'react';
 import { TwinEventEmitter } from '../models/TwinEventEmitter.model.js';
 
 type EventSubscriptionFn<T> = (data: T) => void;

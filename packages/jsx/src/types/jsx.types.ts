@@ -1,5 +1,5 @@
-import type React from 'react';
 import type { RuntimeComponentEntry, RuntimeSheetEntry } from '@native-twin/css/jsx';
+import type React from 'react';
 
 export interface JSXInternalProps extends Record<string, any> {
   twEnabled?: boolean;

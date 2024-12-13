@@ -1,8 +1,8 @@
-import { apply, pipe } from 'effect/Function';
-import * as Option from 'effect/Option';
-import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 import { createStore } from '@native-twin/helpers';
 import * as KeyMap from '@native-twin/helpers/KeyMap';
+import { apply, pipe } from 'effect/Function';
+import * as Option from 'effect/Option';
 
 export const componentsStore = createStore(KeyMap.make<string, RawJSXElementTreeNode>());
 

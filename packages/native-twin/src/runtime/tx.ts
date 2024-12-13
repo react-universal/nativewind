@@ -32,6 +32,6 @@ export const tx: TxFunction = function tx(
   strings: TemplateStringsArray | CSSValue,
   ...interpolations: CSSValue[]
 ): SheetEntry[] {
-  const tw = typeof this == 'function' ? this : tw$;
+  const tw = typeof this === 'function' ? this : tw$;
   return tw(interpolate(strings, interpolations))!;
 };

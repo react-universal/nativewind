@@ -1,7 +1,7 @@
 import type {
   ComponentConfig,
-  StylableComponentConfigOptions,
   NativeStyleToProp,
+  StylableComponentConfigOptions,
 } from '../types/styled.types.js';
 
 export function getNormalizeConfig(

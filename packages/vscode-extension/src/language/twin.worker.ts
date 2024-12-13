@@ -1,24 +1,24 @@
+import {
+  LSPConfigService,
+  LSPConnectionService,
+  LSPDocumentsService,
+  MonacoNativeTwinManager,
+  NativeTwinManagerService,
+  TwinMonacoTextDocument,
+  languagePrograms,
+} from '@native-twin/language-service/browser';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
 /* eslint-disable @typescript-eslint/no-empty-function */
 /// <reference lib="WebWorker" />
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   BrowserMessageReader,
   BrowserMessageWriter,
-  createConnection,
   TextDocuments,
+  createConnection,
 } from 'vscode-languageserver/browser.js';
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import * as ManagedRuntime from 'effect/ManagedRuntime';
-import {
-  NativeTwinManagerService,
-  LSPDocumentsService,
-  LSPConnectionService,
-  languagePrograms,
-  LSPConfigService,
-  TwinMonacoTextDocument,
-  MonacoNativeTwinManager,
-} from '@native-twin/language-service/browser';
 
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
 const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScope);

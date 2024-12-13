@@ -1,9 +1,9 @@
 import type {
-  ResultType,
-  StateTransformerFunction,
   ParserError,
   ParserState,
   ParserSuccess,
+  ResultType,
+  StateTransformerFunction,
 } from '../types.js';
 
 export class Parser<Result, Data = any> {

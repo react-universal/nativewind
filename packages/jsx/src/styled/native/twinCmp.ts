@@ -1,4 +1,4 @@
-import { ComponentType, createElement, forwardRef, useId } from 'react';
+import { type ComponentType, createElement, forwardRef, useId } from 'react';
 import { groupContext } from '../../context/index.js';
 import type { ComponentConfig } from '../../types/styled.types.js';
 import { getComponentType } from '../../utils/react.utils.js';
@@ -98,7 +98,7 @@ function createAnimatedComponent(Component: ComponentType<any>): any {
   const { default: Animated, useAnimatedStyle } =
     require('react-native-reanimated') as typeof import('react-native-reanimated');
 
-  let AnimatedComponent = Animated.createAnimatedComponent(
+  const AnimatedComponent = Animated.createAnimatedComponent(
     Component as React.ComponentClass,
   );
 

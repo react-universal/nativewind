@@ -2,8 +2,8 @@ import { asArray } from '@native-twin/helpers';
 import type {
   Preset,
   TailwindConfig,
-  TailwindUserConfig,
   TailwindPresetConfig,
+  TailwindUserConfig,
 } from '../types/config.types.js';
 import type { ExtractThemes, __Theme__ } from '../types/theme.types.js';
 import { defaultVariants } from './defaults/variants.js';
@@ -44,7 +44,7 @@ export function defineConfig<
     },
   ])) {
     const { ignorelist, preflight, rules, theme, variants, darkMode, animations } =
-      typeof preset == 'function'
+      typeof preset === 'function'
         ? preset(config)
         : (preset as TailwindPresetConfig<Theme>);
     config = {

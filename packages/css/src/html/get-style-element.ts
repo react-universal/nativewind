@@ -3,7 +3,7 @@ export function getStyleElement(
 ): HTMLStyleElement {
   let style = document.querySelector(selector || 'style[data-native-twin=""]');
 
-  if (!style || style.tagName != 'STYLE') {
+  if (!style || style.tagName !== 'STYLE') {
     style = document.createElement('style');
     document.head.append(style);
   }

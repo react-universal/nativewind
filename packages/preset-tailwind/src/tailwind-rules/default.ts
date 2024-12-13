@@ -12,7 +12,7 @@ import { boxShadowRules } from './shadows.js';
 import { sizeRules } from './size.js';
 import { spacingRules } from './spacing.js';
 import { translateRules } from './transform.js';
-import { transitionRules, durationRules } from './transition.js';
+import { durationRules, transitionRules } from './transition.js';
 import { fontThemeRules } from './typography.js';
 
 export const themeRules: Rule<TailwindPresetTheme>[] = [

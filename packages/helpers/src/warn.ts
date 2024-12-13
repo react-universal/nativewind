@@ -11,7 +11,7 @@ export function warn<Code extends keyof WarningEventMap>(
   detail: WarningEventMap[Code],
 ): void {
   if (typeof __DEV__ !== 'undefined' && __DEV__) {
-    if (typeof dispatchEvent == 'function' && typeof CustomEvent === 'function') {
+    if (typeof dispatchEvent === 'function' && typeof CustomEvent === 'function') {
       // Browser
       const event = new CustomEvent('warning', {
         detail: { message, code, detail },
@@ -23,7 +23,7 @@ export function warn<Code extends keyof WarningEventMap>(
       if (!event.defaultPrevented) {
         console.warn(`[${code}] ${message}`, { detail });
       }
-    } else if (typeof process == 'object' && typeof process.emitWarning == 'function') {
+    } else if (typeof process === 'object' && typeof process.emitWarning === 'function') {
       // Node.JS
       process.emitWarning(message, { code, detail } as unknown as string);
     } else {

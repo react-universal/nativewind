@@ -4,7 +4,10 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import * as vscode from 'vscode';
-import { LanguageClient, type LanguageClientOptions } from 'vscode-languageclient/browser.js';
+import {
+  LanguageClient,
+  type LanguageClientOptions,
+} from 'vscode-languageclient/browser.js';
 import { VscodeContext } from '../extension/extension.service.js';
 import { extensionConfigValue, registerCommand } from '../extension/extension.utils.js';
 import {

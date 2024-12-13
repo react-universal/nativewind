@@ -1,4 +1,4 @@
-import { SheetEntry } from '@native-twin/css';
+import type { SheetEntry } from '@native-twin/css';
 import type { StyledContext } from '../store/observables/styles.obs.js';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants.js';
 import type { TwinStyleSheet } from './StyleSheet.js';

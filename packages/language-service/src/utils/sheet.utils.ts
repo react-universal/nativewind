@@ -8,14 +8,12 @@ import {
 } from '@native-twin/css';
 import type { PlatformOSType } from 'react-native';
 
-// biome-ignore lint/style/useDefaultParameterLast: <explanation>
 export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
   return entries.reduce(
     (prev, current) => {
       const nextDecl = composeDeclarations(current.declarations, context);
       const group = getRuleSelectorGroup(current.selectors);
       if (nextDecl.transform && prev[group].transform) {
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
       }
       Object.assign(prev[group], nextDecl);
@@ -38,7 +36,6 @@ export function composeDeclarations(
   context: StyledContext,
 ) {
   return declarations.reduce((prev, current) => {
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     let value: any = current.value;
     if (Array.isArray(current.value)) {
       value = [];

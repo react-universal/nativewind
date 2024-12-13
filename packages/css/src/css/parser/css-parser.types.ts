@@ -1,6 +1,6 @@
 import type { Platform } from 'react-native';
 import type { AnyStyle, FinalSheet } from '../../react-native/rn.types.js';
-import {
+import type {
   SelectorGroup,
   ValidAppearancePseudoSelector,
   ValidCssChildPseudoSelector,

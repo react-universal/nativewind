@@ -1,11 +1,11 @@
-import { Appearance, Dimensions, PixelRatio, Platform } from 'react-native';
 import {
   type ValidGroupPseudoSelector,
-  defaultGroupState,
   type ValidInteractionPseudoSelector,
   createStyledContext,
+  defaultGroupState,
 } from '@native-twin/css';
 import { createStore } from '@native-twin/helpers';
+import { Appearance, Dimensions, PixelRatio, Platform } from 'react-native';
 import type { RegisteredComponent } from '../types/styled.types.js';
 
 const createComponent = (id: string, groupID: string) => {

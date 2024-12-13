@@ -1,8 +1,8 @@
+import type { RuntimeTW } from '@native-twin/core';
 import * as ReadonlyArray from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type { Range } from 'vscode-languageserver-textdocument';
-import type { RuntimeTW } from '@native-twin/core';
 import { getFlattenTemplateToken } from '../../utils/twin/native-twin.utils.js';
 import { TwinSheetEntry } from './TwinSheetEntry.model.js';
 import type {

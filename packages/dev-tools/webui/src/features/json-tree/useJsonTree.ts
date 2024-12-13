@@ -1,11 +1,11 @@
+import { PLUGIN_EVENTS } from '@/constants/event.constants';
+import { useDevToolsClient } from '@/features/app/useDevToolsClient';
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import type { HierarchyPointNode } from 'd3-hierarchy';
+import * as Option from 'effect/Option';
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { PLUGIN_EVENTS } from '@/constants/event.constants';
-import { HierarchyPointNode } from 'd3-hierarchy';
-import * as Option from 'effect/Option';
-import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { useDevToolsClient } from '@/features/app/useDevToolsClient';
 import { createComponentsTree } from './d3';
 
 export const useComponentsTree = (rawNode: RawJSXElementTreeNode) => {

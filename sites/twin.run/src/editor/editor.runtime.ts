@@ -1,11 +1,11 @@
-import * as Layer from 'effect/Layer';
-import * as Logger from 'effect/Logger';
-import * as ManagedRuntime from 'effect/ManagedRuntime';
+import { traceLayerLogs } from '@/utils/logger.utils';
 import {
   MonacoNativeTwinManager,
   NativeTwinManagerService,
 } from '@native-twin/language-service/browser';
-import { traceLayerLogs } from '@/utils/logger.utils';
+import * as Layer from 'effect/Layer';
+import * as Logger from 'effect/Logger';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { AppWorkersService } from './services/AppWorkers.service';
 import { TwinEditorConfigService } from './services/EditorConfig.service';
 import { FileSystemService } from './services/FileSystem.service';

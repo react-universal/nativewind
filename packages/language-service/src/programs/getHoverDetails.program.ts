@@ -1,9 +1,9 @@
-import type * as vscode from 'vscode-languageserver';
-import { Range } from 'vscode-languageserver-types';
 import { sheetEntriesToCss } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
+import type * as vscode from 'vscode-languageserver';
+import { Range } from 'vscode-languageserver-types';
 import { LSPDocumentsService } from '../services/LSPDocuments.service.js';
 import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
 import { completionRuleToQuickInfo } from '../utils/language/quickInfo.utils.js';

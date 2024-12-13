@@ -1,11 +1,11 @@
+import { asArray } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
-import { asArray } from '@native-twin/helpers';
-import { DocumentLanguageRegion } from '../models/documents/LanguageRegion.model.js';
-import { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument.js';
+import type { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../models/documents/LanguageRegion.model.js';
 import {
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
@@ -82,7 +82,7 @@ const getDuplicatedDeclarationCodeAction = (
   }
   newText = newText.replaceAll(/\s+/g, ' ');
   const fix = vscodeLSP.CodeAction.create(
-    `Remove duplicated utilities`,
+    'Remove duplicated utilities',
     vscodeLSP.CodeActionKind.QuickFix,
   );
 

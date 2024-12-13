@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react';
-import { View } from 'react-native';
 import { TreeNodeView } from '@/features/json-tree/JsonTree.view';
 import { useComponentsTree } from '@/features/json-tree/useJsonTree';
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 import { select as d3Select } from 'd3-selection';
 import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
+import { useEffect, useRef } from 'react';
+import { View } from 'react-native';
 import { G, Path, Svg } from 'react-native-svg';
-import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 
 interface JsonTreeSvgViewProps {
   node: RawJSXElementTreeNode;
@@ -23,7 +23,6 @@ export default function JsonTreeSvgView({ node }: JsonTreeSvgViewProps) {
       const domEl = d3Select(domRef.current);
       const svg = domEl.select('#tree_view_svg');
       const content = domEl.select('#tree_view_content');
-      
 
       svg.call(d3Zoom().transform, zoomIdentity.translate(0, 0).scale(1));
       svg.call(

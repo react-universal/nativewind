@@ -1,9 +1,9 @@
-import * as vscode from 'vscode';
-import { IStoredWorkspace } from 'vscode/service-override/configuration';
-import * as monaco from 'monaco-editor';
-import { CodeResources, EditorAppConfigExtended } from 'monaco-editor-wrapper';
 import npmPkgRaw from '@/fixtures/typescript/package.editor.json?raw';
 import tsconfigRaw from '@/fixtures/typescript/tsconfig.editor.json?raw';
+import type * as monaco from 'monaco-editor';
+import type { CodeResources, EditorAppConfigExtended } from 'monaco-editor-wrapper';
+import * as vscode from 'vscode';
+import type { IStoredWorkspace } from 'vscode/service-override/configuration';
 
 export interface FixtureFile {
   uri: vscode.Uri;

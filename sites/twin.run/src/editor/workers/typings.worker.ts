@@ -78,9 +78,9 @@ interface IPackageJson {
   module?: string;
 }
 
-const ROOT_URL = `https://cdn.jsdelivr.net/`;
+const ROOT_URL = 'https://cdn.jsdelivr.net/';
 
-const getDependencyURL = (name: string, version: string, nestedPath: string = '') =>
+const getDependencyURL = (name: string, version: string, nestedPath = '') =>
   `${ROOT_URL}npm/${name}@${version}${nestedPath.startsWith('/') ? nestedPath : `/${nestedPath}`}`;
 
 const fetchPackageJSON = (name: string, version: string) => {

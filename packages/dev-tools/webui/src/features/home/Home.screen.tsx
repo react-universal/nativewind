@@ -1,7 +1,7 @@
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import type { Table } from '@tanstack/react-table';
+import type { UnknownOutputParams } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
-import { Table } from '@tanstack/react-table';
-import { UnknownOutputParams } from 'expo-router';
-import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 import { TableCell } from './components/TableCell';
 import { TableHeaderCell } from './components/TableHeaderCell';
 import { useHomeScreen } from './useHomeScreen';

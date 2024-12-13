@@ -1,16 +1,16 @@
+import * as path from 'path';
+import { detectLanguageFromPath } from '@/utils/editor.utils';
+import { traceLayerLogs } from '@/utils/logger.utils';
 import {
   RegisteredFileSystemProvider,
   RegisteredMemoryFile,
   registerFileSystemOverlay,
 } from '@codingame/monaco-vscode-files-service-override';
-import * as vscode from 'vscode';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as monaco from 'monaco-editor';
-import * as path from 'path';
-import { detectLanguageFromPath } from '@/utils/editor.utils';
-import { traceLayerLogs } from '@/utils/logger.utils';
+import type * as vscode from 'vscode';
 import { MonacoContext } from './MonacoContext.service';
 
 const make = Effect.gen(function* () {
@@ -58,7 +58,6 @@ const make = Effect.gen(function* () {
       context.workspace.rootFiles.workspaceFile.contents,
     ),
   );
-
 
   registerFileSystemOverlay(1, fsProvider);
 

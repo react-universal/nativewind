@@ -3,7 +3,7 @@ import * as Equal from 'effect/Equal';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver';
-import { DiagnosticRelatedInformation } from 'vscode-languageserver-types';
+import type { DiagnosticRelatedInformation } from 'vscode-languageserver-types';
 import {
   bodyLocToRange,
   isSameTwinSheetEntryDeclaration,
@@ -11,10 +11,10 @@ import {
   twinSheetEntryGroupByDuplicates,
 } from '../../utils/language/diagnostic.js';
 import { isSameRange } from '../../utils/vscode.utils.js';
-import { DocumentLanguageRegion } from '../documents/LanguageRegion.model.js';
-import { TwinSheetEntry } from '../twin/TwinSheetEntry.model.js';
+import type { BaseTwinTextDocument } from '../documents/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../documents/LanguageRegion.model.js';
+import type { TwinSheetEntry } from '../twin/TwinSheetEntry.model.js';
 import { TwinDiagnosticCodes, VscodeDiagnosticItem } from './diagnostic.model.js';
-import { BaseTwinTextDocument } from '../documents/BaseTwinDocument.js';
 
 export class TwinDiagnosticHandler implements Equal.Equal {
   constructor(

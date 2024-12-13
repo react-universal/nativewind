@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import { EventSubscription } from 'expo/devtools.js';
-import { EventSubscriptionFn } from '../models/TwinEventEmitter.model.js';
+import type { EventSubscription } from 'expo/devtools.js';
+import { useCallback } from 'react';
+import type { EventSubscriptionFn } from '../models/TwinEventEmitter.model.js';
 import { useDevToolsClient } from './useDevToolsClient.js';
 
 export const useEventEmitter = () => {

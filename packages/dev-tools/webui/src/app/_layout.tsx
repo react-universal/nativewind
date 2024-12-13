@@ -1,8 +1,8 @@
 import './twin.css';
-import { View } from 'react-native';
 import { useLoadFonts } from '@/features/app/useLoadFonts';
-import { Slot } from 'expo-router';
 import { install } from '@native-twin/core';
+import { Slot } from 'expo-router';
+import { View } from 'react-native';
 import config from '../../tailwind.config';
 
 install(config, !__DEV__);

@@ -2,7 +2,7 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as monaco from 'monaco-editor';
 import { useWorkerFactory } from 'monaco-editor-wrapper/workerFactory';
-import { Logger } from 'monaco-languageclient/tools';
+import type { Logger } from 'monaco-languageclient/tools';
 import { JsxEmit } from 'typescript';
 import { MONACO_BASE_FILE_URI } from './constants.utils';
 
@@ -30,7 +30,7 @@ export const pathToMonacoURI = (path: string) =>
 
 export const getAllEditorModelFiles = () => monaco.editor.getModels();
 
-export const getOrCreateEditorFile = (filePath: string, contents: string = '') => {
+export const getOrCreateEditorFile = (filePath: string, contents = '') => {
   const uri = pathToMonacoURI(filePath);
   return pipe(
     getEditorFileByURI(uri),

@@ -40,18 +40,18 @@ export function toString(value: CSSValue): string {
   let result = '';
   let tmp: string;
 
-  if (value && typeof value == 'object') {
+  if (value && typeof value === 'object') {
     if (Array.isArray(value)) {
       if ((tmp = interpolate(value[0], value.slice(1)))) {
-        result += ' ' + tmp;
+        result += ` ${tmp}`;
       }
     } else {
       for (const key in value) {
-        if (value[key]) result += ' ' + key;
+        if (value[key]) result += ` ${key}`;
       }
     }
-  } else if (value != null && typeof value != 'boolean') {
-    result += ' ' + value;
+  } else if (value != null && typeof value !== 'boolean') {
+    result += ` ${value}`;
   }
 
   return result;

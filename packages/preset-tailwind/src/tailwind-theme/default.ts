@@ -13,13 +13,13 @@ import {
 import {
   fontFamily,
   fontSize,
+  fontStyle,
   fontWeight,
   letterSpacing,
   lineHeight,
   textIndent,
   textShadow,
   textStrokeWidth,
-  fontStyle,
   textTransform,
   wordSpacing,
 } from './font.js';
@@ -27,13 +27,13 @@ import { resizeMode } from './image.js';
 import {
   borderRadius,
   boxShadow,
-  screens,
   duration,
   easing,
   lineWidth,
   objectFit,
   overflow,
   ringWidth,
+  screens,
   spacing,
   verticalBreakpoints,
 } from './mixed.js';

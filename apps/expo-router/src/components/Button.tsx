@@ -1,5 +1,5 @@
-import { Text, Pressable, PressableProps } from 'react-native';
-import { VariantProps, createVariants } from '@native-twin/core';
+import { type VariantProps, createVariants } from '@native-twin/core';
+import { Pressable, type PressableProps, Text } from 'react-native';
 
 // css`bg`;
 // styled('')``

@@ -1,5 +1,5 @@
 import type { RuntimeSheetEntry } from '@native-twin/css/jsx';
-import { Atom, atom } from '@native-twin/helpers/react';
+import { type Atom, atom } from '@native-twin/helpers/react';
 
 export const globalStyles = new Map<string, Atom<RuntimeSheetEntry>>();
 export const opaqueStyles = new WeakMap<object, RuntimeSheetEntry>();

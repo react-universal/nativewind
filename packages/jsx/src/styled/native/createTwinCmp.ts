@@ -1,10 +1,10 @@
-import { forwardRef, createElement, useId } from 'react';
+import { createElement, forwardRef, useId } from 'react';
 import { groupContext } from '../../context/index.js';
 import { colorScheme } from '../../store/observables/index.js';
 import type { JSXFunction } from '../../types/jsx.types.js';
 import type {
-  StylableComponentConfigOptions,
   ReactComponent,
+  StylableComponentConfigOptions,
 } from '../../types/styled.types.js';
 import { getNormalizeConfig } from '../../utils/config.utils.js';
 import { getComponentDisplayName } from '../../utils/react.utils.js';
@@ -29,7 +29,7 @@ export const NativeTwinHOC = <
   Component: Parameters<JSXFunction>[0],
   mapping: StylableComponentConfigOptions<T> & M,
 ) => {
-  let component = Component;
+  const component = Component;
   const configs = getNormalizeConfig(mapping);
 
   const TwinComponent = forwardRef((props: any, ref) => {
@@ -49,7 +49,7 @@ export const NativeTwinHOC = <
       props,
     );
 
-    let newProps = {
+    const newProps = {
       ...props,
       ...handlers,
     };

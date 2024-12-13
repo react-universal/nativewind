@@ -1,19 +1,19 @@
-import * as vscode from 'vscode';
+import { TwinTextDocument } from '@/editor/models/TwinTextDocument.model';
+import { getColorDecoration } from '@/utils/languageClient.utils';
+import { type Numberify, type RGBA, TinyColor } from '@ctrl/tinycolor';
 import { CSS_COLORS } from '@native-twin/css';
-import { Numberify, RGBA, TinyColor } from '@ctrl/tinycolor';
-import * as RA from 'effect/Array';
-import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
-import * as Option from 'effect/Option';
 import {
   Constants,
   DocumentLanguageRegion,
   NativeTwinManagerService,
-  TemplateTokenData,
-  TwinRuleCompletion,
+  type TemplateTokenData,
+  type TwinRuleCompletion,
 } from '@native-twin/language-service/browser';
-import { TwinTextDocument } from '@/editor/models/TwinTextDocument.model';
-import { getColorDecoration } from '@/utils/languageClient.utils';
+import * as RA from 'effect/Array';
+import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import * as Option from 'effect/Option';
+import * as vscode from 'vscode';
 
 const colorNames = Object.keys(CSS_COLORS);
 export const InstallColorProvider = Effect.gen(function* () {

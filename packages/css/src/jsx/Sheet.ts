@@ -7,7 +7,11 @@ import { getRuleSelectorGroup } from '../tailwind/tailwind.utils.js';
 import type { ComponentSheet, RuntimeComponentEntry } from './Component.js';
 import { type RuntimeSheetEntry, sortSheetEntries } from './SheetEntry.js';
 import { RuntimeSheetDeclaration } from './SheetEntryDeclaration.js';
-import { defaultFinalSheet, defaultSheetMetadata, emptyChildsSheet } from './constants.js';
+import {
+  defaultFinalSheet,
+  defaultSheetMetadata,
+  emptyChildsSheet,
+} from './constants.js';
 
 /** @category MetroBundler */
 export type ChildsSheet = Record<'first' | 'last' | 'even' | 'odd', RuntimeSheetEntry[]>;
@@ -121,7 +125,7 @@ export function composeDeclarations(declarations: RuntimeSheetDeclaration[]) {
     if (Array.isArray(current.value)) {
       value = [];
       for (const t of current.value) {
-        if (typeof t.value == 'string') {
+        if (typeof t.value === 'string') {
           if (t.value) {
             value.push({
               [t.prop]: t.value,
@@ -134,7 +138,7 @@ export function composeDeclarations(declarations: RuntimeSheetDeclaration[]) {
       });
       return prev;
     }
-    if (typeof value == 'object') {
+    if (typeof value === 'object') {
       Object.assign(prev, value);
     } else {
       Object.assign(prev, {

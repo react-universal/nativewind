@@ -31,18 +31,18 @@ import '@codingame/monaco-vscode-standalone-typescript-language-features';
 import '@codingame/monaco-vscode-typescript-basics-default-extension';
 import '@codingame/monaco-vscode-typescript-language-features-default-extension';
 
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-import jsonWorker from 'monaco-editor-wrapper/workers/module/json?worker';
-import cssWorker from 'monaco-editor-wrapper/workers/module/css?worker';
-import htmlWorker from 'monaco-editor-wrapper/workers/module/html?worker';
-import tsWorker from 'monaco-editor-wrapper/workers/module/ts?worker';
 import textMateWorker from '@codingame/monaco-vscode-textmate-service-override/worker?worker';
 import * as monaco from 'monaco-editor';
+import cssWorker from 'monaco-editor-wrapper/workers/module/css?worker';
+import htmlWorker from 'monaco-editor-wrapper/workers/module/html?worker';
+import jsonWorker from 'monaco-editor-wrapper/workers/module/json?worker';
+import tsWorker from 'monaco-editor-wrapper/workers/module/ts?worker';
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 
 export const setup = () => {
   let editorWorkerCache: Worker | null = null;
   self.MonacoEnvironment = {
-    getWorker: function (_, label) {
+    getWorker: (_, label) => {
       switch (label) {
         case 'json':
           return new jsonWorker();

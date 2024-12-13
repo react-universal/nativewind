@@ -9,7 +9,10 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
   const resolved: Record<string, any> = {};
   return theme as ThemeFunction<Theme>;
 
-  function theme(themeSection: keyof Omit<ThemeConfig<Theme>, 'extend'>, segment: string) {
+  function theme(
+    themeSection: keyof Omit<ThemeConfig<Theme>, 'extend'>,
+    segment: string,
+  ) {
     if (segment && segment.startsWith('[') && segment.endsWith(']')) {
       return segment.slice(1, -1);
     }

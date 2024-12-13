@@ -52,7 +52,6 @@ export function expressionFactory(writer: CodeBlockWriter) {
   }
 
   function createKeyValuePair(writer: CodeBlockWriter) {
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     return ([key, value]: [key: string, value: any]) => {
       return writer.hangingIndent(() =>
         pipe(writer.write(key).write(':').space(), flip(createNextToken)(value)),
@@ -61,7 +60,6 @@ export function expressionFactory(writer: CodeBlockWriter) {
   }
 
   function arrayWriter(writer: CodeBlockWriter) {
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     return <A extends any[]>(arrayValue: A) => {
       return pipe(
         writer.write('['),

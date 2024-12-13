@@ -6,7 +6,7 @@ const matchGroup = (variants: string[], group: SelectorGroup) => {
   return variants.some((x) => x === group || new RegExp(`(&)?(:?)?(${group})`).test(x));
 };
 export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
-  if (variants.length == 0) return 'base';
+  if (variants.length === 0) return 'base';
   if (
     variants.includes('group') ||
     variants.includes('group-hover') ||
@@ -35,7 +35,7 @@ export function mql(screen: MaybeArray<TWScreenValueConfig>, prefix = '@media ')
     prefix +
     asArray(screen)
       .map((screen) => {
-        if (typeof screen == 'string') {
+        if (typeof screen === 'string') {
           screen = { min: screen };
         }
 

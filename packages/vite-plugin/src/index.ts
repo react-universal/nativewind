@@ -1,5 +1,5 @@
-import { createFilter, Plugin, PluginOption } from 'vite';
-import { createTwinExtractor, TwinVitePluginConfig } from './twin.transform.js';
+import { type Plugin, type PluginOption, createFilter } from 'vite';
+import { type TwinVitePluginConfig, createTwinExtractor } from './twin.transform.js';
 
 export type { TwinVitePluginConfig } from './twin.transform.js';
 

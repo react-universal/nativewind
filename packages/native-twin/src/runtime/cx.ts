@@ -1,8 +1,8 @@
 import {
+  type CSSValue,
   interpolate,
   parseTWTokens,
   parsedRuleSetToClassNames,
-  type CSSValue,
 } from '@native-twin/css';
 
 /**

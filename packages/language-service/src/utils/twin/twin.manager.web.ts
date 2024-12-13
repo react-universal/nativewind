@@ -1,8 +1,3 @@
-import { createVirtualSheet } from '@native-twin/css';
-import * as RA from 'effect/Array';
-import * as HashSet from 'effect/HashSet';
-// @ts-expect-error sdasd
-import picomatch from 'picomatch-browser';
 import {
   createTailwind,
   createThemeContext,
@@ -11,13 +6,18 @@ import {
   setup,
   tx,
 } from '@native-twin/core';
+import { createVirtualSheet } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
+import * as RA from 'effect/Array';
+import * as HashSet from 'effect/HashSet';
+// @ts-expect-error sdasd
+import picomatch from 'picomatch-browser';
 import type {
   InternalTwFn,
   InternalTwinConfig,
   InternalTwinThemeContext,
-  TwinStore,
   TwinRuleCompletion,
+  TwinStore,
   TwinVariantCompletion,
 } from '../../models/twin/native-twin.types.js';
 import { DEFAULT_TWIN_CONFIG } from '../constants.utils.js';

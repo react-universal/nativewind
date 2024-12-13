@@ -5,11 +5,11 @@ import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import ts from 'typescript';
 import * as vscode from 'vscode-languageserver-types';
-import { NativeTwinService } from '../../native-twin/nativeTwin.service';
-import { TwinRuleCompletionWithToken } from '../../native-twin/nativeTwin.types';
-import { TemplateNode } from '../../template/TemplateNode.service';
+import type { NativeTwinService } from '../../native-twin/nativeTwin.service';
+import type { TwinRuleCompletionWithToken } from '../../native-twin/nativeTwin.types';
+import type { TemplateNode } from '../../template/TemplateNode.service';
 import {
-  CompletionPart,
+  type CompletionPart,
   getCompletionEntryDetailsDisplayParts,
   getCompletionParts,
   getCompletionTokenKind,

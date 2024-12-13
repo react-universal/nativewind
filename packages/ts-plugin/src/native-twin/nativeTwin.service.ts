@@ -1,13 +1,13 @@
-import { pipe } from 'effect/Function';
+import type { __Theme__ } from '@native-twin/core';
 import * as ReadonlyArray from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
-import { __Theme__ } from '@native-twin/core';
 import { TSPluginService } from '../plugin/TSPlugin.service';
 import { createRuleClassNames, createRuleCompositions } from './nativeTwin.rules';
-import { TwinRuleWithCompletion, VariantCompletionToken } from './nativeTwin.types';
+import type { TwinRuleWithCompletion, VariantCompletionToken } from './nativeTwin.types';
 
 export class NativeTwinService extends Context.Tag('plugin/IntellisenseService')<
   NativeTwinService,
@@ -44,7 +44,7 @@ export const NativeTwinServiceLive = Layer.scoped(
         const values =
           x.parts.themeSection === 'colors'
             ? colorPalette
-            : tailwind.context.theme(x.parts.themeSection as keyof __Theme__) ?? {};
+            : (tailwind.context.theme(x.parts.themeSection as keyof __Theme__) ?? {});
         return createRuleClassNames(values, x.composition, x.parts).map(
           (className): TwinRuleWithCompletion => ({
             completion: className,

@@ -1,14 +1,14 @@
 import {
+  parseHTML,
   parseTWTokens,
   parsedRuleToClassName,
   sheetEntriesToCss,
-  parseHTML,
 } from '@native-twin/css';
 import type { SheetEntry } from '@native-twin/css';
 import {
+  type StringLike,
   compareClassNames,
   fixHTMLTagClassNamesList,
-  type StringLike,
 } from '@native-twin/helpers';
 import type { RuntimeTW } from '../types/theme.types.js';
 import { tw as tw$ } from './tw.js';

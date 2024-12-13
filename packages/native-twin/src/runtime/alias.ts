@@ -1,8 +1,8 @@
 import {
-  interpolate,
-  parsedRuleSetToClassNames,
-  parseTWTokens,
   type CSSValue,
+  interpolate,
+  parseTWTokens,
+  parsedRuleSetToClassNames,
 } from '@native-twin/css';
 
 export type NestedFunction = (
@@ -52,7 +52,7 @@ function alias(marker: string): Nested {
     interpolations: CSSValue[],
   ): string {
     return parsedRuleSetToClassNames(
-      parseTWTokens(name + marker + '(' + interpolate(strings, interpolations) + ')'),
+      parseTWTokens(`${name + marker}(${interpolate(strings, interpolations)})`),
     );
   }
 }

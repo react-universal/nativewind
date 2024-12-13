@@ -8,7 +8,7 @@ import type { JSXFunction } from './types/jsx.types.js';
  * the 'styled' version of the component if it exists.
  */
 export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
-  return function (type, props, ...rest) {
+  return (type, props, ...rest) => {
     // This is invalid react code. Its used by the doctor to check if the JSX pragma is set correctly
     if ((type as any) === 'react-native-twin-jsx-pragma-check') {
       return true as any;

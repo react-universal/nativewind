@@ -1,8 +1,8 @@
-import type { ComponentType } from 'react';
-import React from 'react';
-import type { AppProps } from 'next/app.js';
 import type { TailwindConfig, TailwindUserConfig } from '@native-twin/core';
 import { install as install$ } from '@native-twin/core';
+import type { AppProps } from 'next/app.js';
+import type { ComponentType } from 'react';
+import React from 'react';
 
 /* eslint-env node, browser */
 
@@ -20,7 +20,7 @@ function installApp<Props, Component>(
 function installApp<Props, Component>(
   config: TailwindConfig | TailwindUserConfig,
   AppComponent: React.JSXElementConstructor<Props> & Component = NativeTailwindApp as any,
-  isProduction = process.env['NODE_ENV'] == 'production',
+  isProduction = process.env['NODE_ENV'] === 'production',
 ): Component {
   if (config.mode !== 'web') {
     install$(Object.assign({ mode: 'web' }, config) as TailwindUserConfig, isProduction);

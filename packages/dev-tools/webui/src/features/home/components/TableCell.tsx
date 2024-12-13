@@ -1,6 +1,6 @@
-import { Cell, flexRender } from '@tanstack/react-table';
-import { UnknownOutputParams } from 'expo-router';
 import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import { type Cell, flexRender } from '@tanstack/react-table';
+import type { UnknownOutputParams } from 'expo-router';
 
 interface CellProps {
   cell: Cell<RawJSXElementTreeNode, unknown>;

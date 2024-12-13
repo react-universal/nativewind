@@ -1,6 +1,6 @@
-import { Pressable, Text } from 'react-native';
-import { flexRender, type Header } from '@tanstack/react-table';
 import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import { type Header, flexRender } from '@tanstack/react-table';
+import { Pressable, Text } from 'react-native';
 
 export const TableHeaderCell = (header: Header<RawJSXElementTreeNode, unknown>) => (
   <td className='border-1'>

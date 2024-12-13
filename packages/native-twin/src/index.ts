@@ -7,16 +7,16 @@ import { cx } from './runtime/cx.js';
 import { install } from './runtime/install.js';
 import { mutationObserver } from './runtime/mutation-observer.js';
 import { consume, extract } from './runtime/ssr.js';
-import { tw, setup, observe } from './runtime/tw.js';
+import { observe, setup, tw } from './runtime/tw.js';
 import { tx } from './runtime/tx.js';
 import { createVariants } from './runtime/variants.js';
 import { createThemeContext } from './theme/theme.context.js';
 import { createThemeFunction } from './theme/theme.function.js';
 import {
+  matchAnimation,
   matchCssObject,
   matchThemeColor,
   matchThemeValue,
-  matchAnimation,
 } from './theme/theme.match.js';
 
 /** TYPES */

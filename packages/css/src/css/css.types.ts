@@ -1,5 +1,5 @@
-import type { StyleProp } from 'react-native';
 import type { Falsey, StringLike } from '@native-twin/helpers';
+import type { StyleProp } from 'react-native';
 import type {
   AppearancePseudoSelectors,
   ChildPseudoSelectors,

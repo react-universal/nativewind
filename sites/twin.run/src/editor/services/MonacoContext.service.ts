@@ -1,23 +1,23 @@
-import * as vscode from 'vscode';
+import reactJSXRaw from '@/fixtures/react/Basic.react?raw';
+import twinConfigRaw from '@/fixtures/tailwind-configs/tailwind-preset.config?raw';
 import { sheetEntriesToCss } from '@native-twin/css';
+import {
+  Constants,
+  NativeTwinManagerService,
+  TwinMonacoTextDocument,
+} from '@native-twin/language-service/browser';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import {
-  EditorAppExtended,
+  type EditorAppExtended,
   MonacoEditorLanguageClientWrapper,
-  RegisterLocalProcessExtensionResult,
-  WrapperConfig,
+  type RegisterLocalProcessExtensionResult,
+  type WrapperConfig,
 } from 'monaco-editor-wrapper';
-import {
-  Constants,
-  NativeTwinManagerService,
-  TwinMonacoTextDocument,
-} from '@native-twin/language-service/browser';
-import reactJSXRaw from '@/fixtures/react/Basic.react?raw';
-import twinConfigRaw from '@/fixtures/tailwind-configs/tailwind-preset.config?raw';
+import * as vscode from 'vscode';
 import { WorkspaceConfig } from '../models/EditorFixture.model';
 
 const make = Effect.gen(function* () {

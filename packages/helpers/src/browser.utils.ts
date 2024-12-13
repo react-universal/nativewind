@@ -39,13 +39,13 @@ export function escapeSelector(string: string) {
  * */
 export function fixHTMLTagClassNamesList(value: string, quote: string): string {
   return (
-    quote == `"`
+    quote === `"`
       ? // `'` -> &#39; &apos; &#x27;
         value.replace(
           /(=|\[)(?:&#39;|&apos;|&#x27;)|(?:&#39;|&apos;|&#x27;)(])/g,
           `$1'$2`,
         )
-      : quote == `'`
+      : quote === `'`
         ? // `"` -> &#34; &quot; &#x22;
           value.replace(
             /(=|\[)(?:&#34;|&quot;|&#x22;)|(?:&#34;|&quot;|&#x22;)(])/g,
@@ -63,5 +63,5 @@ export function fixHTMLTagClassNamesList(value: string, quote: string): string {
  * @returns are they different
  */
 export function compareClassNames(a: string, b: string): boolean {
-  return a != b && '' + a.split(' ').sort() != '' + b.split(' ').sort();
+  return a !== b && `${a.split(' ').sort()}` !== `${b.split(' ').sort()}`;
 }

@@ -15,7 +15,8 @@ const Box = <A>(x: A) => {
 
 Box(1) //?
   .map((x) => x + 2)
-  .flatMap((x) => Box(`${x * 3}`)).toString(); // ?
+  .flatMap((x) => Box(`${x * 3}`))
+  .toString(); // ?
 // .fold(); //?
 
 export function pipeBuilder<Input, Output>(fn: Fn<Input, Output>): Pipe<Input, Output> {

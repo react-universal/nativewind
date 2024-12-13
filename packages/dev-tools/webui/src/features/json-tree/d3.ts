@@ -1,11 +1,11 @@
-import { tree as d3Tree, hierarchy, HierarchyPointNode } from 'd3-hierarchy';
-import { DefaultLinkObject, linkHorizontal, linkVertical } from 'd3-shape';
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import { type HierarchyPointNode, tree as d3Tree, hierarchy } from 'd3-hierarchy';
+import { type DefaultLinkObject, linkHorizontal, linkVertical } from 'd3-shape';
 import * as RA from 'effect/Array';
 import { apply, flip, identity, pipe } from 'effect/Function';
 import * as Record from 'effect/Record';
 import * as Tuple from 'effect/Tuple';
-import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { SvgPoint } from './json.types';
+import type { SvgPoint } from './json.types';
 
 interface TreeLayoutParams {
   width: number;

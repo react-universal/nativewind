@@ -1,12 +1,12 @@
 import { getRuleSelectorGroup } from '@native-twin/css';
-import { Platform } from 'react-native';
 import {
-  compileSheetEntry,
-  sortSheetEntriesByPrecedence,
   type RuntimeGroupSheet,
   type RuntimeSheetEntry,
   type SheetEntry,
+  compileSheetEntry,
+  sortSheetEntriesByPrecedence,
 } from '@native-twin/css/jsx';
+import { Platform } from 'react-native';
 import { remObs } from '../../../store/observables/index.js';
 import type { ComponentTemplateEntryProp } from '../../../types/jsx.types.js';
 

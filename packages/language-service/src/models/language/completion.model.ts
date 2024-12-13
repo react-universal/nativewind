@@ -5,7 +5,10 @@ import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
 } from '../../utils/language/language.utils.js';
-import { TwinRuleCompletion, TwinVariantCompletion } from '../twin/native-twin.types.js';
+import type {
+  TwinRuleCompletion,
+  TwinVariantCompletion,
+} from '../twin/native-twin.types.js';
 
 export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal {
   label: string;

@@ -1,5 +1,5 @@
-import type { SheetEntry } from '@native-twin/css';
 import type * as t from '@babel/types';
+import type { SheetEntry } from '@native-twin/css';
 import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import type { JSXElementNode } from './JSXElement.model.js';
 

@@ -1,17 +1,17 @@
-import {
+import * as P from '@native-twin/arc-parser';
+import type {
   ArbitraryToken,
   ClassNameToken,
   VariantClassToken,
   VariantToken,
 } from '@native-twin/css';
-import * as P from '@native-twin/arc-parser';
 import * as TwParser from '@native-twin/css/tailwind-parser';
-import {
+import type {
   LocatedGroupToken,
   LocatedParser,
   TemplateToken,
 } from '../../models/twin/parser.types.js';
-import { TemplateTokenWithText } from '../../models/twin/template-token.model.js';
+import type { TemplateTokenWithText } from '../../models/twin/template-token.model.js';
 import { addTextToParsedRules } from './native-twin.utils.js';
 
 const mapWithLocation = <A extends object>(

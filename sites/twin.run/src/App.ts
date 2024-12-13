@@ -1,7 +1,7 @@
 import 'vscode';
-import * as Effect from 'effect/Effect';
 import { install as setupLocalTwin } from '@native-twin/core';
 import { NativeTwinManagerService } from '@native-twin/language-service/browser';
+import * as Effect from 'effect/Effect';
 import tailwindConfig from '../tailwind.config';
 import { EditorMainRuntime } from './editor/editor.runtime';
 import { StartEditorUIProgram, StartHightLightsProvider } from './programs';

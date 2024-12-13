@@ -12,7 +12,6 @@ const make = Effect.gen(function* (_) {
 
   const glob = (pattern: string | ReadonlyArray<string>, options?: Glob.GlobOptions) =>
     Effect.tryPromise({
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       try: () => Glob.glob(pattern as any, options as any),
       catch: (e) => new Error(`glob failed: ${e}`),
     }).pipe(Effect.withSpan('FsUtils.glob'));

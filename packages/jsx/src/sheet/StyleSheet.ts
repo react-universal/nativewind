@@ -1,3 +1,4 @@
+import type { TailwindConfig, __Theme__ } from '@native-twin/core';
 import type {
   AnyStyle,
   FinalSheet,
@@ -5,15 +6,14 @@ import type {
   SelectorGroup,
   SheetInteractionState,
 } from '@native-twin/css';
-import { StyleSheet as NativeSheet } from 'react-native';
-import type { __Theme__, TailwindConfig } from '@native-twin/core';
 import type {
   ComponentSheet,
   RegisteredComponent,
   RuntimeComponentEntry,
   RuntimeSheetEntry,
 } from '@native-twin/css/jsx';
-import { Atom, atom } from '@native-twin/helpers/react';
+import { type Atom, atom } from '@native-twin/helpers/react';
+import { StyleSheet as NativeSheet } from 'react-native';
 import { type StyledContext, remObs, styledContext } from '../store/observables/index.js';
 import { globalStyles } from '../store/styles.store.js';
 import type { ComponentConfig } from '../types/styled.types.js';
@@ -140,7 +140,7 @@ export function createComponentSheet(
     Object.assign({ ...base }, { ...sheet.dark });
   }
 
-  let metadata = {
+  const metadata = {
     isGroupParent: compiledSheet.entries.some((x) => x.className === 'group'),
     hasGroupEvents: Object.keys(sheet.group)?.length > 0,
     hasPointerEvents: Object.keys(sheet.pointer)?.length > 0,

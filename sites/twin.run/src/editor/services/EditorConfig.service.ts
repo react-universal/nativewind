@@ -1,11 +1,23 @@
-// sort-imports-ignore
-import * as vscode from 'vscode';
+import {
+  getColorDecoration,
+  onLanguageClientClosed,
+  onLanguageClientError,
+  onProvideDocumentColors,
+} from '@/utils/languageClient.utils';
+import { traceLayerLogs } from '@/utils/logger.utils';
 // import getEditorOverride from '@codingame/monaco-vscode-editor-service-override';
 // import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
 // import getTextmateServiceOverride from '@codingame/monaco-vscode-textmate-service-override';
 import getConfigurationServiceOverride from '@codingame/monaco-vscode-configuration-service-override';
-import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
 import getSecretStorageServiceOverride from '@codingame/monaco-vscode-secret-storage-service-override';
+import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
+import { Constants } from '@native-twin/language-service/browser';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+// import { defaultViewsInit } from 'monaco-editor-wrapper/vscode/services';
+// import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
+import type { LanguageClientConfig, WrapperConfig } from 'monaco-editor-wrapper';
 // import getExplorerServiceOverride from '@codingame/monaco-vscode-explorer-service-override';
 // import getLifecycleServiceOverride from '@codingame/monaco-vscode-lifecycle-service-override';
 // import getStatusBarServiceOverride from '@codingame/monaco-vscode-view-status-bar-service-override';
@@ -14,21 +26,9 @@ import getSecretStorageServiceOverride from '@codingame/monaco-vscode-secret-sto
 // import getRemoteAgentServiceOverride from '@codingame/monaco-vscode-remote-agent-service-override';
 // import getEnvironmentServiceOverride from '@codingame/monaco-vscode-environment-service-override';
 // import { createDefaultLocaleConfiguration } from 'monaco-languageclient/vscode/services';
-import { VscodeApiConfig } from 'monaco-languageclient/vscode/services';
-// import { defaultViewsInit } from 'monaco-editor-wrapper/vscode/services';
-// import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
-import { WrapperConfig, LanguageClientConfig } from 'monaco-editor-wrapper';
-import {
-  getColorDecoration,
-  onLanguageClientClosed,
-  onLanguageClientError,
-  onProvideDocumentColors,
-} from '@/utils/languageClient.utils';
-import * as Context from 'effect/Context';
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import { Constants } from '@native-twin/language-service/browser';
-import { traceLayerLogs } from '@/utils/logger.utils';
+import type { VscodeApiConfig } from 'monaco-languageclient/vscode/services';
+// sort-imports-ignore
+import * as vscode from 'vscode';
 import { LogLevel } from 'vscode/services';
 
 import workerUrl from '@/editor/workers/twin.worker?worker&url';

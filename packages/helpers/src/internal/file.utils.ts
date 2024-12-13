@@ -8,10 +8,7 @@ export function matchCss(filename: string): boolean {
   return /\.(s?css|sass)$/.test(filename);
 }
 
-export function bufferToString(
-  input: Buffer,
-  _encoding = 'utf-8',
-): string {
+export function bufferToString(input: Buffer, _encoding = 'utf-8'): string {
   return input.toString('utf-8');
 }
 

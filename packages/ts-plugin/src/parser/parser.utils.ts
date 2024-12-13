@@ -1,13 +1,13 @@
-import { ThemeContext, convert } from '@native-twin/core';
+import { type ThemeContext, convert } from '@native-twin/core';
 import {
-  ArbitraryToken,
-  ClassNameToken,
-  VariantClassToken,
+  type ArbitraryToken,
+  type ClassNameToken,
   Layer as CssLayer,
+  type VariantClassToken,
   moveToLayer,
   parsedRuleToClassName,
 } from '@native-twin/css';
-import {
+import type {
   LocatedGroupTokenWithText,
   LocatedParsedRule,
   LocatedParser,
@@ -62,12 +62,12 @@ const groupToRules = (nextToken: LocatedGroupTokenWithText) => {
     }
   }
   const parts = anyTokenToRule(nextToken.value.content).map((x): LocatedParsedRule => {
-    if (baseValue.type == 'CLASS_NAME') {
+    if (baseValue.type === 'CLASS_NAME') {
       return {
         ...x,
         i: baseValue.value.i,
         m: baseValue.value.m,
-        n: baseValue.value.n + '-' + x.n,
+        n: `${baseValue.value.n}-${x.n}`,
         type: baseValue.type,
         loc: {
           end: baseValue.end,
@@ -101,19 +101,19 @@ export const variantClassTokenToRule = (
   type: token.type,
 });
 export const tokenToRule = (token: TemplateTokenWithText) => {
-  if (token.type == 'ARBITRARY') {
+  if (token.type === 'ARBITRARY') {
     return arbitraryTokenToRule(token);
   }
 
-  if (token.type == 'CLASS_NAME') {
+  if (token.type === 'CLASS_NAME') {
     return classNameTokenToRule(token);
   }
 
-  if (token.type == 'VARIANT_CLASS') {
+  if (token.type === 'VARIANT_CLASS') {
     return variantClassTokenToRule(token);
   }
 
-  if (token.type == 'GROUP') {
+  if (token.type === 'GROUP') {
     return groupToRules(token);
   }
 
@@ -126,16 +126,16 @@ export function anyTokenToRule(
 ): LocatedParsedRule[] {
   const nextToken = groupContent.shift();
   if (!nextToken) return results;
-  if (nextToken.type == 'ARBITRARY') {
+  if (nextToken.type === 'ARBITRARY') {
     results.push(arbitraryTokenToRule(nextToken));
   }
-  if (nextToken.type == 'CLASS_NAME') {
+  if (nextToken.type === 'CLASS_NAME') {
     results.push(classNameTokenToRule(nextToken));
   }
-  if (nextToken.type == 'VARIANT_CLASS') {
+  if (nextToken.type === 'VARIANT_CLASS') {
     results.push(variantClassTokenToRule(nextToken));
   }
-  if (nextToken.type == 'GROUP') {
+  if (nextToken.type === 'GROUP') {
     const group = groupToRules(nextToken);
     results.push(...group);
   }
@@ -157,11 +157,12 @@ export function locatedParsedRuleLocatedSheetEntry(
   rule: LocatedParsedRule,
   context: ThemeContext,
 ): LocatedSheetEntry {
-  if (rule.n == 'group') {
+  if (rule.n === 'group') {
     return {
       className: 'group',
       declarations: [],
       selectors: [],
+      preflight: false,
       precedence: CssLayer.u,
       important: rule.i,
       loc: rule.loc,
@@ -179,6 +180,7 @@ export function locatedParsedRuleLocatedSheetEntry(
         className: parsedRuleToClassName(rule),
         declarations: [],
         selectors: [],
+        preflight: false,
         precedence: CssLayer.u,
         important: rule.i,
         loc: rule.loc,
@@ -192,6 +194,7 @@ export function locatedParsedRuleLocatedSheetEntry(
     return {
       className: parsedRuleToClassName(rule),
       declarations: [],
+      preflight: false,
       selectors: [],
       precedence: CssLayer.u,
       important: rule.i,

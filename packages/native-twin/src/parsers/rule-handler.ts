@@ -1,5 +1,5 @@
 import * as P from '@native-twin/arc-parser';
-import { getTWFeatureParser, type TWParsedRule } from '@native-twin/css';
+import { type TWParsedRule, getTWFeatureParser } from '@native-twin/css';
 import type { Rule, ThemeContext } from '../types/config.types.js';
 import type { __Theme__ } from '../types/theme.types.js';
 

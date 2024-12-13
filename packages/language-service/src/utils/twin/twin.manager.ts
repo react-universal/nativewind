@@ -1,9 +1,3 @@
-import { createVirtualSheet } from '@native-twin/css';
-import * as RA from 'effect/Array';
-import { pipe } from 'effect/Function';
-import * as HashSet from 'effect/HashSet';
-import * as Option from 'effect/Option';
-import micromatch from 'micromatch';
 import * as path from 'node:path';
 import {
   createTailwind,
@@ -13,13 +7,19 @@ import {
   setup,
   tx,
 } from '@native-twin/core';
+import { createVirtualSheet } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
+import * as RA from 'effect/Array';
+import { pipe } from 'effect/Function';
+import * as HashSet from 'effect/HashSet';
+import * as Option from 'effect/Option';
+import micromatch from 'micromatch';
 import type {
   InternalTwFn,
   InternalTwinConfig,
   InternalTwinThemeContext,
-  TwinStore,
   TwinRuleCompletion,
+  TwinStore,
   TwinVariantCompletion,
 } from '../../models/twin/native-twin.types.js';
 import { DEFAULT_TWIN_CONFIG } from '../constants.utils.js';

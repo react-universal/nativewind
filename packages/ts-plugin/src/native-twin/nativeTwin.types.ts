@@ -1,7 +1,7 @@
-import { Rule, RuleMeta } from '@native-twin/core';
-import { CompleteStyle } from '@native-twin/css';
-import { TemplateTokenWithText } from '../template/template.types';
-import { InternalTwinConfig } from './nativeTwin.config';
+import type { Rule, RuleMeta } from '@native-twin/core';
+import type { CompleteStyle } from '@native-twin/css';
+import type { TemplateTokenWithText } from '../template/template.types';
+import type { InternalTwinConfig } from './nativeTwin.config';
 
 export type InternalNativeTwinRule = Rule<InternalTwinConfig['theme']>;
 

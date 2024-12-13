@@ -1,12 +1,12 @@
-import { useRef, useCallback, useContext } from 'react';
-import {
+import type { RegisteredComponent } from '@native-twin/css/jsx';
+import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
+import { useCallback, useContext, useRef } from 'react';
+import type {
   NativeSyntheticEvent,
   PressableProps,
   TextInputFocusEventData,
   Touchable,
 } from 'react-native';
-import { RegisteredComponent } from '@native-twin/css/jsx';
-import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
 import { groupContext } from '../../context/index.js';
 import { StyleSheet } from '../../sheet/index.js';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
@@ -50,13 +50,13 @@ export const useInteractions = (
 
   // TODO: Create the focus handler
   if (metadata.hasPointerEvents || metadata.hasGroupEvents || metadata.isGroupParent) {
-    handlers.onTouchStart = function (event) {
+    handlers.onTouchStart = (event) => {
       if (interactionsRef.current.onTouchStart) {
         interactionsRef.current.onTouchStart(event);
       }
       onChange(true);
     };
-    handlers.onTouchEnd = function (event) {
+    handlers.onTouchEnd = (event) => {
       if (interactionsRef.current.onTouchEnd) {
         interactionsRef.current.onTouchEnd(event);
       }

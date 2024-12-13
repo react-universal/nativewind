@@ -5,11 +5,7 @@ import { thenable } from '../extension/extension.utils.js';
 export const createFileWatchers = Effect.gen(function* () {
   return yield* Effect.acquireRelease(
     Effect.sync(() =>
-      vscode.workspace.createFileSystemWatcher(
-        '**/tailwind.config.*',
-        false,
-        false,
-      ),
+      vscode.workspace.createFileSystemWatcher('**/tailwind.config.*', false, false),
     ),
     (watcher) =>
       Effect.sync(() => {

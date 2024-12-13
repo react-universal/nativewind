@@ -1,18 +1,18 @@
-import type { CompleteStyle } from '@native-twin/css';
-import { ComponentProps, ComponentType, forwardRef } from 'react';
-import { render as tlRender } from '@testing-library/react-native';
-import * as JSX from 'react/jsx-runtime';
 import { setup } from '@native-twin/core';
 import { defineConfig } from '@native-twin/core';
+import type { CompleteStyle } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
+import { render as tlRender } from '@testing-library/react-native';
+import { type ComponentProps, type ComponentType, forwardRef } from 'react';
+import * as JSX from 'react/jsx-runtime';
 import '../components';
 import wrapJSX from '../jsx-wrapper.js';
 import { StyleSheet } from '../sheet/StyleSheet.js';
 import { createStylableComponent, stylizedComponents } from '../styled/index.js';
 import type {
-  StylableComponentConfigOptions,
-  ReactComponent,
   NativeTwinGeneratedProps,
+  ReactComponent,
+  StylableComponentConfigOptions,
 } from '../types/styled.types.js';
 import { INTERNAL_RESET } from '../utils/constants.js';
 

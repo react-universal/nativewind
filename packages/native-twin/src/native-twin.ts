@@ -5,7 +5,7 @@
  * ********************************************
  */
 import { Layer, type Sheet, type SheetEntry } from '@native-twin/css';
-import { parseTWTokens, sortedInsertionIndex, interpolate } from '@native-twin/css';
+import { interpolate, parseTWTokens, sortedInsertionIndex } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import { defineConfig } from './config/define-config.js';
 import { parsedRuleToEntry } from './convert/ruleToEntry.js';
@@ -116,7 +116,7 @@ export function createTailwind(
 
   function insert(entry: SheetEntry) {
     insertedRules.add(entry.className);
-    if (entry.declarations.length == 0) {
+    if (entry.declarations.length === 0) {
       return;
     }
     const index = sortedInsertionIndex(sortedPrecedences, entry);
@@ -130,7 +130,7 @@ export function createTailwind(
         sheet.clear();
       }
       for (let preflight of asArray(config.preflight)) {
-        if (typeof preflight == 'function') {
+        if (typeof preflight === 'function') {
           preflight = preflight(context);
         }
 

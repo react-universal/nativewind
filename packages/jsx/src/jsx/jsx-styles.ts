@@ -1,11 +1,11 @@
-import { Platform } from 'react-native';
 import {
+  type RuntimeGroupSheet,
   compileSheetEntry,
   getGroupedEntries,
   sortSheetEntriesByPrecedence,
-  type RuntimeGroupSheet,
 } from '@native-twin/css/jsx';
-import { componentsRegistry, StyleSheet } from '../sheet/StyleSheet.js';
+import { Platform } from 'react-native';
+import { StyleSheet, componentsRegistry } from '../sheet/StyleSheet.js';
 import { remObs, styledContext } from '../store/observables/index.js';
 import type { JSXInternalProps } from '../types/jsx.types.js';
 

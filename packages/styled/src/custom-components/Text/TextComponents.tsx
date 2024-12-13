@@ -1,4 +1,4 @@
-import { type ComponentType, forwardRef, type ReactHTML } from 'react';
+import { type ComponentType, type ReactHTML, forwardRef } from 'react';
 import { Platform, type TextProps } from 'react-native';
 import Text from './Text.primitive.js';
 

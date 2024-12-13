@@ -1,4 +1,11 @@
 import type {
+  AnyStyle,
+  CompleteStyle,
+  ValidGroupPseudoSelector,
+  ValidInteractionPseudoSelector,
+} from '@native-twin/css';
+import type { Atom } from '@native-twin/helpers/react';
+import type {
   ClassicComponentClass,
   ComponentClass,
   ComponentProps,
@@ -6,14 +13,7 @@ import type {
   FunctionComponent,
   JSXElementConstructor,
 } from 'react';
-import type {
-  AnyStyle,
-  CompleteStyle,
-  ValidGroupPseudoSelector,
-  ValidInteractionPseudoSelector,
-} from '@native-twin/css';
-import { Atom } from '@native-twin/helpers/react';
-import { createComponentSheet } from '../sheet/StyleSheet.js';
+import type { createComponentSheet } from '../sheet/StyleSheet.js';
 
 export interface RegisteredComponent {
   id: string;

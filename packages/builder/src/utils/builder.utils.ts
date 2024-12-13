@@ -1,10 +1,10 @@
+import fs from 'node:fs';
 import * as Path from '@effect/platform/Path';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Record from 'effect/Record';
-import fs from 'node:fs';
 
 interface IPackageJson {
   exports: string | Record<string, Record<string, string>>;

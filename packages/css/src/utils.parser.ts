@@ -86,7 +86,7 @@ export const getPropertyValueType = (property: string) => {
 };
 
 export const unsupportedStyles = (property: string) => {
-  if (property == 'display') {
+  if (property === 'display') {
     return {
       fallback: 'flex',
     };

@@ -1,7 +1,7 @@
-import { FC, memo, useContext, useEffect, useRef, useState } from 'react';
-import * as Layer from 'effect/Layer';
+import type * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import { RuntimeContext } from '../context/runtime.context';
+import { type FC, memo, useContext, useEffect, useRef, useState } from 'react';
+import type { RuntimeContext } from '../context/runtime.context';
 
 export function WithRuntime<T>(Context: RuntimeContext<T>) {
   return <P extends object>(Component: FC<P>) => {
@@ -15,7 +15,7 @@ export function WithRuntime<T>(Context: RuntimeContext<T>) {
         </Context.Provider>
       );
     };
-    Wrapped.displayName = `WithRuntime`;
+    Wrapped.displayName = 'WithRuntime';
     return memo(Wrapped);
   };
 }

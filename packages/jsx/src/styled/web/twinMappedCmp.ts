@@ -1,6 +1,9 @@
 import { createElement, forwardRef } from 'react';
 // import { globalStyles, opaqueStyles } from '../../store/styles.store.js';
-import { ReactComponent, StylableComponentConfigOptions } from '../../types/styled.types.js';
+import type {
+  ReactComponent,
+  StylableComponentConfigOptions,
+} from '../../types/styled.types.js';
 import { getNormalizeConfig } from '../../utils/config.utils.js';
 import { stylizedComponents } from './createTwinCmp.web.js';
 

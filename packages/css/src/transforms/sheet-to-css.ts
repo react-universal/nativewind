@@ -1,6 +1,6 @@
 import {
-  escapeSelector,
   asArray,
+  escapeSelector,
   toColorValue,
   toHyphenCase,
 } from '@native-twin/helpers';
@@ -42,7 +42,7 @@ function getEntryRuleBlock(entry: SheetEntry, forMetro = false) {
 
   for (const condition of entry.selectors) {
     // Media query
-    if (condition.startsWith('@') && condition[1] == 'm') {
+    if (condition.startsWith('@') && condition[1] === 'm') {
       atRules.push(condition);
       continue;
     }
@@ -65,7 +65,7 @@ function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[], important =
   if (!decls) return '';
   const body: [string, string][] = [];
   for (const d of decls) {
-    if (typeof d.value == 'object' && !Array.isArray(d.value)) {
+    if (typeof d.value === 'object' && !Array.isArray(d.value)) {
       if (d.prop === 'shadowRadius') {
         body.push([
           'boxShadow',
@@ -86,7 +86,7 @@ function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[], important =
         body.push(['transform', 'var(--tw-transform)']);
       }
     }
-    if (typeof d.value == 'string') {
+    if (typeof d.value === 'string') {
       body.push([d.prop, d.value]);
     }
   }

@@ -1,17 +1,17 @@
-import { useEffect, useMemo } from 'react';
 import {
+  type RuntimeComponentEntry,
+  type RuntimeSheetDeclaration,
+  type RuntimeSheetEntry,
   getGroupedEntries,
-  RuntimeComponentEntry,
-  RuntimeSheetDeclaration,
-  RuntimeSheetEntry,
 } from '@native-twin/css/jsx';
 import { asArray } from '@native-twin/helpers';
 import { useAtomValue } from '@native-twin/helpers/react';
+import { useEffect, useMemo } from 'react';
 import { StyleSheet } from '../../sheet/StyleSheet.js';
 import { tw } from '../../sheet/native-tw.js';
 import { styledContext } from '../../store/observables/index.js';
 // import { ComponentTemplateEntryProp } from '../../types/jsx.types.js';
-import { ComponentConfig } from '../../types/styled.types.js';
+import type { ComponentConfig } from '../../types/styled.types.js';
 import { INTERNAL_RESET } from '../../utils/constants.js';
 import { composeDeclarations } from '../../utils/sheet.utils.js';
 

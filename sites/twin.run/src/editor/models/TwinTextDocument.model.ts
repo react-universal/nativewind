@@ -1,11 +1,11 @@
-import * as vscode from 'vscode';
 import type * as t from '@babel/types';
-import * as RA from 'effect/Array';
-import * as Data from 'effect/Data';
 import {
   type NativeTwinPluginConfiguration,
   extractLanguageRegions,
 } from '@native-twin/language-service/browser';
+import * as RA from 'effect/Array';
+import * as Data from 'effect/Data';
+import * as vscode from 'vscode';
 
 interface TwinTextDocumentShape {
   document: vscode.TextDocument;

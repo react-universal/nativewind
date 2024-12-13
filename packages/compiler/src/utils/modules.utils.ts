@@ -9,7 +9,6 @@ let jiti: ReturnType<typeof jitiFactory> | null = null;
 function lazyJiti() {
   return (
     jiti ??
-    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     (jiti = jitiFactory(__filename, {
       interopDefault: true,
       cache: false,

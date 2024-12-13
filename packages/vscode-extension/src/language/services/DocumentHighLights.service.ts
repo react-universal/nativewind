@@ -1,3 +1,8 @@
+// import { asArray } from '@native-twin/helpers';
+import {
+  Constants,
+  parseTemplate, // TemplateTokenWithText,
+} from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -5,11 +10,6 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode';
-// import { asArray } from '@native-twin/helpers';
-import {
-  parseTemplate, // TemplateTokenWithText,
-  Constants,
-} from '@native-twin/language-service';
 import { extensionConfigState } from '../../extension/extension.utils.js';
 import { TwinTextDocument } from '../models/TwinTextDocument.model.js';
 

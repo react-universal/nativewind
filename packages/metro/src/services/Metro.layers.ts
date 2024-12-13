@@ -34,19 +34,18 @@ export const createMetroInnerLayer = (nativeTwinConfig: NodeWithNativeTwinOption
       path.join(path.dirname(require.resolve('@native-twin/core')), '../..', '.cache');
 
     return MetroMainLayer.pipe(
-      Layer.provideMerge(Layer.succeed(
-        CompilerConfigContext,
-        CompilerConfigContext.of(
-          createCompilerConfig({
-            rootDir: nativeTwinConfig.projectRoot ?? process.cwd(),
-            outDir,
-            inputCSS: nativeTwinConfig.inputCSS,
-            twinConfigPath: nativeTwinConfig.twinConfigPath,
-          }),
+      Layer.provideMerge(
+        Layer.succeed(
+          CompilerConfigContext,
+          CompilerConfigContext.of(
+            createCompilerConfig({
+              rootDir: nativeTwinConfig.projectRoot ?? process.cwd(),
+              outDir,
+              inputCSS: nativeTwinConfig.inputCSS,
+              twinConfigPath: nativeTwinConfig.twinConfigPath,
+            }),
+          ),
         ),
-      ))
+      ),
     );
-  }).pipe(
-    Layer.unwrapEffect,
-    Layer.provide(NodePath.layerPosix),
-  );
+  }).pipe(Layer.unwrapEffect, Layer.provide(NodePath.layerPosix));

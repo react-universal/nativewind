@@ -1,9 +1,9 @@
 import * as Effect from 'effect/Effect';
-import * as Option from 'effect/Option';
+import type * as Option from 'effect/Option';
 import ts from 'typescript';
-import { TemplateSettings } from 'typescript-template-language-service-decorator';
+import type { TemplateSettings } from 'typescript-template-language-service-decorator';
 import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
-import ScriptSourceHelper from 'typescript-template-language-service-decorator/lib/script-source-helper';
+import type ScriptSourceHelper from 'typescript-template-language-service-decorator/lib/script-source-helper';
 
 export const isTaggedTemplateExpression = (
   node: ts.Node,

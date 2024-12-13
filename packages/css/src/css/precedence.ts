@@ -283,7 +283,7 @@ export function pseudoPrecedence(selector: string): number {
 // 0 - 15 => 4 bits
 // Ignore vendor prefixed and custom properties
 export function declarationPropertyPrecedence(property: string): number {
-  return property[0] == '-'
+  return property[0] === '-'
     ? 0
     : separatorPrecedence(property) +
         (/^(?:(border-(?!w|c|sty)|[tlbr].{2,4}m?$|c.{7,8}$)|([fl].{5}l|g.{8}$|pl))/.test(

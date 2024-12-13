@@ -3,11 +3,11 @@ import * as Data from 'effect/Data';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import ts from 'typescript';
-import { TemplateContext } from 'typescript-template-language-service-decorator';
+import type ts from 'typescript';
+import type { TemplateContext } from 'typescript-template-language-service-decorator';
 import { parseTemplate } from '../native-twin/nativeTwin.parser';
-import { TemplateSourceHelperServiceShape } from './template.context';
-import { LocatedGroupToken, TemplateTokenWithText } from './template.types';
+import type { TemplateSourceHelperServiceShape } from './template.context';
+import type { LocatedGroupToken, TemplateTokenWithText } from './template.types';
 
 interface TemplateNodeShape {
   readonly node:

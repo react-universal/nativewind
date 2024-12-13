@@ -8,11 +8,7 @@ export interface LanguageInput {
 export class LanguageCompiler extends Effect.Service<LanguageCompiler>()(
   'language/compiler',
   {
-    effect: Effect.gen(function* () {
-      return {
-        getDocumentLanguageLocations,
-      };
-    }),
+    effect: Effect.sync(() => getDocumentLanguageLocations),
   },
 ) {
   static Live = Layer.succeed(LanguageCompiler, LanguageCompiler.Service);

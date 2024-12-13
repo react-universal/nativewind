@@ -1,5 +1,5 @@
-import { parse } from '@babel/parser';
 import { traverse } from '@babel/core';
+import { parse } from '@babel/parser';
 import t from '@babel/types';
 
 export const extractLanguageRegions = (

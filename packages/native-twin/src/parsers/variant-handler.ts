@@ -11,7 +11,7 @@ export const createVariantResolver = <Theme extends __Theme__ = __Theme__>(
     const match = condition.exec(token) as ReMatchResult;
     if (!match) return null;
     match.$$ = token.slice(match[0].length);
-    if (typeof resolver == 'string') {
+    if (typeof resolver === 'string') {
       return resolver;
     }
     return resolver(match, context);

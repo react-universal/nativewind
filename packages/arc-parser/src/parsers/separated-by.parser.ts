@@ -32,7 +32,7 @@ export const separatedBy =
       }
 
       if (error) {
-        if (results.length == 0) {
+        if (results.length === 0) {
           return updateParserResult(state, results) as ParserState<T[], Data>;
         }
         return error;

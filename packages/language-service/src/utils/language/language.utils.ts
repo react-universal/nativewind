@@ -1,13 +1,16 @@
-import * as vscode from 'vscode-languageserver-types';
-import { FinalSheet } from '@native-twin/css';
 import { TinyColor } from '@ctrl/tinycolor';
+import type { FinalSheet } from '@native-twin/css';
+import { asArray } from '@native-twin/helpers';
 import toCssFormat from 'cssbeautify';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
-import { asArray } from '@native-twin/helpers';
-import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
-import { DocumentLanguageRegion } from '../../models/documents/LanguageRegion.model.js';
-import { TwinRuleCompletion, TwinRuleParts } from '../../models/twin/native-twin.types.js';
+import * as vscode from 'vscode-languageserver-types';
+import type { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../../models/documents/LanguageRegion.model.js';
+import type {
+  TwinRuleCompletion,
+  TwinRuleParts,
+} from '../../models/twin/native-twin.types.js';
 import {
   TemplateTokenData,
   TemplateTokenWithText,
@@ -17,7 +20,7 @@ import { variantTokenToString } from '../twin/native-twin.utils.js';
 export const getCompletionTokenKind = ({
   rule,
 }: TwinRuleCompletion): vscode.CompletionItemKind =>
-  rule.themeSection == 'colors'
+  rule.themeSection === 'colors'
     ? vscode.CompletionItemKind.Color
     : vscode.CompletionItemKind.Constant;
 
@@ -125,7 +128,7 @@ export function getDocumentationMarkdown(sheetEntry: FinalSheet, css: string) {
   result.push('***Css Rules*** \n\n');
   result.push(
     `${'```css\n'}${toCssFormat(css, {
-      indent: `\t`,
+      indent: '\t',
       openbrace: 'end-of-line',
       autosemicolon: true,
     })}${'\n```'}`,

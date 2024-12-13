@@ -7,10 +7,10 @@ export const ParseSkewValue = P.sequenceOf([
   P.betweenParens(ParseCssDimensions),
 ]).map(([key, value]): AnyStyle['transform'] => {
   const result: AnyStyle['transform'] = [];
-  if (key == 'skewX') {
+  if (key === 'skewX') {
     result.push({ skewX: `${value}` });
   }
-  if (key == 'skewY') {
+  if (key === 'skewY') {
     result.push({ skewY: `${value}` });
   }
   return result;

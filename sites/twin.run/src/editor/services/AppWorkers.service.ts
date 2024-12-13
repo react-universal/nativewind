@@ -1,3 +1,8 @@
+import compilerWorker from '@/editor/workers/compiler.worker?worker&url';
+import typingsWorker from '@/editor/workers/typings.worker?worker&url';
+import { setTypescriptDefaults } from '@/utils/editor.utils';
+import { traceLayerLogs } from '@/utils/logger.utils';
+import type { GetPackageTypings } from '@/utils/twin.schemas';
 import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
 import * as EffectWorker from '@effect/platform/Worker';
 import * as Console from 'effect/Console';
@@ -5,12 +10,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import compilerWorker from '@/editor/workers/compiler.worker?worker&url';
-import typingsWorker from '@/editor/workers/typings.worker?worker&url';
-import { setTypescriptDefaults } from '@/utils/editor.utils';
-import { traceLayerLogs } from '@/utils/logger.utils';
-import { GetPackageTypings } from '@/utils/twin.schemas';
-import { CompileCodeRequestSchema } from '../workers/shared.schemas';
+import type { CompileCodeRequestSchema } from '../workers/shared.schemas';
 
 const typingsInstallerWorkerLayer = BrowserWorker.layer(
   () => new globalThis.Worker(typingsWorker, { type: 'module' }),

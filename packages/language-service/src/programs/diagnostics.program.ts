@@ -2,7 +2,7 @@ import { pipe } from 'effect';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import * as vscode from 'vscode-languageserver';
+import type * as vscode from 'vscode-languageserver';
 import { TwinDiagnosticHandler } from '../models/language/diagnostic.cache.js';
 import { TwinDiagnosticCodes } from '../models/language/diagnostic.model.js';
 import { LSPDocumentsService } from '../services/LSPDocuments.service.js';

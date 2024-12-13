@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import { suiteTeardown } from 'mocha';
 import * as vscode from 'vscode';
 import { executeCompletionAtPosition } from '../commands.js';
-import { Fixture, createFixture } from '../fixtures.js';
+import { type Fixture, createFixture } from '../fixtures.js';
 import { sleep, startTestFile } from '../helpers.js';
 
 suite('Should do completion', () => {

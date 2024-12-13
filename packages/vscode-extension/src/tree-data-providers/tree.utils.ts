@@ -38,14 +38,12 @@ export const makeTreeDataProvider =
         getParent: provider.parent
           ? (element) =>
               Effect.runPromise(
-                // biome-ignore lint/style/noNonNullAssertion: <explanation>
                 Effect.map(provider.parent!(element), Option.getOrUndefined),
               )
           : undefined,
         resolveTreeItem: (item, element, token) => {
           if (provider.resolve) {
             return runWithTokenDefault(
-              // biome-ignore lint/style/noNonNullAssertion: <explanation>
               Effect.map(provider.resolve!(item, element), Option.getOrUndefined),
               token,
             );

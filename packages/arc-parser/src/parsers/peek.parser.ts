@@ -8,5 +8,8 @@ export const peek: Parser<string> = new Parser((state) => {
   if (sliced) {
     return updateParserState(state, sliced[0], cursor);
   }
-  return updateParserError(state, `ParseError (position ${cursor}): Unexpected end of input.`);
+  return updateParserError(
+    state,
+    `ParseError (position ${cursor}): Unexpected end of input.`,
+  );
 });

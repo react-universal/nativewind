@@ -191,7 +191,10 @@ export const preflight: Preflight = {
     1. Correct the odd appearance in Chrome and Safari.
     2. Correct the outline style in Safari.
     */
-  "[type='search']": { WebkitAppearance: 'textfield' /* 1 */, outlineOffset: '-2px' /* 2 */ },
+  "[type='search']": {
+    WebkitAppearance: 'textfield' /* 1 */,
+    outlineOffset: '-2px' /* 2 */,
+  },
 
   /*
     Remove the inner padding in Chrome and Safari on macOS.

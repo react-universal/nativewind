@@ -12,11 +12,16 @@ import type { StyledComponentProps } from '../../types/styled.types.js';
 
 export function styledFlatList<Type>(props: StyledComponentProps & FlatListProps<Type>) {
   return invokeComponent(
-    createStyledComponent<ViewStyle, FlatListProps<Type>>(FlatList, 'contentContainerStyle'),
+    createStyledComponent<ViewStyle, FlatListProps<Type>>(
+      FlatList,
+      'contentContainerStyle',
+    ),
     props,
   );
 }
-export function styledSectionList<Type>(props: StyledComponentProps & SectionListProps<Type>) {
+export function styledSectionList<Type>(
+  props: StyledComponentProps & SectionListProps<Type>,
+) {
   return invokeComponent(
     createStyledComponent<ViewStyle, SectionListProps<Type>>(
       SectionList,

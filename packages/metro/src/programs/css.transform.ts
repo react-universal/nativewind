@@ -17,8 +17,9 @@ export const transformCSS = Effect.gen(function* () {
     return Option.none() as Option.Option<worker.TransformResponse>;
   }
 
-  const { transform: lightningcssTransform } =
-    require('lightningcss') as typeof import('lightningcss');
+  const { transform: lightningcssTransform } = require('lightningcss') as Awaited<
+    typeof import('lightningcss')
+  >;
 
   // const files = yield* twinFS.getAllFiles;
   // yield* twinFS.runTwinForFiles(files, platform);
@@ -150,6 +151,5 @@ function escapeBackticksAndOctals(str: string) {
   return str
     .replace(/\\/g, '\\\\')
     .replace(/`/g, '\\`')
-    // biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
     .replace(/[\0-\x07]/g, (match) => `\\0${match.charCodeAt(0).toString(8)}`);
 }

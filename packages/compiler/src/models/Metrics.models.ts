@@ -90,7 +90,6 @@ export class TimerMetric<TLabel extends string> {
 export class SummaryMetric<TLabel extends string> {
   readonly metric: Metric.Metric.Summary<number>;
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   readonly track: <A extends Effect.Effect<any>>(
     task: A,
   ) => ReturnType<Metric.Metric.Summary<number>>;
@@ -130,7 +129,6 @@ export class SummaryMetric<TLabel extends string> {
 
 export class FrequencyMetric<TLabel extends string> {
   readonly metric: Metric.Metric.Frequency<string>;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   readonly track: <A extends Effect.Effect<any>>(task: A) => Effect.Effect<string>;
   constructor(
     readonly label: TLabel,

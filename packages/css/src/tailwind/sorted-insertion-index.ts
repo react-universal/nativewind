@@ -30,7 +30,7 @@ export function compareTwRules(a: SheetEntry, b: SheetEntry): number {
   // base and overrides (css) layers are kept in order they are declared
   const layer = a.precedence & Layer.o;
   // console.log('LAYER: ', layer);
-  if (layer == (b.precedence & Layer.o) && (layer == Layer.b || layer == Layer.o)) {
+  if (layer === (b.precedence & Layer.o) && (layer === Layer.b || layer === Layer.o)) {
     return 0;
   }
   return (
@@ -46,7 +46,5 @@ function byModifier(s: string | null | undefined) {
 }
 
 function byName(s: string | null | undefined) {
-  return (
-    (s || '').replace(/\W/g, (c) => String.fromCharCode(127 + c.charCodeAt(0))) + '\x00'
-  );
+  return `${(s || '').replace(/\W/g, (c) => String.fromCharCode(127 + c.charCodeAt(0)))}\x00`;
 }

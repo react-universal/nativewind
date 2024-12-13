@@ -1,5 +1,5 @@
-import { ComponentSheet } from '@native-twin/css/jsx';
-import { Atom, atom } from '@native-twin/helpers/react';
+import type { ComponentSheet } from '@native-twin/css/jsx';
+import { type Atom, atom } from '@native-twin/helpers/react';
 
 export interface ComponentState {
   meta: {

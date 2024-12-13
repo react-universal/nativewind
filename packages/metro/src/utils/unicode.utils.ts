@@ -35,7 +35,6 @@ export const getUtf8Char = (index: number, length: number, dataView: DataView) =
 };
 
 export const getCharacterLength = (str: string) => {
-  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
   let cp;
   let total = 0;
   let i = 0;

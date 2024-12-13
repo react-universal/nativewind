@@ -1,10 +1,10 @@
-import * as Effect from 'effect/Effect';
-import * as ManagedRuntime from 'effect/ManagedRuntime';
 import {
   LSPConnectionService,
   LSPDocumentsService,
   languagePrograms,
 } from '@native-twin/language-service';
+import * as Effect from 'effect/Effect';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { LspMainLive } from './lsp.layer.js';
 
 const Runtime = ManagedRuntime.make(LspMainLive);

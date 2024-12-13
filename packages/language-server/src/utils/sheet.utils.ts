@@ -1,12 +1,12 @@
-import type { PlatformOSType } from 'react-native';
 import { parseCssValue } from '@native-twin/core';
 import {
-  AnyStyle,
-  FinalSheet,
+  type AnyStyle,
+  type FinalSheet,
+  type SheetEntry,
+  type SheetEntryDeclaration,
   getRuleSelectorGroup,
-  SheetEntry,
-  SheetEntryDeclaration,
 } from '@native-twin/css';
+import type { PlatformOSType } from 'react-native';
 
 export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
   return entries.reduce(
@@ -40,7 +40,7 @@ export function composeDeclarations(
     if (Array.isArray(current.value)) {
       value = [];
       for (const t of current.value) {
-        if (typeof t.value == 'string') {
+        if (typeof t.value === 'string') {
           value.push({
             [t.prop]: parseCssValue(t.prop, t.value, {
               rem: context.units.rem,
@@ -55,14 +55,14 @@ export function composeDeclarations(
       });
       return prev;
     }
-    if (typeof value == 'string') {
+    if (typeof value === 'string') {
       value = parseCssValue(current.prop, value, {
         rem: context.units.rem,
         deviceHeight: context.deviceHeight,
         deviceWidth: context.deviceWidth,
       });
     }
-    if (typeof value == 'object') {
+    if (typeof value === 'object') {
       Object.assign(prev, value);
     } else {
       Object.assign(prev, {

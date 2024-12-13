@@ -3,7 +3,7 @@ import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
 import { diagnosticProviderSource } from '../../utils/constants.utils.js';
 import { isSameRange } from '../../utils/vscode.utils.js';
-import { TwinSheetEntry } from '../twin/TwinSheetEntry.model.js';
+import type { TwinSheetEntry } from '../twin/TwinSheetEntry.model.js';
 
 export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
   readonly message: string;

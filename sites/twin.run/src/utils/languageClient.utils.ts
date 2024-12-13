@@ -1,11 +1,11 @@
+import { CSS_COLORS } from '@native-twin/css';
 import * as vscode from 'vscode';
 import {
   CloseAction,
   ErrorAction,
-  ErrorHandler,
-  ProvideDocumentColorsSignature,
+  type ErrorHandler,
+  type ProvideDocumentColorsSignature,
 } from 'vscode-languageclient';
-import { CSS_COLORS } from '@native-twin/css';
 
 export const onProvideDocumentColors = async (
   document: vscode.TextDocument,

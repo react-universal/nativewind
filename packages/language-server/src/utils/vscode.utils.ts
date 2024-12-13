@@ -1,4 +1,4 @@
-import * as vscode from 'vscode-languageserver-types';
+import type * as vscode from 'vscode-languageserver-types';
 
 export const isSameRange = (range1: vscode.Range, range2: vscode.Range) => {
   return (

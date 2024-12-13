@@ -18,7 +18,7 @@ function lazyJiti() {
 }
 
 export function requireJS(path: string): any {
-  const config = (function () {
+  const config = (() => {
     try {
       return path ? require(path) : {};
     } catch {

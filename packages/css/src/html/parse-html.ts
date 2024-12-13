@@ -20,7 +20,7 @@ export function parseHTML(
   let attributeName = '';
 
   const commit = (currentIndex: number): void => {
-    if (mode == MODE_ATTRIBUTE && attributeName == 'class') {
+    if (mode === MODE_ATTRIBUTE && attributeName === 'class') {
       if (onClass(startIndex, currentIndex, quote) === false) {
         markup = '';
       }
@@ -30,35 +30,35 @@ export function parseHTML(
   for (let position = 0; position < markup.length; position++) {
     const char = markup[position];
 
-    if (mode == MODE_TEXT) {
-      if (char == '<') {
-        mode = markup.substr(position + 1, 3) == '!--' ? MODE_COMMENT : MODE_TAGNAME;
+    if (mode === MODE_TEXT) {
+      if (char === '<') {
+        mode = markup.substr(position + 1, 3) === '!--' ? MODE_COMMENT : MODE_TAGNAME;
       }
-    } else if (mode == MODE_COMMENT) {
+    } else if (mode === MODE_COMMENT) {
       // Ignore everything until the last three characters are '-', '-' and '>'
-      if (char == '>' && markup.slice(position - 2, position) == '--') {
+      if (char === '>' && markup.slice(position - 2, position) === '--') {
         mode = MODE_TEXT;
       }
     } else if (quote) {
-      if (char == quote && markup[position - 1] != '\\') {
+      if (char === quote && markup[position - 1] !== '\\') {
         commit(position);
         mode = MODE_WHITESPACE;
         quote = '';
       }
-    } else if (char == '"' || char == "'") {
+    } else if (char === '"' || char === "'") {
       quote = char;
       startIndex += 1;
-    } else if (char == '>') {
+    } else if (char === '>') {
       commit(position);
       mode = MODE_TEXT;
     } else if (!mode) {
       // MODE_SLASH
       // Ignore everything until the tag ends
-    } else if (char == '=') {
+    } else if (char === '=') {
       attributeName = markup.slice(startIndex, position);
       mode = MODE_ATTRIBUTE;
       startIndex = position + 1;
-    } else if (char == '/' && (mode < MODE_ATTRIBUTE || markup[position + 1] == '>')) {
+    } else if (char === '/' && (mode < MODE_ATTRIBUTE || markup[position + 1] === '>')) {
       commit(position);
       mode = MODE_SLASH;
     } else if (/\s/.test(char!)) {

@@ -2,9 +2,9 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { Range } from 'vscode-languageserver-types';
-import { VscodeCompletionItem } from '../models/language/completion.model.js';
-import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
+import type { VscodeCompletionItem } from '../models/language/completion.model.js';
 import { LSPDocumentsService } from '../services/LSPDocuments.service.js';
+import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
 import { getCompletionsForTokens } from '../utils/language/completion.pipes.js';
 import * as Completions from '../utils/language/completions.maps.js';
 
@@ -21,9 +21,7 @@ export const getCompletionsAtPosition = (
 
     const extracted = Option.Do.pipe(
       Option.bind('document', () => document),
-      Option.let('cursorOffset', ({ document }) =>
-        document.offsetAt(params.position),
-      ),
+      Option.let('cursorOffset', ({ document }) => document.offsetAt(params.position)),
       Option.bind('languageRegionAtPosition', ({ document }) =>
         document.getTemplateAtPosition(params.position),
       ),

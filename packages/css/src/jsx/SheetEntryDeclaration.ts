@@ -1,10 +1,10 @@
+import * as P from '@native-twin/arc-parser';
+import { hasOwnProperty } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import * as Match from 'effect/Match';
 import * as Predicate from 'effect/Predicate';
-import * as P from '@native-twin/arc-parser';
-import { hasOwnProperty } from '@native-twin/helpers';
 import { declarationValueWithUnitParser } from '../css/css-common.parser.js';
 import { unitlessCssProps } from '../css/css.constants.js';
 import type { CSSUnit } from '../css/css.types.js';
@@ -77,7 +77,7 @@ export const compileEntryDeclaration = (
     return RuntimeSheetDeclaration.NOT_COMPILED(decl);
   }
 
-  if (type == 'FLEX') {
+  if (type === 'FLEX') {
     const data = ParseFlexValue(ctx).run(decl.value);
     if (!data.isError && data.result) {
       return RuntimeSheetDeclaration.COMPILED({
@@ -115,8 +115,8 @@ const ParseFlexValue = (ctx: CompilerContext) =>
       ]).map(([flexGrow, flexShrink, flexBasis]) => {
         if (!flexGrow) return null;
         return {
-          flexGrow: parseFloat(String(flexGrow)),
-          flexShrink: parseFloat(String(flexShrink ?? flexGrow)),
+          flexGrow: Number.parseFloat(String(flexGrow)),
+          flexShrink: Number.parseFloat(String(flexShrink ?? flexGrow)),
           flexBasis: (flexBasis as AnyStyle['flexBasis']) ?? '0%',
         };
       }),
@@ -130,11 +130,11 @@ const ParseFlexValue = (ctx: CompilerContext) =>
 export const matchUnitConvert = Match.type<CSSUnit>().pipe(
   Match.when(
     (x) => x === 'px',
-    (_) => (value: string) => parseFloat(value),
+    (_) => (value: string) => Number.parseFloat(value),
   ),
   Match.when(
     (x) => x === 'rem' || x === 'em',
-    (_) => (value: string, rem: number) => parseFloat(value) * rem,
+    (_) => (value: string, rem: number) => Number.parseFloat(value) * rem,
   ),
   Match.when(
     (x) => x === '%',
@@ -146,7 +146,7 @@ export const matchUnitConvert = Match.type<CSSUnit>().pipe(
   ),
   Match.when(
     (x) => x === 'turn',
-    (_) => (value: string) => `${360 * parseFloat(value)}deg`,
+    (_) => (value: string) => `${360 * Number.parseFloat(value)}deg`,
   ),
   Match.when(
     (x) => x === 'deg' || x === 'rad',
@@ -154,27 +154,27 @@ export const matchUnitConvert = Match.type<CSSUnit>().pipe(
   ),
   Match.when(
     (x) => x === 'in',
-    (_) => (value: string) => parseFloat(value) * 96,
+    (_) => (value: string) => Number.parseFloat(value) * 96,
   ),
   Match.when(
     (x) => x === 'pc',
-    (_) => (value: string) => parseFloat(value) * (96 / 6),
+    (_) => (value: string) => Number.parseFloat(value) * (96 / 6),
   ),
   Match.when(
     (x) => x === 'pt',
-    (_) => (value: string) => parseFloat(value) * (96 / 72),
+    (_) => (value: string) => Number.parseFloat(value) * (96 / 72),
   ),
   Match.when(
     (x) => x === 'cm',
-    (_) => (value: string) => parseFloat(value) * 97.8,
+    (_) => (value: string) => Number.parseFloat(value) * 97.8,
   ),
   Match.when(
     (x) => x === 'mm',
-    (_) => (value: string) => parseFloat(value) * (97.8 / 10),
+    (_) => (value: string) => Number.parseFloat(value) * (97.8 / 10),
   ),
   Match.when(
     (x) => x === 'Q',
-    (_) => (value: string) => parseFloat(value) * (97.8 / 40),
+    (_) => (value: string) => Number.parseFloat(value) * (97.8 / 40),
   ),
   Match.orElse((_) => (_value: string) => null),
 );

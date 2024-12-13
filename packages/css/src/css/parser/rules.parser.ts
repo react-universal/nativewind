@@ -1,6 +1,6 @@
 import * as P from '@native-twin/arc-parser';
 import type { FinalSheet } from '../../react-native/rn.types.js';
-import { CssParserData } from './css-parser.types.js';
+import type { CssParserData } from './css-parser.types.js';
 import {
   ParseCssDeclarationLine,
   parseDeclarationProperty,
@@ -29,7 +29,7 @@ export const ParseCssRules = P.coroutine((run) => {
       return result;
     }
     const currentData = run(P.getData);
-    if (nextToken == '@') {
+    if (nextToken === '@') {
       const payload = run(ParseCssAtRule);
       if (!payload) return guessNextRule(result);
       result = {
@@ -80,11 +80,11 @@ export const SkipRules = P.sequenceOf([P.skip(P.everyCharUntil('}')), P.char('}'
 const ParseCssRuleBlock = P.coroutine((run) => {
   const selector = run(ParseSelectorStrict);
   const platformSelector = selector.value.pseudoSelectors.find(
-    (item) => item == 'ios' || item == 'android' || item == 'web',
+    (item) => item === 'ios' || item === 'android' || item === 'web',
   );
   const data = run(P.getData);
   if (platformSelector) {
-    if (!selector.value.pseudoSelectors.some((item) => item == data.context.platform)) {
+    if (!selector.value.pseudoSelectors.some((item) => item === data.context.platform)) {
       run(SkipRules);
       return {
         selector,
@@ -132,30 +132,30 @@ const evaluateMediaQueryConstrains = (
   },
   data: CssParserData,
 ) => {
-  if (typeof node.value == 'number') {
+  if (typeof node.value === 'number') {
     const value = node.value;
-    const valueNumber = typeof value == 'number' ? value : parseFloat(value);
-    if (node.property == 'width') {
-      return data.context.deviceWidth == valueNumber;
+    const valueNumber = typeof value === 'number' ? value : Number.parseFloat(value);
+    if (node.property === 'width') {
+      return data.context.deviceWidth === valueNumber;
     }
 
-    if (node.property == 'height') {
-      return data.context.deviceHeight == valueNumber;
+    if (node.property === 'height') {
+      return data.context.deviceHeight === valueNumber;
     }
 
-    if (node.property == 'min-width') {
+    if (node.property === 'min-width') {
       return data.context.deviceWidth >= valueNumber;
     }
 
-    if (node.property == 'max-width') {
+    if (node.property === 'max-width') {
       return data.context.deviceWidth <= valueNumber;
     }
 
-    if (node.property == 'min-height') {
+    if (node.property === 'min-height') {
       return data.context.deviceHeight >= valueNumber;
     }
 
-    if (node.property == 'max-height') {
+    if (node.property === 'max-height') {
       return data.context.deviceHeight <= valueNumber;
     }
   }

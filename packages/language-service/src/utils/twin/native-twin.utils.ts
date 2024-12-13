@@ -1,25 +1,25 @@
+import type { __Theme__ } from '@native-twin/core';
 import type { TWScreenValueConfig, VariantClassToken } from '@native-twin/css';
+import { type ColorsRecord, asArray, toColorValue } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as Record from 'effect/Record';
-import type { __Theme__ } from '@native-twin/core';
-import { ColorsRecord, asArray, toColorValue } from '@native-twin/helpers';
-import {
-  TemplateTokenWithText,
-  TemplateTokenData,
-} from '../../models/twin/template-token.model.js';
-import { createRuleClassNames, createRuleCompositions } from './native-twin.rules.js';
-import {
-  TwinRuleCompletion,
-  TwinVariantCompletion,
+import type {
   InternalTwFn,
   InternalTwinConfig,
   InternalTwinThemeContext,
+  TwinRuleCompletion,
   TwinStore,
+  TwinVariantCompletion,
 } from '../../models/twin/native-twin.types.js';
-import { LocatedParser, TemplateToken } from '../../models/twin/parser.types.js';
+import type { LocatedParser, TemplateToken } from '../../models/twin/parser.types.js';
+import {
+  TemplateTokenData,
+  TemplateTokenWithText,
+} from '../../models/twin/template-token.model.js';
+import { createRuleClassNames, createRuleCompositions } from './native-twin.rules.js';
 
 export const createTwinStore = (nativeTwinHandler: {
   tw: InternalTwFn;
@@ -195,7 +195,7 @@ export function addTextToParsedRules(
 ): TemplateTokenWithText[] {
   const nextToken = groupContent.shift();
   if (!nextToken) return results;
-  if (nextToken.type == 'ARBITRARY' || nextToken.type === 'CLASS_NAME') {
+  if (nextToken.type === 'ARBITRARY' || nextToken.type === 'CLASS_NAME') {
     results.push(
       new TemplateTokenWithText(
         nextToken,
@@ -205,7 +205,7 @@ export function addTextToParsedRules(
     );
   }
 
-  if (nextToken.type == 'VARIANT_CLASS') {
+  if (nextToken.type === 'VARIANT_CLASS') {
     results.push(
       new TemplateTokenWithText(
         nextToken,

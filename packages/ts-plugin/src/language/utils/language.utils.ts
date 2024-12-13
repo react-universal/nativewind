@@ -1,11 +1,11 @@
 // import { TinyColor } from '@ctrl/tinycolor';
 import ts from 'typescript';
-import {
+import type {
   TwinRuleCompletionWithToken,
   TwinRuleParts,
   TwinRuleWithCompletion,
 } from '../../native-twin/nativeTwin.types';
-import {
+import type {
   LocatedGroupTokenWithText,
   TemplateTokenWithText,
 } from '../../template/template.types';
@@ -18,7 +18,7 @@ export function getCompletionTokenKind({
     return ts.ScriptElementKind.moduleElement;
   }
 
-  if (rule.themeSection == 'colors') {
+  if (rule.themeSection === 'colors') {
     return ts.ScriptElementKind.constElement;
   }
 

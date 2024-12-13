@@ -1,7 +1,7 @@
-import React from 'react';
+import { extract } from '@native-twin/core';
 import type { DocumentContext, DocumentInitialProps } from 'next/document';
 import Document from 'next/document';
-import { extract } from '@native-twin/core';
+import React from 'react';
 
 // import { createStylableComponent } from '@native-twin/jsx';
 

@@ -35,7 +35,6 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
       capabilities.workspace && !!capabilities.workspace.workspaceFolders
     ),
     hasDiagnosticRelatedInformationCapability: !!(
-      // biome-ignore lint/complexity/useOptionalChain: <explanation>
       capabilities.textDocument &&
       capabilities.textDocument.publishDiagnostics &&
       capabilities.textDocument.publishDiagnostics.relatedInformation

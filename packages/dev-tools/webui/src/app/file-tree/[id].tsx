@@ -1,11 +1,11 @@
-import { useSyncExternalStore } from 'react';
-import { View } from 'react-native';
 import {
   componentsStore,
   unsafeGetTreeComponentByKey,
 } from '@/features/app/store/components.store';
 import JsonTreeSvgView from '@/features/json-tree/JsonTree';
 import { useLocalSearchParams } from 'expo-router';
+import { useSyncExternalStore } from 'react';
+import { View } from 'react-native';
 
 export default function TreeScreen() {
   const { id } = useLocalSearchParams<{

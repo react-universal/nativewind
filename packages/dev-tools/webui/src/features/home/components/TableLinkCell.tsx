@@ -1,7 +1,7 @@
-import { View } from 'react-native';
-import { Link, UnknownOutputParams } from 'expo-router';
 import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { Cell } from '@tanstack/react-table';
+import type { Cell } from '@tanstack/react-table';
+import { Link, type UnknownOutputParams } from 'expo-router';
+import { View } from 'react-native';
 
 interface CellProps {
   cell: Cell<RawJSXElementTreeNode, unknown>;

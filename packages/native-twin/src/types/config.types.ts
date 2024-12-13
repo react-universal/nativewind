@@ -1,15 +1,15 @@
 import type {
   CompleteStyle,
   CssFeature,
-  TWParsedRule,
-  RuleHandlerToken,
   Preflight,
+  RuleHandlerToken,
   SheetEntry,
+  TWParsedRule,
 } from '@native-twin/css';
-import type { PlatformOSType } from 'react-native';
 // TODO: Restore
 // import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type { Falsey, MaybeArray } from '@native-twin/helpers';
+import type { PlatformOSType } from 'react-native';
 import type { ExtractThemes, ThemeConfig, __Theme__ } from './theme.types.js';
 
 // CONFIGURATION TYPES
@@ -50,9 +50,9 @@ export interface TailwindUserConfig<
 
 /** PRESETS CONFIG */
 
-export interface PresetThunk<Theme = __Theme__> {
-  (config: TailwindConfig<Theme & __Theme__>): TailwindPresetConfig<Theme>;
-}
+export type PresetThunk<Theme = __Theme__> = (
+  config: TailwindConfig<Theme & __Theme__>,
+) => TailwindPresetConfig<Theme>;
 
 export type Preset<Theme = __Theme__> = TailwindPresetConfig<Theme> | PresetThunk<Theme>;
 
@@ -85,13 +85,11 @@ export type RuleResult = SheetEntry | Falsey;
 
 export type PlatformSupport = 'native' | 'web';
 
-export interface RuleResolver<Theme extends __Theme__ = {}> {
-  (
-    match: RuleHandlerToken,
-    context: ThemeContext<Theme>,
-    parsed: TWParsedRule,
-  ): RuleResult | Falsey;
-}
+export type RuleResolver<Theme extends __Theme__ = {}> = (
+  match: RuleHandlerToken,
+  context: ThemeContext<Theme>,
+  parsed: TWParsedRule,
+) => RuleResult | Falsey;
 
 export type Rule<Theme extends __Theme__ = __Theme__> = [
   pattern: string,
@@ -120,9 +118,10 @@ export interface ReMatchResult extends RegExpExecArray {
 
 export type VariantResult = MaybeArray<string> | Falsey;
 
-export interface VariantResolver<Theme extends __Theme__ = __Theme__> {
-  (match: ReMatchResult, context: ThemeContext<Theme>): VariantResult;
-}
+export type VariantResolver<Theme extends __Theme__ = __Theme__> = (
+  match: ReMatchResult,
+  context: ThemeContext<Theme>,
+) => VariantResult;
 
 export type Variant<Theme extends __Theme__ = __Theme__> = [
   condition: string | RegExp,

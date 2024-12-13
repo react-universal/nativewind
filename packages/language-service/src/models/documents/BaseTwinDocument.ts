@@ -1,12 +1,12 @@
-import * as VSCDocument from 'vscode-languageserver-textdocument';
 import type * as t from '@babel/types';
 import * as Data from 'effect/Data';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import * as Option from 'effect/Option';
-import { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
-import { TemplateTokenWithText } from '../twin/template-token.model.js';
-import { DocumentLanguageRegion } from './LanguageRegion.model.js';
+import type * as Option from 'effect/Option';
+import type * as VSCDocument from 'vscode-languageserver-textdocument';
+import type { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
+import type { TemplateTokenWithText } from '../twin/template-token.model.js';
+import type { DocumentLanguageRegion } from './LanguageRegion.model.js';
 
 interface TwinTokenLocation {
   _tag: 'TwinTokenLocation';

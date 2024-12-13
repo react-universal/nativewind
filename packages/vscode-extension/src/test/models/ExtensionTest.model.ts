@@ -1,7 +1,7 @@
-import * as vscode from 'vscode';
-import { LanguageClient } from 'vscode-languageclient/node.js';
 import path from 'path';
 import { Constants } from '@native-twin/language-service';
+import * as vscode from 'vscode';
+import type { LanguageClient } from 'vscode-languageclient/node.js';
 import { TestDocument } from './TestDocument.model.js';
 
 class ExtensionTestHandler {

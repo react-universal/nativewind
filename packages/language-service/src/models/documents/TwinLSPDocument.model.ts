@@ -1,9 +1,9 @@
-import * as VSCDocument from 'vscode-languageserver-textdocument';
 import type * as t from '@babel/types';
+import { extractLanguageRegions } from '@native-twin/compiler';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
-import { extractLanguageRegions } from '@native-twin/compiler';
-import { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
+import type * as VSCDocument from 'vscode-languageserver-textdocument';
+import type { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
 import { BaseTwinTextDocument } from './BaseTwinDocument.js';
 import { DocumentLanguageRegion } from './LanguageRegion.model.js';
 
@@ -52,7 +52,7 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
 
   // MARK: Private methods
   private getRegionAt(location: t.SourceLocation) {
-    let range = this.babelLocationToRange(location);
+    const range = this.babelLocationToRange(location);
     const text = this.getText(range);
     const startOffset = this.offsetAt(range.start);
     const endOffset = this.offsetAt(range.end);

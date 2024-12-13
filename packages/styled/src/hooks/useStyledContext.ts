@@ -1,5 +1,5 @@
+import type { RuntimeContext } from '@native-twin/css';
 import { useSyncExternalStore } from 'react';
-import { RuntimeContext } from '@native-twin/css';
 import { globalStore } from '../styled/store.js';
 
 export const useStyledContext = () => {
@@ -10,7 +10,7 @@ export const useStyledContext = () => {
   );
 
   const onChangeColorScheme = (scheme: RuntimeContext['colorScheme']) => {
-    if (context.colorScheme != scheme) {
+    if (context.colorScheme !== scheme) {
       globalStore.setState((prevState) => {
         prevState.context = {
           ...prevState.context,

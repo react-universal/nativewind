@@ -1,14 +1,14 @@
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Order from 'effect/Order';
-import * as Predicate from 'effect/Predicate';
+import type * as Predicate from 'effect/Predicate';
 import { OwnSheetSelectors } from '../css/css.constants.js';
 import type { ValidChildPseudoSelector } from '../css/css.types.js';
 import type { SheetEntry } from '../sheets/sheet.types.js';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils.js';
 import {
-  compileEntryDeclaration,
   type RuntimeSheetDeclaration,
+  compileEntryDeclaration,
 } from './SheetEntryDeclaration.js';
 import type { CompilerContext } from './metro.runtime.js';
 

@@ -1,10 +1,10 @@
+import { inspect } from 'util';
+import { Constants } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as Predicate from 'effect/Predicate';
-import { inspect } from 'util';
 import * as vscode from 'vscode';
-import { Constants } from '@native-twin/language-service';
 
 /**
  * @domain `Client`

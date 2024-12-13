@@ -15,13 +15,11 @@ import type {
 } from './extension.models.js';
 import { VscodeContext } from './extension.service.js';
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const executeCommand = (command: string, ...args: Array<any>) =>
   thenable(() => vscode.commands.executeCommand(command, ...args));
 
 export const registerCommand = <R, E, A>(
   command: string,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   f: (...args: Array<any>) => Effect.Effect<A, E, R>,
 ) => {
   return Effect.gen(function* () {
@@ -213,7 +211,6 @@ const emitter = <A>() =>
   });
 
 export const emitterOptional = <A>() =>
-  // biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
   Effect.map(emitter<A | null | undefined | void>(), (emitter) => ({
     ...emitter,
     fire: (data: Option.Option<A>) => emitter.fire(Option.getOrUndefined(data)),

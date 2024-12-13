@@ -1,4 +1,4 @@
-import { type ComponentType, forwardRef, type ReactHTML } from 'react';
+import { type ComponentType, type ReactHTML, forwardRef } from 'react';
 import { Platform, View, type ViewProps } from 'react-native';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';

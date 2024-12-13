@@ -1,13 +1,16 @@
-import * as vscode from 'vscode-languageserver-types';
-import { FinalSheet } from '@native-twin/css';
+import type { FinalSheet } from '@native-twin/css';
+import { asArray } from '@native-twin/helpers';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import { asArray } from '@native-twin/helpers';
-import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
+import * as vscode from 'vscode-languageserver-types';
+import type { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
 import { VscodeCompletionItem } from '../../models/language/completion.model.js';
-import { TwinStore, TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
-import { TemplateTokenData } from '../../models/twin/template-token.model.js';
+import type {
+  TwinRuleCompletion,
+  TwinStore,
+} from '../../models/twin/native-twin.types.js';
+import type { TemplateTokenData } from '../../models/twin/template-token.model.js';
 import { compareTwinRuleWithClassName } from './completion.ap.js';
 import { getDocumentationMarkdown } from './language.utils.js';
 

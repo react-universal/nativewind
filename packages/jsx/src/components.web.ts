@@ -1,4 +1,4 @@
-import { withMappedProps, createStylableComponent } from './styled/index.js';
+import { createStylableComponent, withMappedProps } from './styled/index.js';
 
 const {
   ActivityIndicator: RNActivityIndicator,

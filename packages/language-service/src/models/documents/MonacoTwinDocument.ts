@@ -1,11 +1,11 @@
-import * as vscode from 'vscode';
-import * as VSCDocument from 'vscode-languageserver-textdocument';
-import * as t from '@babel/types';
+import type * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import * as Option from 'effect/Option';
+import type * as vscode from 'vscode';
+import * as VSCDocument from 'vscode-languageserver-textdocument';
 import { extractLanguageRegions } from '../../utils/babel/extractLanguageRegions.web.js';
-import { type NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
+import type { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
 import { BaseTwinTextDocument } from './BaseTwinDocument.js';
 import { DocumentLanguageRegion } from './LanguageRegion.model.js';
 
@@ -22,7 +22,10 @@ interface TwinTokenLocation {
 export const TwinTokenLocation = Data.tagged<TwinTokenLocation>('TwinTokenLocation');
 
 export class TwinMonacoTextDocument extends BaseTwinTextDocument {
-  constructor(document: VSCDocument.TextDocument | vscode.TextDocument, config: NativeTwinPluginConfiguration) {
+  constructor(
+    document: VSCDocument.TextDocument | vscode.TextDocument,
+    config: NativeTwinPluginConfiguration,
+  ) {
     super(
       VSCDocument.TextDocument.create(
         document.uri.toString(),
@@ -58,7 +61,7 @@ export class TwinMonacoTextDocument extends BaseTwinTextDocument {
 
   // MARK: Private methods
   private getRegionAt(location: t.SourceLocation) {
-    let range = this.babelLocationToRange(location);
+    const range = this.babelLocationToRange(location);
     const text = this.getText(range);
     const startOffset = this.offsetAt(range.start);
     const endOffset = this.offsetAt(range.end);

@@ -1,9 +1,9 @@
-import { sheetEntriesToCss, SheetEntry } from '@native-twin/css';
+import { type TailwindConfig, type TailwindUserConfig, install } from '@native-twin/core';
+import { type SheetEntry, sheetEntriesToCss } from '@native-twin/css';
+import { getNonce } from '@native-twin/helpers';
+import { useServerInsertedHTML } from 'next/navigation.js';
 import React, { type ReactNode, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { useServerInsertedHTML } from 'next/navigation.js';
-import { install, TailwindConfig, TailwindUserConfig } from '@native-twin/core';
-import { getNonce } from '@native-twin/helpers';
 interface AppComponentProps {
   children: ReactNode;
 }

@@ -25,7 +25,7 @@ export const toHyphenCase = (value: string) => {
   return value.includes('-')
     ? value
     : // replace any upper-case letter with a dash and the lower-case variant
-      value.replace(/[A-Z]/g, (capital) => '-' + capital.toLowerCase());
+      value.replace(/[A-Z]/g, (capital) => `-${capital.toLowerCase()}`);
 };
 
 /**
@@ -34,7 +34,7 @@ export const toHyphenCase = (value: string) => {
  * @example
  * toTailDashed('padding') => 'padding-'
  * */
-export const toTailDashed = (value: string) => (value ? value + '-' : '');
+export const toTailDashed = (value: string) => (value ? `${value}-` : '');
 
 // Copyright (c) 2016-present Glen Maddern and Maximilian Stoiber
 

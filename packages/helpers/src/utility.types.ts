@@ -54,14 +54,13 @@ export interface ColorsRecord {
 
 export type AnyPrimitive = string | number | boolean;
 
-export type PropsFrom<TComponent> =
-  TComponent extends React.FC<infer Props>
+export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
+  ? Props
+  : TComponent extends React.Component<infer Props>
     ? Props
-    : TComponent extends React.Component<infer Props>
+    : TComponent extends React.ComponentType<infer Props>
       ? Props
-      : TComponent extends React.ComponentType<infer Props>
-        ? Props
-        : never;
+      : never;
 
 export type OmitUndefined<T extends object> = T extends undefined ? never : T;
 

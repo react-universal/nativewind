@@ -49,7 +49,6 @@ const children = (node: VscodeTreeNode): Option.Option<Array<VscodeTreeNode>> =>
 const treeItem = (node: VscodeTreeNode): vscode.TreeItem => {
   switch (node._tag) {
     case 'TreeInfoNode':
-      // biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
       const item = new vscode.TreeItem(node.key, vscode.TreeItemCollapsibleState.None);
       item.description = node.value;
       item.tooltip = node.value;

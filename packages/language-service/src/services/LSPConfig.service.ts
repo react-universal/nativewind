@@ -7,7 +7,7 @@ import * as SubscriptionRef from 'effect/SubscriptionRef';
 import { getClientCapabilities } from '../utils/connection.utils.js';
 import {
   DEFAULT_PLUGIN_CONFIG,
-  NativeTwinPluginConfiguration,
+  type NativeTwinPluginConfiguration,
 } from '../utils/constants.utils.js';
 import { loggerUtils } from '../utils/lsp.logger.service.js';
 import { LSPConnectionService } from './LSPConnection.service.js';
@@ -49,10 +49,10 @@ const make = Effect.gen(function* () {
       if (!Predicate.isRecord(changes)) return;
 
       const currentConfig = yield* SubscriptionRef.get(ref);
-      let pluginConfig = currentConfig.vscode;
+      const pluginConfig = currentConfig.vscode;
 
       if ('nativeTwin' in changes && changes['nativeTwin']) {
-        Connection.console.debug(`Configuration changes received: `);
+        Connection.console.debug('Configuration changes received: ');
 
         yield* SubscriptionRef.set(ref, {
           ...currentConfig,

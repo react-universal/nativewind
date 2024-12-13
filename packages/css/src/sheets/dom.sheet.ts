@@ -7,7 +7,7 @@ export function createDomSheet(
   element?: HTMLStyleElement | string | null | false,
 ): Sheet<HTMLStyleElement> {
   const target =
-    element && typeof element != 'string' ? element : getStyleElement(element);
+    element && typeof element !== 'string' ? element : getStyleElement(element);
 
   return {
     target,
@@ -34,7 +34,7 @@ export function createDomSheet(
     },
 
     insert(entry, index) {
-      const node = typeof entry == 'string' ? entry : sheetEntriesToCss(entry);
+      const node = typeof entry === 'string' ? entry : sheetEntriesToCss(entry);
       target.insertBefore(
         document.createTextNode(node),
         target.childNodes[index] || null,

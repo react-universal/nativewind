@@ -1,13 +1,13 @@
-import { Numberify, RGBA, TinyColor } from '@ctrl/tinycolor';
+import { type Numberify, type RGBA, TinyColor } from '@ctrl/tinycolor';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
-import { Range, Color } from 'vscode-languageserver-types';
-import { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
-import { TemplateTokenData } from '../../models/twin/template-token.model.js';
-import { TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
-import { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
+import { Color, Range } from 'vscode-languageserver-types';
+import type { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
+import type { TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
+import type { TemplateTokenData } from '../../models/twin/template-token.model.js';
+import type { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
 
 export const getDocumentTemplatesColors = (
   twinService: NativeTwinManagerService['Type'],

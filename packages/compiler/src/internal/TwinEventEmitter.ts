@@ -2,10 +2,8 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Runtime from 'effect/Runtime';
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type Listener<T extends Array<any>> = (...args: T) => void;
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export class TwinEventEmitter<EventMap extends Record<string, Array<any>>> {
   private eventListeners: {
     [K in keyof EventMap]?: Set<Listener<EventMap[K]>>;
@@ -167,7 +165,6 @@ const emitter = <A>() =>
   });
 
 export const emitterOptional = <A>() =>
-  // biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
   Effect.map(emitter<A | null | undefined | void>(), (emitter) => ({
     ...emitter,
     fire: (data: Option.Option<A>) => emitter.fire(Option.getOrUndefined(data)),

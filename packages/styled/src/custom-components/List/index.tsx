@@ -1,4 +1,4 @@
-import { type ComponentType, forwardRef, type PropsWithChildren } from 'react';
+import { type ComponentType, type PropsWithChildren, forwardRef } from 'react';
 import { Platform, Text, type TextProps, View, type ViewProps } from 'react-native';
 import { UL as PrimitiveUL } from './ul/index.js';
 

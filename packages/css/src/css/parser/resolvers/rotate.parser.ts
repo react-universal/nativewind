@@ -11,14 +11,14 @@ export const ParseRotateValue = P.sequenceOf([
   ]),
   P.betweenParens(ParseCssDimensions),
 ]).map(([key, value]): AnyStyle['transform'] => {
-  if (key == 'rotateX') {
+  if (key === 'rotateX') {
     return [{ rotateX: `${value}` }];
   }
-  if (key == 'rotateY') {
+  if (key === 'rotateY') {
     return [{ rotateY: `${value}` }];
   }
 
-  if (key == 'rotateZ') {
+  if (key === 'rotateZ') {
     return [{ rotateZ: `${value}` }];
   }
 

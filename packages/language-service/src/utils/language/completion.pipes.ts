@@ -1,11 +1,11 @@
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
-import {
+import type { TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
+import type {
   TemplateTokenData,
   TemplateTokenWithText,
 } from '../../models/twin/template-token.model.js';
-import { TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
-import { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
+import type { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
 import { getFlattenTemplateToken } from './language.utils.js';
 
 export const getCompletionsForTokens = (

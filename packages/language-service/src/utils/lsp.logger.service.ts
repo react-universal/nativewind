@@ -78,7 +78,6 @@ export const createLspLogger = (scope: string) =>
     }
   });
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const logFormat = (x: any) =>
   pipe(
     inspect(x, {

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import * as Command from '@effect/cli/Command';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
-import { Effect, Logger, LogLevel } from 'effect';
+import { Effect, LogLevel, Logger } from 'effect';
 import { TwinCli } from './command';
 
 const run = TwinCli.pipe(

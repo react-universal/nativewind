@@ -335,7 +335,7 @@ export function choice<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R>([
 ]): Parser<A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R>;
 export function choice(parsers: Parser<any>[]): Parser<any>;
 export function choice(parsers: Parser<any>[]): Parser<any> {
-  if (parsers.length == 0) throw new Error(`List of parsers can't be empty.`);
+  if (parsers.length === 0) throw new Error(`List of parsers can't be empty.`);
   return new Parser((state) => {
     if (state.isError) return state;
 

@@ -1,14 +1,14 @@
-import { TextDocument } from 'vscode-languageserver-textdocument';
-import * as vscode from 'vscode-languageserver/node.js';
-import * as Layer from 'effect/Layer';
 import {
+  LSPConfigService,
   LSPConnectionService,
   LSPDocumentsService,
-  NativeTwinManagerService,
-  LSPConfigService,
-  TwinLSPDocument,
   NativeTwinManager,
+  NativeTwinManagerService,
+  TwinLSPDocument,
 } from '@native-twin/language-service';
+import * as Layer from 'effect/Layer';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import * as vscode from 'vscode-languageserver/node.js';
 import { LoggerLive } from './services/logger.service.js';
 
 const documentsHandler = new vscode.TextDocuments(TextDocument);

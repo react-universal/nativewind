@@ -1,10 +1,9 @@
-import * as vscode from 'vscode';
-import { useCallback, useState } from 'react';
-import * as Effect from 'effect/Effect';
 import { EditorMainRuntime } from '@/editor/editor.runtime';
-import { TwinEditorConfigService } from '@/editor/services/EditorConfig.service';
-import { MonacoContext } from '@/editor/services/MonacoContext.service';
-
+import type { TwinEditorConfigService } from '@/editor/services/EditorConfig.service';
+import type { MonacoContext } from '@/editor/services/MonacoContext.service';
+import * as Effect from 'effect/Effect';
+import { useCallback, useState } from 'react';
+import * as vscode from 'vscode';
 
 export const useEditorBoot = (
   app: MonacoContext['Type'],

@@ -37,7 +37,7 @@ export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> 
 
     insert(entry, index) {
       const className = entry.className;
-      const cssText = typeof entry == 'string' ? entry : sheetEntriesToCss(entry);
+      const cssText = typeof entry === 'string' ? entry : sheetEntriesToCss(entry);
       try {
         // Insert
         target.insertRule(cssText, index);

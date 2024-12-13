@@ -1,23 +1,23 @@
 import {
   ActivityIndicator,
+  FlatList,
+  Image,
+  ImageBackground,
+  KeyboardAvoidingView,
   Pressable,
+  SafeAreaView,
   ScrollView,
   StatusBar,
   Switch,
   Text,
   TextInput,
-  SafeAreaView,
-  TouchableOpacity,
-  View,
-  Image,
   TouchableHighlight,
+  TouchableOpacity,
   TouchableWithoutFeedback,
-  FlatList,
-  ImageBackground,
-  KeyboardAvoidingView,
+  View,
   VirtualizedList,
 } from 'react-native';
-import { withMappedProps, createStylableComponent } from './styled/index.js';
+import { createStylableComponent, withMappedProps } from './styled/index.js';
 
 createStylableComponent(Image, { className: 'style' });
 createStylableComponent(Pressable, { className: 'style' });

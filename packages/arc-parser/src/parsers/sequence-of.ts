@@ -2,9 +2,11 @@ import { Parser, updateParserResult } from './Parser.js';
 
 export function sequenceOf<A>([p1]: [Parser<A>]): Parser<[A]>;
 export function sequenceOf<A, B>([p1, p2]: [Parser<A>, Parser<B>]): Parser<[A, B]>;
-export function sequenceOf<A, B, C>([p1, p2, p3]: [Parser<A>, Parser<B>, Parser<C>]): Parser<
-  [A, B, C]
->;
+export function sequenceOf<A, B, C>([p1, p2, p3]: [
+  Parser<A>,
+  Parser<B>,
+  Parser<C>,
+]): Parser<[A, B, C]>;
 export function sequenceOf<A, B, C, D>([p1, p2, p3, p4]: [
   Parser<A>,
   Parser<B>,

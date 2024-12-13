@@ -1,4 +1,7 @@
-import { Constants, type NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import {
+  Constants,
+  type NativeTwinPluginConfiguration,
+} from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { identity, pipe } from 'effect/Function';
@@ -119,7 +122,6 @@ export const TwinTreeDataFilesProvider = makeTreeDataProvider<AnyTreeDataNode>(
 const treeItem = (node: AnyTreeDataNode) => {
   switch (node._tag) {
     case 'FileTreeNode':
-      // biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
       const fileNode = new vscode.TreeItem(
         node.label,
         vscode.TreeItemCollapsibleState.Collapsed,
@@ -129,7 +131,6 @@ const treeItem = (node: AnyTreeDataNode) => {
       fileNode.id = node.id;
       return fileNode;
     case 'FileTwinRegionTreeNode':
-      // biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
       const regionNode = new vscode.TreeItem(
         'JSX Region',
         vscode.TreeItemCollapsibleState.None,
@@ -157,7 +158,6 @@ const children = (
 ): Option.Option<Array<AnyTreeDataNode>> => {
   switch (node._tag) {
     case 'FileTreeNode':
-      // biome-ignore lint/correctness/noSwitchDeclarations: <explanation>
       const regions = node.getChilds(config);
       return Option.some(regions);
     case 'FileTwinRegionTreeNode':

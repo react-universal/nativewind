@@ -1,4 +1,4 @@
-import { ColorsRecord } from './utility.types.js';
+import type { ColorsRecord } from './utility.types.js';
 
 export function flattenObjectByPath(obj: any, path: string[] = []) {
   const flatten: Record<string, any> = {};
@@ -8,13 +8,13 @@ export function flattenObjectByPath(obj: any, path: string[] = []) {
     if (value) {
       flatten[keyPath.join('-')] = value;
     }
-    if (key == 'DEFAULT') {
+    if (key === 'DEFAULT') {
       keyPath = path;
       if (value) {
         flatten[path.join('-')] = value;
       }
     }
-    if (typeof value == 'object') {
+    if (typeof value === 'object') {
       Object.assign(flatten, flattenObjectByPath(value, keyPath));
     }
   }
@@ -35,14 +35,14 @@ export function flattenColorPalette(
       flatten[keyPath.join('-')] = value;
     }
 
-    if (key == 'DEFAULT') {
+    if (key === 'DEFAULT') {
       keyPath = path;
       if (value) {
         flatten[path.join('-')] = value;
       }
     }
 
-    if (typeof value == 'object') {
+    if (typeof value === 'object') {
       Object.assign(flatten, flattenColorPalette(value, keyPath));
     }
   }

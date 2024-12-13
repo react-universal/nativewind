@@ -1,9 +1,9 @@
 import {
   Layer,
-  moveToLayer,
-  parsedRuleToClassName,
   type SheetEntry,
   type TWParsedRule,
+  moveToLayer,
+  parsedRuleToClassName,
 } from '@native-twin/css';
 import type { ThemeContext } from '../types/config.types.js';
 import { convert } from './convertRule.js';
@@ -16,7 +16,7 @@ import { convert } from './convertRule.js';
  * @return {SheetEntry} The converted sheet entry.
  */
 export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): SheetEntry {
-  if (rule.n == 'group') {
+  if (rule.n === 'group') {
     return {
       className: 'group',
       declarations: [],

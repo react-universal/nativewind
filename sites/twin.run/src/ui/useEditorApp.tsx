@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
 // import { attachPart, Parts } from '@codingame/monaco-vscode-views-service-override';
 import * as vscode from 'vscode';
-import { useEffect, useRef, useState } from 'react';
 import { useTwinEditor } from './Editor.context';
 
 export const useEditorApp = () => {

@@ -1,5 +1,5 @@
-import React from 'react';
-import * as RN from 'react-native';
+import type React from 'react';
+import type * as RN from 'react-native';
 import styledComponentsFactory from './StyledComponent.js';
 
 const styled = <StyleType, InitialProps extends { style?: RN.StyleProp<StyleType> }>(

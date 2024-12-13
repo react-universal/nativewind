@@ -1,15 +1,15 @@
-import { cornerMap, directionMap, TWScreenValueConfig } from '@native-twin/css';
+import type { RuleMeta } from '@native-twin/core';
+import { type TWScreenValueConfig, cornerMap, directionMap } from '@native-twin/css';
+import { type ColorsRecord, asArray } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
-import type { RuleMeta } from '@native-twin/core';
-import { ColorsRecord, asArray } from '@native-twin/helpers';
-import { DEFAULT_RULE_META } from '../constants.utils.js';
-import {
+import type {
   InternalNativeTwinRule,
-  TwinRuleParts,
   TwinRuleCompletion,
+  TwinRuleParts,
 } from '../../models/twin/native-twin.types.js';
+import { DEFAULT_RULE_META } from '../constants.utils.js';
 
 export function getRuleParts(rule: InternalNativeTwinRule): TwinRuleParts {
   const pattern = rule[0];
@@ -94,13 +94,13 @@ const composeClassName = (pattern: string) => (suffix: string) => {
   if (pattern.endsWith('-')) {
     return `${pattern}${suffix}`;
   }
-  if (suffix == pattern) return pattern;
+  if (suffix === pattern) return pattern;
   if (pattern.includes('|')) return suffix;
   return pattern + suffix;
 };
 
 const composeExpansion = (expansion: string) => {
-  if (!expansion || expansion == '') {
+  if (!expansion || expansion === '') {
     return `-${expansion}`;
   }
   return `${expansion}-`;

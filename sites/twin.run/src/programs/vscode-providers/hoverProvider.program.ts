@@ -1,17 +1,17 @@
-import * as vscode from 'vscode';
+import { TwinTextDocument } from '@/editor/models/TwinTextDocument.model';
 import { sheetEntriesToCss } from '@native-twin/css';
+import {
+  Constants,
+  DocumentLanguageRegion,
+  NativeTwinManagerService,
+  completionRuleToQuickInfo,
+  getSheetEntryStyles,
+} from '@native-twin/language-service/browser';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import { isRecord } from 'effect/Predicate';
-import {
-  completionRuleToQuickInfo,
-  Constants,
-  DocumentLanguageRegion,
-  getSheetEntryStyles,
-  NativeTwinManagerService,
-} from '@native-twin/language-service/browser';
-import { TwinTextDocument } from '@/editor/models/TwinTextDocument.model';
+import * as vscode from 'vscode';
 
 export const InstallHoverProvider = Effect.gen(function* () {
   const twin = yield* NativeTwinManagerService;

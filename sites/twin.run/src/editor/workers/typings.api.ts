@@ -1,3 +1,4 @@
+import typingsWorker from '@/lsp/workers/typings.worker?worker&url';
 import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
 import * as EffectWorker from '@effect/platform/Worker';
 import * as RA from 'effect/Array';
@@ -5,9 +6,8 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Stream from 'effect/Stream';
 import * as monaco from 'monaco-editor';
-import typingsWorker from '@/lsp/workers/typings.worker?worker&url';
 import { FileSystemService } from '../services/FileSystem.service';
-import { GetPackageTypings } from './shared.schemas';
+import type { GetPackageTypings } from './shared.schemas';
 
 const typingsWorkerLayer = BrowserWorker.layer(
   () => new globalThis.Worker(typingsWorker, { type: 'module' }),

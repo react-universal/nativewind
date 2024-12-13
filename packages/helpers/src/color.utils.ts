@@ -13,16 +13,25 @@ export function toColorValue(
     opacityValue: '1',
   },
 ): string {
-  if (color[0] == '#' && (color.length == 4 || color.length == 7)) {
+  if (color[0] === '#' && (color.length === 4 || color.length === 7)) {
     color = color.replace('#', '');
-    const r = parseInt(color.length == 3 ? color.slice(0, 1).repeat(2) : color.slice(0, 2), 16);
-    const g = parseInt(color.length == 3 ? color.slice(1, 2).repeat(2) : color.slice(2, 4), 16);
-    const b = parseInt(color.length == 3 ? color.slice(2, 3).repeat(2) : color.slice(4, 6), 16);
+    const r = Number.parseInt(
+      color.length === 3 ? color.slice(0, 1).repeat(2) : color.slice(0, 2),
+      16,
+    );
+    const g = Number.parseInt(
+      color.length === 3 ? color.slice(1, 2).repeat(2) : color.slice(2, 4),
+      16,
+    );
+    const b = Number.parseInt(
+      color.length === 3 ? color.slice(2, 3).repeat(2) : color.slice(4, 6),
+      16,
+    );
     return `rgba(${[r, g, b, options.opacityValue]})`;
   }
 
-  if (options.opacityValue == '1') return color;
+  if (options.opacityValue === '1') return color;
 
-  if (options.opacityValue == '0') return '#0000';
+  if (options.opacityValue === '0') return '#0000';
   return color.replace(/^(rgb|hsl)(\([^)]+)\)$/, `$1a$2,${options.opacityValue})`);
 }

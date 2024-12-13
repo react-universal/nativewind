@@ -1,4 +1,4 @@
-import { ComponentType, createElement } from 'react';
+import { type ComponentType, createElement } from 'react';
 import type { ComponentConfig } from '../../types/styled.types.js';
 import { getComponentType } from '../../utils/react.utils.js';
 

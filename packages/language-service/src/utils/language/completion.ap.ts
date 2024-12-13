@@ -1,7 +1,7 @@
 import * as Equivalence from 'effect/Equivalence';
 import * as Order from 'effect/Order';
 import type * as vscode from 'vscode-languageserver';
-import {
+import type {
   TwinRuleCompletion,
   TwinVariantCompletion,
 } from '../../models/twin/native-twin.types.js';

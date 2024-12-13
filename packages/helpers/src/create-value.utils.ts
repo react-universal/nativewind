@@ -1,5 +1,3 @@
-
-
 // 0: '0px',
 // 2: '2px',
 // 4: '4px',
@@ -62,10 +60,10 @@ export function createPercentRatios(start: number, end: number): Record<string, 
   do {
     // XXX: using var to avoid strange bug when generating cjs where `= 1` is removed
     for (let dividend = 1; dividend < start; dividend++) {
-      result[`${dividend}/${start}`] = Number(((dividend / start) * 100).toFixed(6)) + '%';
+      result[`${dividend}/${start}`] =
+        `${Number(((dividend / start) * 100).toFixed(6))}%`;
     }
   } while (++start <= end);
 
   return result;
 }
-

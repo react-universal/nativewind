@@ -1,5 +1,5 @@
-import type { DocumentSelector } from 'vscode-languageserver-protocol';
 import type { RuleMeta } from '@native-twin/core';
+import type { DocumentSelector } from 'vscode-languageserver-protocol';
 import type { InternalTwinConfig } from '../models/twin/native-twin.types.js';
 
 export const DOCUMENT_SELECTORS = [

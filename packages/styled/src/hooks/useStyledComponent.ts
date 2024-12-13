@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import { StyleSheet, Touchable } from 'react-native';
 import type { AnyStyle } from '@native-twin/css';
+import { useMemo } from 'react';
+import { StyleSheet, type Touchable } from 'react-native';
 import type { StyledComponentProps } from '../types/styled.types.js';
 import { useChildren } from './useChildren.js';
 import { useComponentInteractions } from './useComponentInteractions.js';
@@ -42,7 +42,8 @@ function useBuildStyledComponent({
 
   const componentStyles = useMemo(() => {
     const styles: AnyStyle = stylesheet.getStyles({
-      isParentActive: parentComponent.active || parentComponent.focus || parentComponent.hover,
+      isParentActive:
+        parentComponent.active || parentComponent.focus || parentComponent.hover,
       isPointerActive:
         component.interactionState.active ||
         component.interactionState.focus ||

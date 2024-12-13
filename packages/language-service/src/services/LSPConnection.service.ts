@@ -7,8 +7,5 @@ export class LSPConnectionService extends Context.Tag('connection/service')<
   vscode.Connection
 >() {
   static make = (connection: vscode.Connection) =>
-    Layer.succeed(
-      LSPConnectionService,
-      connection,
-    );
+    Layer.succeed(LSPConnectionService, connection);
 }
