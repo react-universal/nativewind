@@ -8,6 +8,7 @@ import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
+import { TwinPathLive } from '../internal/fs/fs.path.js';
 import { JSXElementNode } from '../models/JSXElement.model.js';
 import type {
   NodeWithMappedAttributes,
@@ -23,7 +24,7 @@ import {
   memberExpressionIsReactImport,
 } from '../utils/babel/babel.utils.js';
 import { TwinDocumentsContextLive } from './TwinDocuments.service.js';
-import { TwinNodeContext } from './TwinNodeContext.service.js';
+import { TwinNodeContext, TwinNodeContextLive } from './TwinNodeContext.service.js';
 
 const makeJSXElementNode = (
   filename: string,
@@ -79,6 +80,7 @@ export const BabelCompilerContext = Context.GenericTag<BabelCompilerContext>(
 );
 
 export const BabelCompilerContextLive = Layer.effect(BabelCompilerContext, make).pipe(
-  Layer.provide(TwinNodeContext.Live),
+  Layer.provide(TwinNodeContextLive),
   Layer.provide(TwinDocumentsContextLive),
+  Layer.provide(TwinPathLive),
 );

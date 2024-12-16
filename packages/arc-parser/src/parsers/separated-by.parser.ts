@@ -11,7 +11,6 @@ export const separatedBy =
       let error = null;
       const results: T[] = [];
 
-      // eslint-disable-next-line no-constant-condition
       while (true) {
         const valState = valueParser.transform(nextState);
         const sepState = separatorParser.transform(valState);

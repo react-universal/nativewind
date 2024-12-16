@@ -5,20 +5,20 @@ import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Sink from 'effect/Sink';
 import * as Stream from 'effect/Stream';
-import { FsUtils, FsUtilsLive } from '../internal/fs.utils.js';
+import { FSUtils, TwinPath } from '../internal/fs';
 import { JSXElementNode } from '../models/JSXElement.model.js';
 import { TwinFileDocument } from '../models/TwinDocument.model.js';
 import { getElementEntries } from '../utils/babel/babel.jsx.js';
-import { TwinNodeContext } from './TwinNodeContext.service.js';
+import { TwinNodeContext, TwinNodeContextLive } from './TwinNodeContext.service.js';
 
 export const make = Effect.gen(function* () {
-  const ctx = yield* TwinNodeContext;
-  const fs = yield* FsUtils;
+  const { getTwinRuntime } = yield* TwinNodeContext;
+  const fs = yield* FSUtils.FsUtils;
 
   return {
     createDocument,
     createDocumentByPath,
-    compileDocument: getDocumentNodes,
+    getDocumentNodes,
     compileManyDocuments,
   };
 
@@ -41,7 +41,7 @@ export const make = Effect.gen(function* () {
 
   function getDocumentNodes(document: TwinFileDocument, platform: string) {
     return Effect.gen(function* () {
-      const { compilerContext, tw } = yield* ctx.getTwinRuntime(platform);
+      const { compilerContext, tw } = yield* getTwinRuntime(platform);
       const mappedElements = yield* document.mappedAttributes;
       const jsxElements = HashSet.map(
         mappedElements,
@@ -63,12 +63,12 @@ export const make = Effect.gen(function* () {
     });
   }
 
-  function createDocument(path: string, content: string) {
+  function createDocument(path: TwinPath.AbsoluteFilePath, content: string) {
     return Effect.sync(() => new TwinFileDocument(path, content));
   }
 
-  function createDocumentByPath(path: string) {
-    return fs.readFile(path).pipe(Effect.flatMap((x) => createDocument(path, x)));
+  function createDocumentByPath(path: TwinPath.AbsoluteFilePath) {
+    return fs.readFile(path).pipe(Effect.flatMap((text) => createDocument(path, text)));
   }
 });
 
@@ -77,6 +77,7 @@ export const TwinDocumentsContext =
   Context.GenericTag<TwinDocumentsContext>('compiler/files');
 
 export const TwinDocumentsContextLive = Layer.scoped(TwinDocumentsContext, make).pipe(
-  Layer.provide(TwinNodeContext.Live),
-  Layer.provide(FsUtilsLive),
+  Layer.provide(TwinNodeContextLive),
+  Layer.provide(FSUtils.FsUtilsLive),
+  Layer.provide(TwinPath.TwinPathLive),
 );

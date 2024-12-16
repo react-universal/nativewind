@@ -61,12 +61,12 @@ export class JSXElementNode implements Equal.Equal {
   readonly runtimeData: JSXMappedAttribute[];
   readonly entries: RuntimeComponentEntry[];
   readonly childEntries: ChildsSheet;
+
   constructor({ filename, leave, order, runtimeData, entries }: JSXElementNodeInit) {
     this.leave = leave;
     this.filename = filename;
     this.order = order;
     this.runtimeData = runtimeData;
-    // this.id = `${jsxElementHash(leave.value.babelNode, filename)}`;
     this.id = leave.value.uid;
     this.entries = entries;
     this.childEntries = getChildRuntimeEntries(this.entries);

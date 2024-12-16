@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "module": "ES2022",
     "resolvePackageJsonExports": false,
+    "noImplicitOverride": false,
     "esModuleInterop": true
   },
   "include": ["src"],

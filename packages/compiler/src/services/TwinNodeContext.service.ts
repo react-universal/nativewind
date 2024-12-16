@@ -1,29 +1,30 @@
-import * as path from 'node:path';
 import type { CompilerContext } from '@native-twin/css/jsx';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
-import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as micromatch from 'micromatch';
-import { FsUtils, FsUtilsLive } from '../internal/fs.utils.js';
-import type { ExtractedTwinConfig } from '../models/Twin.models.js';
-import { createFilesTree } from '../utils/logger.utils.js';
+import { TwinPath } from '../internal/fs';
+import { TwinPathLive } from '../internal/fs/fs.path';
+import type { ImportedTwinConfig } from '../models/Twin.models.js';
 import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
 
-const TwinNodeContextLive = Effect.gen(function* () {
+const make = Effect.gen(function* () {
   const env = yield* CompilerConfigContext;
-  const fs = yield* FsUtils;
+  const twinPath = yield* TwinPath.TwinPath;
 
-  const projectFilesRef = yield* SubscriptionRef.make(HashSet.empty<string>());
   const twinConfigRef = yield* SubscriptionRef.make(
     extractTwinConfig(env.twinConfigPath),
+  );
+  const projectFilesRef = yield* SubscriptionRef.make(
+    HashSet.fromIterable(
+      yield* getProjectFilesFromConfig(yield* Ref.get(twinConfigRef), 'sync'),
+    ),
   );
   const runningPlatformsRef = yield* SubscriptionRef.make(HashSet.empty<string>());
   const twRunnersRef = yield* Ref.get(twinConfigRef).pipe(
@@ -35,42 +36,17 @@ const TwinNodeContextLive = Effect.gen(function* () {
     ),
   );
 
-  const getAllowedGlobPatterns = Ref.get(twinConfigRef).pipe(
-    Effect.map((x) =>
-      pipe(
-        RA.map(x.content, (x) => path.join(env.projectRoot, x)),
-        (x) => [env.twinConfigPath.pipe(Option.getOrElse(() => '')), ...x],
-      ),
-    ),
-  );
-
   return {
     state: {
       projectFiles: {
         ref: projectFilesRef,
         get: SubscriptionRef.get(projectFilesRef),
-        changes: Stream.changes(projectFilesRef.changes).pipe(
-          Stream.tap((x) =>
-            createFilesTree(RA.fromIterable(x), env.projectRoot).pipe(
-              Effect.tap((message) =>
-                message.length > 0
-                  ? Effect.logDebug('Project files: \n', message.trimStart())
-                  : Effect.void,
-              ),
-            ),
-          ),
-        ),
+        changes: Stream.changes(projectFilesRef.changes),
       },
       twinConfig: {
         ref: twinConfigRef,
         get: SubscriptionRef.get(twinConfigRef),
         changes: Stream.changes(twinConfigRef.changes),
-        subscribeWith: (
-          equals: (
-            a: ExtractedTwinConfig,
-            b: ExtractedTwinConfig,
-          ) => Effect.Effect<boolean>,
-        ) => Stream.changesWithEffect(twinConfigRef.changes, equals),
       },
       runningPlatforms: {
         ref: runningPlatformsRef,
@@ -86,7 +62,6 @@ const TwinNodeContextLive = Effect.gen(function* () {
     getOutputCSSPath,
     getTwinRuntime,
     getProjectFilesFromConfig,
-    getProjectFilesFromConfigSync,
     onChangeTwinConfigFile,
   };
 
@@ -99,14 +74,16 @@ const TwinNodeContextLive = Effect.gen(function* () {
     );
   }
 
-  function getProjectFilesFromConfig(config: ExtractedTwinConfig) {
-    return fs
-      .glob(config.content)
-      .pipe(Effect.map(RA.map((x) => (typeof x === 'string' ? x : x.parentPath))));
-  }
-
-  function getProjectFilesFromConfigSync(config: ExtractedTwinConfig) {
-    return fs.globFilesSync(config.content);
+  function getProjectFilesFromConfig(
+    config: ImportedTwinConfig,
+    mode: 'sync' | 'async' = 'async',
+  ) {
+    return Stream.fromIterable(config.content).pipe(
+      Stream.map(twinPath.make.glob),
+      Stream.runCollect,
+      Effect.flatMap((globs) => twinPath.glob(globs, mode)),
+      Effect.map(RA.map(twinPath.make.absoluteFromString)),
+    );
   }
 
   function onChangeTwinConfigFile() {
@@ -149,24 +126,21 @@ const TwinNodeContextLive = Effect.gen(function* () {
   }
 
   function isAllowedPath(filePath: string) {
-    return getAllowedGlobPatterns.pipe(
+    return Ref.get(projectFilesRef).pipe(
       Effect.map((globPatterns) => {
+        const absPath = twinPath.make.absoluteFromString(filePath);
         return (
-          micromatch.isMatch(path.join(env.projectRoot, filePath), globPatterns) ||
-          micromatch.isMatch(filePath, globPatterns)
+          HashSet.has(absPath) ||
+          micromatch.isMatch(absPath, RA.fromIterable(globPatterns))
         );
       }),
     );
   }
 });
 
-export class TwinNodeContext extends Context.Tag('node/shared/context')<
-  TwinNodeContext,
-  Effect.Effect.Success<typeof TwinNodeContextLive>
->() {
-  static Live = Layer.scoped(TwinNodeContext, TwinNodeContextLive).pipe(
-    Layer.provide(FsUtilsLive),
-  );
-}
+export interface TwinNodeContext extends Effect.Effect.Success<typeof make> {}
+export const TwinNodeContext = Context.GenericTag<TwinNodeContext>('node/shared/context');
 
-export type NodeContextShape = TwinNodeContext['Type'];
+export const TwinNodeContextLive = Layer.effect(TwinNodeContext, make).pipe(
+  Layer.provide(TwinPathLive),
+);

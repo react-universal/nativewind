@@ -5,8 +5,8 @@ import {
   CompilerConfigContext,
   type NodeWithNativeTwinOptions,
   TwinDocumentsContextLive,
-  TwinFileSystem,
-  TwinNodeContext,
+  TwinFSContextLive,
+  TwinNodeContextLive,
   TwinWatcherContextLive,
   createCompilerConfig,
 } from '@native-twin/compiler';
@@ -14,15 +14,15 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 
 export const MetroMainLayer = Layer.empty.pipe(
-  Layer.provideMerge(TwinNodeContext.Live),
+  Layer.provideMerge(TwinNodeContextLive),
   Layer.provideMerge(BabelCompilerContextLive),
   Layer.provideMerge(TwinDocumentsContextLive),
 );
-export const MetroLayerWithTwinFS = TwinFileSystem.Live.pipe(
+export const MetroLayerWithTwinFS = TwinFSContextLive.pipe(
   Layer.provideMerge(MetroMainLayer),
 );
 export const MetroLayerWithTwinWatcher = TwinWatcherContextLive.pipe(
-  Layer.provideMerge(TwinFileSystem.Live),
+  Layer.provideMerge(TwinFSContextLive),
   Layer.provideMerge(MetroMainLayer),
 );
 

@@ -1,33 +1,67 @@
-import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
-import * as Ref from 'effect/Ref';
+import * as Record from 'effect/Record';
 import * as Stream from 'effect/Stream';
-import { FsUtils, FsUtilsLive } from '../internal/fs.utils.js';
+import { FSUtils, FSWatcher } from '../internal/fs';
+import { TwinPathLive } from '../internal/fs/fs.path';
 import { CompilerConfigContext } from '../services/CompilerConfig.service.js';
-import { TwinFileSystem } from '../services/TwinFileSystem.service.js';
-import { TwinNodeContext } from '../services/TwinNodeContext.service.js';
-import { listenForkedStreamChanges } from '../utils/effect.utils.js';
+import { TwinFSContext, TwinFSContextLive } from '../services/TwinFileSystem.service.js';
+import {
+  TwinNodeContext,
+  TwinNodeContextLive,
+} from '../services/TwinNodeContext.service.js';
 import {
   TwinDocumentsContext,
   TwinDocumentsContextLive,
 } from './TwinDocuments.service.js';
 
 export const TwinWatcherContextLive = Effect.gen(function* () {
-  const { state, onChangeTwinConfigFile } = yield* TwinNodeContext;
+  const ctx = yield* TwinNodeContext;
   const env = yield* CompilerConfigContext;
-  const twinFS = yield* TwinFileSystem;
+  const twinFS = yield* TwinFSContext;
+  const fsWatcher = yield* FSWatcher.FSWatcherContext;
   const { createDocumentByPath, compileManyDocuments } = yield* TwinDocumentsContext;
 
-  yield* state.projectFiles.changes.pipe(
+  const watchEvents = yield* fsWatcher.subscribe();
+  yield* watchEvents.pipe(
+    Stream.filterMap(Option.getRight),
+    Stream.tap((x) => Effect.log('HUB_FS_EVENT: ', x.path)),
+
+    // Stream.mapEffect(
+    //   FileSystemEvent.$match({
+    //     DirectoryAdded: () => Effect.void,
+    //     DirectoryRemoved: () => Effect.void,
+    //     FileAdded: onCreateFile,
+    //     FileChanged: (event) => Effect.void,
+    //     FileRemoved: (event) => Effect.void,
+    //   }),
+    // ),
+    Stream.flatMap((x) => {
+      return Stream.fromEffect(fsWatcher.instance).pipe(
+        Stream.map((x) => x.getWatched()),
+        Stream.tap((files) => Effect.logDebug('Observing:', Record.keys(files))),
+      );
+    }),
+    Stream.runDrain,
+    Effect.tap(() => Effect.log('HUB_FS_EVENT_DRAINED')),
+    Logger.withMinimumLogLevel(env.logLevel),
+    Effect.forkDaemon,
+  );
+
+  const projectFilesEffect = yield* ctx.state.projectFiles.changes.pipe(
+    // Stream.tap((paths) => Effect.logDebug('COMPILING_PATHS: ', paths)),
+    // Stream.tap((paths) =>
+    //   fsWatcher.add(
+    //     HashSet.flatMap(paths, (file) => HashSet.make(file, fs.path_.dirname(file))),
+    //   ),
+    // ),
     Stream.mapEffect((paths) => Effect.all(HashSet.map(paths, createDocumentByPath))),
     Stream.filter((x) => x.length > 0),
     Stream.runForEach((files) =>
-      Stream.fromIterableEffect(state.runningPlatforms.get).pipe(
+      Stream.fromIterableEffect(ctx.state.runningPlatforms.get).pipe(
         Stream.runForEach((platform) =>
           compileManyDocuments(files, platform).pipe(
             Effect.flatMap((registry) => twinFS.refreshCssOutput(platform, registry)),
@@ -42,92 +76,32 @@ export const TwinWatcherContextLive = Effect.gen(function* () {
   );
 
   // Watch Twin config ref
-  yield* state.twinConfig.changes.pipe(
+  const twinConfigEffect = yield* ctx.state.twinConfig.changes.pipe(
     Stream.tap(() => Effect.log('Refreshing twin config...')),
     Stream.runForEach(() =>
-      onChangeTwinConfigFile().pipe(
-        Effect.tap(() => Effect.logDebug('Twin config refreshed')),
-      ),
+      ctx
+        .onChangeTwinConfigFile()
+        .pipe(Effect.tap(() => Effect.logDebug('Twin config refreshed'))),
     ),
     Logger.withMinimumLogLevel(env.logLevel),
     Effect.forkDaemon,
   );
 
-  yield* watchProjectFiles.pipe(
-    Logger.withMinimumLogLevel(env.logLevel),
-    Effect.forkDaemon,
-  );
+  yield* Effect.forkAll([projectFilesEffect, twinConfigEffect], {
+    discard: false,
+  }).pipe(Effect.forkDaemon);
 
   return yield* Effect.succeed({});
+
 }).pipe(
+  Effect.forkDaemon,
+  Effect.tapError((error) => Effect.logError('ERROR: ', error)),
+  Effect.withLogSpan('TWIN_WATCHER'),
   Layer.scopedDiscard,
-  Layer.provide(TwinFileSystem.Live),
-  Layer.provide(FsUtilsLive),
+  Layer.provide(TwinFSContextLive),
+  Layer.provide(FSUtils.FsUtilsLive),
+  Layer.provide(FSWatcher.FSWatcherContextLive),
   Layer.provide(TwinDocumentsContextLive),
-  Layer.provide(TwinNodeContext.Live),
+  Layer.provide(TwinNodeContextLive),
+  Layer.provide(TwinPathLive),
 );
-
-const watchProjectFiles = Effect.gen(function* () {
-  const fs = yield* FsUtils;
-  const env = yield* CompilerConfigContext;
-  const { isAllowedPath, state, getProjectFilesFromConfig, onChangeTwinConfigFile } =
-    yield* TwinNodeContext;
-
-  const allowedPaths = yield* state.twinConfig.get.pipe(
-    Effect.flatMap((config) => getProjectFilesFromConfig(config)),
-  );
-  const twinWatcher = fs
-    .createWatcher(
-      env.projectRoot,
-      pipe(
-        RA.map(allowedPaths, (x) => fs.path_.dirname(x)),
-        RA.dedupe,
-      ),
-    )
-    .pipe(Stream.filterEffect((x) => isAllowedPath(x.path)));
-
-  return yield* listenForkedStreamChanges(twinWatcher, (event) =>
-    Effect.gen(function* () {
-      const relativePath = fs.path_.relative(env.projectRoot, event.path);
-
-      if (event._tag === 'Create') {
-        yield* Effect.logDebug('[watcher]: File added:', relativePath);
-        return yield* onCreateOrUpdateFile(event.path);
-      }
-
-      if (event._tag === 'Update') {
-        if (
-          Option.isSome(env.twinConfigPath) &&
-          event.path === env.twinConfigPath.value
-        ) {
-          yield* Effect.logDebug('[watcher]: Twin config file changed', relativePath);
-          return yield* onChangeTwinConfigFile();
-        }
-
-        yield* Effect.logDebug('[watcher]: File updated:', relativePath);
-        return yield* onCreateOrUpdateFile(event.path);
-      }
-
-      if (event._tag === 'Remove') {
-        return yield* onRemoveFile(event.path).pipe(
-          Effect.tap(() => Effect.logDebug('[watcher]: File removed:', relativePath)),
-        );
-      }
-    }),
-  );
-
-  function onRemoveFile(path: string) {
-    return Effect.gen(function* () {
-      return yield* Ref.update(state.projectFiles.ref, (x) => HashSet.remove(x, path));
-    });
-  }
-
-  function onCreateOrUpdateFile(filePath: string) {
-    return Effect.gen(function* () {
-      const currentFiles = yield* state.projectFiles.get;
-      if (!HashSet.has(currentFiles, filePath)) {
-        yield* Ref.set(state.projectFiles.ref, currentFiles.pipe(HashSet.add(filePath)));
-      }
-    });
-  }
-});

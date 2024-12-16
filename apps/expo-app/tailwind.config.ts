@@ -3,7 +3,7 @@ import { defineConfig } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 
 export const twinConfig = defineConfig({
-  content: ['index.js', 'App.tsx' ,'./src/**/*.{js,jsx,ts,tsx}'],
+  content: ['index.js', 'App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
   root: {
     rem: 50,
   },

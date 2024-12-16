@@ -6,7 +6,7 @@ import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import { js_beautify } from 'js-beautify';
-import { FsUtils } from '../internal/fs.utils.js';
+import { TwinPath } from '../internal/fs';
 import type { JSXElementNode } from '../models/JSXElement.model.js';
 import { CompilerConfigContext } from '../services/CompilerConfig.service.js';
 import { getJSXCompiledTreeRuntime, runtimeEntriesToAst } from './babel/babel.jsx.js';
@@ -34,7 +34,7 @@ const getJSXElementOutput = (
 const getNativeFileOutput = (stringStyles: string, platform: string) =>
   Effect.gen(function* () {
     const writer = new CodeBlockWriter.default();
-    const { path_: path } = yield* FsUtils;
+    const twinPath = yield* TwinPath.TwinPath;
     const env = yield* CompilerConfigContext;
 
     writer.writeLine(`const setup = require('@native-twin/core').setup;`);
@@ -44,13 +44,13 @@ const getNativeFileOutput = (stringStyles: string, platform: string) =>
     const outputFilePath =
       env.platformPaths[platform as 'native'] ?? env.platformPaths.native;
 
-    let importTwinPath = path.relative(
-      path.dirname(outputFilePath),
+    let importTwinPath = twinPath.relative(
+      twinPath.make.absoluteFromString(twinPath.dirname(outputFilePath)),
       env.twinConfigPath.pipe(Option.getOrElse(() => '')),
     );
 
     if (!importTwinPath.startsWith('.')) {
-      importTwinPath = `./${importTwinPath}`;
+      importTwinPath = twinPath.make.relativeFromString(`./${importTwinPath}`);
     }
 
     writer.writeLine(`const twinConfig = require('${importTwinPath}');`);

@@ -14,6 +14,7 @@ import {
   type Range,
   TextDocument,
 } from 'vscode-languageserver-textdocument';
+import type { TwinPath } from '../internal/fs';
 import { streamJsxElementTrees } from '../utils/babel/babel.transform.js';
 import { extractMappedAttributes, getBabelAST } from '../utils/babel/babel.utils.js';
 import type { JSXElementTree } from './Babel.models.js';
@@ -31,21 +32,20 @@ export interface TwinBaseDocument {
 }
 
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
-  readonly textDocument: TextDocument;
+  textDocument: TextDocument;
   private _ast: ParseResult<t.File>;
 
-  constructor(path: string, content: string) {
-    this.textDocument = TextDocument.create(path, 'twin', 1, content);
-    this._ast = getBabelAST(this.textDocument.getText(), path);
+  constructor(
+    readonly uri: TwinPath.AbsoluteFilePath,
+    content: string,
+  ) {
+    this.textDocument = TextDocument.create(uri, 'twin', 1, content);
+    this._ast = getBabelAST(this.textDocument.getText(), uri);
     this.isPositionAtOffset.bind(this);
   }
 
   get ast() {
     return this._ast;
-  }
-
-  get uri() {
-    return this.textDocument.uri;
   }
 
   get version() {
@@ -90,6 +90,26 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
       return { ...range };
     }
     return range;
+  }
+
+  refreshDoc(content: string) {
+    if (Hash.string(content) !== Hash.string(this.getText())) {
+      this.textDocument = TextDocument.update(
+        this.textDocument,
+        [
+          {
+            range: {
+              start: this.positionAt(0),
+              end: this.positionAt(this.getText().length - 1),
+            },
+            text: content,
+          },
+        ],
+        this.version,
+      );
+    }
+
+    return this;
   }
 
   // MARK: Equality protocol
@@ -153,4 +173,20 @@ interface TwinTokenLocation {
     end: number;
   };
   text: string;
+}
+
+export class DocumentKey implements Equal.Equal {
+  constructor(readonly uri: string) {}
+
+  static getDocumentCacheKey(uri: string): DocumentKey {
+    return new DocumentKey(uri);
+  }
+
+  [Hash.symbol](): number {
+    return Hash.hash(this.uri);
+  }
+
+  [Equal.symbol](u: unknown): boolean {
+    return u instanceof DocumentKey && this.uri === u.uri;
+  }
 }

@@ -1,6 +1,7 @@
 import type { RuntimeTW, TailwindConfig, __Theme__ } from '@native-twin/core';
 import type { SelectorGroup, SheetEntry } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
+import type { AbsoluteFilePath } from '../internal/fs/fs.path';
 
 export interface PartialRule extends SheetEntry {
   group: SelectorGroup;
@@ -8,14 +9,7 @@ export interface PartialRule extends SheetEntry {
 
 export type InternalTwinConfig = __Theme__ & TailwindPresetTheme;
 export type InternalTwFn = RuntimeTW<InternalTwinConfig, SheetEntry[]>;
-export type ExtractedTwinConfig = TailwindConfig<InternalTwinConfig>;
-// export class ExtractedTwinConfig {
-//   private _currentConfig: Option.Option<TailwindConfig<InternalTwinConfig>> =
-//     Option.none();
-
-//   constructor(readonly configPath: string) {}
-
-//   get currentConfig() {
-//     return extractTwinConfig(this.configPath);
-//   }
-// }
+export interface ExtractedTwinConfig extends TailwindConfig<InternalTwinConfig> {
+  content: AbsoluteFilePath[];
+}
+export type ImportedTwinConfig = TailwindConfig<InternalTwinConfig>;

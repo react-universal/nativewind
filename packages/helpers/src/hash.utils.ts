@@ -14,7 +14,6 @@ const hashTable = hashSource.split(' ').map((s) => Number.parseInt(s, 16));
 function createHash(str: string) {
   let crc = -1;
   for (let i = 0, iTop = str.length; i < iTop; i++) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     crc = (crc >>> 8) ^ hashTable[(crc ^ str.charCodeAt(i)) & 0xff]!;
   }
   return (crc ^ -1) >>> 0;

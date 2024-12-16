@@ -2530,33 +2530,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/sql-sqlite-node@npm:^0.21.9":
-  version: 0.21.12
-  resolution: "@effect/sql-sqlite-node@npm:0.21.12"
-  dependencies:
-    "@opentelemetry/semantic-conventions": "npm:^1.25.1"
-    better-sqlite3: "npm:^11.1.2"
-  peerDependencies:
-    "@effect/platform": ^0.69.28
-    "@effect/sql": ^0.20.12
-    effect: ^3.10.19
-  checksum: 10/f78833ec773d975455a135287e444f557a638b0fad000385ad151e5db0bb927f56c6d3802571d0a6d6cd05613119abfd51a0e4aec434a22db81c5db64f32f5d6
-  languageName: node
-  linkType: hard
-
-"@effect/sql@npm:^0.20.9":
-  version: 0.20.12
-  resolution: "@effect/sql@npm:0.20.12"
-  dependencies:
-    "@opentelemetry/semantic-conventions": "npm:^1.25.1"
-  peerDependencies:
-    "@effect/experimental": ^0.32.12
-    "@effect/platform": ^0.69.28
-    effect: ^3.10.19
-  checksum: 10/9938b78fb692cfaa70dfdb33f18515cd47ceff8cb7c755e20d4684b6f3c53d885eb0b41e56ae4ab5b906597157fe00cc6a8de5ba0d9b6d7071b529d9db46c0b9
-  languageName: node
-  linkType: hard
-
 "@effect/typeclass@npm:^0.29.19":
   version: 0.29.19
   resolution: "@effect/typeclass@npm:0.29.19"
@@ -3914,8 +3887,6 @@ __metadata:
     "@effect/platform-node": "npm:^0.64.4"
     "@effect/platform-node-shared": "npm:^0.19.3"
     "@effect/printer-ansi": "npm:^0.38.0"
-    "@effect/sql": "npm:^0.20.9"
-    "@effect/sql-sqlite-node": "npm:^0.21.9"
     "@effect/typeclass": "npm:^0.29.19"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
@@ -3925,7 +3896,7 @@ __metadata:
     "@types/js-beautify": "npm:^1"
     "@types/micromatch": "npm:^4.0.4"
     babel-plugin-tester: "npm:^11.0.4"
-    chokidar: "npm:^4.0.1"
+    chokidar: "npm:^3.5.3"
     code-block-writer: "npm:^13.0.1"
     effect: "npm:^3.10.0"
     fast-check: "npm:^3.21.0"
@@ -4354,13 +4325,6 @@ __metadata:
   version: 0.1.1
   resolution: "@one-ini/wasm@npm:0.1.1"
   checksum: 10/673c11518dba2e582e42415cbefe928513616f3af25e12f6e4e6b1b98b52b3e6c14bc251a361654af63cd64f208f22a1f7556fa49da2bf7efcf28cb14f16f807
-  languageName: node
-  linkType: hard
-
-"@opentelemetry/semantic-conventions@npm:^1.25.1":
-  version: 1.28.0
-  resolution: "@opentelemetry/semantic-conventions@npm:1.28.0"
-  checksum: 10/c182a3206769b5d5a8ab89a5c674d046fd789421cef27ea55af179990e314732433c98e5017aa23e99f15fd2b0e13cb129bb6c2282da6860ce9419adf32b2e87
   languageName: node
   linkType: hard
 
@@ -7585,17 +7549,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^11.1.2":
-  version: 11.6.0
-  resolution: "better-sqlite3@npm:11.6.0"
-  dependencies:
-    bindings: "npm:^1.5.0"
-    node-gyp: "npm:latest"
-    prebuild-install: "npm:^7.1.1"
-  checksum: 10/044e80ec7de7029bcd35ee728e0ff22e3b14f408b99a948ffc461ef9cf0633915ac4b0182e79281c733930c273273405607188a52a7f25c09af888152874f469
-  languageName: node
-  linkType: hard
-
 "big-integer@npm:1.6.x":
   version: 1.6.52
   resolution: "big-integer@npm:1.6.52"
@@ -7607,15 +7560,6 @@ __metadata:
   version: 2.3.0
   resolution: "binary-extensions@npm:2.3.0"
   checksum: 10/bcad01494e8a9283abf18c1b967af65ee79b0c6a9e6fcfafebfe91dbe6e0fc7272bafb73389e198b310516ae04f7ad17d79aacf6cb4c0d5d5202a7e2e52c7d98
-  languageName: node
-  linkType: hard
-
-"bindings@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "bindings@npm:1.5.0"
-  dependencies:
-    file-uri-to-path: "npm:1.0.0"
-  checksum: 10/593d5ae975ffba15fbbb4788fe5abd1e125afbab849ab967ab43691d27d6483751805d98cb92f7ac24a2439a8a8678cd0131c535d5d63de84e383b0ce2786133
   languageName: node
   linkType: hard
 
@@ -8212,15 +8156,6 @@ __metadata:
     fsevents:
       optional: true
   checksum: 10/c327fb07704443f8d15f7b4a7ce93b2f0bc0e6cea07ec28a7570aa22cd51fcf0379df589403976ea956c369f25aa82d84561947e227cd925902e1751371658df
-  languageName: node
-  linkType: hard
-
-"chokidar@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "chokidar@npm:4.0.1"
-  dependencies:
-    readdirp: "npm:^4.0.1"
-  checksum: 10/62749d2173a60cc5632d6c6e0b7024f33aadce47b06d02e55ad03c7b8daaaf2fc85d4296c047473d04387fd992dab9384cc5263c70a3dc3018b7ebecfb5b5217
   languageName: node
   linkType: hard
 
@@ -10859,13 +10794,6 @@ __metadata:
   version: 4.1.1
   resolution: "fetch-retry@npm:4.1.1"
   checksum: 10/c97006c2b604a817cbd4e35085965d07a8f1c51b475bf037f305b98d5748ee742ec98aba119b4df6bf727e61f2f0ee05c5fa714701c4234b91c4b43e0f119bd9
-  languageName: node
-  linkType: hard
-
-"file-uri-to-path@npm:1.0.0":
-  version: 1.0.0
-  resolution: "file-uri-to-path@npm:1.0.0"
-  checksum: 10/b648580bdd893a008c92c7ecc96c3ee57a5e7b6c4c18a9a09b44fb5d36d79146f8e442578bc0e173dc027adf3987e254ba1dfd6e3ec998b7c282873010502144
   languageName: node
   linkType: hard
 
@@ -16255,7 +16183,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prebuild-install@npm:^7.1.0, prebuild-install@npm:^7.1.1":
+"prebuild-install@npm:^7.1.0":
   version: 7.1.2
   resolution: "prebuild-install@npm:7.1.2"
   dependencies:
@@ -17043,13 +16971,6 @@ __metadata:
     string_decoder: "npm:^1.1.1"
     util-deprecate: "npm:^1.0.1"
   checksum: 10/d9e3e53193adcdb79d8f10f2a1f6989bd4389f5936c6f8b870e77570853561c362bee69feca2bbb7b32368ce96a85504aa4cedf7cf80f36e6a9de30d64244048
-  languageName: node
-  linkType: hard
-
-"readdirp@npm:^4.0.1":
-  version: 4.0.2
-  resolution: "readdirp@npm:4.0.2"
-  checksum: 10/4ef93103307c7d5e42e78ecf201db58c984c4d66882a27c956250478b49c2444b1ff6aea8ce0f5e4157b2c07ce2fe870ad16c92ebd7c6ff30391ded6e42b9873
   languageName: node
   linkType: hard
 

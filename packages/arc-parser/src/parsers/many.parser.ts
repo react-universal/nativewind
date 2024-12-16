@@ -6,7 +6,6 @@ export const many = <A>(parser: Parser<A>): Parser<A[]> => {
 
     const results = [];
     let nextState = state;
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       const out = parser.transform(nextState);
 

@@ -32,6 +32,20 @@ export {
   assertString,
 } from './string.utils.js';
 
+export { warn, type WarningEventMap } from './warn.js';
+
+export {
+  createExponentialUnits,
+  createLinearUnits,
+  createPercentRatios,
+} from './create-value.utils.js';
+
+export { flattenObjectByPath, flattenColorPalette } from './object.utils.js';
+
+export { isUndefined, isNotUndefined } from './guards.utils.js';
+
+export * as Base64Utils from './base64.js';
+
 export type {
   ArrayType,
   DeepPartial,
@@ -50,13 +64,3 @@ export type {
   NegativeInteger,
   PositiveInteger,
 } from './utility.types.js';
-
-export { warn, type WarningEventMap } from './warn.js';
-
-export {
-  createExponentialUnits,
-  createLinearUnits,
-  createPercentRatios,
-} from './create-value.utils.js';
-
-export { flattenObjectByPath, flattenColorPalette } from './object.utils.js';

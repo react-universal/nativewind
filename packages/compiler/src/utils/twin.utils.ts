@@ -1,22 +1,22 @@
 import * as vm from 'node:vm';
-import { type TailwindConfig, createTailwind, defineConfig } from '@native-twin/core';
+import { createTailwind, defineConfig } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import * as Option from 'effect/Option';
-import type { InternalTwFn, InternalTwinConfig } from '../models/Twin.models.js';
+import type { ImportedTwinConfig, InternalTwFn } from '../models/Twin.models.js';
 import { maybeLoadJS } from './modules.utils.js';
 
 export const extractTwinConfig = (
   configPath: Option.Option<string>,
-): TailwindConfig<InternalTwinConfig> => {
+): ImportedTwinConfig => {
   return configPath.pipe(
-    Option.flatMap(maybeLoadJS<TailwindConfig<InternalTwinConfig>>),
+    Option.flatMap(maybeLoadJS<ImportedTwinConfig>),
     Option.getOrElse(() => defineConfig({ content: [] })),
   );
 };
 
 export const createTwinProcessor = (
   platform: 'web' | 'native',
-  twConfig: TailwindConfig<InternalTwinConfig>,
+  twConfig: ImportedTwinConfig,
 ): InternalTwFn => {
   const context = vm.createContext({
     twConfig: defineConfig({

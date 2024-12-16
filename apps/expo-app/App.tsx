@@ -3,10 +3,10 @@ import { Text, View } from 'react-native';
 import { setup } from '@native-twin/core';
 import tailwindConfig from './tailwind.config';
 
-setup(tailwindConfig);
+setup(tailwindConfig); 
 // console.log('ccc. ', config.config);
-export default function App() {
-  return (
+export default function App() { 
+  return (  
     <View className='bg-gray-900 flex-1 items-center justify-center first:bg-green'>
       <View
         className={`
@@ -23,4 +23,4 @@ export default function App() {
       </View>
     </View>
   );
-}
+} 
