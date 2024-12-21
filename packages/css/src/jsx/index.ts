@@ -66,6 +66,10 @@ export type {
   RegisteredComponent,
   /** @category — CSS Parsers */
   ComponentSheet,
+  RuntimeJSXStyle,
+  RuntimeTwinComponentProps,
+  RuntimeTwinMappedProp,
+  TwinInjectedObject,
 } from './Component.js';
 
 export type {

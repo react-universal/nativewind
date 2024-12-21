@@ -69,8 +69,8 @@ export const getJSXElementSource = (path: JSXElementNodePath) =>
   );
 
 export const runtimeEntriesToAst = (entries: string) => {
-  const ast = template.ast(entries);
   try {
+    const ast = template.ast(entries);
     let value: t.Expression | undefined;
     if (Array.isArray(ast)) return;
 

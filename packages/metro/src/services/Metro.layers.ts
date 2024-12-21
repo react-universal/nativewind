@@ -5,7 +5,6 @@ import {
   CompilerConfigContext,
   FSUtils,
   type NodeWithNativeTwinOptions,
-  TwinDocumentsContextLive,
   TwinFSContextLive,
   TwinNodeContextLive,
   TwinPath,
@@ -18,7 +17,6 @@ import * as Layer from 'effect/Layer';
 export const MetroMainLayer = Layer.empty.pipe(
   Layer.provideMerge(TwinNodeContextLive),
   Layer.provideMerge(BabelCompilerContextLive),
-  Layer.provideMerge(TwinDocumentsContextLive),
 );
 export const MetroLayerWithTwinFS = TwinFSContextLive.pipe(
   Layer.provideMerge(MetroMainLayer),

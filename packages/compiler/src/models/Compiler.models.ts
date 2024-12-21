@@ -1,4 +1,5 @@
-import type { InjectableEntry } from '@native-twin/css';
+import { parseExpression } from '@babel/parser';
+import type { RuntimeTwinMappedProp, TwinInjectedObject } from '@native-twin/css/jsx';
 import CodeBlockWriter from 'code-block-writer';
 import * as Array from 'effect/Array';
 import type * as Data from 'effect/Data';
@@ -6,8 +7,7 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
-import { runtimeEntriesToAst } from '../utils/babel/babel.jsx';
-import { addJsxAttribute, addJsxExpressionAttribute } from '../utils/babel/babel.utils';
+import { addJsxExpressionAttribute } from '../utils/babel/babel.utils';
 import { expressionFactory } from '../utils/babel/writer.factory';
 import type { CompiledMappedProp, TwinBabelJSXElement } from './Babel.models';
 
@@ -35,19 +35,23 @@ export class TwinCompiledElement implements Equal.Equal {
   }
 
   runtimeEntriesToCode() {
-    const result = Array.fromIterable(this.props)
+    const runtimeObject = this.toRuntimeObject();
+    const result = Array.fromIterable(runtimeObject.props)
       .map((x) => this.compiledPropToCode(x))
       .join(',');
-    return `[${result}]`;
+    return `{ id: "${this.id}", index: ${runtimeObject.index}, props: [${result}] }`;
   }
 
   mutateBabelAST() {
     const code = this.runtimeEntriesToCode();
-    const astProps = runtimeEntriesToAst(code);
+    const astProps = parseExpression(code, {
+      sourceType: 'script',
+      errorRecovery: true,
+    });
 
-    addJsxAttribute(this.babel.babelNode, '_twinComponentID', `${this.id}`);
-    addJsxAttribute(this.babel.babelNode, '_twinOrd', this.babel.index);
-
+    if (astProps.errors.length > 0) {
+      console.log('ERRORS: ', astProps.errors);
+    }
     if (astProps) {
       addJsxExpressionAttribute(this.babel.babelNode, '_twinInjected', astProps);
     }
@@ -57,40 +61,54 @@ export class TwinCompiledElement implements Equal.Equal {
     };
   }
 
-  private compiledPropToCode(compiledProp: CompiledMappedProp) {
-    const id = this.id;
+  private compiledPropToCode(compiledProp: RuntimeTwinMappedProp) {
     const w = expressionFactory(new CodeBlockWriter());
-    const entries = Array.fromIterable(compiledProp.entries).map(
-      (entry): InjectableEntry => ({
-        className: entry.className,
-        declarations: entry.runtimeDeclarations,
-        group: entry.selectorGroup(),
-        important: entry.important,
-        precedence: entry.precedence,
-        style: entry.styles,
-      }),
-    );
-    const templateEntries = compiledProp.templateExpression.pipe(
-      Option.flatMap(
-        Option.liftPredicate(
-          (template) => template.length > 0 && template.replaceAll(/`/g, '').length > 0,
-        ),
-      ),
-      Option.getOrNull,
-    );
 
     w.writer.block(() => {
-      w.writer.writeLine(`id: "${id}",`);
       w.writer.writeLine(`target: "${compiledProp.target}",`);
       w.writer.writeLine(`prop: "${compiledProp.prop}",`);
       w.writer.write('entries: ');
-      w.array(entries).write(',');
-      // w.writer.writeLine(`templateLiteral: ${entry.templateLiteral},`);
-      w.writer.writeLine(`templateEntries: ${templateEntries},`);
-      // w.writer.write('rawSheet: ');
-      // w.object(entry.rawSheet).write(',');
+      w.array(compiledProp.entries).write(',');
+      w.writer.writeLine(`templateEntries: ${compiledProp.templateEntries},`);
     });
     return w.writer.toString();
+  }
+
+  toRuntimeObject(): TwinInjectedObject {
+    const id = this.id;
+    const index = this.babel.index;
+    const props = this.getRuntimeProps();
+    return {
+      id: `${id}`,
+      index,
+      props,
+    };
+  }
+
+  private getRuntimeProps(): RuntimeTwinMappedProp[] {
+    return Array.fromIterable(this.props).map(
+      (mapped): RuntimeTwinMappedProp => ({
+        entries: Array.fromIterable(mapped.entries).map((entry) => ({
+          className: entry.className,
+          declarations: entry.runtimeDeclarations,
+          group: entry.selectorGroup(),
+          important: entry.important,
+          inherited: entry.inherited,
+          precedence: entry.precedence,
+        })),
+        prop: mapped.prop,
+        target: mapped.target,
+        templateEntries: mapped.templateExpression.pipe(
+          Option.flatMap(
+            Option.liftPredicate(
+              (template) =>
+                template.length > 0 && template.replaceAll(/`/g, '').length > 0,
+            ),
+          ),
+          Option.getOrNull,
+        ),
+      }),
+    );
   }
 
   [Hash.symbol](): number {

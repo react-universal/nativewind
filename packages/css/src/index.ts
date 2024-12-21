@@ -156,7 +156,6 @@ export type {
   /** @category — CSS parsers */
   SheetInteractionState,
   SortableEntry,
-  InjectableEntry,
 } from './sheets/sheet.types.js';
 export type {
   /** @category — CSS parsers */

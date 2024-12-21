@@ -12,10 +12,7 @@ import {
   TwinNodeContext,
   TwinNodeContextLive,
 } from '../services/TwinNodeContext.service.js';
-import {
-  TwinDocumentsContext,
-  TwinDocumentsContextLive,
-} from './TwinDocuments.service.js';
+import { TwinFileContext, TwinFileContextLive } from './TwinFile.service';
 
 export const TwinWatcherContextLive = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
@@ -23,7 +20,7 @@ export const TwinWatcherContextLive = Effect.gen(function* () {
   // TODO: REIMPLEMENT WATCHER
   yield* TwinFSContext;
   const fsWatcher = yield* FSWatcher.FSWatcherContext;
-  const { createDocumentByPath } = yield* TwinDocumentsContext;
+  const { getTwinFile } = yield* TwinFileContext;
   const watchEvents = yield* fsWatcher.subscribe();
 
   yield* watchEvents.pipe(
@@ -42,7 +39,9 @@ export const TwinWatcherContextLive = Effect.gen(function* () {
   );
 
   yield* ctx.state.projectFiles.changes.pipe(
-    Stream.mapEffect((paths) => Effect.all(HashSet.map(paths, createDocumentByPath))),
+    Stream.mapEffect((paths) =>
+      Effect.all(HashSet.map(paths, (x) => getTwinFile(x, Option.none()))),
+    ),
     Stream.filter((x) => x.length > 0),
     Stream.runForEach((files) =>
       Stream.fromIterableEffect(ctx.state.runningPlatforms.get).pipe(
@@ -82,6 +81,6 @@ export const TwinWatcherContextLive = Effect.gen(function* () {
   Layer.provide(FSUtils.FsUtilsLive),
   Layer.provide(TwinPath.TwinPathLive),
   Layer.provide(FSWatcher.FSWatcherContextLive),
-  Layer.provide(TwinDocumentsContextLive),
+  Layer.provide(TwinFileContextLive),
   Layer.provide(TwinNodeContextLive),
 );

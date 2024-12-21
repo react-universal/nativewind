@@ -17,13 +17,13 @@ import {
   TwinBabelError,
   type TwinBabelJSXElement,
 } from './Babel.models';
-import { TwinFileDocument } from './TwinDocument.model';
+import { BaseTwinTextDocument } from './TwinDocument.model';
 
 export class TwinElement {
   constructor(readonly babelPath: NodePath<t.JSXElement>) {}
 }
 
-export class TwinFile extends TwinFileDocument {
+export class TwinFile extends BaseTwinTextDocument {
   get isTwinElement() {
     return this.getBabelTwinElements().pipe(
       Effect.map((elements) => Iterable.isEmpty(elements)),

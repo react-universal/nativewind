@@ -1,3 +1,4 @@
+import type { SelectorGroup } from '../css/css.types.js';
 import type {
   AnyStyle,
   FinalSheet,
@@ -6,6 +7,7 @@ import type {
 import type { SheetEntry, SheetInteractionState } from '../sheets/sheet.types.js';
 import type { RuntimeGroupSheet } from './Sheet.js';
 import type { RuntimeSheetEntry } from './SheetEntry.js';
+import type { RuntimeSheetDeclaration } from './SheetEntryDeclaration.js';
 
 /** @category jsxComponent */
 export interface RegisteredComponent {
@@ -50,4 +52,37 @@ export interface RuntimeComponentEntry {
   // childEntries: RuntimeSheetEntry[];
   entries: RuntimeSheetEntry[];
   // precompiled: FinalSheet;
+}
+
+/**
+ * @version 7.0.0
+ */
+export interface RuntimeJSXStyle {
+  group: SelectorGroup;
+  className: string;
+  important: boolean;
+  inherited: boolean;
+  precedence: number;
+  declarations: RuntimeSheetDeclaration[];
+}
+/**
+ * @version 7.0.0
+ */
+export interface RuntimeTwinMappedProp {
+  target: string;
+  prop: string;
+  templateEntries: string | null;
+  entries: RuntimeJSXStyle[];
+}
+
+export interface TwinInjectedObject {
+  id: string;
+  index: number;
+  props: RuntimeTwinMappedProp[];
+}
+/**
+ * @version 7.0.0
+ */
+export interface RuntimeTwinComponentProps {
+  _twinInjected?: TwinInjectedObject;
 }

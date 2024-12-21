@@ -1,13 +1,13 @@
 import { Effect, LogLevel, Logger, Option } from 'effect';
 import { describe, expect, it } from 'vitest';
-import { FSUtils, TwinFileContext, TwinPath } from '../src';
+import { FSUtils, TwinPath } from '../src';
+import { TwinFileContext, TwinFileContextLive } from '../src/services/TwinFile.service';
 import { TestRuntime } from './test.utils';
 
 describe.only('Babel Compiler', () => {
   it('Test Compile code', async () => {
     await Effect.gen(function* () {
-      const { getTwinFile, collectTwinElements, compileTwinElement, transformFile } =
-        yield* TwinFileContext;
+      const { getTwinFile, transformFile } = yield* TwinFileContext;
       const twinPath = yield* TwinPath.TwinPath;
       const fs = yield* FSUtils.FsUtils;
       const twinFile = yield* getTwinFile(
@@ -50,7 +50,7 @@ describe.only('Babel Compiler', () => {
       //   ),
       // );
     }).pipe(
-      Effect.provide(TwinFileContext.Default),
+      Effect.provide(TwinFileContextLive),
       Logger.withMinimumLogLevel(LogLevel.All),
       TestRuntime.runPromise,
     );

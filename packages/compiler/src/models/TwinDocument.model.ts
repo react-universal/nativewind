@@ -114,10 +114,6 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   }
 }
 
-export class TwinFileDocument extends BaseTwinTextDocument {
-  
-}
-
 export class DocumentKey implements Equal.Equal {
   constructor(readonly uri: string) {}
 

@@ -6,7 +6,6 @@ import {
   BabelCompilerContextLive,
   CompilerConfigContext,
   FSUtils,
-  TwinDocumentsContextLive,
   TwinFSContextLive,
   TwinNodeContextLive,
   TwinPath,
@@ -28,7 +27,6 @@ const compilerContext = Layer.succeed(
 const TestMainLive = Layer.empty.pipe(
   Layer.provideMerge(TwinNodeContextLive),
   Layer.provideMerge(TwinFSContextLive),
-  Layer.provideMerge(TwinDocumentsContextLive),
   Layer.provideMerge(BabelCompilerContextLive),
   Layer.provideMerge(FSUtils.FsUtilsLive),
   Layer.provideMerge(TwinPath.TwinPathLive),

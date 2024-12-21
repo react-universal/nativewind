@@ -29,18 +29,11 @@ export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from './shared/twin.constants.js';
 
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
 
-export {
-  TwinDocumentsContext,
-  TwinDocumentsContextLive,
-} from './services/TwinDocuments.service.js'
-
-export { TwinFileContext } from './services/TwinFile.service.js';
+export { TwinFileContext, TwinFileContextLive } from './services/TwinFile.service.js';
 
 export { TwinWatcherContextLive } from './services/TwinWatcher.service.js';
 
-export * as TwinFile from './services/TwinFile.service.js';
-
-export { TwinFileDocument } from './models/TwinDocument.model.js';
+export { BaseTwinTextDocument } from './models/TwinDocument.model.js';
 
 export type {
   AbsoluteFilePath,

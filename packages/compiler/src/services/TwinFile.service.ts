@@ -2,12 +2,14 @@ import { RuntimeSheetEntry } from '@native-twin/css/jsx';
 import { Tree, type TreeNode } from '@native-twin/helpers/tree';
 import * as Array from 'effect/Array';
 import * as Chunk from 'effect/Chunk';
+import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Iterable from 'effect/Iterable';
+import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import { FSUtils, TwinPath } from '../internal/fs';
+import { FSUtils, type TwinPath } from '../internal/fs';
 import type { CompiledMappedProp, TwinBabelJSXElement } from '../models/Babel.models.js';
 import { TwinCompiledElement } from '../models/Compiler.models';
 import { TwinFile } from '../models/TwinFile.model.js';
@@ -164,11 +166,12 @@ const collectTwinElements = (
     emit.chunk(Chunk.fromIterable(list)).then(() => emit.end());
   }).pipe(Stream.runCollect);
 
-export class TwinFileContext extends Effect.Service<TwinFileContext>()(
+export interface TwinFileContext extends Effect.Effect.Success<typeof make> {}
+export const TwinFileContext = Context.GenericTag<TwinFileContext>(
   'compiler/TwinFileContext',
-  {
-    accessors: true,
-    effect: make,
-    dependencies: [TwinNodeContextLive, FSUtils.FsUtilsLive, TwinPath.TwinPathLive],
-  },
-) {}
+);
+
+export const TwinFileContextLive = Layer.effect(TwinFileContext, make).pipe(
+  Layer.provide(TwinNodeContextLive),
+  Layer.provide(FSUtils.FsUtilsLive),
+);

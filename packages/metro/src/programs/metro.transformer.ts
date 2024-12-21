@@ -2,6 +2,7 @@ import * as path from 'node:path';
 import {
   CompilerConfigContext,
   TwinFileContext,
+  TwinFileContextLive,
   TwinNodeContext,
   TwinPath,
 } from '@native-twin/compiler';
@@ -81,7 +82,7 @@ export const transform: TwinMetroTransformFn = async (
     return transformed;
   }).pipe(
     Effect.provide(MetroLayerWithTwinFS),
-    Effect.provide(TwinFileContext.Default),
+    Effect.provide(TwinFileContextLive),
     Effect.provide(
       Layer.succeed(CompilerConfigContext, {
         inputCSS: config.twinConfig.inputCSS,
