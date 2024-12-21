@@ -1,8 +1,6 @@
 export {
   /** @category — CSS Parsers */
-  type SheetEntry,
-  /** @category — CSS Parsers */
-  type RuntimeSheetEntry,
+  RuntimeSheetEntry,
   /** @category — Predicates */
   isGroupEventEntry,
   /** @category — Predicates */
@@ -17,10 +15,9 @@ export {
   isChildSelector,
   /** @category — Predicates */
   isOwnSelector,
-  /** @category — Runner */
-  compileSheetEntry,
   /** @category — Ord */
   sortSheetEntriesByPrecedence,
+  sheetEntriesToStyles,
 } from './SheetEntry.js';
 
 export type {
@@ -43,12 +40,6 @@ export {
   runtimeEntriesToFinalSheet,
   /** @category — CSS Parsers */
   type ChildsSheet,
-  /** @category — Composition */
-  composeDeclarations,
-  /** @category — Mappers */
-  sheetEntriesToStyles,
-  /** @category — Mappers */
-  sheetEntryToStyle,
   /** @category — Mappers */
   groupEntriesBySelectorGroup,
   /** @category — Mappers */

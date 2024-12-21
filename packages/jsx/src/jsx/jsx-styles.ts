@@ -1,6 +1,6 @@
 import {
   type RuntimeGroupSheet,
-  compileSheetEntry,
+  RuntimeSheetEntry,
   getGroupedEntries,
   sortSheetEntriesByPrecedence,
 } from '@native-twin/css/jsx';
@@ -22,11 +22,12 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
     ) {
       finalEntries = componentSheet.map((componentEntry) => {
         if (componentEntry.templateEntries) {
-          const compiledTemplates = componentEntry.templateEntries.map((y) =>
-            compileSheetEntry(y, {
-              baseRem: remObs.get(),
-              platform: Platform.OS,
-            }),
+          const compiledTemplates = componentEntry.templateEntries.map(
+            (y) =>
+              new RuntimeSheetEntry(y, {
+                baseRem: remObs.get(),
+                platform: Platform.OS,
+              }),
           );
 
           const mergedEntries = [...componentEntry.entries, ...compiledTemplates];

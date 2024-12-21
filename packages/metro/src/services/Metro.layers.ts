@@ -3,10 +3,12 @@ import { NodePath } from '@effect/platform-node';
 import {
   BabelCompilerContextLive,
   CompilerConfigContext,
+  FSUtils,
   type NodeWithNativeTwinOptions,
   TwinDocumentsContextLive,
   TwinFSContextLive,
   TwinNodeContextLive,
+  TwinPath,
   TwinWatcherContextLive,
   createCompilerConfig,
 } from '@native-twin/compiler';
@@ -20,6 +22,9 @@ export const MetroMainLayer = Layer.empty.pipe(
 );
 export const MetroLayerWithTwinFS = TwinFSContextLive.pipe(
   Layer.provideMerge(MetroMainLayer),
+  Layer.provideMerge(TwinPath.TwinPathLive),
+  Layer.provideMerge(FSUtils.FsUtilsLive),
+  Layer.provideMerge(TwinPath.TwinPathLive),
 );
 export const MetroLayerWithTwinWatcher = TwinWatcherContextLive.pipe(
   Layer.provideMerge(TwinFSContextLive),

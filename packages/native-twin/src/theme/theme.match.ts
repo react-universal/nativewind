@@ -1,3 +1,4 @@
+import {TinyColor} from '@ctrl/tinycolor';
 import { type SheetEntryDeclaration, parsedRuleToClassName } from '@native-twin/css';
 import { asArray, toColorValue } from '@native-twin/helpers';
 import type {
@@ -44,6 +45,9 @@ export function matchThemeColor(
       const declarations: SheetEntryDeclaration[] = [];
       if (match.segment.type === 'arbitrary') {
         color = match.segment.value;
+        if (!new TinyColor(color).isValid) {
+          return undefined;
+        }
       }
       if (!color) {
         color =

@@ -5,26 +5,22 @@ import type { RuntimeTW } from '@native-twin/core';
 import {
   type CompilerContext,
   type RuntimeComponentEntry,
-  applyParentEntries,
-  compileSheetEntry,
+  RuntimeSheetEntry,
   getGroupedEntries,
   sortSheetEntries,
 } from '@native-twin/css/jsx';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import type { JSXElementNodePath } from '../../models/Babel.models.js';
-import type { JSXElementNode } from '../../models/JSXElement.model.js';
-import type { JSXMappedAttribute } from '../../models/jsx.models.js';
+import type { JSXElementNodePath, JSXMappedAttribute } from '../../models/Babel.models.js';
+import type {  } from '../../models/jsx.models.js';
 import {
-  addJsxAttribute,
-  addJsxExpressionAttribute,
   getBabelBindingImportSource,
   getJSXElementName,
   templateLiteralToStringLike,
 } from './babel.utils.js';
-import { entriesToComponentData } from './code.utils.js';
 
+// TODO: REMOVE ONCE NEW SERVICE FINISH
 export const getElementEntries = (
   props: JSXMappedAttribute[],
   twin: RuntimeTW,
@@ -45,7 +41,7 @@ export const getElementEntries = (
     const entries = twin(classNames);
     const runtimeEntries = pipe(
       RA.dedupeWith(entries, (a, b) => a.className === b.className),
-      RA.map((x) => compileSheetEntry(x, ctx)),
+      RA.map((x) => new RuntimeSheetEntry(x, ctx)),
       sortSheetEntries,
     );
 
@@ -99,54 +95,4 @@ export const runtimeEntriesToAst = (entries: string) => {
   } catch {
     return null;
   }
-};
-
-export const getJSXCompiledTreeRuntime = (
-  leave: JSXElementNode,
-  parentLeave: Option.Option<JSXElementNode>,
-) => {
-  const runtimeSheets = pipe(
-    parentLeave,
-    Option.map((parent) =>
-      applyParentEntries(
-        leave.entries,
-        parent.childEntries,
-        leave.order,
-        leave.parentSize,
-      ),
-    ),
-    Option.getOrElse(() => leave.entries),
-  );
-
-  return {
-    leave,
-    runtimeSheets,
-  };
-};
-
-export const addTwinPropsToElement = (
-  elementNode: JSXElementNode,
-  entries: RuntimeComponentEntry[],
-  options: {
-    componentID: boolean;
-    order: boolean;
-    styledProps: boolean;
-    templateStyles: boolean;
-  },
-) => {
-  const stringEntries = entriesToComponentData(elementNode.id, entries);
-  const astProps = runtimeEntriesToAst(stringEntries);
-
-  if (options.componentID) {
-    addJsxAttribute(elementNode.path, '_twinComponentID', elementNode.id);
-  }
-
-  if (options.order) {
-    addJsxAttribute(elementNode.path, '_twinOrd', elementNode.order);
-  }
-
-  if (options.styledProps && astProps) {
-    addJsxExpressionAttribute(elementNode.path, '_twinComponentSheet', astProps);
-  }
-  return astProps;
 };

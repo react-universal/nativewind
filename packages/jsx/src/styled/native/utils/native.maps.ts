@@ -1,9 +1,7 @@
-import { getRuleSelectorGroup } from '@native-twin/css';
+import { type SheetEntry, getRuleSelectorGroup } from '@native-twin/css';
 import {
   type RuntimeGroupSheet,
-  type RuntimeSheetEntry,
-  type SheetEntry,
-  compileSheetEntry,
+  RuntimeSheetEntry,
   sortSheetEntriesByPrecedence,
 } from '@native-twin/css/jsx';
 import { Platform } from 'react-native';
@@ -12,11 +10,12 @@ import type { ComponentTemplateEntryProp } from '../../../types/jsx.types.js';
 
 export const composeTemplateSheets = (entries: SheetEntry[]): RuntimeGroupSheet => {
   return entries
-    .map((x) =>
-      compileSheetEntry(x, {
-        baseRem: remObs.get(),
-        platform: Platform.OS,
-      }),
+    .map(
+      (x) =>
+        new RuntimeSheetEntry(x, {
+          baseRem: remObs.get(),
+          platform: Platform.OS,
+        }),
     )
     .reduce(
       (prev, current) => {

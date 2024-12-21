@@ -1,11 +1,7 @@
-import { sheetEntriesToCss } from '@native-twin/css';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
-import * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
 import { FSUtils, TwinPath } from '../internal/fs';
-import type { JSXElementNode } from '../models/JSXElement.model.js';
-import { getNativeStylesJSOutput } from '../utils/native.utils.js';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
 import { TwinNodeContext, TwinNodeContextLive } from './TwinNodeContext.service.js';
 
@@ -20,40 +16,39 @@ const make = Effect.gen(function* () {
   return {
     readPlatformCSSFile,
     createTwinFiles,
-    refreshCssOutput,
   };
 
   function readPlatformCSSFile(platform: string) {
-    return fs.readFile(ctx.getOutputCSSPath(platform));
+    return fs.readFile(twinPath.make.absoluteFromString(ctx.getOutputCSSPath(platform)));
   }
 
-  function refreshCssOutput(
-    platform: string,
-    registry: HashMap.HashMap<string, JSXElementNode>,
-  ) {
-    return Effect.gen(function* () {
-      const platformOutput = ctx.getOutputCSSPath(platform);
-      const { tw } = yield* ctx.getTwinRuntime(platform);
-      let code = '';
-      if (platformOutput.endsWith('.css')) {
-        code = sheetEntriesToCss(tw.target, false);
-      } else {
-        code = yield* getNativeStylesJSOutput(registry, platform);
-      }
-      yield* fs.modifyFile(platformOutput, () => code);
-      return {
-        compiledEntries: tw.target.length,
-        registrySize: HashMap.size(registry),
-      };
-    }).pipe(
-      Effect.annotateLogs('platform', platform),
-      Effect.tap(({ compiledEntries, registrySize }) =>
-        Effect.logInfo(
-          `Build success: ${registrySize} Files. ${compiledEntries} Utilities added.`,
-        ),
-      ),
-    );
-  }
+  // function refreshCssOutput(
+  //   platform: string,
+  //   registry: HashMap.HashMap<string, JSXElementNode>,
+  // ) {
+  //   return Effect.gen(function* () {
+  //     const platformOutput = ctx.getOutputCSSPath(platform);
+  //     const { tw } = yield* ctx.getTwinRuntime(platform);
+  //     let code = '';
+  //     if (platformOutput.endsWith('.css')) {
+  //       code = sheetEntriesToCss(tw.target, false);
+  //     } else {
+  //       code = yield* getNativeStylesJSOutput(registry, platform);
+  //     }
+  //     yield* fs.modifyFile(platformOutput, () => code);
+  //     return {
+  //       compiledEntries: tw.target.length,
+  //       registrySize: HashMap.size(registry),
+  //     };
+  //   }).pipe(
+  //     Effect.annotateLogs('platform', platform),
+  //     Effect.tap(({ compiledEntries, registrySize }) =>
+  //       Effect.logInfo(
+  //         `Build success: ${registrySize} Files. ${compiledEntries} Utilities added.`,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   function createTwinFiles() {
     return Effect.gen(function* () {

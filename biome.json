@@ -8,8 +8,8 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "include": ["*/src/**/*.ts", "*/src/**/*.tsx"],
-    "ignore": ["packages/*/build/**/*.js"]
+    "include": ["*/src/**/*.ts", "*/src/**/*.tsx", "*/test/**/*"],
+    "ignore": ["packages/*/build/**/*.js", "*/test/fixtures/**/*"]
   },
   "linter": {
     "rules": {
@@ -44,6 +44,7 @@
         "noAssignInExpressions": "off",
         "noArrayIndexKey": "off",
         "noConfusingVoidType": "off",
+        "noFocusedTests": "off",
         "noControlCharactersInRegex": "off",
         "noShadowRestrictedNames": "off",
         "noFunctionAssign": "off"

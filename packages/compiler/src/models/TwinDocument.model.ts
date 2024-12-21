@@ -1,34 +1,21 @@
-import { CodeGenerator } from '@babel/generator';
 import type { ParseResult } from '@babel/parser';
 import type * as t from '@babel/types';
-import type { TreeNode } from '@native-twin/helpers/tree';
-import * as Data from 'effect/Data';
-import * as Effect from 'effect/Effect';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import * as Option from 'effect/Option';
-import * as Sink from 'effect/Sink';
-import * as Stream from 'effect/Stream';
 import {
   type Position,
   type Range,
   TextDocument,
 } from 'vscode-languageserver-textdocument';
 import type { TwinPath } from '../internal/fs';
-import { streamJsxElementTrees } from '../utils/babel/babel.transform.js';
-import { extractMappedAttributes, getBabelAST } from '../utils/babel/babel.utils.js';
-import type { JSXElementTree } from './Babel.models.js';
-import type { JSXMappedAttribute } from './jsx.models.js';
+import { getBabelAST } from '../utils/babel/babel.utils.js';
 
 const quotesRegex = /^['"`].*['"`]$/g;
-
-export const TwinTokenLocation = Data.tagged<TwinTokenLocation>('TwinTokenLocation');
 
 export interface TwinBaseDocument {
   getText: (range?: Range) => string;
   offsetAt: (position: Position) => number;
   positionAt: (offset: number) => Position;
-  isPositionAtOffset: (bounds: TwinTokenLocation['offset'], offset: number) => boolean;
 }
 
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
@@ -41,7 +28,6 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   ) {
     this.textDocument = TextDocument.create(uri, 'twin', 1, content);
     this._ast = getBabelAST(this.textDocument.getText(), uri);
-    this.isPositionAtOffset.bind(this);
   }
 
   get ast() {
@@ -62,10 +48,6 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
 
   positionAt(offset: number) {
     return this.textDocument.positionAt(offset);
-  }
-
-  isPositionAtOffset(bounds: TwinTokenLocation['offset'], offset: number) {
-    return offset >= bounds.start && offset <= bounds.end;
   }
 
   babelLocationToRange(location: t.SourceLocation): Range {
@@ -109,7 +91,13 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
       );
     }
 
+    this._ast = getBabelAST(this.textDocument.getText(), this.uri);
+
     return this;
+  }
+
+  get key(): DocumentKey {
+    return new DocumentKey(this.uri);
   }
 
   // MARK: Equality protocol
@@ -127,52 +115,7 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
 }
 
 export class TwinFileDocument extends BaseTwinTextDocument {
-  get mappedAttributes() {
-    return Effect.gen(this, function* () {
-      const ast = this.ast;
-      const mappedElements = yield* streamJsxElementTrees(ast, this.uri).pipe(
-        Stream.fromIterableEffect,
-        Stream.flatMap((tree) =>
-          Stream.async<NodeWithMappedAttributes>((emit) => {
-            tree.traverse((leave) => {
-              emit.single({
-                node: leave,
-                runtimeData: extractMappedAttributes(leave.value.babelNode),
-              });
-              // const model = jsxTreeNodeToJSXElementNode(leave, entries, fileName);
-            }, 'breadthFirst');
-
-            emit.end();
-          }),
-        ),
-        Stream.run(Sink.collectAllToSet()),
-      );
-
-      return mappedElements;
-    });
-  }
-
-  generateCode(ast: ParseResult<t.File>) {
-    return Effect.sync(() => {
-      const generate = new CodeGenerator(ast);
-      return Option.fromNullable(generate.generate()).pipe(Option.getOrNull);
-    });
-  }
-}
-
-export interface NodeWithMappedAttributes {
-  runtimeData: JSXMappedAttribute[];
-  node: TreeNode<JSXElementTree>;
-}
-
-interface TwinTokenLocation {
-  _tag: 'TwinTokenLocation';
-  range: Range;
-  offset: {
-    start: number;
-    end: number;
-  };
-  text: string;
+  
 }
 
 export class DocumentKey implements Equal.Equal {

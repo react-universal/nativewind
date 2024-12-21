@@ -5,6 +5,7 @@ import * as Option from 'effect/Option';
 import type { ImportedTwinConfig, InternalTwFn } from '../models/Twin.models.js';
 import { maybeLoadJS } from './modules.utils.js';
 
+// TODO: Remove once implements state
 export const extractTwinConfig = (
   configPath: Option.Option<string>,
 ): ImportedTwinConfig => {

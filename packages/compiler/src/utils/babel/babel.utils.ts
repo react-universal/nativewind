@@ -5,7 +5,8 @@ import type { AnyPrimitive } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import type { JSXChildElement, JSXMappedAttribute } from '../../models/jsx.models.js';
+import type { JSXMappedAttribute } from '../../models/Babel.models.js';
+import type { JSXChildElement } from '../../models/jsx.models.js';
 import {
   type MappedComponent,
   createCommonMappedAttribute,

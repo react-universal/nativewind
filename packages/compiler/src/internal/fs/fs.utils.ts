@@ -31,6 +31,8 @@ const make = Effect.gen(function* () {
 
   const mkdirCached = (path: TwinPath.AbsoluteFilePath) => mkdirCached_(path);
 
+  const createTempFile = () => fs.makeTempFile();
+
   const writeFileCached_ = yield* Effect.cachedFunction(
     (data: { path: string; contents?: string; override?: boolean }) =>
       Effect.if(fs.exists(data.path), {
@@ -43,7 +45,7 @@ const make = Effect.gen(function* () {
       }),
   );
 
-  const readFile = (path: string) =>
+  const readFile = (path: TwinPath.AbsoluteFilePath) =>
     fs
       .readFileString(path)
       .pipe(Effect.tapError(() => Effect.logError(`Cannot read file at: ${path}`)));
@@ -68,6 +70,7 @@ const make = Effect.gen(function* () {
   return {
     path_: twinPath,
     mkEmptyFileCached,
+    createTempFile,
     writeFileSource,
     writeFileCached,
     modifyFile,
@@ -82,4 +85,5 @@ export const FsUtils = Context.GenericTag<FsUtils>('twin/FsUtils');
 export const FsUtilsLive = Layer.effect(FsUtils, make).pipe(
   Layer.provide(NodeFileSystem.layer),
   Layer.provide(NodePath.layerPosix),
+  Layer.provide(TwinPath.TwinPathLive),
 );

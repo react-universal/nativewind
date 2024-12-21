@@ -1,7 +1,7 @@
 import {
   type RuntimeComponentEntry,
   type RuntimeSheetDeclaration,
-  type RuntimeSheetEntry,
+  RuntimeSheetEntry,
   getGroupedEntries,
 } from '@native-twin/css/jsx';
 import { asArray } from '@native-twin/helpers';
@@ -54,21 +54,27 @@ export const useStyledProps = (
         return [];
       }
       const compiledEntries = tw(`${source}`).map((entry): RuntimeSheetEntry => {
-        return {
-          animations: [],
-          className: entry.className,
-          preflight: false,
-          declarations: entry.declarations.map(
-            (decl): RuntimeSheetDeclaration => ({
-              _tag: 'NOT_COMPILED',
-              prop: decl.prop,
-              value: composeDeclarations([decl], styledCtx),
-            }),
-          ),
-          important: entry.important,
-          precedence: entry.precedence,
-          selectors: entry.selectors,
-        };
+        return new RuntimeSheetEntry(
+          {
+            animations: [],
+            className: entry.className,
+            preflight: false,
+            declarations: entry.declarations.map(
+              (decl): RuntimeSheetDeclaration => ({
+                _tag: 'NOT_COMPILED',
+                prop: decl.prop,
+                value: composeDeclarations([decl], styledCtx),
+              }),
+            ),
+            important: entry.important,
+            precedence: entry.precedence,
+            selectors: entry.selectors,
+          },
+          {
+            baseRem: styledCtx.units.rem,
+            platform: styledCtx.platform,
+          },
+        );
       });
       return asArray({
         classNames: source,

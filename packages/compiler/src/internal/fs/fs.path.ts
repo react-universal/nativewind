@@ -1,4 +1,3 @@
-import { win32 as win32Path } from 'node:path';
 import * as NodePath from '@effect/platform-node/NodePath';
 import * as Path from '@effect/platform/Path';
 import * as RA from 'effect/Array';
@@ -36,26 +35,27 @@ export type AnyTwinPath =
   | UnknownFilePath;
 
 const make = Effect.gen(function* () {
-  const isPosixFilePathString = (path_: string) => !path_.includes(path.sep);
-
   const path = yield* Path.Path;
   const env = yield* CompilerConfigContext;
-  const cwd = yield* Effect.sync(() => absoluteFromString(env.projectRoot));
+  const posixSep = path.sep;
+
   const globOptions: Glob.GlobOptionsWithFileTypesFalse = {
     absolute: true,
     withFileTypes: false,
     cwd: env.projectRoot,
   };
 
+  const isPosixFilePathString = (path_: string) => path_.includes(path.sep);
+
   const absolutePath = Branded.refined<AbsoluteFilePath>(
-    (path_) => isPosixFilePathString(path_) && path.isAbsolute(path_),
+    (path_) => path.isAbsolute(path_),
     (path_) =>
       Branded.error(
         `Expected an absolute path (i.e. starting with '/' or '\\'), but got ${path_}`,
       ),
   );
   const relativePath = Branded.refined<RelativeFilePath>(
-    (path_) => isPosixFilePathString(path_) && !path.isAbsolute(path_),
+    (path_) => !path.isAbsolute(path_),
     (path_) => Branded.error(`Expected a Posix file path, got ${path_}`),
   );
   const tsFilePath = Branded.refined<TSFilePath>(
@@ -67,6 +67,7 @@ const make = Effect.gen(function* () {
     (path_) => Branded.error(`expecting a .tsx file but got ${path_}`),
   );
   const globPath = Branded.nominal<GlobPath>();
+  const cwd = absoluteFromString(env.projectRoot);
 
   return {
     make: {
@@ -112,32 +113,23 @@ const make = Effect.gen(function* () {
             cause: new Error(`glob failed: ${error.message}`),
           }),
       ),
-      Effect.withSpan('FsUtils.glob'),
+      Effect.withSpan('fs/path/glob'),
     );
   }
 
   function absoluteFromString(path_: string): AbsoluteFilePath {
     if (!path.isAbsolute(path_)) {
-      if (cwd === undefined) {
-        throw new Error(
-          `Expected an absolute path (i.e. starting with '/' or '\\'), but got ${path_}`,
-        );
-      }
       return filePathJoin(cwd, path_);
     }
     if (isPosixFilePathString(path_)) {
       return absolutePath(path_);
     }
 
-    return absolutePath(path_.split(win32Path.sep).join(path.sep));
+    return absolutePath(path_.split(posixSep).join(path.sep));
   }
 
   function relativeFromString(path_: string): RelativeFilePath {
     if (path.isAbsolute(path_)) {
-      if (cwd === undefined) {
-        throw new Error(`Expected a relative path, got ${path_}`);
-      }
-
       return relative(cwd, path_);
     }
 
@@ -145,7 +137,7 @@ const make = Effect.gen(function* () {
       return relativePath(path_);
     }
 
-    return relativePath(path_.split(win32Path.sep).join(path.sep));
+    return relativePath(path_.split(posixSep).join(path.sep));
   }
 
   function filePathJoin(...paths: RelativeFilePath[]): RelativeFilePath;

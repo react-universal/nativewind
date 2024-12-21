@@ -1,14 +1,15 @@
 import * as path from 'node:path';
 import {
-  BabelCompilerContext,
   CompilerConfigContext,
-  TwinDocumentsContext,
+  TwinFileContext,
   TwinNodeContext,
+  TwinPath,
 } from '@native-twin/compiler';
 import { matchCss } from '@native-twin/helpers/server';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
+import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
 import type { TransformResponse } from 'metro-transform-worker';
 import * as worker from 'metro-transform-worker';
@@ -29,9 +30,10 @@ export const transform: TwinMetroTransformFn = async (
   const platform = options.platform ?? 'native';
 
   return Effect.gen(function* () {
-    const { createDocument } = yield* TwinDocumentsContext;
+    const { getTwinFile, transformFile } = yield* TwinFileContext;
     const ctx = yield* TwinNodeContext;
-    const compiler = yield* BabelCompilerContext;
+    const twinPath = yield* TwinPath.TwinPath;
+
     const platformOutput = ctx.getOutputCSSPath(platform);
 
     const transform: MetroTransformFn = twinConfig.originalTransformerPath
@@ -58,15 +60,18 @@ export const transform: TwinMetroTransformFn = async (
     }
 
     let code = data.toString('utf-8');
-    const document = yield* createDocument(filename, code);
-    const output = yield* compiler.compileTwinDocument(document, platform);
+    const document = yield* getTwinFile(
+      twinPath.make.absoluteFromString(filename),
+      Option.some(code),
+    );
 
-    const result = yield* compiler.mutateAST(output.ast);
+    const output = yield* transformFile(document, platform);
+
     // yield* Effect.log('MUTATE: ');
 
-    if (result?.code) {
+    if (Option.isSome(output)) {
       // console.log('OPTIONS: ', params.options);
-      code = `const runtimeTW = require('@native-twin/core').tw;\n\n${result.code}`;
+      code = `const runtimeTW = require('@native-twin/core').tw;\n\n${output.value.code}`;
     }
 
     const transformed = yield* Effect.promise(() =>
@@ -76,6 +81,7 @@ export const transform: TwinMetroTransformFn = async (
     return transformed;
   }).pipe(
     Effect.provide(MetroLayerWithTwinFS),
+    Effect.provide(TwinFileContext.Default),
     Effect.provide(
       Layer.succeed(CompilerConfigContext, {
         inputCSS: config.twinConfig.inputCSS,
@@ -86,6 +92,7 @@ export const transform: TwinMetroTransformFn = async (
         twinConfigPath: Option.fromNullable(config.twinConfig.twinConfigPath),
       }),
     ),
+    Logger.withMinimumLogLevel(LogLevel.fromLiteral(config.twinConfig.logLevel)),
     Effect.runPromise,
   );
 };

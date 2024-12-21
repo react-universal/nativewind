@@ -4,7 +4,6 @@ import * as Effect from 'effect/Effect';
 import * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
 import type { TwinBabelPluginOptions } from '../models/Babel.models.js';
-import type { JSXElementNode, JSXElementNodeKey } from '../models/JSXElement.model.js';
 import { TwinNodeContext } from './TwinNodeContext.service.js';
 
 export class JSXImportPluginContext extends Context.Tag('babel/plugin/context')<
@@ -28,7 +27,7 @@ export class JSXImportPluginContext extends Context.Tag('babel/plugin/context')<
           platform: options.platform,
         };
 
-        const visitedElements = HashMap.empty<JSXElementNodeKey, JSXElementNode>();
+        const visitedElements = HashMap.empty<any, any>();
 
         return {
           options,

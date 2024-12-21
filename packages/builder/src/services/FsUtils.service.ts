@@ -50,6 +50,7 @@ const make = Effect.gen(function* (_) {
         rootDir,
         chokidar.watch(sourceFiles, {
           cwd: rootDir,
+          useFsEvents: true,
           followSymlinks: false,
           persistent: true,
           ignoreInitial: true,

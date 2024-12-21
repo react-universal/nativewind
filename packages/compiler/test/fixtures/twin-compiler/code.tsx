@@ -3,31 +3,16 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 import 'globals.css';
 
-const ChildProp = () => {
-  return (
-    <View className='first:bg-blue-600'>
-      <View
-        className={`
-          group
-          flex-[2] items-center justify-center
-          bg-blue-800 hover:bg-red-600
-        `}
-      >
-        <Text className=''>Text1</Text>
-      </View>
-      <View className=''>
-        <Text className=''>Text2</Text>
-      </View>
-    </View>
-  );
-};
-
 const Button = () => {
   return (
-    <View className='bg-black last:text-lg odd:text-gray-200 even:text-yellow-200'>
+    <View className='bg-[#000] last:hover:text-[20vw] odd:text-[10px] even:text-[30px]'>
       <Text className='font-medium'>Text1</Text>
       <Text className='font-bold'>Text2</Text>
-      <Text className={`${true ? 'text-medium' : 'text-bold'}`}>Text3</Text>
+      <Text className='font-medium'>Text2</Text>
+      <Text className={`hover:text-[#000] ${true ? 'text-medium' : 'text-bold'}`}>Text3</Text>
+      <View>
+        <Span>Hallo</Span>
+      </View>
     </View>
   );
 };

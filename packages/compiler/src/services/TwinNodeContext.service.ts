@@ -7,9 +7,7 @@ import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import * as micromatch from 'micromatch';
 import { TwinPath } from '../internal/fs';
-import { TwinPathLive } from '../internal/fs/fs.path';
 import type { ImportedTwinConfig } from '../models/Twin.models.js';
 import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
@@ -57,6 +55,7 @@ const make = Effect.gen(function* () {
         get: Ref.get(twRunnersRef),
       },
     },
+    subscribeToConfigScoped,
     isAllowedPath,
     getTwForPlatform,
     getOutputCSSPath,
@@ -127,14 +126,19 @@ const make = Effect.gen(function* () {
 
   function isAllowedPath(filePath: string) {
     return Ref.get(projectFilesRef).pipe(
-      Effect.map((globPatterns) => {
+      Effect.map((projectFiles) => {
         const absPath = twinPath.make.absoluteFromString(filePath);
-        return (
-          HashSet.has(absPath) ||
-          micromatch.isMatch(absPath, RA.fromIterable(globPatterns))
-        );
+        return HashSet.has(projectFiles, absPath);
       }),
     );
+  }
+
+  function subscribeToConfigScoped(
+    onChange: (config: ImportedTwinConfig) => Effect.Effect<void>,
+  ) {
+    return twinConfigRef.changes
+      .pipe(Stream.runForEach(onChange))
+      .pipe(Effect.forkScoped);
   }
 });
 
@@ -142,5 +146,5 @@ export interface TwinNodeContext extends Effect.Effect.Success<typeof make> {}
 export const TwinNodeContext = Context.GenericTag<TwinNodeContext>('node/shared/context');
 
 export const TwinNodeContextLive = Layer.effect(TwinNodeContext, make).pipe(
-  Layer.provide(TwinPathLive),
+  Layer.provide(TwinPath.TwinPathLive),
 );

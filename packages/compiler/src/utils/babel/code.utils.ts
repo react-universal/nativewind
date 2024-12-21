@@ -39,6 +39,7 @@ const runtimeEntryToCode = (
   return w.writer.toString();
 };
 
+// TODO: Remove once implement on file
 const runtimeEntriesToCode = (
   id: string,
   entries: RuntimeComponentEntry[],
@@ -51,6 +52,7 @@ const runtimeEntriesToCode = (
   return `[${result}]`;
 };
 
+// TODO: Remove once implement on file
 export const entriesToComponentData = (
   id: string,
   entries: RuntimeComponentEntry[],

@@ -1,6 +1,8 @@
 // TODO: restore Keyframe types
 // import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type { MaybeArray } from '@native-twin/helpers';
+import type { SelectorGroup } from '../css/css.types.js';
+import type { RuntimeSheetDeclaration } from '../jsx.js';
 import type { AnyStyle } from '../react-native/rn.types.js';
 
 export type Preflight = false | MaybeArray<Record<string, any>>;
@@ -23,14 +25,18 @@ export interface Sheet<Target = unknown> {
 export interface SheetEntryRegistry extends SheetEntry {
   index: number;
 }
-export interface SheetEntry {
+
+export type SortableEntry = {
+  precedence: number;
+  important: boolean;
+};
+
+export interface SheetEntry extends SortableEntry {
   className: string;
   declarations: SheetEntryDeclaration[];
   animations: any[];
   /** The rule sets (selectors and at-rules). expanded variants `@media ...`, `@supports ...`, `&:focus`, `.dark &` */
   selectors: string[];
-  precedence: number;
-  important: boolean;
   preflight: boolean;
 }
 
@@ -52,4 +58,11 @@ export interface SheetInteractionState {
   isPointerActive: boolean;
   isParentActive: boolean;
   dark?: boolean;
+}
+
+export interface InjectableEntry extends SortableEntry {
+  className: string;
+  group: SelectorGroup;
+  declarations: RuntimeSheetDeclaration[];
+  style: AnyStyle;
 }

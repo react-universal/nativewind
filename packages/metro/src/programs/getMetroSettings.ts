@@ -7,7 +7,7 @@ export const getMetroSettings = Effect.gen(function* () {
   const env = yield* CompilerConfigContext;
   const ctx = yield* TwinNodeContext;
   const allowedFiles = yield* ctx.state.twinConfig.get.pipe(
-    Effect.flatMap((config) => ctx.getProjectFilesFromConfigSync(config)),
+    Effect.flatMap((config) => ctx.getProjectFilesFromConfig(config, 'sync')),
   );
 
   const transformerOptions: BaseTwinTransformerOptions = {

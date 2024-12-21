@@ -9,6 +9,7 @@ const getPlatformOutputs = (baseDir: string) => ({
   ios: path.posix.join(baseDir, 'twin.out.ios.css.js'),
   android: path.posix.join(baseDir, 'twin.out.android.css.js'),
   native: path.posix.join(baseDir, 'twin.out.native.css.js'),
+  setupFile: path.join(baseDir, 'twin.setup.js'),
 });
 
 export const createCompilerConfig = (params: {
@@ -36,6 +37,7 @@ export interface CompilerConfigContext {
   projectRoot: string;
   twinConfigPath: Option.Option<string>;
   platformPaths: {
+    setupFile: string;
     defaultFile: string;
     web: string;
     ios: string;

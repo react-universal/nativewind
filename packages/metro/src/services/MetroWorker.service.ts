@@ -71,5 +71,4 @@ export const makeWorkerLayers = (
     options,
     projectRoot,
   });
-  // MetroCompilerContext.make(ctx.options, ctx.generate),
 };

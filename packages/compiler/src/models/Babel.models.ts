@@ -1,11 +1,9 @@
-import type { NodePath } from '@babel/traverse';
+import type { NodePath, Visitor } from '@babel/traverse';
 import type * as BabelTypes from '@babel/types';
 import type * as t from '@babel/types';
-import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
-import type { Tree } from '@native-twin/helpers/tree';
+import type { RuntimeSheetEntry } from '@native-twin/css/jsx';
 import * as Data from 'effect/Data';
 import type * as Option from 'effect/Option';
-import type { JSXElementNode } from './JSXElement.model.js';
 
 export interface CompilerInput {
   code: string;
@@ -44,28 +42,57 @@ export interface TwinBabelPluginOptions extends APICallerOptions {
 
 export type JSXElementNodePath = NodePath<t.JSXElement>;
 
-export interface JSXFileTree {
-  filePath: string;
-  parents: Tree<JSXElementTree>[];
+/**
+ * @description represents the twin version of jsx element NodePath
+ * */
+interface TwinBabelLocation extends Omit<t.SourceLocation, 'identifierName'> {
+  identifierName: Option.Option<string>;
 }
 
-export interface TransformedJSXElementTree {
-  leave: JSXElementNode;
-  runtimeSheets: RuntimeComponentEntry[];
-  runtimeAST: Option.Option<t.Expression>;
+export interface JSXMappedAttributeWithText extends Omit<JSXMappedAttribute, 'value'> {
+  templateExpression: Option.Option<string>;
+  value: string;
+  // entries: Iterable<RuntimeSheetEntry>;
 }
 
-export interface JSXElementTree {
-  readonly _tag: 'JSXElementTree';
-  babelNode: JSXElementNodePath['node'];
-  order: number;
-  uid: string;
-  parentID: string | null;
-  cssImports: string[];
-  source: {
-    kind: string;
-    source: string;
-  };
+export interface CompiledMappedProp extends JSXMappedAttributeWithText {
+  templateExpression: Option.Option<string>;
+  value: string;
+  entries: Iterable<RuntimeSheetEntry>;
+  childEntries: Iterable<RuntimeSheetEntry>;
+}
+/**
+ * @description represents the twin version of jsx element NodePath
+ * */
+export interface TwinBabelJSXElement {
+  babelNode: t.JSXElement;
+  jsxName: Option.Option<t.JSXIdentifier>;
+  location: Option.Option<TwinBabelLocation>;
+  childs: Iterable<TwinBabelJSXElement>;
+  mappedProps: Iterable<JSXMappedAttributeWithText>;
+  index: number;
 }
 
-export const JSXElementTree = Data.tagged<JSXElementTree>('JSXElementTree');
+export interface TwinBabelFile {
+  jsxElements: Iterable<TwinBabelJSXElement>;
+  location: Option.Option<TwinBabelLocation>;
+}
+
+export class TwinBabelError extends Data.TaggedError('TwinBabelError')<{
+  cause: Error;
+  message: string;
+}> {}
+
+export interface JSXMappedAttribute {
+  prop: string;
+  value: t.StringLiteral | t.TemplateLiteral;
+  target: string;
+}
+
+export const createJSXElementVisitor = (
+  onJSXElement: (path: NodePath<t.JSXElement>) => void,
+): Visitor => ({
+  JSXElement(path) {
+    onJSXElement(path);
+  },
+});

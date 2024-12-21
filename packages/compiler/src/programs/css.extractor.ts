@@ -11,18 +11,18 @@ export const TwinCSSExtractor = (code: string, filename: string) =>
     const compiler = yield* BabelCompilerContext;
     const ctx = yield* TwinNodeContext;
     const twinPath = yield* TwinPath.TwinPath;
-    const { getDocumentNodes, createDocument } = yield* TwinDocumentsContext;
+    const { createDocument } = yield* TwinDocumentsContext;
     const document = yield* createDocument(
       twinPath.make.absoluteFromString(filename),
       code,
     );
-    const compiled = yield* getDocumentNodes(document, 'web');
+    // const compiled = yield* getDocumentNodes(document, 'web');
     const tw = yield* ctx.getTwForPlatform('web');
     const cssOutput = sheetEntriesToCss(tw.target);
     const codeOutput = yield* compiler.mutateAST(document.ast);
 
     return {
-      compiled,
+      // compiled,
       document,
       cssOutput,
       codeOutput: Option.fromNullable(codeOutput),

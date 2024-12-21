@@ -2,11 +2,9 @@ import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Record from 'effect/Record';
 import type { SelectorGroup } from '../css/css.types.js';
-import type { AnyStyle, CompleteStyle, FinalSheet } from '../react-native/rn.types.js';
-import { getRuleSelectorGroup } from '../tailwind/tailwind.utils.js';
+import type { FinalSheet } from '../react-native/rn.types.js';
 import type { ComponentSheet, RuntimeComponentEntry } from './Component.js';
 import { type RuntimeSheetEntry, sortSheetEntries } from './SheetEntry.js';
-import { RuntimeSheetDeclaration } from './SheetEntryDeclaration.js';
 import {
   defaultFinalSheet,
   defaultSheetMetadata,
@@ -27,7 +25,7 @@ export type RuntimeGroupSheet = Record<SelectorGroup, RuntimeSheetEntry[]>;
 export const groupEntriesBySelectorGroup = (
   x: RuntimeSheetEntry[],
 ): Record<SelectorGroup, RuntimeSheetEntry[]> =>
-  RA.groupBy(x, (entry) => getRuleSelectorGroup(entry.selectors));
+  RA.groupBy(x, (entry) => entry.selectorGroup());
 
 const combineRuntimeSheetEntries = (
   a: RuntimeSheetEntry[],
@@ -101,7 +99,7 @@ export function getSheetMetadata(
   return pipe(
     entries,
     RA.reduce(defaultSheetMetadata, (prev, current) => {
-      const group = getRuleSelectorGroup(current.selectors);
+      const group = current.selectorGroup();
       if (!prev.isGroupParent && current.className === 'group') {
         prev.isGroupParent = true;
       }
@@ -116,68 +114,14 @@ export function getSheetMetadata(
   );
 }
 
-export function composeDeclarations(declarations: RuntimeSheetDeclaration[]) {
-  return declarations.reduce((prev, current) => {
-    if (RuntimeSheetDeclaration.$is('NOT_COMPILED')(current)) {
-      return prev;
-    }
-    let value: any = current.value;
-    if (Array.isArray(current.value)) {
-      value = [];
-      for (const t of current.value) {
-        if (typeof t.value === 'string') {
-          if (t.value) {
-            value.push({
-              [t.prop]: t.value,
-            });
-          }
-        }
-      }
-      Object.assign(prev, {
-        transform: [...(prev['transform'] ?? []), ...value],
-      });
-      return prev;
-    }
-    if (typeof value === 'object') {
-      Object.assign(prev, value);
-    } else {
-      Object.assign(prev, {
-        [current.prop]: value,
-      });
-    }
-
-    return prev;
-  }, {} as AnyStyle);
-}
-
-export const sheetEntryToStyle = (entry: RuntimeSheetEntry): CompleteStyle | null => {
-  const nextDecl = composeDeclarations(entry.declarations);
-  return nextDecl;
-};
-
-export const sheetEntriesToStyles = (entries: RuntimeSheetEntry[]): CompleteStyle => {
-  return entries.reduce((prev, current) => {
-    const style = sheetEntryToStyle(current);
-    if (!style) return prev;
-
-    if (style && style.transform) {
-      style.transform = [...(style.transform as any), ...style.transform];
-    }
-    return {
-      ...prev,
-      ...style,
-    };
-  }, {} as AnyStyle);
-};
-
 export const runtimeEntriesToFinalSheet = (entries: RuntimeSheetEntry[]): FinalSheet =>
   pipe(
     entries,
     RA.reduce(defaultFinalSheet, (prev, current) => {
-      const nextDecl = sheetEntryToStyle(current);
+      const nextDecl = current.styles;
       if (!nextDecl) return prev;
 
-      const group = getRuleSelectorGroup(current.selectors);
+      const group = current.selectorGroup();
       if (nextDecl.transform && prev[group].transform) {
         nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
       }

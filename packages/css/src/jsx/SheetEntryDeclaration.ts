@@ -2,7 +2,6 @@ import * as P from '@native-twin/arc-parser';
 import { hasOwnProperty } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
-import { pipe } from 'effect/Function';
 import * as Match from 'effect/Match';
 import * as Predicate from 'effect/Predicate';
 import { declarationValueWithUnitParser } from '../css/css-common.parser.js';
@@ -31,10 +30,7 @@ export const compileEntryDeclaration = (
     !decl.prop.includes('flex') && hasOwnProperty.call(unitlessCssProps, decl.prop);
 
   if (RA.isArray(decl.value)) {
-    const compiled = pipe(
-      decl.value,
-      RA.map((x) => compileEntryDeclaration(x, ctx)),
-    );
+    const compiled = RA.map(decl.value, (x) => compileEntryDeclaration(x, ctx));
     if (RA.every(compiled, RuntimeSheetDeclaration.$is('COMPILED'))) {
       return RuntimeSheetDeclaration.COMPILED({
         ...decl,

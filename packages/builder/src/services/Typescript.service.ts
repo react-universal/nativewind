@@ -64,6 +64,7 @@ const make = Effect.gen(function* () {
         category: diagnostic.getCategory(),
         message: diagnostic.getMessageText(),
         source: diagnostic.getSource(),
+        file: diagnostic.getSourceFile()?.getFilePath(),
       }),
     ),
     Effect.forever,
