@@ -1,107 +1,33 @@
 import { Effect, LogLevel, Logger, Option } from 'effect';
 import { describe, expect, it } from 'vitest';
-import { FSUtils, TwinPath } from '../src';
-import { TwinFileContext, TwinFileContextLive } from '../src/services/TwinFile.service';
-import { TestRuntime } from './test.utils';
+import { FSUtils, TwinNodeContext } from '../src';
+import { TwinFileTree } from '../src/models/TwinFile.model';
+import { TestRuntime, getFixture } from './test.utils';
 
 describe.only('Babel Compiler', () => {
-  it('Test Compile code', async () => {
+  it('Text file tree', async () => {
     await Effect.gen(function* () {
-      const { getTwinFile, transformFile } = yield* TwinFileContext;
-      const twinPath = yield* TwinPath.TwinPath;
       const fs = yield* FSUtils.FsUtils;
-      const twinFile = yield* getTwinFile(
-        twinPath.make.absoluteFromString('fixtures/twin-compiler/code.tsx'),
-        Option.none(),
-      );
+      const { inputFile, writeOutput } = yield* getFixture('twin-compiler');
 
-      const output = yield* transformFile(twinFile, 'ios');
-      if (Option.isNone(output)) {
-        return expect.fail('cant transform file');
+      const code = yield* fs.readFile(inputFile);
+      const { getTwForPlatform } = yield* TwinNodeContext;
+      const ctx = yield* getTwForPlatform('ios');
+
+      const file = new TwinFileTree(inputFile, code);
+      const result = yield* file.transformBabelPaths(ctx);
+
+      if (Option.isNone(result.output)) {
+        return expect.fail('Cant compile file', inputFile);
       }
 
-      const outputPath = twinPath.make.absoluteFromString(
-        'fixtures/twin-compiler/code.out.tsx',
+      const write = yield* writeOutput(result.output.value.code).pipe(
+        Effect.match({
+          onFailure: () => false,
+          onSuccess: () => true,
+        }),
       );
-      yield* fs.writeFileSource({
-        path: outputPath,
-        content: output.value.code,
-      });
-
-      const outFileContent = yield* fs.readFile(outputPath);
-      expect(outFileContent).toStrictEqual(output.value.code);
-
-      // yield* Stream.fromIterableEffect(twinFile.getBabelTwinElements()).pipe(
-      //   Stream.mapEffect((twinEl) => compileTwinElement(twinEl, 'ios')),
-      //   Stream.runForEach((result) => flattenElementInfo(result)),
-      //   Effect.andThen(() =>
-      //     Effect.gen(function* () {
-      //       const output = yield* twinFile.generateCode(twinFile.ast);
-      //       if (!output?.code) {
-      //         return Effect.logError('cant compile file');
-      //       }
-      //       yield* fs.writeFileSource({
-      //         path: twinPath.make.absoluteFromString(
-      //           'fixtures/twin-compiler/code.out.tsx',
-      //         ),
-      //         content: output.code,
-      //       });
-      //     }),
-      //   ),
-      // );
-    }).pipe(
-      Effect.provide(TwinFileContextLive),
-      Logger.withMinimumLogLevel(LogLevel.All),
-      TestRuntime.runPromise,
-    );
-    expect(true).toBeTruthy();
+      expect(write).toBeTruthy();
+    }).pipe(Logger.withMinimumLogLevel(LogLevel.All), TestRuntime.runPromise);
   });
 });
-
-// const getElementLogInfo = (twinEl: TwinCompiledElement) => {
-//   return {
-//     name: twinEl.babel.jsxName.pipe(
-//       Option.map((x) => x.name),
-//       Option.getOrNull,
-//     ),
-//     index: twinEl.babel.index,
-//     inheritedClasses: Array.fromIterable(
-//       Iterable.flatMap(twinEl.props, (x) => x.entries),
-//     ).map((x) => ({
-//       inherited: x.inherited,
-//       className: x.className,
-//       declarations: x.runtimeDeclarations,
-//     })),
-//     sheet: Array.fromIterable(Iterable.flatMap(twinEl.props, (x) => x.entries)).map(
-//       (x) => x.styles,
-//     ),
-//   };
-// };
-
-// const flattenElementInfo = (result: TwinCompiledElement): Effect.Effect<void> => {
-//   return Console.withGroup(
-//     Effect.gen(function* () {
-//       yield* Effect.logDebug('CODE: ', result.runtimeEntriesToCode());
-//       yield* Effect.log(getElementLogInfo(result));
-//       yield* Effect.log(
-//         'CHILDS: ',
-//         Array.fromIterable(result.childs).map((x) => getElementLogInfo(x)),
-//       );
-//       yield* Effect.log('\n');
-//       yield* Effect.all(
-//         Iterable.map(result.childs, (child) => flattenElementInfo(child)),
-//         {
-//           concurrency: 'inherit',
-//         },
-//       );
-//       result.mutateBabelAST();
-//     }),
-//     {
-//       label: result.babel.jsxName.pipe(
-//         Option.map((x) => x.name),
-//         Option.getOrElse(() => 'Unknown'),
-//       ),
-//       collapsed: false,
-//     },
-//   );
-// };

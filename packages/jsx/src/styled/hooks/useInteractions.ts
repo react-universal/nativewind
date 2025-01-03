@@ -1,4 +1,3 @@
-import type { RegisteredComponent } from '@native-twin/css/jsx';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
 import { useCallback, useContext, useRef } from 'react';
 import type {
@@ -7,15 +6,16 @@ import type {
   TextInputFocusEventData,
   Touchable,
 } from 'react-native';
-import { groupContext } from '../../context/index.js';
-import { StyleSheet } from '../../sheet/index.js';
+import { groupContext } from '../../context';
+import { StyleSheet } from '../../sheet';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
 
 export const useInteractions = (
   id: string,
-  metadata: RegisteredComponent['metadata'],
+  metadata: any,
   props: any,
 ) => {
+  // @ts-expect-error
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
   const context = useContext(groupContext);
   const parentState = useAtomValue(
@@ -23,6 +23,7 @@ export const useInteractions = (
       if (!context || !metadata.hasGroupEvents) {
         return DEFAULT_INTERACTIONS;
       }
+      // @ts-expect-error
       return get(StyleSheet.getComponentState(context));
     }),
   );

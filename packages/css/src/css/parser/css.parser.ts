@@ -1,7 +1,6 @@
 import * as P from '@native-twin/arc-parser';
 import type { AnyStyle } from '../../react-native/rn.types.js';
 import type { CssParserData } from './css-parser.types.js';
-import { ParseCssRules } from './rules.parser.js';
 
 export const CreateCssResolver = () => {
   const cache = new Map<string, AnyStyle>();
@@ -13,7 +12,7 @@ export const CreateCssResolver = () => {
   };
 
   function parseCssTarget(target: string, context: CssParserData['context']) {
-    const parsed = P.withData(ParseCssRules)({
+    const parsed = P.withData(P.literal(''))({
       cache: {
         get: getCacheForSelector,
         set: setCacheForSelector,

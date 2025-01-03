@@ -2,15 +2,14 @@ import { parseCssValue, tw } from '@native-twin/core';
 import {
   type AnyStyle,
   type CompleteStyle,
-  type FinalSheet,
   type SheetEntryDeclaration,
   getRuleSelectorGroup,
 } from '@native-twin/css';
-import type { RuntimeSheetEntry } from '@native-twin/css/jsx';
 import type { StyledContext } from '../store/observables/index.js';
 
+// TODO: PLACE THIS INTO GLOBAL SHEET
 export const sheetEntryToStyle = (
-  entry: RuntimeSheetEntry,
+  entry: any,
   context: StyledContext,
 ): CompleteStyle | null => {
   const validRule = isApplicativeRule(entry.selectors, context);
@@ -20,7 +19,7 @@ export const sheetEntryToStyle = (
 };
 
 export const sheetEntriesToStyles = (
-  entries: RuntimeSheetEntry[],
+  entries: any[],
   context: StyledContext,
 ): CompleteStyle => {
   return entries.reduce((prev, current) => {
@@ -37,7 +36,7 @@ export const sheetEntriesToStyles = (
   }, {} as AnyStyle);
 };
 export function getSheetEntryStyles(
-  entries: RuntimeSheetEntry[] = [],
+  entries: any[] = [],
   context: StyledContext,
 ) {
   return entries.reduce(
@@ -61,7 +60,7 @@ export function getSheetEntryStyles(
       odd: {},
       pointer: {},
       dark: {},
-    } as FinalSheet,
+    } as any,
   );
 }
 

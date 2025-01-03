@@ -1,5 +1,4 @@
-import type { FinalSheet } from '../react-native/rn.types.js';
-import type { ChildsSheet } from './Sheet.js';
+// import type { FinalSheet } from '../react-native/rn.types.js';
 
 export const defaultSheetMetadata = {
   hasAnimations: false,
@@ -8,20 +7,20 @@ export const defaultSheetMetadata = {
   isGroupParent: false,
 };
 
-export const emptyChildsSheet: ChildsSheet = {
-  first: [],
-  last: [],
-  even: [],
-  odd: [],
-};
+// export const emptyChildsSheet: ChildsSheet = {
+//   first: [],
+//   last: [],
+//   even: [],
+//   odd: [],
+// };
 
-export const defaultFinalSheet: FinalSheet = {
-  base: {},
-  even: {},
-  first: {},
-  group: {},
-  last: {},
-  odd: {},
-  pointer: {},
-  dark: {},
-};
+// export const defaultFinalSheet: FinalSheet = {
+//   base: {},
+//   even: {},
+//   first: {},
+//   group: {},
+//   last: {},
+//   odd: {},
+//   pointer: {},
+//   dark: {},
+// };

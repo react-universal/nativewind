@@ -1,18 +1,13 @@
 import { type SheetEntry, getRuleSelectorGroup } from '@native-twin/css';
-import {
-  type RuntimeGroupSheet,
-  RuntimeSheetEntry,
-  sortSheetEntriesByPrecedence,
-} from '@native-twin/css/jsx';
+import { SheetEntryHandler, SheetOrders } from '@native-twin/css/jsx';
 import { Platform } from 'react-native';
 import { remObs } from '../../../store/observables/index.js';
-import type { ComponentTemplateEntryProp } from '../../../types/jsx.types.js';
 
-export const composeTemplateSheets = (entries: SheetEntry[]): RuntimeGroupSheet => {
+export const composeTemplateSheets = (entries: SheetEntry[]): any => {
   return entries
     .map(
       (x) =>
-        new RuntimeSheetEntry(x, {
+        new SheetEntryHandler(x, {
           baseRem: remObs.get(),
           platform: Platform.OS,
         }),
@@ -22,7 +17,7 @@ export const composeTemplateSheets = (entries: SheetEntry[]): RuntimeGroupSheet 
         const group = getRuleSelectorGroup(current.selectors);
         prev[group].push(current);
         // console.log('BEFORE: ', prev[group].map((x) => x.className).join(', '));
-        prev[group].sort(sortSheetEntriesByPrecedence);
+        prev[group].sort(SheetOrders.sortSheetEntries);
         // console.log('AFTER: ', prev[group].map((x) => x.className).join(', '));
 
         return prev;
@@ -36,13 +31,11 @@ export const composeTemplateSheets = (entries: SheetEntry[]): RuntimeGroupSheet 
         odd: [],
         even: [],
         dark: [],
-      } as RuntimeGroupSheet,
+      } as any,
     );
 };
 
-export const templatePropsToSheetEntriesObject = (
-  templates: ComponentTemplateEntryProp[],
-) => {
+export const templatePropsToSheetEntriesObject = (templates: any[]) => {
   return templates.reduce(
     (prev, current) => {
       if (prev[current.target]) {
@@ -53,6 +46,6 @@ export const templatePropsToSheetEntriesObject = (
       }
       return prev;
     },
-    {} as Record<string, RuntimeSheetEntry[]>,
+    {} as Record<string, any[]>,
   );
 };

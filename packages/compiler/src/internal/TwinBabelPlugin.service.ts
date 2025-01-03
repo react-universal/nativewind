@@ -4,7 +4,7 @@ import * as Effect from 'effect/Effect';
 import * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
 import type { TwinBabelPluginOptions } from '../models/Babel.models.js';
-import { TwinNodeContext } from './TwinNodeContext.service.js';
+import { TwinNodeContext } from '../services/TwinNodeContext.service.js';
 
 export class JSXImportPluginContext extends Context.Tag('babel/plugin/context')<
   JSXImportPluginContext,

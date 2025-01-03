@@ -8,7 +8,7 @@ import {
   CompilerConfigContext,
   JSXImportPluginContext,
   type TwinBabelPluginOptions,
-  TwinNodeContext,
+  TwinNodeContextLive,
   createCompilerConfig,
 } from '@native-twin/compiler';
 import * as Effect from 'effect/Effect';
@@ -16,7 +16,7 @@ import * as Layer from 'effect/Layer';
 
 const NodeMainLayerSync = Layer.empty.pipe(
   Layer.provideMerge(BabelCompilerContextLive),
-  Layer.provideMerge(TwinNodeContext.Live),
+  Layer.provideMerge(TwinNodeContextLive),
 );
 
 const allowed = new Set<string>();
@@ -55,7 +55,6 @@ const program = Effect.scoped(
           if (!allowed.has(state.filename)) {
             allowed.add(state.filename);
           }
-          console.log('code: ', state.file.code);
           if (reactCompiler.memberExpressionIsReactImport(path)) {
             path.replaceWith(addNamed(path, ...BABEL_JSX_PLUGIN_IMPORT_RUNTIME));
           }
@@ -74,24 +73,12 @@ const program = Effect.scoped(
   }),
 );
 
-// const layer = Logger.replace(Logger.defaultLogger, BabelLogger);
-
 function nativeTwinBabelPlugin(
   _: BabelAPI,
   options: TwinBabelPluginOptions,
   cwd: string,
 ): PluginObj {
-  // console.log('BABEL_OPT: ', options);
-  // const MainLayer = makeNodeLayer({
-  //   configPath: options.twinConfigPath,
-  //   debug: true,
-  //   inputCSS: options.inputCSS,
-  //   outputDir: options.outputDir,
-  //   projectRoot: cwd,
-  // });
   return program.pipe(
-    // Logger.withMinimumLogLevel(LogLevel.All),
-    // Effect.provide(layer),
     Effect.provide(JSXImportPluginContext.make(options, cwd)),
     Effect.provide(NodeMainLayerSync),
     Effect.provide(
@@ -105,7 +92,6 @@ function nativeTwinBabelPlugin(
         }),
       ),
     ),
-    // Effect.provide(MainLayer),
     Effect.runSync,
   );
 }

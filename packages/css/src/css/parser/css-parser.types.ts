@@ -1,5 +1,5 @@
 import type { Platform } from 'react-native';
-import type { AnyStyle, FinalSheet } from '../../react-native/rn.types.js';
+import type { AnyStyle } from '../../react-native/rn.types.js';
 import type {
   SelectorGroup,
   ValidAppearancePseudoSelector,
@@ -16,7 +16,6 @@ export interface CssParserData {
     deviceHeight: number;
     platform: Platform['OS'];
   };
-  styles: FinalSheet;
   cache: {
     get: (selector: string) => AnyStyle | null;
     set: (selector: string, style: AnyStyle) => void;

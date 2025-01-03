@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { ManagedRuntime } from 'effect';
+import { Effect, ManagedRuntime } from 'effect';
 import * as Layer from 'effect/Layer';
 import {
   BabelCompilerContextLive,
@@ -31,31 +31,10 @@ const TestMainLive = Layer.empty.pipe(
   Layer.provideMerge(FSUtils.FsUtilsLive),
   Layer.provideMerge(TwinPath.TwinPathLive),
   Layer.provideMerge(compilerContext),
-  Layer.provide(twinLoggerLayer)
+  Layer.provide(twinLoggerLayer),
 );
 
 export const TestRuntime = ManagedRuntime.make(TestMainLive);
-
-// const reactProgram = (file: string) =>
-//   Effect.gen(function* () {
-//     const babel = yield* BabelCompilerContext;
-//     const result = yield* babel.getBabelOutput({
-//       _tag: 'BabelFileEntry',
-//       filename: file,
-//       platform: 'ios',
-//     });
-
-//     return result;
-//   }).pipe(Effect.scoped);
-
-// export const runFixture = (fixturePath: string) => {
-//   const filePath = path.join(__dirname, 'fixtures', fixturePath);
-//   const code = fs.readFileSync(filePath);
-
-//   return reactProgram(path.join(__dirname, './tailwind.config.ts')).pipe(
-//     TestRuntime.runPromise,
-//   );
-// };
 
 export const writeFixtureOutput = (
   code: string,
@@ -65,3 +44,22 @@ export const writeFixtureOutput = (
   fs.writeFileSync(filePath, code);
   return code;
 };
+
+export const getFixture = (name: string) =>
+  Effect.gen(function* () {
+    const twinPath = yield* TwinPath.TwinPath;
+    const fs = yield* FSUtils.FsUtils;
+    const inputFile = twinPath.make.absoluteFromString(`fixtures/${name}/code.tsx`);
+    const outputFile = twinPath.make.absoluteFromString(`fixtures/${name}/code.out.tsx`);
+    const writeOutput = (content: string) => fs.writeFile(outputFile, content);
+
+    return {
+      inputFile,
+      outputFile,
+      writeOutput,
+    };
+  }).pipe(
+    Effect.provide(TwinPath.TwinPathLive),
+    Effect.provide(FSUtils.FsUtilsLive),
+    Effect.withLogSpan('FIXTURE_FILES'),
+  );

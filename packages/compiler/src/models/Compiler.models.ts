@@ -1,32 +1,61 @@
+import type { NodePath } from '@babel/core';
 import { parseExpression } from '@babel/parser';
-import type { RuntimeTwinMappedProp, TwinInjectedObject } from '@native-twin/css/jsx';
+import type * as t from '@babel/types';
+import type {
+  RuntimeJSXStyle,
+  RuntimeTwinMappedProp,
+  SheetEntryHandler,
+  TwinInjectedObject,
+} from '@native-twin/css/jsx';
 import CodeBlockWriter from 'code-block-writer';
-import * as Array from 'effect/Array';
-import type * as Data from 'effect/Data';
-import * as Equal from 'effect/Equal';
+import * as RA from 'effect/Array';
+import * as Chunk from 'effect/Chunk';
 import * as Hash from 'effect/Hash';
+import * as Iterable from 'effect/Iterable';
 import type * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
 import { addJsxExpressionAttribute } from '../utils/babel/babel.utils';
 import { expressionFactory } from '../utils/babel/writer.factory';
-import type { CompiledMappedProp, TwinBabelJSXElement } from './Babel.models';
+import type { CompiledMappedProp } from './Babel.models';
 
-export class TwinCompiledElement implements Equal.Equal {
+export class TwinElement {
   constructor(
-    readonly babel: TwinBabelJSXElement,
-    readonly props: Iterable<CompiledMappedProp>,
-    readonly childs: Iterable<TwinCompiledElement>,
+    readonly babelPath: NodePath<t.JSXElement>,
+    private readonly mappedProps: Chunk.Chunk<CompiledMappedProp>,
+    readonly meta: {
+      readonly parentStyles: Iterable<SheetEntryHandler>;
+      readonly parentSize: number;
+      readonly parentID: string;
+      readonly index: -1 | (number & {});
+    },
   ) {}
 
-  get id(): number {
-    const index = Hash.number(this.babel.index);
-    const name = Hash.string(
-      this.babel.jsxName.pipe(
-        Option.map((x) => x.name),
-        Option.getOrElse(() => 'Unknown'),
-      ),
+  get childEntries() {
+    return Chunk.flatMap(this.mappedProps, (x) => Chunk.fromIterable(x.childEntries));
+  }
+
+  get mergedProps() {
+    return Iterable.map(this.mappedProps, (attr) => {
+      return {
+        ...attr,
+        entries: Iterable.appendAll(attr.entries, this.meta.parentStyles),
+      };
+    });
+  }
+
+  get name() {
+    return Option.liftPredicate(this.babelPath.get('openingElement').get('name'), (x) =>
+      x.isJSXIdentifier(),
+    ).pipe(
+      Option.map((x) => x.node.name),
+      Option.getOrElse(() => 'UnknownElementName'),
     );
-    const filename = this.babel.location.pipe(
+  }
+
+  get id(): number {
+    const index = Hash.number(this.meta.index);
+    const name = Hash.string(this.name);
+    const filename = Option.fromNullable(this.babelPath.node.loc).pipe(
       Option.map((x) => x.filename),
       Option.getOrElse(() => 'NO_FILE'),
     );
@@ -34,30 +63,48 @@ export class TwinCompiledElement implements Equal.Equal {
     return Hash.string(`${filename}-${name}-${index}`);
   }
 
-  runtimeEntriesToCode() {
-    const runtimeObject = this.toRuntimeObject();
-    const result = Array.fromIterable(runtimeObject.props)
-      .map((x) => this.compiledPropToCode(x))
-      .join(',');
-    return `{ id: "${this.id}", index: ${runtimeObject.index}, props: [${result}] }`;
+  toRuntimeObject(): TwinInjectedObject {
+    const id = this.id;
+    const index = this.meta.index;
+    const props = this.getRuntimeProps();
+    return {
+      id: `${id}`,
+      index,
+      parentSize: this.meta.parentSize,
+      childStyles: RA.fromIterable(this.childEntries).map(entryHandlerToInjected),
+      parentID: `${this.meta.parentID}`,
+      props,
+    };
   }
 
-  mutateBabelAST() {
-    const code = this.runtimeEntriesToCode();
-    const astProps = parseExpression(code, {
-      sourceType: 'script',
-      errorRecovery: true,
-    });
+  toRuntimeString() {
+    const w = expressionFactory(new CodeBlockWriter());
+    const runtimeObject = this.toRuntimeObject();
+    const result = RA.fromIterable(runtimeObject.props)
+      .map((x) => this.compiledPropToCode(x))
+      .join(',');
+    w.array(runtimeObject.childStyles).write(',');
+    const componentData = `
+      id: "${this.id}", 
+      index: ${runtimeObject.index}, 
+      parentID: "${runtimeObject.parentID}",
+      parentSize: ${runtimeObject.parentSize},`;
+    const injectString = `{ 
+      ${componentData}
+      props: [${result}],
+      childStyles: ${w.writer.toString()}
+    }`;
+    const templateEntries = getTemplateEntries(this.mergedProps);
+    const templateBuilder = expressionFactory(new CodeBlockWriter());
+    templateBuilder.array(templateEntries).write(',');
+    const jsxTwinProp = `{
+      ${componentData}
+      templateEntries: ${templateBuilder.writer.toString()}
+    }`;
 
-    if (astProps.errors.length > 0) {
-      console.log('ERRORS: ', astProps.errors);
-    }
-    if (astProps) {
-      addJsxExpressionAttribute(this.babel.babelNode, '_twinInjected', astProps);
-    }
     return {
-      astProps,
-      code,
+      injectString,
+      jsxTwinProp,
     };
   }
 
@@ -69,55 +116,77 @@ export class TwinCompiledElement implements Equal.Equal {
       w.writer.writeLine(`prop: "${compiledProp.prop}",`);
       w.writer.write('entries: ');
       w.array(compiledProp.entries).write(',');
-      w.writer.writeLine(`templateEntries: ${compiledProp.templateEntries},`);
+      // w.writer.writeLine(`templateEntries: ${compiledProp.templateEntries},`);
     });
     return w.writer.toString();
   }
 
-  toRuntimeObject(): TwinInjectedObject {
-    const id = this.id;
-    const index = this.babel.index;
-    const props = this.getRuntimeProps();
-    return {
-      id: `${id}`,
-      index,
-      props,
-    };
-  }
-
   private getRuntimeProps(): RuntimeTwinMappedProp[] {
-    return Array.fromIterable(this.props).map(
-      (mapped): RuntimeTwinMappedProp => ({
-        entries: Array.fromIterable(mapped.entries).map((entry) => ({
-          className: entry.className,
-          declarations: entry.runtimeDeclarations,
-          group: entry.selectorGroup(),
-          important: entry.important,
-          inherited: entry.inherited,
-          precedence: entry.precedence,
-        })),
-        prop: mapped.prop,
-        target: mapped.target,
-        templateEntries: mapped.templateExpression.pipe(
-          Option.flatMap(
-            Option.liftPredicate(
-              (template) =>
-                template.length > 0 && template.replaceAll(/`/g, '').length > 0,
-            ),
-          ),
-          Option.getOrNull,
-        ),
-      }),
-    );
+    return getRuntimeProps(this.mergedProps);
   }
 
-  [Hash.symbol](): number {
-    return this.id;
-  }
-  [Equal.symbol](that: unknown) {
-    return that instanceof TwinCompiledElement && this.id === that.id;
+  toAst() {
+    const { injectString, jsxTwinProp } = this.toRuntimeString();
+    const twinInjectAst = parseExpression(injectString, {
+      sourceType: 'script',
+      errorRecovery: true,
+    });
+    const twinJsxAst = parseExpression(jsxTwinProp, {
+      sourceType: 'script',
+      errorRecovery: true,
+    });
+
+    if (twinInjectAst) {
+      const propNames = Iterable.map(this.mergedProps, (x) => x.prop);
+      for (const attr of this.babelPath.get('openingElement').get('attributes')) {
+        if (!attr.isJSXAttribute()) continue;
+        const name = attr.get('name');
+        if (!name.isJSXIdentifier()) continue;
+        if (!Iterable.contains(propNames, name.node.name)) continue;
+        attr.remove();
+      }
+      addJsxExpressionAttribute(this.babelPath.node, '_twinInjected', twinJsxAst);
+    }
+
+    return twinInjectAst;
   }
 }
+
+const entryHandlerToInjected = (entry: SheetEntryHandler): RuntimeJSXStyle => ({
+  className: entry.className,
+  declarations: entry.runtimeDeclarations,
+  group: entry.selectorGroup(),
+  important: entry.important,
+  inherited: entry.inherited,
+  // isPointerEntry: entry.isPointerEntry,
+  precedence: entry.precedence,
+});
+
+const getTemplateEntries = (props: Iterable<CompiledMappedProp>) =>
+  RA.filterMap(RA.fromIterable(props), (mapped) => {
+    return mapped.templateExpression.pipe(
+      Option.flatMap(
+        Option.liftPredicate(
+          (template) => template.length > 0 && template.replaceAll(/`/g, '').length > 0,
+        ),
+      ),
+      Option.map((template) => ({
+        prop: mapped.prop,
+        target: mapped.target,
+        templateEntries: template,
+      })),
+    );
+  });
+
+const getRuntimeProps = (props: Iterable<CompiledMappedProp>) =>
+  RA.map(
+    RA.fromIterable(props),
+    (mapped): RuntimeTwinMappedProp => ({
+      entries: RA.fromIterable(mapped.entries).map(entryHandlerToInjected),
+      prop: mapped.prop,
+      target: mapped.target,
+    }),
+  );
 
 /**
  * @domain `TwinNodeContext` Common Input config options
@@ -150,13 +219,3 @@ export interface NodeWithNativeTwinOptions {
    * */
   logLevel: LogLevel.Literal;
 }
-
-export interface TwinPathInfo {
-  absolute: string;
-  relative: string;
-}
-export type TwinFileInfo = Data.TaggedEnum<{
-  File: { readonly path: TwinPathInfo; name: string; dirname: string };
-  Directory: { readonly path: TwinPathInfo };
-  Glob: { readonly path: TwinPathInfo };
-}>;

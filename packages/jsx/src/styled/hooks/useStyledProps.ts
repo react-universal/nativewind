@@ -1,29 +1,27 @@
 import {
-  type RuntimeComponentEntry,
   type RuntimeSheetDeclaration,
-  RuntimeSheetEntry,
-  getGroupedEntries,
+  SheetEntryHandler,
+  type TwinInjectedProp,
 } from '@native-twin/css/jsx';
 import { asArray } from '@native-twin/helpers';
 import { useAtomValue } from '@native-twin/helpers/react';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { StyleSheet } from '../../sheet/StyleSheet.js';
 import { tw } from '../../sheet/native-tw.js';
-import { styledContext } from '../../store/observables/index.js';
+import { styledContext } from '../../store/observables';
+import type { JSXInternalProps } from '../../types/jsx.types.js';
 // import { ComponentTemplateEntryProp } from '../../types/jsx.types.js';
 import type { ComponentConfig } from '../../types/styled.types.js';
-import { INTERNAL_RESET } from '../../utils/constants.js';
 import { composeDeclarations } from '../../utils/sheet.utils.js';
 
 // import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps.js';
 
 export const useStyledProps = (
   id: string,
-  props: Record<string, any>,
+  props: JSXInternalProps,
   configs: ComponentConfig[],
 ) => {
-  const compiledSheet: RuntimeComponentEntry[] | null =
-    props?.['_twinComponentSheet'] ?? null;
+  const compiledSheet: TwinInjectedProp | null = props?.['_twinInjected'] ?? null;
 
   // const templateEntries: ComponentTemplateEntryProp[] = props?.[
   //   '_twinComponentTemplateEntries'
@@ -36,6 +34,7 @@ export const useStyledProps = (
 
   const componentStyles = useMemo(() => {
     if (compiledSheet) {
+      console.log('COMPILED_SHEET: ', compiledSheet);
       const registered = StyleSheet.registerComponent(
         id,
         compiledSheet,
@@ -43,18 +42,19 @@ export const useStyledProps = (
         false,
       );
 
+      // @ts-expect-error
       if (registered) {
         return registered;
       }
     }
-    const entries = configs.flatMap((config): RuntimeComponentEntry[] => {
+    const entries = configs.flatMap((config): any[] => {
       const source = props[config.source];
 
       if (!source) {
         return [];
       }
-      const compiledEntries = tw(`${source}`).map((entry): RuntimeSheetEntry => {
-        return new RuntimeSheetEntry(
+      const compiledEntries = tw(`${source}`).map((entry): SheetEntryHandler => {
+        return new SheetEntryHandler(
           {
             animations: [],
             className: entry.className,
@@ -64,6 +64,9 @@ export const useStyledProps = (
                 _tag: 'NOT_COMPILED',
                 prop: decl.prop,
                 value: composeDeclarations([decl], styledCtx),
+                isUnitLess: false,
+                reason: 'Unknown',
+                valueType: 'RAW',
               }),
             ),
             important: entry.important,
@@ -80,30 +83,34 @@ export const useStyledProps = (
         classNames: source,
         entries: compiledEntries,
         prop: config.source,
-        rawSheet: getGroupedEntries(compiledEntries),
+        // rawSheet: getGroupedEntries(compiledEntries),
         templateEntries: [],
         target: config.target,
         templateLiteral: null,
       });
     });
 
+    // @ts-expect-error
     const component = StyleSheet.registerComponent(id, entries, styledCtx, false);
     return component;
   }, [styledCtx, id, configs, props, compiledSheet]);
 
-  useEffect(() => {
-    if (StyleSheet.getFlag('STARTED') === 'NO') {
-      if (tw.config) {
-        StyleSheet[INTERNAL_RESET](tw.config);
-      }
-      const obs = tw.observeConfig((c) => {
-        if (!c?.root) return;
-        StyleSheet[INTERNAL_RESET](c);
-      });
-      return () => obs();
-    }
-    return () => {};
-  }, []);
+  // useEffect(() => {
+  //   // @ts-expect-error
+  //   if (StyleSheet.getFlag('STARTED') === 'NO') {
+  //     if (tw.config) {
+  //       // @ts-expect-error
+  //       StyleSheet[INTERNAL_RESET](tw.config);
+  //     }
+  //     const obs = tw.observeConfig((c) => {
+  //       if (!c?.root) return;
+  //       // @ts-expect-error
+  //       StyleSheet[INTERNAL_RESET](c);
+  //     });
+  //     return () => obs();
+  //   }
+  //   return () => {};
+  // }, []);
 
   return { componentStyles, styledCtx };
 };

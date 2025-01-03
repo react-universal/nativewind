@@ -29,6 +29,9 @@ export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   return 'base';
 }
 
+export const getRuleSelectorGroups = (variants: string[]): SelectorGroup[] =>
+  variants.map((x) => getRuleSelectorGroup(asArray(x)));
+
 export function mql(screen: MaybeArray<TWScreenValueConfig>, prefix = '@media '): string {
   // if (!screen) return '';
   return (

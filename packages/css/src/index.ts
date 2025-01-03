@@ -121,12 +121,6 @@ export type {
   AnyStyle,
   /** @category — RN Types */
   CompleteStyle,
-  /** @category — RN Types */
-  ParserRuntimeContext,
-  /** @category — RN Types */
-  FinalSheet,
-  /** @category — RN Types */
-  GetChildStylesArgs,
 } from './react-native/rn.types.js';
 
 // HTML

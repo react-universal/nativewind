@@ -6,7 +6,6 @@ import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import type { JSXMappedAttribute } from '../../models/Babel.models.js';
-import type { JSXChildElement } from '../../models/jsx.models.js';
 import {
   type MappedComponent,
   createCommonMappedAttribute,
@@ -147,7 +146,7 @@ const JSXElementHasAttribute = (element: t.JSXElement, name: string) => {
 };
 
 export const addJsxAttribute = (
-  element: JSXChildElement,
+  element: t.JSXElement,
   name: string,
   value: AnyPrimitive,
 ) => {
@@ -173,7 +172,7 @@ export const addJsxAttribute = (
 };
 
 export const addJsxExpressionAttribute = (
-  element: JSXChildElement,
+  element: t.JSXElement,
   name: string,
   value: t.Expression,
 ) => {

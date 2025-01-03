@@ -50,3 +50,10 @@ export {
   convert,
   defineConfig,
 };
+
+export { TwinSheetHandler } from './runtime/SheetHandler.js';
+
+export {
+  StyleSheetAdapter,
+  type StyleSheetProcessor,
+} from './runtime/TwinStyleSheet.js';

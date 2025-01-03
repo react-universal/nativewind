@@ -1,148 +1,188 @@
-import * as RA from 'effect/Array';
-import { pipe } from 'effect/Function';
-import * as Record from 'effect/Record';
-import type { SelectorGroup } from '../css/css.types.js';
-import type { FinalSheet } from '../react-native/rn.types.js';
-import type { ComponentSheet, RuntimeComponentEntry } from './Component.js';
-import { type RuntimeSheetEntry, sortSheetEntries } from './SheetEntry.js';
-import {
-  defaultFinalSheet,
-  defaultSheetMetadata,
-  emptyChildsSheet,
-} from './constants.js';
+import { type MaybeArray, asArray, hash } from '@native-twin/helpers';
+import type { AnyStyle } from '../react-native/rn.types.js';
+import type { RuntimeContext } from '../react-native/styles.context.js';
+import type { SheetEntry } from '../sheets/sheet.types.js';
+import { getRuleSelectorGroups } from '../tailwind/tailwind.utils.js';
+import type { RuntimeJSXStyle } from './Component.js';
+import { SheetEntryHandler } from './SheetEntry.js';
+import type { CompilerContext } from './metro.runtime.js';
+import * as Ord from './sheet.order.js';
+import * as Predicate from './sheet.predicates.js';
 
-/** @category MetroBundler */
-export type ChildsSheet = Record<'first' | 'last' | 'even' | 'odd', RuntimeSheetEntry[]>;
-
-/** @category MetroBundler */
-export interface JSXElementSheet {
-  propEntries: RuntimeComponentEntry[];
-  childEntries: ChildsSheet;
+export interface TwinSheetInput {
+  index: number;
+  parentSize: number;
 }
 
-export type RuntimeGroupSheet = Record<SelectorGroup, RuntimeSheetEntry[]>;
-
-export const groupEntriesBySelectorGroup = (
-  x: RuntimeSheetEntry[],
-): Record<SelectorGroup, RuntimeSheetEntry[]> =>
-  RA.groupBy(x, (entry) => entry.selectorGroup());
-
-const combineRuntimeSheetEntries = (
-  a: RuntimeSheetEntry[],
-  b: RuntimeSheetEntry[],
-): RuntimeSheetEntry[] => {
-  return RA.union([...a], [...b]);
-};
-
-export const getChildRuntimeEntries = (
-  runtimeEntries: RuntimeComponentEntry[],
-): ChildsSheet => {
-  return pipe(
-    runtimeEntries,
-    RA.map((runtimeEntry) => runtimeEntry.rawSheet),
-    RA.reduce(emptyChildsSheet, (prev, current) =>
-      Record.union(prev, current, combineRuntimeSheetEntries),
-    ),
-  );
-};
-
-export const getGroupedEntries = (runtime: RuntimeSheetEntry[]): RuntimeGroupSheet => {
-  return pipe(
-    runtime,
-    sortSheetEntries,
-    RA.filter((entry) => entry.declarations.length > 0),
-    groupEntriesBySelectorGroup,
-    (entry) => {
-      return {
-        base: entry.base ?? [],
-        dark: entry.dark ?? [],
-        pointer: entry.pointer ?? [],
-        group: entry.group ?? [],
-        even: entry.even ?? [],
-        first: entry.first ?? [],
-        last: entry.last ?? [],
-        odd: entry.odd ?? [],
-      };
-    },
-  );
-};
-
-/** @category Filters */
-export const applyParentEntries = (
-  currentEntries: RuntimeComponentEntry[],
-  parentEntries: ChildsSheet,
-  order: number,
-  parentChildsNumber: number,
-): RuntimeComponentEntry[] => {
-  return pipe(
-    currentEntries,
-    RA.map((entry): RuntimeComponentEntry => {
-      const newSheet = entry.rawSheet;
-      if (order === 0) {
-        newSheet.base.push(...parentEntries.first);
-      }
-      if (order + 1 === parentChildsNumber) newSheet.base.push(...parentEntries.last);
-      if ((order + 1) % 2 === 0) newSheet.base.push(...parentEntries.even);
-      if ((order + 1) % 2 !== 0) newSheet.base.push(...parentEntries.odd);
-      return {
-        ...entry,
-        rawSheet: { ...newSheet },
-      };
-    }),
-  );
-};
-
-/** @category Filters */
-export function getSheetMetadata(
-  entries: RuntimeSheetEntry[],
-): ComponentSheet['metadata'] {
-  return pipe(
-    entries,
-    RA.reduce(defaultSheetMetadata, (prev, current) => {
-      const group = current.selectorGroup();
-      if (!prev.isGroupParent && current.className === 'group') {
-        prev.isGroupParent = true;
-      }
-      if (!prev.hasPointerEvents && group === 'pointer') {
-        prev.hasPointerEvents = true;
-      }
-      if (!prev.hasGroupEvents && group === 'group') {
-        prev.hasGroupEvents = true;
-      }
-      return prev;
-    }),
-  );
+export interface TwinCompilerSheet {
+  insert: (input: MaybeArray<SheetEntry>, fromParent?: boolean) => void;
+  getChildEntries: () => SheetEntry[];
+  toEntryHandlers: (context: CompilerContext) => SheetEntryHandler[];
 }
 
-export const runtimeEntriesToFinalSheet = (entries: RuntimeSheetEntry[]): FinalSheet =>
-  pipe(
-    entries,
-    RA.reduce(defaultFinalSheet, (prev, current) => {
-      const nextDecl = current.styles;
-      if (!nextDecl) return prev;
+export const createSheetHandler = (data: TwinSheetInput): TwinCompilerSheet => {
+  const { index, parentSize } = data;
+  const isEven = index % 2 === 0;
+  const localEntries: SheetEntry[] = [];
+  const childEntries: SheetEntry[] = [];
+  let compilerCache: SheetEntryHandler[] = [];
+  let compilationHash = hash(getHashKey());
 
-      const group = current.selectorGroup();
-      if (nextDecl.transform && prev[group].transform) {
-        nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
+  return {
+    insert,
+    getChildEntries,
+    toEntryHandlers,
+  };
+
+  function toEntryHandlers(context: CompilerContext) {
+    const hashValue = hash(getHashKey());
+    if (compilationHash === hashValue) {
+      return compilerCache;
+    }
+
+    compilationHash = hashValue;
+    compilerCache = localEntries
+      .map((entry) => new SheetEntryHandler(entry, context))
+      .sort(Ord.sortSheetEntries);
+
+    return compilerCache;
+  }
+
+  function insert(insert: MaybeArray<SheetEntry>, fromParent = false) {
+    if (!fromParent) {
+      const splitted = filterEntries(asArray(insert));
+      localEntries.push(...splitted.local);
+      childEntries.push(...splitted.childs);
+      return;
+    }
+    for (const entry of asArray(insert)) {
+      const groups = getRuleSelectorGroups(entry.selectors);
+      if (
+        (groups.some((x) => x === 'first') && index === 0) ||
+        (groups.some((x) => x === 'last') && index + 1 === parentSize) ||
+        (groups.some((x) => x === 'even') && isEven) ||
+        (groups.some((x) => x === 'odd') && !isEven)
+      ) {
+        localEntries.push(entry);
       }
-      Object.assign(prev[group], nextDecl);
-      return prev;
-    }),
-  );
+    }
+  }
 
-export const getRawSheet = (sheets: RuntimeComponentEntry[]) =>
-  pipe(
-    sheets,
-    RA.map((prop) => {
-      return {
-        ...prop,
-        rawSheet: {
-          ...prop.rawSheet,
-          even: [],
-          first: [],
-          last: [],
-          odd: [],
-        },
-      };
-    }),
-  );
+  function getChildEntries() {
+    return childEntries;
+  }
+
+  function getHashKey() {
+    return `${index}-${parentSize}-${isEven}-${localEntries.length}-${childEntries.length}-${getClassnamesFromEntries(localEntries)}`;
+  }
+};
+
+const getClassnamesFromEntries = (entries: SheetEntry[]) =>
+  entries.map((x) => x.className).join(' ');
+
+const filterEntries = (entries: SheetEntry[]) => {
+  const childEntries: SheetEntry[] = [];
+  const localEntries: SheetEntry[] = [];
+  for (const entry of entries) {
+    if (entry.selectors.some((selector) => Predicate.isChildSelector(selector))) {
+      childEntries.push(entry);
+      continue;
+    }
+    localEntries.push(entry);
+  }
+  return {
+    childs: childEntries,
+    local: localEntries,
+  };
+};
+
+export class RuntimeStyleSheet {
+  ctx: RuntimeContext;
+  constructor(
+    readonly styles: RuntimeJSXStyle[],
+    ctx: RuntimeContext,
+  ) {
+    this.ctx = ctx;
+  }
+
+  compiledEntries() {
+    const base: AnyStyle = {};
+    const pointer: AnyStyle = {};
+    const group: AnyStyle = {};
+    for (const style of this.styles) {
+      if (style.group === 'base') {
+      }
+    }
+    return {
+      base,
+      pointer,
+      group,
+    };
+  }
+}
+
+// export const groupEntriesBySelectorGroup = (
+//   x: RuntimeSheetEntry[],
+// ): Record<SelectorGroup, RuntimeSheetEntry[]> =>
+//   x.groupBy((entry) => entry.selectorGroup());
+
+// const combineRuntimeSheetEntries = (
+//   a: RuntimeSheetEntry[],
+//   b: RuntimeSheetEntry[],
+// ): RuntimeSheetEntry[] => {
+//   return [...[...a], ...[...b]];
+// };
+
+// export const getChildRuntimeEntries = (
+//   runtimeEntries: RuntimeComponentEntry[],
+// ): ChildsSheet => {
+//   return runtimeEntries
+//     .map((runtimeEntry) => runtimeEntry.rawSheet)
+//     .reduce((prev, current) => Object.assign(prev, current), emptyChildsSheet);
+// };
+
+/** @category Filters */
+// export function getSheetMetadata(
+//   entries: RuntimeSheetEntry[],
+// ): ComponentSheet['metadata'] {
+//   return entries.reduce((prev, current) => {
+//     const group = current.selectorGroup();
+//     if (!prev.isGroupParent && current.className === 'group') {
+//       prev.isGroupParent = true;
+//     }
+//     if (!prev.hasPointerEvents && group === 'pointer') {
+//       prev.hasPointerEvents = true;
+//     }
+//     if (!prev.hasGroupEvents && group === 'group') {
+//       prev.hasGroupEvents = true;
+//     }
+//     return prev;
+//   }, defaultSheetMetadata);
+// }
+
+// export const runtimeEntriesToFinalSheet = (entries: RuntimeSheetEntry[]): FinalSheet =>
+//   entries.reduce((prev, current) => {
+//     const nextDecl = current.styles;
+//     if (!nextDecl) return prev;
+
+//     const group = current.selectorGroup();
+//     if (nextDecl.transform && prev[group].transform) {
+//       nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
+//     }
+//     Object.assign(prev[group], nextDecl);
+//     return prev;
+//   }, defaultFinalSheet);
+
+// export const getRawSheet = (sheets: RuntimeComponentEntry[]) =>
+//   sheets.map((prop) => {
+//     return {
+//       ...prop,
+//       rawSheet: {
+//         ...prop.rawSheet,
+//         even: [],
+//         first: [],
+//         last: [],
+//         odd: [],
+//       },
+//     };
+//   });

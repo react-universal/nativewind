@@ -1,12 +1,17 @@
 import * as P from '@native-twin/arc-parser';
 import {
-  type ParserRuntimeContext,
   declarationValueWithUnitParser,
   getPropertyValueType,
   unitlessCssProps,
 } from '@native-twin/css';
 import { hasOwnProperty } from '@native-twin/helpers';
 import type { FlexStyle } from 'react-native';
+
+interface ParserRuntimeContext {
+  rem: number;
+  deviceHeight: number;
+  deviceWidth: number;
+}
 
 export const parseCssValue = (
   prop: string,

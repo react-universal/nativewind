@@ -1,5 +1,4 @@
 import * as P from '@native-twin/arc-parser';
-import type { FinalSheet } from '../../react-native/rn.types.js';
 import type { CssParserData } from './css-parser.types.js';
 import {
   ParseCssDeclarationLine,
@@ -8,76 +7,13 @@ import {
 import { ParseCssDimensions } from './dimensions.parser.js';
 import { ParseSelectorStrict } from './selector.parser.js';
 
-export const ParseCssRules = P.coroutine((run) => {
-  const result = guessNextRule();
-  return result;
-
-  function guessNextRule(
-    result: FinalSheet = {
-      base: {},
-      dark: {},
-      even: {},
-      first: {},
-      group: {},
-      last: {},
-      odd: {},
-      pointer: {},
-    },
-  ): FinalSheet {
-    const nextToken = run(P.maybe(P.peek));
-    if (!nextToken) {
-      return result;
-    }
-    const currentData = run(P.getData);
-    if (nextToken === '@') {
-      const payload = run(ParseCssAtRule);
-      if (!payload) return guessNextRule(result);
-      result = {
-        ...result,
-        [payload.selector.value.group]: {
-          ...result[payload.selector.value.group],
-          ...payload?.declarations,
-        },
-      };
-      run(
-        P.setData({
-          ...currentData,
-          styles: {
-            ...currentData.styles,
-            ...result,
-          },
-        }),
-      );
-      return guessNextRule(result);
-    }
-    const payload = run(ParseCssRuleBlock);
-    result = {
-      ...result,
-      [payload?.selector.value.group]: {
-        ...result[payload?.selector.value.group],
-        ...payload?.declarations,
-      },
-    };
-    run(
-      P.setData({
-        ...currentData,
-        styles: {
-          ...currentData.styles,
-          ...result,
-        },
-      }),
-    );
-    return guessNextRule(result);
-  }
-});
-
-const GetAtRuleConditionToken = P.sequenceOf([
+export const GetAtRuleConditionToken = P.sequenceOf([
   parseDeclarationProperty,
   ParseCssDimensions,
 ]);
 export const SkipRules = P.sequenceOf([P.skip(P.everyCharUntil('}')), P.char('}')]);
 
-const ParseCssRuleBlock = P.coroutine((run) => {
+export const ParseCssRuleBlock = P.coroutine((run) => {
   const selector = run(ParseSelectorStrict);
   const platformSelector = selector.value.pseudoSelectors.find(
     (item) => item === 'ios' || item === 'android' || item === 'web',
@@ -108,7 +44,7 @@ const ParseCssRuleBlock = P.coroutine((run) => {
   };
 });
 
-const ParseCssAtRule = P.coroutine((run) => {
+export const ParseCssAtRule = P.coroutine((run) => {
   const context = run(P.getData);
   run(P.literal('@media'));
   run(P.whitespace);
@@ -125,7 +61,7 @@ const ParseCssAtRule = P.coroutine((run) => {
   return null;
 });
 
-const evaluateMediaQueryConstrains = (
+export const evaluateMediaQueryConstrains = (
   node: {
     value: number;
     property: string;

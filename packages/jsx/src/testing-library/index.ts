@@ -106,6 +106,7 @@ export const createMockComponent = <
 // };
 
 export const resetStyles = () => {
+  // @ts-expect-error
   StyleSheet[INTERNAL_RESET]();
 };
 

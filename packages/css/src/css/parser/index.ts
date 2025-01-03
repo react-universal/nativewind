@@ -24,10 +24,6 @@ export {
 } from './dimensions.parser.js';
 export {
   /** @category — CSS Parsers */
-  ParseCssRules,
-} from './rules.parser.js';
-export {
-  /** @category — CSS Parsers */
   ParseSelectorStrict,
   /** @category — CSS Parsers */
   ParseCssSelectorWeak,

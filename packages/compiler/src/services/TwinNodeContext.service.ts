@@ -1,4 +1,3 @@
-import type { CompilerContext } from '@native-twin/css/jsx';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -8,6 +7,7 @@ import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import { TwinPath } from '../internal/fs';
+import { CompilerStyleSheet } from '../models/CompilerSheet';
 import type { ImportedTwinConfig } from '../models/Twin.models.js';
 import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
@@ -28,8 +28,22 @@ const make = Effect.gen(function* () {
   const twRunnersRef = yield* Ref.get(twinConfigRef).pipe(
     Effect.flatMap((config) =>
       Ref.make({
-        native: createTwinProcessor('native', config),
-        web: createTwinProcessor('web', config),
+        native: new CompilerStyleSheet(
+          {
+            baseRem: config.root.rem ?? 16,
+            platform: 'native',
+          },
+          createTwinProcessor('native', config) as any,
+          true,
+        ),
+        web: new CompilerStyleSheet(
+          {
+            baseRem: config.root.rem ?? 16,
+            platform: 'web',
+          },
+          createTwinProcessor('web', config) as any,
+          true,
+        ),
       }),
     ),
   );
@@ -59,7 +73,6 @@ const make = Effect.gen(function* () {
     isAllowedPath,
     getTwForPlatform,
     getOutputCSSPath,
-    getTwinRuntime,
     getProjectFilesFromConfig,
     onChangeTwinConfigFile,
   };
@@ -107,21 +120,6 @@ const make = Effect.gen(function* () {
         console.warn('[WARN]: cant determine outputCSS fallback to default');
         return env.platformPaths.native;
     }
-  }
-
-  function getTwinRuntime(platform: string) {
-    return getTwForPlatform(platform).pipe(
-      Effect.map((tw) => {
-        const compilerContext: CompilerContext = {
-          baseRem: tw.config.root.rem ?? 16,
-          platform,
-        };
-        return {
-          tw,
-          compilerContext,
-        };
-      }),
-    );
   }
 
   function isAllowedPath(filePath: string) {

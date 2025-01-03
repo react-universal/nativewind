@@ -1,19 +1,11 @@
-import {
-  type RuntimeGroupSheet,
-  RuntimeSheetEntry,
-  getGroupedEntries,
-  sortSheetEntriesByPrecedence,
-} from '@native-twin/css/jsx';
-import { Platform } from 'react-native';
-import { StyleSheet, componentsRegistry } from '../sheet/StyleSheet.js';
-import { remObs, styledContext } from '../store/observables/index.js';
+// import { Platform } from 'react-native';
 import type { JSXInternalProps } from '../types/jsx.types.js';
 
 export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
-  const componentSheet = props?.['_twinComponentSheet'];
-  const componentID = props?.['_twinComponentID'];
+  const componentSheet = props?.['_twinInjected'] as any[] | undefined;
   // console.log('RUNTIME: ', componentSheet, componentID);
-  if (componentID && componentSheet) {
+  if (componentSheet) {
+    console.log("SHEET: ", componentSheet);
     let finalEntries = componentSheet;
     if (
       finalEntries.some(
@@ -21,57 +13,57 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
       )
     ) {
       finalEntries = componentSheet.map((componentEntry) => {
-        if (componentEntry.templateEntries) {
-          const compiledTemplates = componentEntry.templateEntries.map(
-            (y) =>
-              new RuntimeSheetEntry(y, {
-                baseRem: remObs.get(),
-                platform: Platform.OS,
-              }),
-          );
+        // if (componentEntry.templateEntries) {
+        //   const compiledTemplates = componentEntry.templateEntries.map(
+        //     (y: any) =>
+        //       new SheetEntryHandler(y, {
+        //         baseRem: remObs.get(),
+        //         platform: Platform.OS,
+        //       }),
+        //   );
 
-          const mergedEntries = [...componentEntry.entries, ...compiledTemplates];
-          const templateRawSheet = getGroupedEntries(compiledTemplates);
-          const rawSheet = mergeSheets(componentEntry.rawSheet, templateRawSheet);
-          return {
-            ...componentEntry,
-            entries: mergedEntries,
-            rawSheet: rawSheet,
-          };
-        }
+        //   const mergedEntries = [...componentEntry.entries, ...compiledTemplates];
+        //   const templateRawSheet = SheetOrders.sortSheetEntriesArray(compiledTemplates);
+        //   const rawSheet = mergeSheets(componentEntry.rawSheet, templateRawSheet);
+        //   return {
+        //     ...componentEntry,
+        //     entries: mergedEntries,
+        //     rawSheet: rawSheet,
+        //   };
+        // }
 
         return componentEntry;
       });
       // console.log('BEFORE: ', props['_twinComponentSheet'].map(x => x.entries));
 
-      props['_twinComponentSheet'] = finalEntries;
+      // props['_twinComponentSheet'] = finalEntries;
     }
     // console.log('AFTER: ', props['_twinComponentSheet'].map(x => x.entries));
 
-    const component = StyleSheet.registerComponent(
-      componentID,
-      props['_twinComponentSheet'],
-      styledContext.get(),
-    );
+    // const component = StyleSheet.registerComponent(
+    //   componentID,
+    //   props['_twinComponentSheet'],
+    //   styledContext.get(),
+    // );
 
-    if (component) {
-      componentsRegistry.set(componentID, {
-        ...component,
-        sheets: [...component.sheets],
-      });
-    }
+    // if (component) {
+    //   componentsRegistry.set(componentID, {
+    //     ...component,
+    //     sheets: [...component.sheets],
+    //   });
+    // }
   }
 }
 
-const mergeSheets = (a: RuntimeGroupSheet, b: RuntimeGroupSheet): RuntimeGroupSheet => {
-  return {
-    base: [...a.base, ...b.base].sort(sortSheetEntriesByPrecedence),
-    pointer: [...a.pointer, ...b.pointer].sort(sortSheetEntriesByPrecedence),
-    dark: [...a.dark, ...b.dark].sort(sortSheetEntriesByPrecedence),
-    group: [...a.group, ...b.group].sort(sortSheetEntriesByPrecedence),
-    first: [...a.first, ...b.first].sort(sortSheetEntriesByPrecedence),
-    last: [...a.last, ...b.last].sort(sortSheetEntriesByPrecedence),
-    even: [...a.even, ...b.even].sort(sortSheetEntriesByPrecedence),
-    odd: [...a.odd, ...b.odd].sort(sortSheetEntriesByPrecedence),
-  };
-};
+// const mergeSheets = (a: any, b: any): any => {
+//   return {
+//     base: [...a.base, ...b.base].sort(SheetOrders.sortSheetEntries),
+//     pointer: [...a.pointer, ...b.pointer].sort(SheetOrders.sortSheetEntries),
+//     dark: [...a.dark, ...b.dark].sort(SheetOrders.sortSheetEntries),
+//     group: [...a.group, ...b.group].sort(SheetOrders.sortSheetEntries),
+//     first: [...a.first, ...b.first].sort(SheetOrders.sortSheetEntries),
+//     last: [...a.last, ...b.last].sort(SheetOrders.sortSheetEntries),
+//     even: [...a.even, ...b.even].sort(SheetOrders.sortSheetEntries),
+//     odd: [...a.odd, ...b.odd].sort(SheetOrders.sortSheetEntries),
+//   };
+// };

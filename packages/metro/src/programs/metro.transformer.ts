@@ -66,13 +66,14 @@ export const transform: TwinMetroTransformFn = async (
       Option.some(code),
     );
 
-    const output = yield* transformFile(document, platform);
+    const { output } = yield* transformFile(document, platform);
 
     // yield* Effect.log('MUTATE: ');
 
     if (Option.isSome(output)) {
       // console.log('OPTIONS: ', params.options);
-      code = `const runtimeTW = require('@native-twin/core').tw;\n\n${output.value.code}`;
+      code = `const __Twin___StyleSheet = require('@native-twin/jsx/sheet').StyleSheet;
+              \n\n${output.value.code}`;
     }
 
     const transformed = yield* Effect.promise(() =>

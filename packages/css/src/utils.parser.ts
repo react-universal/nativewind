@@ -7,6 +7,7 @@ export const mapAsType =
     };
   };
 
+export type DeclarationPropertyValueType = ReturnType<typeof getPropertyValueType>;
 export const getPropertyValueType = (property: string) => {
   switch (property) {
     case 'color':

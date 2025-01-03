@@ -23,7 +23,7 @@ export { listenForkedStreamChanges } from './utils/effect.utils.js';
 
 export { TwinCustomLogger, twinLoggerLayer } from './internal/Logger.service.js';
 
-export { JSXImportPluginContext } from './services/TwinBabelPlugin.service.js';
+export { JSXImportPluginContext } from './internal/TwinBabelPlugin.service.js';
 
 export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from './shared/twin.constants.js';
 
@@ -50,6 +50,5 @@ export type { NodeWithNativeTwinOptions } from './models/Compiler.models.js';
 export type {
   InternalTwFn,
   InternalTwinConfig,
-  PartialRule,
   ExtractedTwinConfig,
 } from './models/Twin.models.js';

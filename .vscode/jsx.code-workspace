@@ -25,16 +25,8 @@
       "path": "../packages/adapters"
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
-    },
-    {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/language-service",
-      "path": "../packages/language-service"
     },
     {
       "name": "📦 @lib/native-twin",
@@ -51,20 +43,6 @@
   ],
   "settings": {
     "export-typescript.exportStar": false,
-    "export-typescript.excludes": [
-      "**/*.{spec.ts,spec.tsx}"
-    ],
-    "export-typescript.includes": [
-      "**/*.{ts,tsx}"
-    ],
-    "editor.quickSuggestions": {
-      "other": true,
-      "comments": true,
-      "strings": true
-    },
-    "vsc-lfs.fileFilters": [
-      ".js"
-    ],
     "search.exclude": {
       "**/node_modules": true,
       "**/*.code-search": true,
@@ -82,7 +60,6 @@
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       "**/.turbo": true,
-      "**/.nx": true,
       "**/.expo": true
     },
     "editor.fontSize": 16,
@@ -91,11 +68,18 @@
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/native-twin",
-      // "📦 @lib/babel",
+      "📦 @lib/babel",
+      "📦 @lib/metro",
+      "📦 @lib/language-service",
+      "📦 @lib/compiler",
+      "📦 @lib/adapters",
       "📦 @lib/css",
       "📦 @lib/helpers",
+      "📦 @lib/jsx",
       "📦 @lib/dev-tools",
       "📦 @lib/styled",
+      "📦 @lib/builder",
+      "@apps/expo-router",
       "@apps/expo"
     ],
     "jest.runMode": "on-demand",

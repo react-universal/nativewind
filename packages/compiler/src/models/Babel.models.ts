@@ -1,7 +1,7 @@
-import type { NodePath, Visitor } from '@babel/traverse';
+import type { NodePath } from '@babel/traverse';
 import type * as BabelTypes from '@babel/types';
 import type * as t from '@babel/types';
-import type { RuntimeSheetEntry } from '@native-twin/css/jsx';
+import type { SheetEntryHandler } from '@native-twin/css/jsx';
 import * as Data from 'effect/Data';
 import type * as Option from 'effect/Option';
 
@@ -42,40 +42,16 @@ export interface TwinBabelPluginOptions extends APICallerOptions {
 
 export type JSXElementNodePath = NodePath<t.JSXElement>;
 
-/**
- * @description represents the twin version of jsx element NodePath
- * */
-interface TwinBabelLocation extends Omit<t.SourceLocation, 'identifierName'> {
-  identifierName: Option.Option<string>;
-}
-
 export interface JSXMappedAttributeWithText extends Omit<JSXMappedAttribute, 'value'> {
   templateExpression: Option.Option<string>;
   value: string;
-  // entries: Iterable<RuntimeSheetEntry>;
 }
 
 export interface CompiledMappedProp extends JSXMappedAttributeWithText {
   templateExpression: Option.Option<string>;
   value: string;
-  entries: Iterable<RuntimeSheetEntry>;
-  childEntries: Iterable<RuntimeSheetEntry>;
-}
-/**
- * @description represents the twin version of jsx element NodePath
- * */
-export interface TwinBabelJSXElement {
-  babelNode: t.JSXElement;
-  jsxName: Option.Option<t.JSXIdentifier>;
-  location: Option.Option<TwinBabelLocation>;
-  childs: Iterable<TwinBabelJSXElement>;
-  mappedProps: Iterable<JSXMappedAttributeWithText>;
-  index: number;
-}
-
-export interface TwinBabelFile {
-  jsxElements: Iterable<TwinBabelJSXElement>;
-  location: Option.Option<TwinBabelLocation>;
+  entries: Iterable<SheetEntryHandler>;
+  childEntries: Iterable<SheetEntryHandler>;
 }
 
 export class TwinBabelError extends Data.TaggedError('TwinBabelError')<{
@@ -88,11 +64,3 @@ export interface JSXMappedAttribute {
   value: t.StringLiteral | t.TemplateLiteral;
   target: string;
 }
-
-export const createJSXElementVisitor = (
-  onJSXElement: (path: NodePath<t.JSXElement>) => void,
-): Visitor => ({
-  JSXElement(path) {
-    onJSXElement(path);
-  },
-});

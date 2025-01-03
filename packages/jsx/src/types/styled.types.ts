@@ -13,7 +13,6 @@ import type {
   FunctionComponent,
   JSXElementConstructor,
 } from 'react';
-import type { createComponentSheet } from '../sheet/StyleSheet.js';
 
 export interface RegisteredComponent {
   id: string;
@@ -30,7 +29,7 @@ export type ComponentInteractionState = {
   [K in keyof InteractionState]: Atom<InteractionState[K]>;
 };
 
-export type StyledComponentSheet = ReturnType<typeof createComponentSheet>;
+// export type StyledComponentSheet = ReturnType<typeof createComponentSheet>;
 
 //** Used */
 export interface StyledComponentState {
@@ -94,7 +93,7 @@ export type PropState = ComponentConfig & {
 
   classNames?: string;
 
-  sheet: StyledComponentSheet | null;
+  // sheet: StyledComponentSheet | null;
   currentStyles: AnyStyle;
 
   // declarationEffect: Effect;

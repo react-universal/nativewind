@@ -11,8 +11,6 @@ const make = Effect.gen(function* () {
   const fs = yield* FSUtils.FsUtils;
   const twinPath = yield* TwinPath.TwinPath;
 
-  yield* createTwinFiles();
-
   return {
     readPlatformCSSFile,
     createTwinFiles,

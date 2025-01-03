@@ -59,6 +59,9 @@ const make = Effect.gen(function* () {
   const writeFileSource = (file: { path: string; content: string }) =>
     fs.writeFileString(file.path, file.content);
 
+  const writeFile = (path: TwinPath.AbsoluteFilePath, content: string) =>
+    fs.writeFile(path, Buffer.from(content, 'utf-8'));
+
   const getFileMD5 = (filePath: string) =>
     fs
       .readFile(filePath)
@@ -69,6 +72,7 @@ const make = Effect.gen(function* () {
 
   return {
     path_: twinPath,
+    writeFile,
     mkEmptyFileCached,
     createTempFile,
     writeFileSource,

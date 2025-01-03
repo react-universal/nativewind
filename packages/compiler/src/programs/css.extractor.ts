@@ -16,7 +16,7 @@ export const TwinCSSExtractor = (code: string, filename: string) =>
     );
     // const compiled = yield* getDocumentNodes(document, 'web');
     const tw = yield* ctx.getTwForPlatform('web');
-    const cssOutput = sheetEntriesToCss(tw.target);
+    const cssOutput = sheetEntriesToCss(tw.twinFn.target);
 
     return {
       // compiled,

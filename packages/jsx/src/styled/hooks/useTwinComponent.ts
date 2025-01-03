@@ -1,12 +1,12 @@
-import type { ComponentSheet } from '@native-twin/css/jsx';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
 import { useCallback, useContext } from 'react';
-import { groupContext } from '../../context/index.js';
+import { groupContext } from '../../context';
 import { getTwinComponent } from '../../store/components.store.js';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
 
 export const useTwinComponent = (
   id: string,
+  // @ts-expect-error
   styledProps: [string, ComponentSheet][] = [],
 ) => {
   const context = useContext(groupContext);

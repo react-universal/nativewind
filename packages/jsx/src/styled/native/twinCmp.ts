@@ -1,5 +1,5 @@
 import { type ComponentType, createElement, forwardRef, useId } from 'react';
-import { groupContext } from '../../context/index.js';
+// import { groupContext } from '../../context/index.js';
 import type { ComponentConfig } from '../../types/styled.types.js';
 import { getComponentType } from '../../utils/react.utils.js';
 import { useStyledProps } from '../hooks/useStyledProps.js';
@@ -10,11 +10,13 @@ export function twinComponent(
   props: Record<string, any> | null,
   ref: any,
 ) {
-  let component = baseComponent;
+  const component = baseComponent;
   const reactID = useId();
   const componentID = props?.['_twinComponentID'];
   const id = componentID ?? reactID;
+  // TODO: USE COMPONENT STYLES
   const { componentStyles } = useStyledProps(id, props ?? {}, configs);
+  componentStyles;
 
   props = Object.assign({ ref }, props);
 
@@ -43,17 +45,17 @@ export function twinComponent(
   //   }
   // }
 
-  if (componentStyles.metadata.hasAnimations && 1 === Number(2)) {
-    component = createAnimatedComponent(component);
-  }
+  // if (componentStyles.metadata.hasAnimations && 1 === Number(2)) {
+  //   component = createAnimatedComponent(component);
+  // }
 
-  if (componentStyles.metadata.isGroupParent) {
-    props = {
-      value: componentID ?? id,
-      children: createElement(component, props),
-    };
-    component = groupContext.Provider;
-  }
+  // if (componentStyles.metadata.isGroupParent) {
+  //   props = {
+  //     value: componentID ?? id,
+  //     children: createElement(component, props),
+  //   };
+  //   component = groupContext.Provider;
+  // }
 
   if (component === baseComponent) {
     switch (getComponentType(component)) {
@@ -77,7 +79,7 @@ export function twinComponent(
 
 const animatedCache = new Map<ComponentType<any> | string, ComponentType<any>>();
 
-function createAnimatedComponent(Component: ComponentType<any>): any {
+export function createAnimatedComponent(Component: ComponentType<any>): any {
   if (animatedCache.has(Component)) {
     return animatedCache.get(Component)!;
   } else if (Component.displayName?.startsWith('AnimatedComponent')) {

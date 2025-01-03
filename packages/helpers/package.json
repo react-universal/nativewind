@@ -29,6 +29,11 @@
       "import": "./build/esm/server.js",
       "default": "./build/cjs/server.js"
     },
+    "./fp": {
+      "types": "./build/dts/fp/index.d.ts",
+      "import": "./build/esm/fp/index.js",
+      "default": "./build/cjs/fp/index.js"
+    },
     "./react": {
       "types": "./build/dts/react.d.ts",
       "import": "./build/esm/react.js",
@@ -55,7 +60,7 @@
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",
-    "test": "jest"
+    "test": "npx vitest"
   },
   "devDependencies": {
     "@types/react": "~18.2.79"
