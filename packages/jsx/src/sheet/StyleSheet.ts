@@ -61,12 +61,26 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
           }),
         );
 
+      const finalEntries = [...entries, ...composedEntries].sort((a, b) =>
+        SheetOrders.sortSheetEntries(a as any, b as any),
+      );
+      const declarations = {
+        base: finalEntries
+          .filter((x) => x.group === 'base')
+          .flatMap((x) => x.declarations),
+        pointer: finalEntries
+          .filter((x) => x.group === 'pointer')
+          .flatMap((x) => x.declarations),
+        group: finalEntries
+          .filter((x) => x.group === 'group')
+          .flatMap((x) => x.declarations),
+      };
+
       return {
         prop,
         target,
-        entries: [...entries, ...composedEntries].sort((a, b) =>
-          SheetOrders.sortSheetEntries(a as any, b as any),
-        ),
+        entries: finalEntries,
+        declarations,
       };
     });
 

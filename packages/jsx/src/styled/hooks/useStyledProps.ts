@@ -83,16 +83,13 @@ export const useStyledProps = (props: JSXInternalProps, configs: ComponentConfig
   }
 
   const compiledProps = useMemo(() => {
-    return componentHandler.props.map(({ entries, prop, target }) => {
-      const sortedDecls = entries
-        .filter((entry) => {
-          if (entry.group === 'base') return true;
-          if (state.interactions.isLocalActive && entry.group === 'pointer') return true;
-          if (state.interactions.isGroupActive && entry.group === 'group') return true;
-          return false;
-        })
-        .flatMap((x) => x.declarations);
-      const styles = composeDeclarations(sortedDecls, styledCtx);
+    return componentHandler.props.map(({ prop, target, declarations }) => {
+      const compileDecls = [...declarations.base];
+
+      if (state.interactions.isLocalActive) compileDecls.push(...declarations.pointer);
+      if (state.interactions.isGroupActive) compileDecls.push(...declarations.group);
+
+      const styles = composeDeclarations(compileDecls, styledCtx);
       return {
         prop,
         target,
