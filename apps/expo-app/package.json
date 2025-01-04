@@ -12,7 +12,6 @@
     "start": "expo start -c"
   },
   "dependencies": {
-    "@native-twin/babel": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/dev-tools": "workspace:*",
     "@native-twin/helpers": "workspace:*",

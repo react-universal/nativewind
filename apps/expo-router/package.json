@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
-    "@native-twin/babel": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/dev-tools": "workspace:*",
     "@native-twin/jsx": "workspace:*",
