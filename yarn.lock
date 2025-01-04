@@ -3943,7 +3943,6 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.24.0"
     "@expo/metro-runtime": "npm:~3.2.3"
-    "@native-twin/babel": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/jsx": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"

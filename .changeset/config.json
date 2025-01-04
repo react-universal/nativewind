@@ -10,7 +10,6 @@
   "fixed": [
     [
       "@native-twin/arc-parser",
-      "@native-twin/babel",
       "@native-twin/cli",
       "@native-twin/css",
       "@native-twin/compiler",
@@ -22,7 +21,6 @@
       "@native-twin/metro",
       "@native-twin/core",
       "@native-twin/adapters",
-      "@native-twin/vite-plugin",
       "@native-twin/preset-tailwind",
       "@native-twin/styled"
     ]
@@ -32,7 +30,9 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "next-pages-example",
+    "@native-twin/vite-plugin",
     "@native-twin/ts-plugin",
+    "@native-twin/babel",
     "twin-run",
     "native-twin-docs",
     "@native-twin/dev-tools-webui",
