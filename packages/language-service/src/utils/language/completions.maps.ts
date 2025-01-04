@@ -1,4 +1,3 @@
-import type { FinalSheet } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
@@ -17,7 +16,7 @@ import { getDocumentationMarkdown } from './language.utils.js';
 export const createCompletionEntryDetails = (
   completion: vscode.CompletionItem,
   css: string,
-  sheetEntry: FinalSheet,
+  sheetEntry: Record<string, any>,
 ): vscode.CompletionItem => ({
   ...completion,
   documentation: {

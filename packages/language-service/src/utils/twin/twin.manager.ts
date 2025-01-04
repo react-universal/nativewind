@@ -35,7 +35,7 @@ export class NativeTwinManager {
     twinRules: HashSet.empty<TwinRuleCompletion>(),
     twinVariants: HashSet.empty<TwinVariantCompletion>(),
   };
-  private _configFile: string;
+  _configFile: string;
 
   constructor() {
     this._configFile = './tailwind.config.ts';
@@ -107,11 +107,11 @@ export class NativeTwinManager {
     return this.completions.twinRules;
   }
 
-  private getContext() {
+  getContext() {
     return createThemeContext(this.userConfig);
   }
 
-  private getNativeTwin() {
+  getNativeTwin() {
     const sheet = createVirtualSheet();
     setup(this.userConfig, sheet);
     return createTailwind(this.userConfig, sheet);
@@ -127,7 +127,7 @@ export class NativeTwinManager {
     );
   }
 
-  private getUserConfig(filePath: string) {
+  getUserConfig(filePath: string) {
     this._configFile = filePath;
     return pipe(
       Option.fromNullable(filePath),

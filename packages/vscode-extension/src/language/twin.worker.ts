@@ -1,3 +1,4 @@
+/// <reference lib="WebWorker" />
 import {
   LSPConfigService,
   LSPConnectionService,
@@ -10,8 +11,6 @@ import {
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-/* eslint-disable @typescript-eslint/no-empty-function */
-/// <reference lib="WebWorker" />
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   BrowserMessageReader,
@@ -31,7 +30,9 @@ const DocumentsLayer = LSPDocumentsService.make(documentsHandler, TwinMonacoText
 const MainLive = Layer.empty.pipe(
   Layer.provideMerge(DocumentsLayer),
   Layer.provideMerge(LSPConfigService.Live),
-  Layer.provideMerge(NativeTwinManagerService.Live(new MonacoNativeTwinManager())),
+  Layer.provideMerge(
+    Layer.succeed(NativeTwinManagerService, new MonacoNativeTwinManager()),
+  ),
   Layer.provideMerge(ConnectionLayer),
   // Layer.provideMerge(ConfigManagerService.Live),
 );

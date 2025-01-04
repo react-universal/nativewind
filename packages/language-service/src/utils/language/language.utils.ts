@@ -1,5 +1,4 @@
 import { TinyColor } from '@ctrl/tinycolor';
-import type { FinalSheet } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import toCssFormat from 'cssbeautify';
 import * as ReadonlyArray from 'effect/Array';
@@ -123,7 +122,7 @@ export const getRangeFromTokensAtPosition = (
   );
 };
 
-export function getDocumentationMarkdown(sheetEntry: FinalSheet, css: string) {
+export function getDocumentationMarkdown(sheetEntry: Record<string,any>, css: string) {
   const result: string[] = [];
   result.push('***Css Rules*** \n\n');
   result.push(

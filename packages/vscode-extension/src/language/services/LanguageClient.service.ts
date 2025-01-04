@@ -68,7 +68,7 @@ export const LanguageClientLive = Effect.gen(function* () {
 
   const clientConfig: LanguageClientOptions = {
     ...getDefaultLanguageClientOptions({
-      twinConfigFile: twin.configFile,
+      twinConfigFile: twin._configFile,
       workspaceRoot: twin.configFileRoot,
     }),
     synchronize: {

@@ -42,6 +42,7 @@
     "build": "npx twin pack-dev",
     "build:tsc": "tsc -p tsconfig.build.json",
     "build:tsc:watch": "twin build -w",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "lint": "biome lint",
     "test": "echo \"Non tests\"",

@@ -27,6 +27,7 @@
     "build": "npx twin pack-dev",
     "build:tsc": "tsc -b",
     "build:tsc:watch": "tsc -p tsconfig.cjs.json --watch",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "lint": "biome lint",
     "vsc-test": "vscode-test --watch",

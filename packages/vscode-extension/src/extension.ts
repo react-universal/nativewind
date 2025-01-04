@@ -13,7 +13,7 @@ import { ClientCustomLogger } from './utils/logger.service.js';
 
 const MainLive = Layer.mergeAll(LanguageClientLive, TwinTreeDataFilesProvider).pipe(
   Layer.provide(VscodeHightLightsProvider.Live),
-  Layer.provide(NativeTwinManagerService.Live(new NativeTwinManager())),
+  Layer.provide(Layer.succeed(NativeTwinManagerService, new NativeTwinManager())),
   Layer.provide(ClientCustomLogger),
 );
 

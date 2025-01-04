@@ -23,12 +23,16 @@ export const CompilerRun = (config: { watch: boolean; verbose: boolean }) =>
       ),
       // Effect.tap(() => Effect.logDebug('Compiled ESM and CJS')),
       Effect.tap(({ esm, emitted, cjs }) => {
-        return Effect.all([
-          fsUtils.mkdirCached(path.posix.dirname(emitted.dts.getFilePath())),
-          fsUtils.mkdirCached(path.posix.dirname(esm.path)),
-          fsUtils.mkdirCached(path.posix.dirname(emitted.dts.getFilePath())),
-          fsUtils.mkdirCached(path.posix.dirname(cjs.path)),
-        ]);
+        return Effect.all(
+          [
+            fsUtils.mkdirCached(path.posix.dirname(emitted.dts.getFilePath())),
+            fsUtils.mkdirCached(path.posix.dirname(esm.path)),
+            fsUtils.mkdirCached(path.posix.dirname(cjs.path)),
+          ],
+          {
+            concurrency: 'unbounded',
+          },
+        );
       }),
       // Effect.tap(() => Effect.logDebug('Created dirs')),
       Effect.flatMap(({ cjs, emitted, esm }) => {

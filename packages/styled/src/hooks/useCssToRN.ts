@@ -1,8 +1,6 @@
 import { parseCssValue, tw } from '@native-twin/core';
 import {
   type AnyStyle,
-  type FinalSheet,
-  type GetChildStylesArgs,
   type RuntimeContext,
   type SheetEntry,
   type SheetEntryDeclaration,
@@ -42,7 +40,7 @@ export function createComponentSheet(entries: SheetEntry[], context: RuntimeCont
     return styles;
   }
 
-  function getChildStyles(input: GetChildStylesArgs) {
+  function getChildStyles(input: any) {
     const result: AnyStyle = {};
     if (input.isFirstChild) {
       Object.assign(result, sheet.first);
@@ -81,7 +79,7 @@ function getSheetEntryStyles(entries: SheetEntry[], context: RuntimeContext) {
       last: {},
       odd: {},
       pointer: {},
-    } as FinalSheet,
+    } as any,
   );
 }
 

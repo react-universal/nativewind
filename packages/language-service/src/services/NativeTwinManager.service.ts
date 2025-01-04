@@ -1,73 +1,35 @@
+import type { ThemeContext, TxFunction, __Theme__, cx } from '@native-twin/core';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Context from 'effect/Context';
-import * as Layer from 'effect/Layer';
-import type { NativeTwinManager } from '../utils/twin/twin.manager.js';
-import type { MonacoNativeTwinManager } from '../utils/twin/twin.manager.web.js';
-
-// export const make = Effect.gen(function* () {
-//   const config = yield* LSPConfigService.pipe(Effect.flatMap((x) => x.get));
-//   const configFileRoot = yield* Effect.sync(() =>
-//     config.workspaceRoot.pipe(
-//       // Option.getOrThrowWith(() => new Error('Did not provide any config file')),
-//       Option.getOrElse(() => ''),
-//     ),
-//   );
-//   const configFile = yield* Effect.sync(() =>
-//     config.twinConfigFile.pipe(
-//       // Option.getOrThrowWith(() => new Error('Did not provide any config file')),
-//       Option.getOrElse(() => ''),
-//     ),
-//   );
-
-//   const userConfig = maybeLoadJS<InternalTwinConfig>(configFile).pipe(
-//     // Option.getOrThrowWith(() => new Error('Cant find any native twin config file..…')),
-//     Option.getOrElse(() => DEFAULT_TWIN_CONFIG),
-//   );
-
-//   const allowedPathsGlob = RA.map(userConfig.content, (x) =>
-//     path.join(configFileRoot, x),
-//   );
-
-//   const isAllowedPath = (filePath: string) => {
-//     return (
-//       micromatch.isMatch(path.join(configFileRoot, filePath), allowedPathsGlob) ||
-//       micromatch.isMatch(filePath, allowedPathsGlob)
-//     );
-//   };
-
-//   const sheet = createVirtualSheet();
-//   const tw: InternalTwFn = createTailwind(userConfig, sheet);
-
-//   const themeContext = createThemeContext(userConfig);
-
-//   const completions: TwinStore = createTwinStore({
-//     config: userConfig,
-//     context: themeContext,
-//     tw: tw,
-//   });
-
-//   const compilerContext = createStyledContext(userConfig.root.rem);
-
-//   return {
-//     isAllowedPath,
-//     configFile,
-//     configFileRoot,
-//     userConfig,
-//     tw,
-//     cx,
-//     compilerContext,
-//     themeContext,
-//     completions,
-//     getTwinRules() {
-//       return completions.twinRules;
-//     },
-//   };
-// });
+import type * as HashSet from 'effect/HashSet';
+import type {
+  InternalTwFn,
+  InternalTwinConfig,
+  InternalTwinThemeContext,
+  TwinRuleCompletion,
+  TwinStore,
+} from '../models/twin/native-twin.types.js';
+import type { StyledContext } from '../utils/sheet.utils.js';
 
 export class NativeTwinManagerService extends Context.Tag('NativeTwinManager')<
   NativeTwinManagerService,
-  Omit<NativeTwinManager | MonacoNativeTwinManager, '_configFile'>
->() {
-  static Live = (
-    manager: Omit<NativeTwinManager | MonacoNativeTwinManager, '_configFile'>,
-  ) => Layer.succeed(NativeTwinManagerService, manager);
-}
+  {
+    tw: InternalTwFn;
+    context: InternalTwinThemeContext;
+    userConfig: InternalTwinConfig;
+    completions: TwinStore;
+    _configFile: string;
+    configFileRoot: string;
+    allowedPaths: string[];
+    tx: TxFunction;
+    cx: typeof cx;
+
+    getContext(): ThemeContext<__Theme__ & TailwindPresetTheme>;
+    getNativeTwin(): InternalTwFn;
+    isAllowedPath(filepath: string): boolean;
+    setupManualTwin(): void;
+    loadUserFile(configFile: string): void;
+    getCompilerContext(): StyledContext;
+    getTwinRules(): HashSet.HashSet<TwinRuleCompletion>;
+  }
+>() {}

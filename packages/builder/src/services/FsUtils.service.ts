@@ -35,7 +35,7 @@ const make = Effect.gen(function* (_) {
 
   const mkdirCached_ = yield* _(
     Effect.cachedFunction((path: string) =>
-      fs.makeDirectory(path).pipe(
+      fs.makeDirectory(path, { recursive: true }).pipe(
         Effect.catchAllCause(() => Effect.void),
         Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } }),
       ),

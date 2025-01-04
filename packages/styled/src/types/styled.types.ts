@@ -1,4 +1,4 @@
-import type { CompleteStyle, FinalSheet } from '@native-twin/css';
+import type { CompleteStyle } from '@native-twin/css';
 import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
@@ -29,7 +29,7 @@ export interface StyledComponentProps extends ClassNameProps {
 }
 
 export type ComponentStylesheet = {
-  styles: FinalSheet;
+  styles: any;
   hash: string;
   isGroupParent: boolean;
   hasPointerEvents: boolean;

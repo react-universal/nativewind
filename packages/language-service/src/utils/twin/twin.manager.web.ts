@@ -32,7 +32,7 @@ export class MonacoNativeTwinManager {
     twinRules: HashSet.empty<TwinRuleCompletion>(),
     twinVariants: HashSet.empty<TwinVariantCompletion>(),
   };
-  private _configFile;
+  _configFile: string;
 
   constructor() {
     this._configFile = './tailwind.config.ts';
@@ -104,16 +104,6 @@ export class MonacoNativeTwinManager {
     return this.completions.twinRules;
   }
 
-  private getContext() {
-    return createThemeContext(this.userConfig);
-  }
-
-  private getNativeTwin() {
-    const sheet = createVirtualSheet();
-    setup(this.userConfig, sheet);
-    return createTailwind(this.userConfig, sheet);
-  }
-
   isAllowedPath(filePath: string) {
     // console.log('ALLOWED_PATHS: ', filePath, this.allowedPathsGlob);
     return (
@@ -122,7 +112,17 @@ export class MonacoNativeTwinManager {
     );
   }
 
-  private getUserConfig(filePath: string) {
+  getContext() {
+    return createThemeContext(this.userConfig);
+  }
+
+  getNativeTwin() {
+    const sheet = createVirtualSheet();
+    setup(this.userConfig, sheet);
+    return createTailwind(this.userConfig, sheet);
+  }
+
+  getUserConfig(filePath: string) {
     this._configFile = filePath;
     return defineConfig({
       content: [''],

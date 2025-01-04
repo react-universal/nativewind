@@ -1,4 +1,3 @@
-import type { FinalSheet } from '@native-twin/css';
 import * as ReadonlyArray from 'effect/Array';
 import * as HashSet from 'effect/HashSet';
 import type * as Option from 'effect/Option';
@@ -8,7 +7,7 @@ import { getDocumentationMarkdown } from './language.utils.js';
 
 export const completionRulesToQuickInfo = (
   completionRules: HashSet.HashSet<TwinRuleCompletion>,
-  sheetEntry: FinalSheet,
+  sheetEntry: Record<string, any>,
   css: string,
   range: vscode.Range,
 ): Option.Option<vscode.Hover> =>
@@ -17,7 +16,7 @@ export const completionRulesToQuickInfo = (
   }).pipe(HashSet.values, (x) => ReadonlyArray.fromIterable(x), ReadonlyArray.head);
 
 export const completionRuleToQuickInfo = (
-  sheetEntry: FinalSheet,
+  sheetEntry: Record<string, any>,
   css: string,
   range: vscode.Range,
 ): vscode.Hover => ({
