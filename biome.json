@@ -16,7 +16,6 @@
       "recommended": true,
       "correctness": {
         "noSwitchDeclarations": "off",
-        "useExhaustiveDependencies": "off",
         "noEmptyCharacterClassInRegex": "off",
         "noChildrenProp": "off",
         "noInnerDeclarations": "off"

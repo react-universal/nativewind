@@ -20,34 +20,6 @@ const make = Effect.gen(function* () {
     return fs.readFile(twinPath.make.absoluteFromString(ctx.getOutputCSSPath(platform)));
   }
 
-  // function refreshCssOutput(
-  //   platform: string,
-  //   registry: HashMap.HashMap<string, JSXElementNode>,
-  // ) {
-  //   return Effect.gen(function* () {
-  //     const platformOutput = ctx.getOutputCSSPath(platform);
-  //     const { tw } = yield* ctx.getTwinRuntime(platform);
-  //     let code = '';
-  //     if (platformOutput.endsWith('.css')) {
-  //       code = sheetEntriesToCss(tw.target, false);
-  //     } else {
-  //       code = yield* getNativeStylesJSOutput(registry, platform);
-  //     }
-  //     yield* fs.modifyFile(platformOutput, () => code);
-  //     return {
-  //       compiledEntries: tw.target.length,
-  //       registrySize: HashMap.size(registry),
-  //     };
-  //   }).pipe(
-  //     Effect.annotateLogs('platform', platform),
-  //     Effect.tap(({ compiledEntries, registrySize }) =>
-  //       Effect.logInfo(
-  //         `Build success: ${registrySize} Files. ${compiledEntries} Utilities added.`,
-  //       ),
-  //     ),
-  //   );
-  // }
-
   function createTwinFiles() {
     return Effect.gen(function* () {
       yield* fs

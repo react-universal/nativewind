@@ -1,5 +1,5 @@
+import type { TwinRuntimeContext } from '@native-twin/core';
 import type { SheetEntry } from '@native-twin/css';
-import type { StyledContext } from '../store/observables/styles.obs.js';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants.js';
 
 // TODO: Check this on every react web fmw
@@ -29,7 +29,7 @@ export const StyleSheet = Object.assign({}, internalSheet);
 
 export function createComponentSheet(
   entries: SheetEntry[] = [],
-  context: StyledContext,
+  context: TwinRuntimeContext,
 ) {}
 
 export type ComponentSheet = ReturnType<typeof createComponentSheet>;

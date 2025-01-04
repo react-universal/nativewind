@@ -13,7 +13,7 @@ export default function App() {
         `}
       >
         <Text className='text-3xl'>asd</Text>
-        <View>
+        <View className='hover:bg-gray-500 h-5'>
           <Text>asdsad2</Text>
         </View>
       </View>

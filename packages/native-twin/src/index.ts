@@ -51,7 +51,14 @@ export {
   defineConfig,
 };
 
-export { TwinSheetHandler } from './runtime/SheetHandler.js';
+export {
+  type TwinRuntimeProp,
+  getSheetEntryStyles,
+  sheetEntryToStyle,
+  composeDeclarations,
+} from './runtime/SheetHandler.js';
+
+export type { TwinRuntimeContext, Units } from './runtime/runtime.context.js';
 
 export {
   StyleSheetAdapter,

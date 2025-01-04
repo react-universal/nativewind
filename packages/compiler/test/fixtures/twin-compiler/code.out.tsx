@@ -9,6 +9,11 @@ const Button = () => {
     index: -1,
     parentID: "NO_PARENT",
     parentSize: -1,
+    metadata: {
+      isGroupParent: false,
+      hasGroupEvents: false,
+      hasPointerEvents: true
+    },
     templateEntries: []
   }}>
       <Text _twinInjected={{
@@ -16,6 +21,11 @@ const Button = () => {
       index: 0,
       parentID: "-950912315",
       parentSize: 3,
+      metadata: {
+        isGroupParent: false,
+        hasGroupEvents: false,
+        hasPointerEvents: false
+      },
       templateEntries: []
     }}>Text1</Text>
       <Text _twinInjected={{
@@ -23,10 +33,15 @@ const Button = () => {
       index: 1,
       parentID: "-950912315",
       parentSize: 3,
+      metadata: {
+        isGroupParent: false,
+        hasGroupEvents: false,
+        hasPointerEvents: false
+      },
       templateEntries: [{
         prop: "className",
         target: "style",
-        templateEntries: `${true ? 'text-medium' : 'text-bold'}`
+        value: `${true ? 'text-medium' : 'text-bold'}`
       }]
     }}>Text3</Text>
       <View _twinInjected={{
@@ -34,6 +49,11 @@ const Button = () => {
       index: 2,
       parentID: "-950912315",
       parentSize: 3,
+      metadata: {
+        isGroupParent: false,
+        hasGroupEvents: false,
+        hasPointerEvents: false
+      },
       templateEntries: []
     }}>
         <Span _twinInjected={{
@@ -41,6 +61,11 @@ const Button = () => {
         index: 0,
         parentID: "322996843",
         parentSize: 1,
+        metadata: {
+          isGroupParent: false,
+          hasGroupEvents: false,
+          hasPointerEvents: false
+        },
         templateEntries: []
       }}>Hallo</Span>
       </View>
@@ -52,6 +77,11 @@ __Twin___StyleSheet.inject([{
   index: -1,
   parentID: "NO_PARENT",
   parentSize: -1,
+  metadata: {
+    isGroupParent: false,
+    hasGroupEvents: false,
+    hasPointerEvents: true
+  },
   props: [{
     target: "style",
     prop: "className",
@@ -66,6 +96,17 @@ __Twin___StyleSheet.inject([{
       important: false,
       inherited: false,
       precedence: 805306368
+    }, {
+      className: "hover:bg-red",
+      declarations: [{
+        _tag: "COMPILED",
+        prop: "backgroundColor",
+        value: "rgba(248,113,113,1)"
+      }],
+      group: "pointer",
+      important: false,
+      inherited: false,
+      precedence: 805307392
     }]
   }],
   childStyles: [{
@@ -107,6 +148,11 @@ __Twin___StyleSheet.inject([{
   index: 0,
   parentID: "-950912315",
   parentSize: 3,
+  metadata: {
+    isGroupParent: false,
+    hasGroupEvents: false,
+    hasPointerEvents: false
+  },
   props: [{
     target: "style",
     prop: "className",
@@ -140,6 +186,11 @@ __Twin___StyleSheet.inject([{
   index: 1,
   parentID: "-950912315",
   parentSize: 3,
+  metadata: {
+    isGroupParent: false,
+    hasGroupEvents: false,
+    hasPointerEvents: false
+  },
   props: [{
     target: "style",
     prop: "className",
@@ -162,6 +213,11 @@ __Twin___StyleSheet.inject([{
   index: 2,
   parentID: "-950912315",
   parentSize: 3,
+  metadata: {
+    isGroupParent: false,
+    hasGroupEvents: false,
+    hasPointerEvents: false
+  },
   props: [{
     target: "style",
     prop: "className",
@@ -195,6 +251,11 @@ __Twin___StyleSheet.inject([{
   index: 0,
   parentID: "322996843",
   parentSize: 1,
+  metadata: {
+    isGroupParent: false,
+    hasGroupEvents: false,
+    hasPointerEvents: false
+  },
   props: [{
     target: "style",
     prop: "className",

@@ -73,6 +73,7 @@ export class TwinElement {
       parentSize: this.meta.parentSize,
       childStyles: RA.fromIterable(this.childEntries).map(entryHandlerToInjected),
       parentID: `${this.meta.parentID}`,
+      metadata: this.metadata(props),
       props,
     };
   }
@@ -80,7 +81,7 @@ export class TwinElement {
   toRuntimeString() {
     const w = expressionFactory(new CodeBlockWriter());
     const runtimeObject = this.toRuntimeObject();
-    const result = RA.fromIterable(runtimeObject.props)
+    const componentProps = RA.fromIterable(runtimeObject.props)
       .map((x) => this.compiledPropToCode(x))
       .join(',');
     w.array(runtimeObject.childStyles).write(',');
@@ -88,10 +89,11 @@ export class TwinElement {
       id: "${this.id}", 
       index: ${runtimeObject.index}, 
       parentID: "${runtimeObject.parentID}",
-      parentSize: ${runtimeObject.parentSize},`;
+      parentSize: ${runtimeObject.parentSize},
+      metadata: ${expressionFactory(new CodeBlockWriter()).object(runtimeObject.metadata).toString()},`;
     const injectString = `{ 
       ${componentData}
-      props: [${result}],
+      props: [${componentProps}],
       childStyles: ${w.writer.toString()}
     }`;
     const templateEntries = getTemplateEntries(this.mergedProps);
@@ -116,9 +118,19 @@ export class TwinElement {
       w.writer.writeLine(`prop: "${compiledProp.prop}",`);
       w.writer.write('entries: ');
       w.array(compiledProp.entries).write(',');
-      // w.writer.writeLine(`templateEntries: ${compiledProp.templateEntries},`);
     });
     return w.writer.toString();
+  }
+
+  private metadata(props: RuntimeTwinMappedProp[]) {
+    const data = props.flatMap((x) =>
+      x.entries.map((y) => ({ group: y.group, className: y.className })),
+    );
+    return {
+      isGroupParent: data.some((x) => x.className === 'group'),
+      hasGroupEvents: data.some((x) => x.group === 'group'),
+      hasPointerEvents: data.some((x) => x.group === 'pointer'),
+    };
   }
 
   private getRuntimeProps(): RuntimeTwinMappedProp[] {
@@ -173,7 +185,7 @@ const getTemplateEntries = (props: Iterable<CompiledMappedProp>) =>
       Option.map((template) => ({
         prop: mapped.prop,
         target: mapped.target,
-        templateEntries: template,
+        value: template,
       })),
     );
   });

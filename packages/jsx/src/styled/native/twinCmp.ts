@@ -1,4 +1,5 @@
 import { type ComponentType, createElement, forwardRef, useId } from 'react';
+import { groupContext } from '../../context/styled.context.js';
 // import { groupContext } from '../../context/index.js';
 import type { ComponentConfig } from '../../types/styled.types.js';
 import { getComponentType } from '../../utils/react.utils.js';
@@ -10,13 +11,12 @@ export function twinComponent(
   props: Record<string, any> | null,
   ref: any,
 ) {
-  const component = baseComponent;
+  let component = baseComponent;
   const reactID = useId();
   const componentID = props?.['_twinComponentID'];
   const id = componentID ?? reactID;
   // TODO: USE COMPONENT STYLES
-  const { componentStyles } = useStyledProps(id, props ?? {}, configs);
-  componentStyles;
+  const { componentHandler } = useStyledProps(props ?? {}, configs);
 
   props = Object.assign({ ref }, props);
 
@@ -27,9 +27,9 @@ export function twinComponent(
   }
 
   // if (
-  //   componentStyles.metadata.hasPointerEvents ||
-  //   componentStyles.metadata.hasGroupEvents ||
-  //   componentStyles.metadata.isGroupParent
+  //   componentHandler?.metadata.hasPointerEvents ||
+  //   componentHandler?.metadata.hasGroupEvents ||
+  //   componentHandler?.metadata.isGroupParent
   // ) {
   //   if (!props['onTouchStart']) {
   //     props['onTouchStart'] = (event: unknown) => {
@@ -49,13 +49,13 @@ export function twinComponent(
   //   component = createAnimatedComponent(component);
   // }
 
-  // if (componentStyles.metadata.isGroupParent) {
-  //   props = {
-  //     value: componentID ?? id,
-  //     children: createElement(component, props),
-  //   };
-  //   component = groupContext.Provider;
-  // }
+  if (componentHandler?.metadata.isGroupParent) {
+    props = {
+      value: componentID ?? id,
+      children: createElement(component, props),
+    };
+    component = groupContext.Provider;
+  }
 
   if (component === baseComponent) {
     switch (getComponentType(component)) {

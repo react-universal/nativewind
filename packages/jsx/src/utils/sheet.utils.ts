@@ -1,16 +1,15 @@
-import { parseCssValue, tw } from '@native-twin/core';
+import { type TwinRuntimeContext, parseCssValue, tw } from '@native-twin/core';
 import {
   type AnyStyle,
   type CompleteStyle,
   type SheetEntryDeclaration,
   getRuleSelectorGroup,
 } from '@native-twin/css';
-import type { StyledContext } from '../store/observables/index.js';
 
 // TODO: PLACE THIS INTO GLOBAL SHEET
 export const sheetEntryToStyle = (
   entry: any,
-  context: StyledContext,
+  context: TwinRuntimeContext,
 ): CompleteStyle | null => {
   const validRule = isApplicativeRule(entry.selectors, context);
   if (!validRule) return null;
@@ -20,7 +19,7 @@ export const sheetEntryToStyle = (
 
 export const sheetEntriesToStyles = (
   entries: any[],
-  context: StyledContext,
+  context: TwinRuntimeContext,
 ): CompleteStyle => {
   return entries.reduce((prev, current) => {
     const style = sheetEntryToStyle(current, context);
@@ -37,7 +36,7 @@ export const sheetEntriesToStyles = (
 };
 export function getSheetEntryStyles(
   entries: any[] = [],
-  context: StyledContext,
+  context: TwinRuntimeContext,
 ) {
   return entries.reduce(
     (prev, current) => {
@@ -52,21 +51,21 @@ export function getSheetEntryStyles(
       return prev;
     },
     {
-      base: {},
-      even: {},
-      first: {},
-      group: {},
-      last: {},
-      odd: {},
-      pointer: {},
-      dark: {},
-    } as any,
+      base: {} as AnyStyle,
+      even: {}  as AnyStyle,
+      first: {}  as AnyStyle,
+      group: {}  as AnyStyle,
+      last: {}  as AnyStyle,
+      odd: {}  as AnyStyle,
+      pointer: {}  as AnyStyle,
+      dark: {}  as AnyStyle,
+    },
   );
 }
 
 export function composeDeclarations(
   declarations: SheetEntryDeclaration[],
-  context: StyledContext,
+  context: TwinRuntimeContext,
 ) {
   const styledCtx = {
     rem: context.units.rem,
@@ -107,7 +106,7 @@ export function composeDeclarations(
 }
 
 const platformVariants = ['web', 'native', 'ios', 'android'];
-export function isApplicativeRule(variants: string[], context: StyledContext) {
+export function isApplicativeRule(variants: string[], context: TwinRuntimeContext) {
   if (variants.length === 0) return true;
   const screens = tw.theme('screens');
 

@@ -28,16 +28,6 @@ const make = Effect.gen(function* () {
       Effect.map((code) => new TwinFileTree(filename, code)),
     );
   }
-
-  // function mergeMappedPropsWithParent(
-  //   props: Iterable<CompiledMappedProp>,
-  //   parentEntries: Iterable<RuntimeSheetEntry>,
-  // ) {
-  //   return Array.map(Array.fromIterable(props), (prop) => ({
-  //     ...prop,
-  //     entries: Array.appendAll(prop.entries, parentEntries),
-  //   }));
-  // }
 });
 
 export interface TwinFileContext extends Effect.Effect.Success<typeof make> {}

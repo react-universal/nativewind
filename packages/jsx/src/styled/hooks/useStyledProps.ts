@@ -1,116 +1,105 @@
-import {
-  type RuntimeSheetDeclaration,
-  SheetEntryHandler,
-  type TwinInjectedProp,
-} from '@native-twin/css/jsx';
-import { asArray } from '@native-twin/helpers';
-import { useAtomValue } from '@native-twin/helpers/react';
-import { useMemo } from 'react';
+import { composeDeclarations } from '@native-twin/core';
+import type { TwinInjectedProp } from '@native-twin/css/jsx';
+import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
+import { useCallback, useContext, useId, useMemo, useRef } from 'react';
+import type {
+  NativeSyntheticEvent,
+  PressableProps,
+  TextInputFocusEventData,
+  Touchable,
+} from 'react-native';
+import { groupContext } from '../../context/styled.context.js';
 import { StyleSheet } from '../../sheet/StyleSheet.js';
-import { tw } from '../../sheet/native-tw.js';
 import { styledContext } from '../../store/observables';
 import type { JSXInternalProps } from '../../types/jsx.types.js';
-// import { ComponentTemplateEntryProp } from '../../types/jsx.types.js';
 import type { ComponentConfig } from '../../types/styled.types.js';
-import { composeDeclarations } from '../../utils/sheet.utils.js';
+import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
 
-// import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps.js';
-
-export const useStyledProps = (
-  id: string,
-  props: JSXInternalProps,
-  configs: ComponentConfig[],
-) => {
-  const compiledSheet: TwinInjectedProp | null = props?.['_twinInjected'] ?? null;
-
-  // const templateEntries: ComponentTemplateEntryProp[] = props?.[
-  //   '_twinComponentTemplateEntries'
-  // ] as ComponentTemplateEntryProp[];
-  // const _debug: boolean = props?.['debug'] ?? false;
-
-  // const templateEntriesObj = templatePropsToSheetEntriesObject(templateEntries ?? []);
-
+export const useStyledProps = (props: JSXInternalProps, configs: ComponentConfig[]) => {
+  const injectedProps: TwinInjectedProp | undefined = props?.['_twinInjected'];
+  const reactID = useId();
+  const id = injectedProps?.id ?? reactID;
   const styledCtx = useAtomValue(styledContext);
+  const handlers: Touchable & PressableProps = {};
+  const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 
-  const componentStyles = useMemo(() => {
-    if (compiledSheet) {
-      console.log('COMPILED_SHEET: ', compiledSheet);
-      const registered = StyleSheet.registerComponent(
-        id,
-        compiledSheet,
-        styledCtx,
-        false,
-      );
+  const componentHandler = useMemo(() => {
+    return StyleSheet.getComponentByID(id, injectedProps?.templateEntries);
+  }, [props]);
 
-      // @ts-expect-error
-      if (registered) {
-        return registered;
+  const context = useContext(groupContext);
+  const parentState = useAtomValue(
+    atom((get) => {
+      if (!context || !componentHandler.metadata.isGroupParent) {
+        return DEFAULT_INTERACTIONS;
       }
-    }
-    const entries = configs.flatMap((config): any[] => {
-      const source = props[config.source];
+      return get(StyleSheet.getComponentState(context)).interactions;
+    }),
+  );
 
-      if (!source) {
-        return [];
+  const interactionsRef = useRef<
+    Touchable &
+      PressableProps & {
+        onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+        onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
       }
-      const compiledEntries = tw(`${source}`).map((entry): SheetEntryHandler => {
-        return new SheetEntryHandler(
-          {
-            animations: [],
-            className: entry.className,
-            preflight: false,
-            declarations: entry.declarations.map(
-              (decl): RuntimeSheetDeclaration => ({
-                _tag: 'NOT_COMPILED',
-                prop: decl.prop,
-                value: composeDeclarations([decl], styledCtx),
-                isUnitLess: false,
-                reason: 'Unknown',
-                valueType: 'RAW',
-              }),
-            ),
-            important: entry.important,
-            precedence: entry.precedence,
-            selectors: entry.selectors,
+  >(props as any);
+
+  const onChange = useCallback(
+    (active: boolean) => {
+      if (
+        componentHandler.metadata.hasPointerEvents ||
+        componentHandler.metadata.isGroupParent
+      ) {
+        setState({
+          interactions: {
+            isLocalActive: active,
+            isGroupActive: active,
           },
-          {
-            baseRem: styledCtx.units.rem,
-            platform: styledCtx.platform,
-          },
-        );
-      });
-      return asArray({
-        classNames: source,
-        entries: compiledEntries,
-        prop: config.source,
-        // rawSheet: getGroupedEntries(compiledEntries),
-        templateEntries: [],
-        target: config.target,
-        templateLiteral: null,
-      });
+          meta: state.meta,
+        });
+      }
+    },
+    [componentHandler, setState, state],
+  );
+
+  if (
+    componentHandler.metadata.hasPointerEvents ||
+    componentHandler.metadata.hasGroupEvents ||
+    componentHandler.metadata.isGroupParent
+  ) {
+    handlers.onTouchStart = (event) => {
+      if (interactionsRef.current.onTouchStart) {
+        interactionsRef.current.onTouchStart(event);
+      }
+      onChange(true);
+    };
+    handlers.onTouchEnd = (event) => {
+      if (interactionsRef.current.onTouchEnd) {
+        interactionsRef.current.onTouchEnd(event);
+      }
+      onChange(false);
+    };
+  }
+
+  const compiledProps = useMemo(() => {
+    return componentHandler.props.map(({ entries, prop, target }) => {
+      const sortedDecls = entries
+        .filter((entry) => {
+          if (entry.group === 'base') return true;
+          if (state.interactions.isLocalActive && entry.group === 'pointer') return true;
+          if (state.interactions.isGroupActive && entry.group === 'group') return true;
+          return false;
+        })
+        .flatMap((x) => x.declarations);
+      const styles = composeDeclarations(sortedDecls, styledCtx);
+      return {
+        prop,
+        target,
+        styles,
+      };
     });
+  }, [componentHandler, styledCtx, state.interactions, parentState]);
 
-    // @ts-expect-error
-    const component = StyleSheet.registerComponent(id, entries, styledCtx, false);
-    return component;
-  }, [styledCtx, id, configs, props, compiledSheet]);
-
-  // useEffect(() => {
-  //   // @ts-expect-error
-  //   if (StyleSheet.getFlag('STARTED') === 'NO') {
-  //     if (tw.config) {
-  //       // @ts-expect-error
-  //       StyleSheet[INTERNAL_RESET](tw.config);
-  //     }
-  //     const obs = tw.observeConfig((c) => {
-  //       if (!c?.root) return;
-  //       // @ts-expect-error
-  //       StyleSheet[INTERNAL_RESET](c);
-  //     });
-  //     return () => obs();
-  //   }
-  //   return () => {};
-  // }, []);
-
-  return { componentStyles, styledCtx };
+  return { componentHandler, compiledProps, handlers, styledCtx, parentState };
 };

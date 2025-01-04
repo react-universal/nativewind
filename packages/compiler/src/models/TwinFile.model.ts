@@ -26,10 +26,6 @@ import { TwinElement } from './Compiler.models';
 import type { CompilerStyleSheet } from './CompilerSheet';
 import { BaseTwinTextDocument } from './TwinDocument.model';
 
-// export interface TwinFileTransformCtx {
-//   compilerContext: CompilerContext;
-//   tw: InternalTwFn;
-// }
 /**
  * UPDATE
  */

@@ -17,9 +17,9 @@ const sheetEntriesByImportant = (a: SheetEntryHandler, b: SheetEntryHandler) =>
 
 /** @category Orders */
 export const sortSheetEntries = (a: SheetEntryHandler, b: SheetEntryHandler) => {
-  const first = sheetEntriesOrderByPrecedence(a, b);
+  const first = sheetEntriesByImportant(a, b);
   if (first !== 0) return first;
-  return sheetEntriesByImportant(a, b);
+  return sheetEntriesOrderByPrecedence(a, b);
 };
 
 /** @category Orders */

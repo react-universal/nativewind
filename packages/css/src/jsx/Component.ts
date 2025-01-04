@@ -41,7 +41,11 @@ export interface TwinInjectedProp {
   index: number;
   parentID: 'NO_PARENT' | (string & {});
   parentSize: number;
-  templateEntries: string[];
+  templateEntries: {
+    prop: string;
+    target: string;
+    value: string;
+  }[];
 }
 
 /**
@@ -52,6 +56,11 @@ export interface TwinInjectedObject {
   index: number;
   parentSize: number;
   parentID: string;
+  metadata: {
+    isGroupParent: boolean;
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
+  };
   props: RuntimeTwinMappedProp[];
   childStyles: RuntimeJSXStyle[];
 }
