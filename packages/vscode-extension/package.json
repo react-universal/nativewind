@@ -22,7 +22,7 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "native-twin",
-  "type": "module",
+  "main": "./build/cjs/extension.js",
   "scripts": {
     "build": "npx twin pack-dev",
     "build:tsc": "tsc -b",

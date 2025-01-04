@@ -14,8 +14,7 @@
         "hidden": false,
         "group": "tools",
         "order": 1
-      },
-      "preLaunchTask": "Build vscode"
+      }
     }
   ],
   "configurations": [

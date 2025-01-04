@@ -13,7 +13,6 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "type": "module",
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
   "types": "./build/dts/index.d.ts",
@@ -28,8 +27,8 @@
   ],
   "scripts": {
     "build": "npx twin pack-dev",
-    "build:tsc": "tsc -p tsconfig.build.json",
     "build:tsc:watch": "tsc -p tsconfig.cjs.json --watch",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "lint": "biome lint",
     "test": "echo \"No tests\"",

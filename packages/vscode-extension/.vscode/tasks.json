@@ -25,18 +25,6 @@
         "group": "watch",
         "reveal": "never"
       }
-    },
-    {
-      "type": "npm",
-      "label": "Build vscode",
-      "script": "build:tsc:watch",
-      "isBackground": true,
-      "group": "build",
-      "presentation": {
-        "group": "watch",
-        "reveal": "never"
-      },
-      "problemMatcher": "$tsc-watch"
     }
   ]
 }

@@ -13,17 +13,16 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "type": "module",
   "exports": {
     ".": {
       "types": "./build/dts/index.d.ts",
-      "import": "./build/cjs/index.js",
-      "default": "./build/esm/index.js"
+      "import": "./build/esm/index.js",
+      "default": "./build/cjs/index.js"
     },
     "./browser": {
       "types": "./build/dts/browser.d.ts",
-      "import": "./build/cjs/browser.js",
-      "default": "./build/esm/browser.js"
+      "import": "./build/esm/browser.js",
+      "default": "./build/cjs/browser.js"
     }
   },
   "main": "./build/cjs/index.js",

@@ -21,6 +21,10 @@
       "path": "../packages/helpers"
     },
     {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
       "name": "📦 @lib/language-service",
       "path": "../packages/language-service"
     },
@@ -33,10 +37,6 @@
       "path": "../packages/adapters"
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
     },
@@ -47,10 +47,6 @@
     {
       "name": "📦 @lib/vite-plugin",
       "path": "../packages/vite-plugin"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
     },
     {
       "name": "expo-app",

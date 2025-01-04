@@ -1,7 +1,6 @@
 import { parseCssValue } from '@native-twin/core';
 import {
   type AnyStyle,
-  type FinalSheet,
   type SheetEntry,
   type SheetEntryDeclaration,
   getRuleSelectorGroup,
@@ -27,7 +26,7 @@ export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledC
       last: {},
       odd: {},
       pointer: {},
-    } as FinalSheet,
+    } as Record<string, any>,
   );
 }
 

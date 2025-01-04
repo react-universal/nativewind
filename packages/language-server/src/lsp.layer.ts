@@ -17,6 +17,6 @@ const connectionHandler = vscode.createConnection();
 export const LspMainLive = LoggerLive.pipe(
   Layer.provideMerge(LSPDocumentsService.make(documentsHandler, TwinLSPDocument)),
   Layer.provideMerge(LSPConfigService.Live),
-  Layer.provideMerge(NativeTwinManagerService.Live(new NativeTwinManager())),
+  Layer.provideMerge(Layer.succeed(NativeTwinManagerService, new NativeTwinManager())),
   Layer.provideMerge(LSPConnectionService.make(connectionHandler)),
 );
