@@ -25,7 +25,7 @@ export const useStyledProps = (props: JSXInternalProps, configs: ComponentConfig
 
   const componentHandler = useMemo(() => {
     return StyleSheet.getComponentByID(id, injectedProps?.templateEntries);
-  }, [props]);
+  }, [id, injectedProps]);
 
   const context = useContext(groupContext);
   const parentState = useAtomValue(
@@ -96,7 +96,7 @@ export const useStyledProps = (props: JSXInternalProps, configs: ComponentConfig
         styles,
       };
     });
-  }, [componentHandler, styledCtx, state.interactions, parentState]);
+  }, [componentHandler, styledCtx, state.interactions]);
 
   return { componentHandler, compiledProps, handlers, styledCtx, parentState };
 };
