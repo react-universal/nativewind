@@ -9,7 +9,12 @@
   "files": {
     "ignoreUnknown": true,
     "include": ["*/src/**/*.ts", "*/src/**/*.tsx", "*/test/**/*"],
-    "ignore": ["packages/*/build/**/*.js", "*/test/fixtures/**/*"]
+    "ignore": [
+      "packages/*/build/**/*",
+      "*/test/fixtures/**/*",
+      "*/test/project-fixture/**/*",
+      "*/test/server-fixture/**/*"
+    ]
   },
   "linter": {
     "rules": {
