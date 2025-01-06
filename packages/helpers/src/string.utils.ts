@@ -25,7 +25,7 @@ export const toHyphenCase = (value: string) => {
   return value.includes('-')
     ? value
     : // replace any upper-case letter with a dash and the lower-case variant
-      value.replace(/[A-Z]/g, (capital) => '-' + capital.toLowerCase());
+      value.replace(/[A-Z]/g, (capital) => `-${capital.toLowerCase()}`);
 };
 
 /**
@@ -34,7 +34,7 @@ export const toHyphenCase = (value: string) => {
  * @example
  * toTailDashed('padding') => 'padding-'
  * */
-export const toTailDashed = (value: string) => (value ? value + '-' : '');
+export const toTailDashed = (value: string) => (value ? `${value}-` : '');
 
 // Copyright (c) 2016-present Glen Maddern and Maximilian Stoiber
 
@@ -74,3 +74,7 @@ export function escapeBackticksAndOctals(str: string) {
 }
 
 export const splitBySpace = (classes: string) => classes.split(/\s+/g);
+
+export function assertString(x: unknown): asserts x is string {
+  if (typeof x !== 'string') throw new Error('Value is not defined');
+}

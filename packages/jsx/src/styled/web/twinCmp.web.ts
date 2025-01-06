@@ -1,6 +1,6 @@
-import { ComponentType, createElement } from 'react';
-import type { ComponentConfig } from '../../types/styled.types';
-import { getComponentType } from '../../utils/react.utils';
+import { type ComponentType, createElement } from 'react';
+import type { ComponentConfig } from '../../types/styled.types.js';
+import { getComponentType } from '../../utils/react.utils.js';
 
 export function twinComponent(
   baseComponent: ComponentType<any>,

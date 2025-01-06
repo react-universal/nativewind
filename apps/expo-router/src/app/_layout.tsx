@@ -1,9 +1,11 @@
-import { View } from 'react-native';
-import { useLoadFonts } from '../hooks/useLoadFonts';
-import { Slot } from 'expo-router';
-
 import { install } from '@native-twin/core';
+import { Slot } from 'expo-router';
+import { View } from 'react-native';
 import config from '../../tailwind.config';
+import { useLoadFonts } from '../hooks/useLoadFonts';
+import '../../globals.css';
+
+install(config, !__DEV__);
 
 export default function Layout() {
   const { loaded } = useLoadFonts();
@@ -14,5 +16,3 @@ export default function Layout() {
     </View>
   );
 }
-
-install(config);

@@ -5,20 +5,20 @@
       "path": ".."
     },
     {
-      "name": "docs-site",
-      "path": "../apps/docs-site"
+      "name": "📦 @lib/with-nextjs",
+      "path": "../packages/native-twin-nextjs"
     },
     {
-      "name": "twin-run",
-      "path": "../apps/twin-run"
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
     },
     {
       "name": "📦 @lib/jsx",
       "path": "../packages/jsx"
     },
     {
-      "name": "📦 @lib/with-nextjs",
-      "path": "../packages/native-twin-nextjs"
+      "name": "next-app-dir",
+      "path": "../apps/next-app-dir"
     },
     {
       "name": "📦 @lib/native-twin",
@@ -29,20 +29,20 @@
       "path": "../packages/metro"
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
       "name": "📦 @lib/css",
       "path": "../packages/css"
+    },
+    {
+      "name": "expo-app",
+      "path": "../apps/expo-app"
     },
     {
       "name": "next-pages-example",
       "path": "../apps/next-app"
     },
     {
-      "name": "next-app-dir",
-      "path": "../apps/next-app-dir"
+      "name": "twin-run",
+      "path": "../sites/twin.run"
     }
   ],
   "settings": {
@@ -67,6 +67,7 @@
       "**/.git": true,
       "**/.svn": true,
       "**/.hg": true,
+      "**/.tsup": true,
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
@@ -76,15 +77,14 @@
       "**/LICENSE": false,
       "**/babel.config.js": false,
       "**/build": false,
-      "**/turbo.json": false,
+      "**/turbo.json": true,
       "**/.eslintrc.json": false,
       "**/.eslintignore": false,
       "**/README.md": false
     },
     "search.exclude": {
       "**/node_modules": true,
-      "**/bower_components": true,
-      "**/*.code-search": true,
+      "**/.tsup": true,
       "**/build": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
@@ -94,6 +94,20 @@
       "TRBL",
       "xytrbl"
     ],
-    "testing.openTesting": "neverOpen"
+    "testing.openTesting": "neverOpen",
+    "jest.enable": true,
+    "jest.disabledWorkspaceFolders": [
+      "root",
+      "📦 @lib/builder",
+      "📦 @lib/metro",
+      "📦 @lib/with-nextjs",
+      "📦 @lib/vscode",
+      "📦 @lib/language-service",
+      "📦 @lib/language-server",
+      "expo-app",
+      "next-pages-example",
+      "next-app-dir",
+      "docs-site"
+    ]
   }
 }

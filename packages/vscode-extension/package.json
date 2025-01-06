@@ -1,12 +1,14 @@
 {
   "name": "native-twin-vscode",
+  "displayName": "Native Twin LSP",
   "version": "1.0.0",
   "private": true,
   "description": "Native Twin vscode extension.",
   "categories": [
     "Programming Languages",
     "Linters",
-    "Snippets"
+    "Snippets",
+    "Visualization"
   ],
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -20,85 +22,96 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "native-twin",
-  "main": "./build/extension.js",
+  "main": "./build/cjs/extension.js",
   "scripts": {
-    "build": "yarn clean && yarn build:tsc",
+    "build": "npx twin pack-dev",
     "build:tsc": "tsc -b",
-    "build:tsc:watch": "tsc -b -w",
+    "build:tsc:watch": "tsc -p tsconfig.cjs.json --watch",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "biome lint",
     "vsc-test": "vscode-test --watch",
     "vsc:test": "sh ./scripts/e2e.sh",
     "vscode:dev": "tsc -b -w",
-    "vscode:prepublish": "node ./esbuild.mjs"
+    "vscode:prepublish": "node ./esbuild.js"
   },
   "contributes": {
     "commands": [
       {
         "command": "nativeTwin.restart",
-        "title": "Native Twin: Restart IntelliSense"
+        "title": "Restart IntelliSense",
+        "category": "Native Twin",
+        "icon": "$(refresh)"
       },
       {
-        "command": "nativeTwin.className",
-        "title": "Native Twin: Replace className strings"
+        "command": "nativeTwin.openTwinRegion",
+        "title": "Show File Region",
+        "category": "Native Twin",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "nativeTwin.workspaceInit",
+        "title": "Setup Workspace",
+        "category": "Native Twin",
+        "icon": "$(play)"
+      },
+      {
+        "command": "nativeTwin.createTwinFiles",
+        "title": "Generate Native Twin files",
+        "category": "Native Twin",
+        "icon": "$(play)"
       }
     ],
     "configuration": [
       {
         "id": "nativeTwin",
-        "title": "Native Twin Configuration",
+        "title": "Native Twin Extension Configuration Settings",
         "type": "object",
         "properties": {
-          "nativeTwin.tags": {
+          "nativeTwin.functions": {
             "type": "array",
-            "description": "List of template tags to enable Native Twin intellisense in.",
+            "scope": "window",
+            "title": "Function expressions to validate",
+            "description": "List of template tags or functions to enable Native Twin intellisense in.",
             "items": {
               "type": "string",
-              "description": "Tag name."
+              "description": "Function/Tag name."
             },
             "default": [
               "tw",
+              "cx",
+              "tx",
               "apply",
               "css",
               "variants",
               "styled",
-              "tx",
               "style",
               "createVariants"
             ]
           },
-          "nativeTwin.attributes": {
+          "nativeTwin.jsxAttributes": {
             "type": "array",
             "description": "List of html/jsx attributes to enable Native Twin intellisense in.",
+            "scope": "window",
             "items": {
               "type": "string",
-              "description": "Attribute name."
+              "description": "JSX Attribute name."
             },
             "default": [
               "className",
-              "class"
-            ]
-          },
-          "nativeTwin.styles": {
-            "type": "array",
-            "description": "List of style/styled functions to enable Native Twin intellisense in.",
-            "items": {
-              "type": "string",
-              "description": "Style function name."
-            },
-            "default": [
-              "style",
-              "styled",
-              "variants"
+              "class",
+              "tw"
             ]
           },
           "nativeTwin.debug": {
             "type": "boolean",
+            "scope": "window",
             "description": "Enable/disable additional debug information.",
             "default": false
           },
           "nativeTwin.enable": {
             "type": "boolean",
+            "scope": "window",
             "default": true,
             "markdownDescription": "Controls whether Native Twin intellisense is enabled or not."
           },
@@ -115,27 +128,60 @@
           }
         }
       }
+    ],
+    "views": {
+      "nativeTwin": [
+        {
+          "id": "nativeTwin-files",
+          "name": "Files"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "nativeTwin",
+          "title": "NativeTwin Dev Tools",
+          "icon": "resources/icons/transparent/logo-alt-50.png"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "nativeTwin-files",
+        "contents": "Native Twin Dev Tools did not generate any file yet."
+      }
     ]
   },
   "activationEvents": [
     "onStartupFinished"
   ],
   "dependencies": {
+    "@native-twin/compiler": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
     "@native-twin/language-server": "workspace:*",
-    "effect": "^3.7.2",
+    "@native-twin/language-service": "workspace:*",
+    "effect": "^3.10.0",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
-    "@types/vscode": "^1.89.0",
+    "@types/vscode": "^1.94.2",
     "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.4.0",
-    "vscode-test": "^1.6.1"
+    "@vscode/test-electron": "^2.4.0"
+  },
+  "optionalDependencies": {
+    "@native-twin/cli": "workspace:*"
   },
   "engines": {
-    "vscode": "^1.89.0"
+    "vscode": "^1.94.2"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
-  }
+    "directory": "dist"
+  },
+  "icon": "resources/icons/transparent/logo-128.png",
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ]
 }

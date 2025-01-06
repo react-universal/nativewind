@@ -6,9 +6,9 @@ import type {
   TWParsedRule,
   VariantClassToken,
   VariantToken,
-} from './tailwind.types';
+} from './tailwind.types.js';
 
-export const classNameIdent = /^[a-z0-9A-Z-.]+/;
+export const classNameIdent = /^[a-z0-9A-Z-._]+/;
 
 export const parseClassNameIdent = P.regex(classNameIdent);
 
@@ -141,7 +141,7 @@ export function mergeParsedRuleGroupTokens(
 ): TWParsedRule[] {
   const nextToken = groupContent.shift();
   if (!nextToken) return results;
-  if (nextToken.type == 'ARBITRARY') {
+  if (nextToken.type === 'ARBITRARY') {
     results.push({
       n: nextToken.value,
       v: [],
@@ -150,7 +150,7 @@ export function mergeParsedRuleGroupTokens(
       p: 0,
     });
   }
-  if (nextToken.type == 'CLASS_NAME') {
+  if (nextToken.type === 'CLASS_NAME') {
     results.push({
       n: nextToken.value.n,
       v: [],
@@ -159,7 +159,7 @@ export function mergeParsedRuleGroupTokens(
       p: 0,
     });
   }
-  if (nextToken.type == 'VARIANT_CLASS') {
+  if (nextToken.type === 'VARIANT_CLASS') {
     results.push({
       n: nextToken.value[1].value.n,
       v: nextToken.value[0].value.map((y) => y.n),
@@ -168,16 +168,16 @@ export function mergeParsedRuleGroupTokens(
       p: 0,
     });
   }
-  if (nextToken.type == 'GROUP') {
+  if (nextToken.type === 'GROUP') {
     const baseValue = nextToken.value.base;
     const parts = mergeParsedRuleGroupTokens(nextToken.value.content).map(
       (x): TWParsedRule => {
-        if (baseValue.type == 'CLASS_NAME') {
+        if (baseValue.type === 'CLASS_NAME') {
           return {
             ...x,
             i: baseValue.value.i,
             m: baseValue.value.m ?? x.m,
-            n: baseValue.value.n + '-' + x.n,
+            n: `${baseValue.value.n}-${x.n}`,
           };
         }
         return {

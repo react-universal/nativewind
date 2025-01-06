@@ -1,5 +1,5 @@
 import * as P from '@native-twin/arc-parser';
-import { cssValueUnitParser, parseMathOperatorSymbol } from '../css-common.parser';
+import { cssValueUnitParser, parseMathOperatorSymbol } from '../css-common.parser.js';
 
 export const ParseCssDimensions = P.recursiveParser(() =>
   P.choice([P.whitespaceSurrounded(ParseDimensionWithUnits), ParseCssCalc]),
@@ -10,7 +10,7 @@ const ParseDimensionWithUnits = P.sequenceOf([
   P.maybe(cssValueUnitParser),
 ]).mapFromData((parserState) => {
   const { result, data } = parserState;
-  const value = parseFloat(result[0]);
+  const value = Number.parseFloat(result[0]);
   switch (result[1]?.value) {
     case 'px':
       return value;

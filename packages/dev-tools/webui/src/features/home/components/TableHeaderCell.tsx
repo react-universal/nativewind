@@ -1,27 +1,26 @@
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import { type Header, flexRender } from '@tanstack/react-table';
 import { Pressable, Text } from 'react-native';
-import { flexRender, type Header } from '@tanstack/react-table';
-import type { RawJSXElementTreeNode } from '@native-twin/css/build/jsx';
 
 export const TableHeaderCell = (header: Header<RawJSXElementTreeNode, unknown>) => (
-  <Pressable
-    key={header.id}
-    onPress={header.column.getToggleSortingHandler()}
-    className='border-1 flex-row justify-between px-2 items-center'
-    style={{
-      width: header.getSize(),
-    }}
-  >
-    <Text className='font-inter-bold'>
-      {header.isPlaceholder
-        ? null
-        : flexRender(header.column.columnDef.header, header.getContext())}
-    </Text>
+  <td className='border-1'>
+    <Pressable
+      key={header.id}
+      onPress={header.column.getToggleSortingHandler()}
+      className='w-full items-center px-2 py-1'
+    >
+      <Text className='font-inter-bold text-center'>
+        {header.isPlaceholder
+          ? null
+          : flexRender(header.column.columnDef.header, header.getContext())}
+      </Text>
 
-    <Text className='font-inter-bold'>
-      {{
-        asc: ' 🔼',
-        desc: ' 🔽',
-      }[header.column.getIsSorted() as string] ?? null}
-    </Text>
-  </Pressable>
+      <Text className='font-inter-bold text-right absolute self-end'>
+        {{
+          asc: ' 🔼',
+          desc: ' 🔽',
+        }[header.column.getIsSorted() as string] ?? null}
+      </Text>
+    </Pressable>
+  </td>
 );

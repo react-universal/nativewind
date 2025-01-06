@@ -1,7 +1,7 @@
 import { matchCssObject } from '@native-twin/core';
 import type { Rule } from '@native-twin/core';
 import { parsedRuleToClassName } from '@native-twin/css';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { TailwindPresetTheme } from '../types/theme.types.js';
 
 export const outlineRules: Rule<TailwindPresetTheme>[] = [
   // matchThemeValue('outline-width-', 'lineWidth', 'outlineWidth'),
@@ -11,7 +11,7 @@ export const outlineRules: Rule<TailwindPresetTheme>[] = [
   //   customValues: Object.fromEntries(outlineStyles),
   // }),
   matchCssObject('outline-none', (match, ctx, rule) => {
-    if (ctx.mode == 'native') {
+    if (ctx.mode === 'native') {
       return null;
     }
     return {
@@ -31,6 +31,7 @@ export const outlineRules: Rule<TailwindPresetTheme>[] = [
       conditions: rule.v,
       important: rule.i,
       precedence: rule.p,
+      preflight: false,
     };
   }),
 ];
@@ -49,5 +50,6 @@ export const appearanceRules: Rule[] = [
     important: rule.i,
     precedence: rule.p,
     animations: [],
+    preflight: false,
   })),
 ];

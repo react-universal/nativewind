@@ -5,8 +5,13 @@ import {
   PrimitiveH4,
   PrimitiveH5,
   PrimitiveH6,
-} from './HeadingComponents';
-import { PrimitiveP, PrimitiveSpan, PrimitiveCode, PrimitiveStrong } from './TextComponents';
+} from './HeadingComponents.js';
+import {
+  PrimitiveCode,
+  PrimitiveP,
+  PrimitiveSpan,
+  PrimitiveStrong,
+} from './TextComponents.js';
 
 const Span = PrimitiveSpan;
 const H1 = PrimitiveH1;

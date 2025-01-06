@@ -1,5 +1,4 @@
-import { ComponentSheet } from '@native-twin/css/jsx';
-import { Atom, atom } from '@native-twin/helpers';
+import { type Atom, atom } from '@native-twin/helpers/react';
 
 export interface ComponentState {
   meta: {
@@ -17,7 +16,7 @@ const componentsCache = new Map<string, Atom<ComponentState>>();
 
 export function getTwinComponent(
   id: string,
-  styledProps: [string, ComponentSheet][] = [],
+  styledProps: [string, any][] = [],
 ): Atom<ComponentState> {
   const component = componentsCache.get(id);
   if (component) {

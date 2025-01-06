@@ -1,6 +1,6 @@
-import { ComponentType, ElementType } from 'react';
-import { ComponentConfig } from '../types/styled.types';
-import { REACT_FORWARD_REF_SYMBOL } from './constants';
+import type { ComponentType, ElementType } from 'react';
+import type { ComponentConfig } from '../types/styled.types.js';
+import { REACT_FORWARD_REF_SYMBOL } from './constants.js';
 
 export function getComponentType(component: any) {
   switch (typeof component) {
@@ -40,7 +40,7 @@ export function nativeStyleToProp(props: Record<string, any>, config: ComponentC
 export function getComponentDisplayName(
   primitive: ComponentType<any> | ElementType,
 ): string {
-  if (typeof primitive == 'string') {
+  if (typeof primitive === 'string') {
     return primitive;
   }
   return primitive.displayName ?? primitive.name ?? 'NoName';

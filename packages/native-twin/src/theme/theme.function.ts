@@ -1,6 +1,6 @@
 import { flattenObjectByPath } from '@native-twin/helpers';
-import type { ThemeFunction } from '../types/config.types';
-import type { ThemeConfig, __Theme__ } from '../types/theme.types';
+import type { ThemeFunction } from '../types/config.types.js';
+import type { ThemeConfig, __Theme__ } from '../types/theme.types.js';
 
 export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
   extend = {},
@@ -9,7 +9,10 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
   const resolved: Record<string, any> = {};
   return theme as ThemeFunction<Theme>;
 
-  function theme(themeSection: keyof Omit<ThemeConfig<Theme>, 'extend'>, segment: string) {
+  function theme(
+    themeSection: keyof Omit<ThemeConfig<Theme>, 'extend'>,
+    segment: string,
+  ) {
     if (segment && segment.startsWith('[') && segment.endsWith(']')) {
       return segment.slice(1, -1);
     }

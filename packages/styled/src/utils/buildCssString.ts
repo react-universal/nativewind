@@ -1,5 +1,9 @@
 import type { CompleteStyle } from '@native-twin/css';
-import type { ClassNameProps, Primitive, TemplateFunctions } from '../types/styled.types';
+import type {
+  ClassNameProps,
+  Primitive,
+  TemplateFunctions,
+} from '../types/styled.types.js';
 
 /** Converts the tagged template string into a css string */
 export function buildCSSString<T>(
@@ -9,7 +13,7 @@ export function buildCSSString<T>(
 ) {
   let computedString = chunks
     // Evaluate the chunks from the tagged template
-    .map((chunk, i) => {
+    .flatMap((chunk, i) => {
       return [
         chunk,
         functions[i] instanceof Function
@@ -17,7 +21,6 @@ export function buildCSSString<T>(
           : functions[i],
       ];
     })
-    .flat()
     // Convert the objects to string if the result is not a primitive
     .map((chunk) => {
       return typeof chunk === 'object' ? (chunk as Partial<CompleteStyle>) : chunk;

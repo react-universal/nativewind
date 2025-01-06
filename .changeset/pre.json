@@ -1,0 +1,37 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "native-twin-docs": "1.7.1",
+    "expo-app": "1.4.10",
+    "expo-app-web": "1.4.10",
+    "next-pages-example": "1.4.10",
+    "next-app-dir": "0.4.1",
+    "@native-twin/arc-parser": "6.4.0",
+    "@native-twin/babel": "6.4.0",
+    "@native-twin/cli": "2.3.0",
+    "@native-twin/css": "6.4.0",
+    "@native-twin/compiler": "6.4.0",
+    "@native-twin/dev-tools": "0.0.1",
+    "@native-twin/vite-plugin": "6.4.0",
+    "@native-twin/dev-tools-webui": "0.0.1-private",
+    "@native-twin/helpers": "6.4.0",
+    "@native-twin/jsx": "6.4.0",
+    "@native-twin/language-server": "6.4.0",
+    "@native-twin/language-service": "6.4.0",
+    "@native-twin/metro": "6.4.0",
+    "@native-twin/core": "6.4.0",
+    "@native-twin/adapters": "6.4.0",
+    "@native-twin/preset-tailwind": "6.4.0",
+    "@native-twin/styled": "6.4.0",
+    "@native-twin/ts-plugin": "6.4.0",
+    "native-twin-vscode": "1.0.0",
+    "twin-run": "0.0.0"
+  },
+  "changesets": [
+    "light-dolls-cheat",
+    "quick-falcons-sin",
+    "rude-elephants-wait",
+    "stupid-jobs-return"
+  ]
+}

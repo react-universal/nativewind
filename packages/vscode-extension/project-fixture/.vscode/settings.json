@@ -2,6 +2,18 @@
     "typescript.tsdk": "node_modules/typescript/lib",
     "nativeTwin.trace.server": "verbose",
     "nativeTwin.enable": true,
+    "nativeTwin.functions": [
+        "tw",
+        "apply",
+        "css",
+        "variants",
+        "styled",
+        "tx",
+        "style",
+        "createVariants",
+        "lol2",
+        "lol3"
+    ],
     "editor.suggest.showColors": true,
     "markdown.trace.server": "verbose",
     "typescript.tsserver.log": "off",

@@ -1,11 +1,17 @@
 import * as Effect from 'effect/Effect';
 import * as vscode from 'vscode';
-import { thenable } from '../extension/extension.utils';
+import { thenable } from '../extension/extension.utils.js';
 
 export const createFileWatchers = Effect.gen(function* () {
   return yield* Effect.acquireRelease(
-    Effect.sync(() => vscode.workspace.createFileSystemWatcher('**/*.{ts,tsx,js,jsx}')),
-    (watcher) => Effect.sync(() => watcher.dispose()),
+    Effect.sync(() =>
+      vscode.workspace.createFileSystemWatcher('**/tailwind.config.*', false, false),
+    ),
+    (watcher) =>
+      Effect.sync(() => {
+        console.log('WATCH_FILES_DISPOSED');
+        return watcher.dispose();
+      }),
   );
 });
 

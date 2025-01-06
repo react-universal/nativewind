@@ -3,30 +3,18 @@
   "version": "0.2.0",
   "compounds": [
     {
-      "name": "Lanuch extension + TS Plugin",
-      "configurations": [
-        "Launch Extension",
-        "Launch Extension Server"
-      ],
-      "presentation": {
-        "hidden": false,
-        "group": "tools",
-        "order": 2
-      },
-      "preLaunchTask": "npm: build:tsc:watch"
-    },
-    {
       "name": "Lanuch extension Client + Server",
       "configurations": [
         "Launch Extension",
-        "Launch Extension Server"
+        "Build language service",
+        "Build Extension Server"
       ],
+      "stopAll": true,
       "presentation": {
         "hidden": false,
         "group": "tools",
         "order": 1
-      },
-      "preLaunchTask": "npm: build:tsc:watch"
+      }
     }
   ],
   "configurations": [
@@ -36,10 +24,6 @@
       "name": "Launch Extension",
       "runtimeExecutable": "${execPath}",
       "autoAttachChildProcesses": true,
-      "preLaunchTask": {
-        "type": "npm",
-        "script": "build:tsc:watch"
-      },
       "presentation": {
         "hidden": true,
         "group": "",
@@ -47,7 +31,8 @@
       },
       "args": [
         "--extensionDevelopmentPath=${workspaceRoot}",
-        "--disable-extensions"
+        "--disable-extensions",
+        "${workspaceRoot}/project-fixture"
       ],
       "outFiles": [
         "${workspaceRoot}/build/**/*.js",
@@ -58,10 +43,7 @@
         "${workspaceFolder}/**",
         "${workspaceFolder}/../**",
         "!**/node_modules/**"
-      ],
-      // "sourceMapPathOverrides": {
-      //   "📦 @lib/ts-plugin": "${workspaceFolder}../ts-plugin/*"
-      // }
+      ]
     },
     {
       "name": "Extension Tests",
@@ -75,9 +57,11 @@
       ],
       "preLaunchTask": {
         "type": "npm",
-        "script": "build:tsc:watch"
+        "script": "build:tsc"
       },
-      "outFiles": ["${workspaceFolder}/build/test/**/*.js"]
+      "outFiles": [
+        "${workspaceFolder}/build/test/**/*.js"
+      ]
     }
   ],
 }

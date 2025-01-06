@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, useWindowDimensions } from 'react-native';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { SceneMap, TabView } from 'react-native-tab-view';
 import { HomeScreen } from './Home.screen';
 
 const FirstRoute = () => <HomeScreen />;

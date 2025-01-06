@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/metro",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Native Twin metro transformer",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -13,66 +13,55 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./build/dts/index.d.ts",
+      "import": "./build/cjs/index.js",
+      "default": "./build/cjs/index.js"
+    }
+  },
+  "main": "./build/cjs/index.js",
+  "files": [
+    "build",
+    "LICENSE",
+    "src",
+    "native-twin.d.ts",
+    "CHANGELOG.md",
+    "README.md"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "npx twin pack-dev",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "lint": "biome lint",
     "test": "jest --detectOpenHandles=true",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand=true --detectOpenHandles=true",
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@effect/cli": "^0.42.3",
-    "@effect/platform": "^0.63.3",
-    "@effect/platform-node": "^0.58.3",
-    "@effect/platform-node-shared": "^0.13.3",
-    "@effect/printer-ansi": "^0.35.2",
-    "@effect/schema": "^0.72.2",
-    "@native-twin/babel": "workspace:*",
-    "@native-twin/core": "workspace:*",
+    "@native-twin/compiler": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
-    "@native-twin/language-service": "workspace:*",
-    "code-block-writer": "^13.0.1",
-    "css-tree": "^2.3.1",
-    "effect": "^3.7.2",
-    "fast-check": "^3.21.0",
-    "jiti": "1.21.0",
-    "recast": "^0.23.9",
-    "socket.io-client": "^4.7.5",
-    "sucrase": "^3.35.0",
-    "vscode-languageserver-textdocument": "^1.0.11"
-  },
-  "devDependencies": {
-    "@babel/traverse": "^7.24.0",
-    "@babel/types": "^7.24.0",
-    "@native-twin/preset-tailwind": "workspace:*",
-    "@native-twin/styled": "workspace:*",
-    "@types/connect": "3.4.38",
-    "@types/css-tree": "^2.3.8",
-    "@types/micromatch": "^4.0.4",
-    "@types/shelljs": "^0",
-    "ast-pretty-print": "^2.0.1",
-    "chokidar": "^3.6.0",
-    "metro-react-native-babel-preset": "^0.77.0",
-    "micromatch": "4.0.5"
+    "effect": "^3.10.0",
+    "portfinder": "^1.0.32"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-native": "*",
-    "react-native-safe-area-context": "*"
+    "@babel/cli": "*"
+  },
+  "peerDependenciesMeta": {
+    "@babel/cli": {
+      "optional": true
+    }
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   }
 }

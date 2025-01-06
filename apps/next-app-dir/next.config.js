@@ -2,18 +2,14 @@ const { DefinePlugin } = require('webpack');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: [
-    'react-native',
-    'react-native-svg',
-    'react-native-web',
-  ],
+  transpilePackages: ['react-native', 'react-native-svg', 'react-native-web'],
   /**
    * Transformation to apply for both preview and dev server
    * @param config {import('webpack').Configuration}
    * @param options
    * @returns {import('webpack').Configuration}
    */
-  webpack(config, _context) {
+  webpack(config, context) {
     // console.log('CONTEXT: ', context);
     // Mix in aliases
     if (!config.resolve) {
@@ -56,15 +52,15 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.+(ts|tsx)$/,
       // exclude: /(layout)\.+(js|jsx|mjs|ts|tsx)$/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            ["@babel/preset-typescript"],
-            '@native-twin/babel/babel',
-          ],
+      use: [
+        context.defaultLoaders.babel,
+        {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-typescript', '@native-twin/babel/babel'],
+          },
         },
-      },
+      ],
     });
 
     return config;

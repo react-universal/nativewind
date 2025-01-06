@@ -1,15 +1,16 @@
-import type { PlatformOSType } from 'react-native';
-import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type {
   CompleteStyle,
   CssFeature,
-  TWParsedRule,
-  RuleHandlerToken,
   Preflight,
+  RuleHandlerToken,
   SheetEntry,
+  TWParsedRule,
 } from '@native-twin/css';
+// TODO: Restore
+// import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type { Falsey, MaybeArray } from '@native-twin/helpers';
-import type { ExtractThemes, ThemeConfig, __Theme__ } from './theme.types';
+import type { PlatformOSType } from 'react-native';
+import type { ExtractThemes, ThemeConfig, __Theme__ } from './theme.types.js';
 
 // CONFIGURATION TYPES
 
@@ -20,12 +21,12 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   mode: 'web' | 'native';
   rules: Rule<Theme>[];
   variants: Variant<Theme>[];
-  preflight: Preflight;
+  preflight: Preflight | undefined;
   ignorelist: string[];
   root: {
     rem: number;
   };
-  animations: [className: string, keyframe: ReanimatedKeyframe][];
+  animations: [className: string, keyframe: any][];
 }
 
 export interface TailwindUserConfig<
@@ -38,36 +39,36 @@ export interface TailwindUserConfig<
   rules?: Rule<__Theme__ & ExtractThemes<Theme, Presets>>[];
   mode?: 'web' | 'native';
   variants?: Variant<__Theme__ & ExtractThemes<Theme, Presets>>[];
-  preflight?: Preflight;
+  preflight?: Preflight | undefined;
   ignorelist?: string[];
   root?: {
     rem: number;
   };
   presets?: Presets;
-  animations?: [className: string, keyframe: ReanimatedKeyframe][];
+  animations?: [className: string, keyframe: any][];
 }
 
 /** PRESETS CONFIG */
 
-export interface PresetThunk<Theme = __Theme__> {
-  (config: TailwindConfig<Theme & __Theme__>): TailwindPresetConfig<Theme>;
-}
+export type PresetThunk<Theme = __Theme__> = (
+  config: TailwindConfig<Theme & __Theme__>,
+) => TailwindPresetConfig<Theme>;
 
 export type Preset<Theme = __Theme__> = TailwindPresetConfig<Theme> | PresetThunk<Theme>;
 
 export interface TailwindPresetConfig<Theme = __Theme__> {
   /** Allows to change how the `dark` variant is used (default: `"media"`) */
-  darkMode?: DarkModeConfig;
+  darkMode?: DarkModeConfig | undefined;
 
-  theme?: ThemeConfig<Theme & __Theme__>;
+  theme?: ThemeConfig<Theme & __Theme__> | undefined;
   mode?: 'web' | 'native';
 
-  preflight?: Preflight;
+  preflight?: Preflight | undefined;
   rules?: Rule<Theme & __Theme__>[];
 
   variants?: Variant<Theme & __Theme__>[];
   ignorelist?: MaybeArray<string | RegExp>;
-  animations?: [className: string, keyframe: ReanimatedKeyframe][];
+  animations?: [className: string, keyframe: any][];
 
   // darkColor?: DarkColor<Theme & __Theme__>;
   // hash?: boolean | undefined | HashFunction;
@@ -84,13 +85,11 @@ export type RuleResult = SheetEntry | Falsey;
 
 export type PlatformSupport = 'native' | 'web';
 
-export interface RuleResolver<Theme extends __Theme__ = {}> {
-  (
-    match: RuleHandlerToken,
-    context: ThemeContext<Theme>,
-    parsed: TWParsedRule,
-  ): RuleResult | Falsey;
-}
+export type RuleResolver<Theme extends __Theme__ = {}> = (
+  match: RuleHandlerToken,
+  context: ThemeContext<Theme>,
+  parsed: TWParsedRule,
+) => RuleResult | Falsey;
 
 export type Rule<Theme extends __Theme__ = __Theme__> = [
   pattern: string,
@@ -99,12 +98,15 @@ export type Rule<Theme extends __Theme__ = __Theme__> = [
   meta?: RuleMeta,
 ];
 
+export type HTMLCssKeys = 'transition' | 'transitionDuration';
+export type CompleteStyleKeys = HTMLCssKeys | keyof CompleteStyle;
+
 export interface RuleMeta {
   canBeNegative: boolean;
   feature: CssFeature;
   prefix: string | undefined;
   suffix: string | undefined;
-  styleProperty: keyof CompleteStyle | undefined;
+  styleProperty: CompleteStyleKeys | undefined;
   support: PlatformOSType[];
 }
 
@@ -116,9 +118,10 @@ export interface ReMatchResult extends RegExpExecArray {
 
 export type VariantResult = MaybeArray<string> | Falsey;
 
-export interface VariantResolver<Theme extends __Theme__ = __Theme__> {
-  (match: ReMatchResult, context: ThemeContext<Theme>): VariantResult;
-}
+export type VariantResolver<Theme extends __Theme__ = __Theme__> = (
+  match: ReMatchResult,
+  context: ThemeContext<Theme>,
+) => VariantResult;
 
 export type Variant<Theme extends __Theme__ = __Theme__> = [
   condition: string | RegExp,

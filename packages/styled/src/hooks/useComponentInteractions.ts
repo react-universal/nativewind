@@ -1,11 +1,11 @@
 import { useMemo, useRef } from 'react';
 import type {
   NativeSyntheticEvent,
-  Touchable,
-  TextInputFocusEventData,
   PressableProps,
+  TextInputFocusEventData,
+  Touchable,
 } from 'react-native';
-import { setComponentInteractionState } from '../styled/store';
+import { setComponentInteractionState } from '../styled/store.js';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;
@@ -38,7 +38,7 @@ const useComponentInteractions = ({
   const componentInteractionHandlers = useMemo(() => {
     const handlers: Touchable & PressableProps = {};
     if (hasPointerInteractions || isGroupParent || hasGroupInteractions) {
-      handlers.onTouchStart = function (event) {
+      handlers.onTouchStart = (event) => {
         if (ref.current.onTouchStart) {
           ref.current.onTouchStart(event);
         }
@@ -50,7 +50,7 @@ const useComponentInteractions = ({
         }
       };
 
-      handlers.onTouchEnd = function (event) {
+      handlers.onTouchEnd = (event) => {
         if (ref.current.onTouchEnd) {
           ref.current.onTouchEnd(event);
         }
@@ -68,13 +68,13 @@ const useComponentInteractions = ({
   const focusHandlers = useMemo(() => {
     const handlers: InternalTouchable = {};
     if (hasPointerInteractions) {
-      handlers.onFocus = function (event) {
+      handlers.onFocus = (event) => {
         if (ref.current.onFocus) {
           ref.current.onFocus(event);
         }
         setComponentInteractionState(id, 'focus', true);
       };
-      handlers.onBlur = function (event) {
+      handlers.onBlur = (event) => {
         if (ref.current.onBlur) {
           ref.current.onBlur(event);
         }

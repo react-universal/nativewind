@@ -1,10 +1,10 @@
 import type {
-  ResultType,
-  StateTransformerFunction,
   ParserError,
   ParserState,
   ParserSuccess,
-} from '../types';
+  ResultType,
+  StateTransformerFunction,
+} from '../types.js';
 
 export class Parser<Result, Data = any> {
   transform: StateTransformerFunction<Result, Data>;

@@ -1,3 +1,5 @@
+/* spellchecker: disable */
+// 
 /** @category — CSS Constants */
 export const CSS_COLORS = [
   'black',

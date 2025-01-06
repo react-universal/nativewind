@@ -49,6 +49,8 @@ const nextConfig = {
       '.web.jsx',
       '.web.ts',
       '.web.tsx',
+      '.web.cjs',
+      '.web.mjs',
       ...(config.resolve?.extensions ?? []),
     ];
 

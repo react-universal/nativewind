@@ -1,5 +1,29 @@
 # @native-twin/builder
 
+## 7.0.0-next.3
+
+### Patch Changes
+
+- [#144](https://github.com/react-universal/native-twin/pull/144) [`04a5afe`](https://github.com/react-universal/native-twin/commit/04a5afe70ee0b2ccd16a7c961624d1391cfa7a67) Thanks [@chrisarts](https://github.com/chrisarts)! - Update compiler
+
+## 7.0.0-next.2
+
+### Major Changes
+
+- [#144](https://github.com/react-universal/native-twin/pull/144) [`cffded6`](https://github.com/react-universal/native-twin/commit/cffded6ddcbb1dec4bb659c4af0981c1b0cbdd8a) Thanks [@chrisarts](https://github.com/chrisarts)! - Bundling packages
+
+## 7.0.0-next.1
+
+### Patch Changes
+
+- [#144](https://github.com/react-universal/native-twin/pull/144) [`fd32e9d`](https://github.com/react-universal/native-twin/commit/fd32e9ddf7a9075abb8df31a789682ef84d8d6b1) Thanks [@chrisarts](https://github.com/chrisarts)! - Next version
+
+## 7.0.0-next.0
+
+### Major Changes
+
+- [#144](https://github.com/react-universal/native-twin/pull/144) [`dca4137`](https://github.com/react-universal/native-twin/commit/dca4137a69cc1f07ba09d93ea806cece3faf12e5) Thanks [@chrisarts](https://github.com/chrisarts)! - Compilers for native twin
+
 ## 2.3.0
 
 ### Minor Changes

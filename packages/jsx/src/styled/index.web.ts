@@ -3,4 +3,4 @@ export {
   withMappedProps,
   twinComponent,
   stylizedComponents,
-} from './web';
+} from './web/index.js';

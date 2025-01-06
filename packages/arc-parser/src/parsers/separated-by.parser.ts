@@ -1,5 +1,5 @@
-import type { ParserState } from '../types';
-import { Parser, updateParserResult } from './Parser';
+import type { ParserState } from '../types.js';
+import { Parser, updateParserResult } from './Parser.js';
 
 export const separatedBy =
   <S, Data>(separatorParser: Parser<S, Data>) =>
@@ -11,7 +11,6 @@ export const separatedBy =
       let error = null;
       const results: T[] = [];
 
-      // eslint-disable-next-line no-constant-condition
       while (true) {
         const valState = valueParser.transform(nextState);
         const sepState = separatorParser.transform(valState);
@@ -32,7 +31,7 @@ export const separatedBy =
       }
 
       if (error) {
-        if (results.length == 0) {
+        if (results.length === 0) {
           return updateParserResult(state, results) as ParserState<T[], Data>;
         }
         return error;

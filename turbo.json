@@ -3,34 +3,55 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
+      "dependsOn": ["^build:compiler", "^build"],
+      "cache": true,
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests",
+        "!**/tsconfig.*",
+        "src/**"
       ],
-      "inputs": ["$TURBO_DEFAULT$","!**/test","!**/tests"],
       "outputs": [
         "build/**",
         "dist/**"
       ]
+    },
+    "build:watch": {
+      "dependsOn": ["build:compiler"],
+      "persistent": true,
+      "cache": false
+    },
+    "build:compiler": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests",
+        "!**/tsconfig.*"
+      ],
+      "outputs": [
+        "build/**",
+        "dist/**"
+      ]
+    },
+    "build:tsc:watch": {
+      "persistent": true,
+      "cache": false
     },
     "dev-tools:dev": {
       "cache": false,
       "persistent": true,
       "interactive": true,
-      "inputs": ["$TURBO_DEFAULT$","!**/test", "!**/tests", "**/webui/**/*"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests",
+        "**/webui/**/*"
+      ],
       "outputs": [
         "build/**",
         "dist/**"
       ]
-    },
-    "mobile:dev": {
-      "cache": false,
-      "dependsOn": ["^build"],
-      "persistent": true,
-      "interactive": true
-    },
-    "build:watch": {
-      "persistent": true,
-      "cache": false
     },
     "lint": {
       "cache": true
@@ -70,6 +91,17 @@
       "dependsOn": [
         "^build"
       ]
+    },
+    "gen:jsdocs": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests",
+        "**/webui/**/*",
+        "**/src",
+        "jsdoc.json"
+      ],
+      "cache": true
     }
   }
 }

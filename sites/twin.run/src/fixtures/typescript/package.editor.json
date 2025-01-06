@@ -1,0 +1,13 @@
+{
+  "name": "editor-monaco",
+  "dependencies": {
+    "@native-twin/core": "*",
+    "@native-twin/css": "*",
+    "@native-twin/styled": "*",
+    "@native-twin/preset-tailwind": "*",
+    "@native-twin/arc-parser": "*",
+    "@native-twin/helpers": "*",
+    "react": "18.2.0",
+    "@types/react": "18.2.0"
+  }
+}

@@ -1,6 +1,6 @@
 import * as P from '@native-twin/arc-parser';
-import type { CSSUnit, ParserToken } from './css.types';
-import { cssUnitToken, floatToken, numericToken } from './tokens';
+import type { CSSUnit, ParserToken } from './css.types.js';
+import { cssUnitToken, floatToken, numericToken } from './tokens.js';
 
 export const parseIntegerToken = P.digits.map(numericToken);
 export const parseFloatToken = P.float.map(floatToken);

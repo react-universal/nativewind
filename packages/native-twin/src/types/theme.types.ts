@@ -6,7 +6,7 @@ import type {
   StringLike,
   UnionToIntersection,
 } from '@native-twin/helpers';
-import type { Preset, TailwindConfig, ThemeFunction } from './config.types';
+import type { Preset, TailwindConfig, ThemeFunction } from './config.types.js';
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];
@@ -17,13 +17,15 @@ export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown
   snapshot: () => () => void;
   clear: () => void;
   observeConfig: (cb: (config: TailwindConfig<Theme>) => void) => () => void;
-  insertPreflight(): void;
+  insertPreflight(manual?: boolean): void;
   subscriptions: Set<(cb: TailwindConfig<any>) => void>;
+  version: number;
 }
 
 /* THEME CONFIG */
-export type ThemeValue<T> =
-  T extends Record<string, infer V> ? Exclude<V, Record<string, V>> : T;
+export type ThemeValue<T> = T extends Record<string, infer V>
+  ? Exclude<V, Record<string, V>>
+  : T;
 
 export type PartialTheme<Theme extends object = object> = {
   [Section in keyof Theme]?: Theme[Section];
@@ -60,9 +62,9 @@ export interface ThemeSectionResolverContext<Theme extends __Theme__ = __Theme__
   ) => Record<string, string>;
 }
 
-export interface ThemeSectionResolver<Value, Theme extends __Theme__ = __Theme__> {
-  (context: ThemeSectionResolverContext<Theme>): Value;
-}
+export type ThemeSectionResolver<Value, Theme extends __Theme__ = __Theme__> = (
+  context: ThemeSectionResolverContext<Theme>,
+) => Value;
 
 export type ExtractTheme<T> = T extends Preset<infer Theme> ? Theme : T;
 

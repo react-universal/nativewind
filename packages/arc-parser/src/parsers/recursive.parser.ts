@@ -1,4 +1,4 @@
-import { Parser } from './Parser';
+import { Parser } from './Parser.js';
 
 export function recursiveParser<T>(parserThunk: () => Parser<T>): Parser<T> {
   return new Parser((state) => {

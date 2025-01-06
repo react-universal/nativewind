@@ -1,223 +1,128 @@
-import { StyleSheet as NativeSheet } from 'react-native';
-import { __Theme__, TailwindConfig } from '@native-twin/core';
+import type { __Theme__ } from '@native-twin/core';
+import { StyleSheetAdapter } from '@native-twin/core';
+import { type AnyStyle, type SheetEntry, getRuleSelectorGroup } from '@native-twin/css';
 import {
-  AnyStyle,
-  FinalSheet,
-  GetChildStylesArgs,
-  SelectorGroup,
-  SheetInteractionState,
-} from '@native-twin/css';
-import {
-  ComponentSheet,
-  RegisteredComponent,
-  RuntimeComponentEntry,
-  RuntimeSheetEntry,
+  type RuntimeJSXStyle,
+  type RuntimeSheetDeclaration,
+  SheetOrders,
+  type TwinInjectedObject,
+  type TwinInjectedProp,
+  compileEntryDeclaration,
 } from '@native-twin/css/jsx';
-import { Atom, atom } from '@native-twin/helpers';
-import {
-  StyledContext,
-  remObs,
-  styledContext,
-  twinConfigObservable,
-} from '../store/observables';
-import { globalStyles } from '../store/styles.store';
-import { ComponentConfig } from '../types/styled.types';
-import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
-import { getSheetEntryStyles, sheetEntriesToStyles } from '../utils/sheet.utils';
-import { tw } from './native-tw';
+import { type Atom, atom } from '@native-twin/helpers/react';
+import { StyleSheet as NativeSheet, Platform } from 'react-native';
+import type { ComponentState } from '../store/components.store.js';
+import { tw } from './native-tw.js';
 
-export const componentsRegistry: Map<string, RegisteredComponent> = new Map();
-const componentsState: Map<string, Atom<ComponentState>> = new Map();
+export const componentsState: Map<string, Atom<ComponentState>> = new Map();
 
-export interface TwinStyleSheet {
-  [INTERNAL_RESET](tw?: TailwindConfig<__Theme__>): void;
-  [INTERNAL_FLAGS]: Record<string, string>;
-  getFlag(name: string): string | undefined;
-  getGlobalStyle(name: string): Atom<RuntimeSheetEntry> | undefined;
-  entriesToFinalSheet(entries: RuntimeSheetEntry[]): FinalSheet;
-  getComponentByID(id: string): RegisteredComponent | undefined;
-  registerComponent(
-    id: string,
-    props: RuntimeComponentEntry[],
-    context: StyledContext,
-  ): RegisteredComponent;
-  getComponentState(id: string): Atom<ComponentState>;
-}
+class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
+  create = NativeSheet.create;
+  absoluteFill = NativeSheet.absoluteFill;
+  absoluteFillObject = NativeSheet.absoluteFillObject;
+  compose = NativeSheet.compose;
+  flatten = NativeSheet.flatten;
+  hairlineWidth = NativeSheet.hairlineWidth;
+  twinFn = tw;
 
-export interface ComponentState {
-  isGroupActive: boolean;
-  isLocalActive: boolean;
-}
-
-export interface ComponentConfigProps extends ComponentConfig {
-  className: string;
-}
-
-const internalSheet: TwinStyleSheet = {
-  [INTERNAL_FLAGS]: {
-    STARTED: 'NO',
-  },
-  [INTERNAL_RESET](twConfig) {
-    globalStyles.clear();
-    const config = twConfig ?? tw.config;
-    twinConfigObservable.set(config);
-    remObs.set(config.root.rem);
-    this[INTERNAL_FLAGS]['STARTED'] = 'YES';
-  },
-  getFlag(name: string) {
-    return this[INTERNAL_FLAGS][name];
-  },
-  getGlobalStyle(name) {
-    return globalStyles.get(name);
-  },
-  entriesToFinalSheet(entries) {
-    return getSheetEntryStyles(entries, styledContext.get());
-  },
-  getComponentByID(id: string) {
-    return componentsRegistry.get(id);
-  },
-  registerComponent(id, props, context) {
-    const component = componentsRegistry.get(id);
-
-    if (component) {
-      component.sheets = component.sheets.map((x) => x.recompute(x.compiledSheet));
-      return component;
-    }
-
-    const sheets: ComponentSheet[] = [];
-    for (const style of props ?? []) {
-      sheets.push(
-        createComponentSheet(
-          style.target,
-          style,
-          context ?? styledContext.get(),
-          style.prop,
-        ),
-      );
-    }
-
-    const registerComponent: RegisteredComponent = {
-      id,
-      prevProps: {},
-      sheets,
-      metadata: {
-        isGroupParent: sheets.some((x) => x.metadata.isGroupParent),
-        hasGroupEvents: sheets.some((x) => x.metadata.hasGroupEvents),
-        hasPointerEvents: sheets.some((x) => x.metadata.hasPointerEvents),
-        hasAnimations: sheets.some((x) => x.metadata.hasAnimations),
-      },
-    } as RegisteredComponent;
-    componentsRegistry.set(id, registerComponent);
-    if (!componentsState.has(id)) {
-      componentsState.set(id, atom({ isGroupActive: false, isLocalActive: false }));
-    }
-    return componentsRegistry.get(id)!;
-  },
-  getComponentState(id) {
-    const component = componentsState.get(id);
-
-    return component!;
-  },
-};
-
-export const StyleSheet = Object.assign({}, internalSheet, NativeSheet);
-
-export function createComponentSheet(
-  prop: string,
-  compiledSheet: RuntimeComponentEntry,
-  ctx?: StyledContext,
-  target?: string,
-): ComponentSheet {
-  const rawEntries = compiledSheet.entries ?? [];
-  const context = ctx ?? styledContext.get();
-  const tuples = Object.entries(compiledSheet.rawSheet).map(
-    ([group, entry]) =>
-      [group as SelectorGroup, sheetEntriesToStyles(entry, context)] as const,
-  );
-  const tuplesObject = Object.fromEntries(tuples) as FinalSheet;
-  const sheet = StyleSheet.create(tuplesObject);
-  const base = sheet.base;
-  if (context.colorScheme === 'dark') {
-    Object.assign({ ...base }, { ...sheet.dark });
+  constructor(debug: boolean) {
+    super(debug);
   }
 
-  let metadata = {
-    isGroupParent: compiledSheet.entries.some((x) => x.className === 'group'),
-    hasGroupEvents: Object.keys(sheet.group)?.length > 0,
-    hasPointerEvents: Object.keys(sheet.pointer)?.length > 0,
-    hasAnimations: rawEntries.some((x) => x.animations.length > 0),
-  };
-  return {
-    prop,
-    target: target ?? prop,
-    getStyles,
-    sheet,
-    compiledSheet,
-    getChildStyles,
-    recompute: (compiledSheet$) => {
-      compiledSheet = compiledSheet$;
-      return createComponentSheet(
+  toNativeStyles(entries: SheetEntry[]): AnyStyle {
+    return {};
+  }
+
+  toRuntimeDecls(entries: SheetEntry[]): RuntimeSheetDeclaration[] {
+    return [];
+  }
+
+  getComponentByID(id: string, templates: TwinInjectedProp['templateEntries'] = []) {
+    const component = this.get(id) ?? getGenericComponent(id);
+
+    const props = component.props.map(({ prop, entries, target }) => {
+      const config = this.twinFn.config;
+      const twinFn = this.twinFn;
+      const composedEntries = templates
+        .flatMap((x) => (x.prop === prop ? twinFn(x.value) : []))
+        .map(
+          (x): RuntimeJSXStyle => ({
+            className: x.className,
+            declarations: x.declarations.map((decl) =>
+              compileEntryDeclaration(decl, {
+                baseRem: config.root.rem,
+                platform: Platform.OS,
+              }),
+            ),
+            group: getRuleSelectorGroup(x.selectors),
+            important: x.important,
+            inherited: false,
+            precedence: x.precedence,
+          }),
+        );
+
+      const finalEntries = [...entries, ...composedEntries].sort((a, b) =>
+        SheetOrders.sortSheetEntries(a as any, b as any),
+      );
+      const declarations = {
+        base: finalEntries
+          .filter((x) => x.group === 'base')
+          .flatMap((x) => x.declarations),
+        pointer: finalEntries
+          .filter((x) => x.group === 'pointer')
+          .flatMap((x) => x.declarations),
+        group: finalEntries
+          .filter((x) => x.group === 'group')
+          .flatMap((x) => x.declarations),
+      };
+
+      return {
         prop,
-        compiledSheet$,
-        styledContext.get(),
-        target ?? prop,
-      );
-    },
-    metadata: { ...metadata },
-  };
+        target,
+        entries: finalEntries,
+        declarations,
+      };
+    });
 
-  function getStyles(
-    input: Partial<SheetInteractionState>,
-    templateEntries: RuntimeSheetEntry[] = [],
-  ) {
-    const templateFinal = StyleSheet.entriesToFinalSheet(templateEntries);
-    const styles: AnyStyle = { ...sheet.base, ...templateFinal.base };
-    if (input.dark) Object.assign(styles, { ...sheet.dark, ...templateFinal.dark });
-    if (input.isPointerActive)
-      Object.assign(styles, { ...sheet.pointer, ...templateFinal.pointer });
-    if (input.isParentActive)
-      Object.assign(styles, { ...sheet.group, ...templateFinal.group });
-
-    return styles;
+    return {
+      id,
+      props,
+      metadata: component.metadata,
+    };
   }
 
-  function getChildStyles(input: Partial<GetChildStylesArgs>) {
-    const result: AnyStyle = {};
-    if (input.isFirstChild) {
-      Object.assign(result, sheet.first);
+  getComponentState(id: string) {
+    const state = componentsState.get(id);
+    if (!state) {
+      componentsState.set(
+        id,
+        atom({
+          interactions: { isGroupActive: false, isLocalActive: false },
+          meta: {
+            hasGroupEvents: false,
+            hasPointerEvents: false,
+            isGroupParent: false,
+          },
+        }),
+      );
+      return componentsState.get(id)!;
     }
-    if (input.isLastChild) {
-      Object.assign(result, sheet.last);
-    }
-    if (input.isEven) {
-      Object.assign(result, sheet.even);
-    }
-    if (input.isOdd) {
-      Object.assign(result, sheet.odd);
-    }
-    return Object.freeze(result);
+    return state;
   }
 }
 
-export type ComponentSheetHandler = ReturnType<typeof createComponentSheet>;
+export const StyleSheet = new JSXStyleSheet(true);
 
-export const intersectConfigProps = (
-  props: Record<string, any>,
-  configs: ComponentConfig[],
-): ComponentConfigProps[] => {
-  const styledProps: ComponentConfigProps[] = [];
-  if (props && configs) {
-    for (const config of configs) {
-      const source = props?.[config.source];
-      if (!source) continue;
-
-      if (source) {
-        styledProps.push({
-          ...config,
-          className: source,
-        });
-      }
-    }
-  }
-  return styledProps;
-};
+const getGenericComponent = (id: string): TwinInjectedObject => ({
+  childStyles: [],
+  id,
+  index: -1,
+  metadata: {
+    hasGroupEvents: false,
+    hasPointerEvents: false,
+    isGroupParent: false,
+  },
+  parentID: 'NO_PARENT',
+  parentSize: -1,
+  props: [],
+});

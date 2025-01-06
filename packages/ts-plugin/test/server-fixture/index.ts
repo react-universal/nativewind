@@ -71,7 +71,7 @@ class TSServer {
               this._shutdown();
             }
           }
-        } catch (e) {
+        } catch {
           // noop
         }
       });

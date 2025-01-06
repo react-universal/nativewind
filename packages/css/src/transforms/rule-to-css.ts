@@ -1,4 +1,4 @@
-import { TWParsedRule } from '../tailwind/tailwind.types';
+import type { TWParsedRule } from '../tailwind/tailwind.types.js';
 
 export function parsedRuleToClassName(rule: TWParsedRule): string {
   let modifier = '';

@@ -19,6 +19,7 @@ function lazyJiti() {
 }
 
 function requireJSThrowable(path: string): any {
+  // biome-ignore lint/complexity/useArrowFunction: <explanation>
   const config = (function () {
     try {
       return path ? require(path) : {};

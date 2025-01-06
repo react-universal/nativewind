@@ -1,30 +1,40 @@
 {
-  "version": "0.2.0",
   "configurations": [
     {
-      "name": "Next.js: debug server-side",
+      "name": "Next.js: Launch app folder",
       "type": "node-terminal",
       "request": "launch",
-      "command": "npm run next:app:dev"
-    },
-    {
-      "name": "Next.js: debug client-side",
-      "type": "chrome",
-      "request": "launch",
+      "command": "turbo run next:app:dev",
       "sourceMaps": true,
-      "url": "http://localhost:3000"
-    },
-    {
-      "name": "Next.js: debug full stack",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "npm run next:app:dev",
-      "sourceMaps": true,
-      "serverReadyAction": {
-        "pattern": "- Local:.+(https?://.+)",
-        "uriFormat": "%s",
-        "action": "debugWithChrome"
-      }
+      "autoAttachChildProcesses": true,
+      "enableDWARF": true,
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/**/*.(m|c|)js",
+        "${workspaceRoot}/packages/**/*.js",
+        "!**/node_modules/**"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "${workspaceRoot}/**",
+        "${workspaceRoot}/packages/*/build/**",
+        "${workspaceRoot}/packages/*/build/esm/**",
+        "!**/node_modules/**"
+      ],
+      // "sourceMapPathOverrides": {
+      //   "webpack:///./*": "${workspaceFolder}/*",
+      //   "webpack://_N_E/[.]/(app|pages)/(.*)": "${workspaceFolder}/$1/$2",
+      //   "webpack://(?:_N_E)?/(?:../../)*src/(.*)": "${workspaceFolder}/../../packages/*/src/*",
+      //   "webpack://(?:_N_E)?/(?:../../)*build/(.*)": "${workspaceFolder}/../../packages/*/build/*",
+      //   "webpack://(?:_N_E)?/(?:../../)*build/esm/(.*)": "${workspaceFolder}/../../packages/*/build/esm/*",
+      //   "webpack://_N_E/[.]/(.*)": "${workspaceFolder}/.next/server/$1",
+      //   "webpack-internal:///(ssr)/./*": "${workspaceFolder}/*",
+      //   "webpack-internal:///\\(rsc\\)/(?:../)*packages/(.*)/src/(.*)": "${workspaceFolder}/../../packages/$1/src/$2",
+      //   "webpack-internal:///\\(rsc\\)/(?:../)*packages/(.*)/build/(.*)": "${workspaceFolder}/../../packages/$1/build/$2"
+      // },
     }
   ]
 }

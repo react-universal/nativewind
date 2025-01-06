@@ -1,14 +1,14 @@
-// import { stylizeJSXChilds } from './jsx/jsx-childs';
-// import { jsxStyles } from './jsx/jsx-styles';
-import { stylizedComponents } from './styled';
-import type { JSXFunction } from './types/jsx.types';
+// import { stylizeJSXChilds } from './jsx/jsx-childs.js';
+// import { jsxStyles } from './jsx/jsx-styles.js';
+import { stylizedComponents } from './styled/index.js';
+import type { JSXFunction } from './types/jsx.types.js';
 
 /**
  * Create a new JSX function that swaps the component type being rendered with
  * the 'styled' version of the component if it exists.
  */
 export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
-  return function (type, props, ...rest) {
+  return (type, props, ...rest) => {
     // This is invalid react code. Its used by the doctor to check if the JSX pragma is set correctly
     if ((type as any) === 'react-native-twin-jsx-pragma-check') {
       return true as any;

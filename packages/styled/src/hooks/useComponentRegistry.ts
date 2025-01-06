@@ -1,5 +1,9 @@
 import { useMemo, useSyncExternalStore } from 'react';
-import { getParentComponentState, globalStore, registerComponent } from '../styled/store';
+import {
+  getParentComponentState,
+  globalStore,
+  registerComponent,
+} from '../styled/store.js';
 
 interface RegisterComponent {
   parentID: string | undefined;
@@ -15,7 +19,7 @@ export function useComponentRegistry({
   isGroupParent,
 }: RegisterComponent) {
   const currentGroupID = useMemo(() => {
-    return groupID ? groupID : parentID ?? componentID;
+    return groupID ? groupID : (parentID ?? componentID);
   }, [groupID, parentID, componentID]);
 
   const groupScope = currentGroupID === componentID ? componentID : currentGroupID;

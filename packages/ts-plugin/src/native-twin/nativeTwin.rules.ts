@@ -1,8 +1,8 @@
-import { RuleMeta } from '@native-twin/core';
-import { cornerMap, directionMap, TWScreenValueConfig } from '@native-twin/css';
-import { ColorsRecord, asArray } from '@native-twin/helpers';
+import type { RuleMeta } from '@native-twin/core';
+import { type TWScreenValueConfig, cornerMap, directionMap } from '@native-twin/css';
+import { type ColorsRecord, asArray } from '@native-twin/helpers';
 import { DEFAULT_RULE_META } from '../utils/constants.utils';
-import {
+import type {
   InternalNativeTwinRule,
   TwinRuleParts,
   TwinRuleWithCompletion,
@@ -80,13 +80,13 @@ const composeClassName = (pattern: string) => (suffix: string) => {
   if (pattern.endsWith('-')) {
     return `${pattern}${suffix}`;
   }
-  if (suffix == pattern) return pattern;
+  if (suffix === pattern) return pattern;
   if (pattern.includes('|')) return suffix;
   return pattern + suffix;
 };
 
 const composeExpansion = (expansion: string) => {
-  if (!expansion || expansion == '') {
+  if (!expansion || expansion === '') {
     return `-${expansion}`;
   }
   return `${expansion}-`;

@@ -1,20 +1,9 @@
 {
-  "extends": [
-    "../../tsconfig.base.json",
-    "expo-module-scripts/tsconfig.base"
-  ],
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./build",
-    "noEmit": false
-  },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "**/__mocks__/*",
-    "**/__tests__/*",
-    "webui",
-    "build",
-    "dist"
-  ]
+    
+    "outDir": "build/esm",
+    "declarationDir": "build/dts",
+    "stripInternal": true
+  }
 }

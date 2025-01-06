@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, Image, Pressable, View } from 'react-native';
+import { Image, Pressable, Text, View } from 'react-native';
 import { Button } from '../components/Button';
 import { TextField } from '../components/TextField';
 
@@ -8,7 +8,7 @@ function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
     <View className='flex-1 first:bg-yellow-600'>
-      <View className={`flex-1 items-center justify-center group`}>
+      <View className={'flex-1 items-center justify-center group'}>
         <View className='shadow-xl bg-red-300 rounded-2xl p-2 group-focus:bg-green-500 first:bg-purple-200'>
           <Text
             className={`
@@ -72,4 +72,4 @@ function HomeScreen() {
   );
 }
 
-export { HomeScreen };
+export default HomeScreen;

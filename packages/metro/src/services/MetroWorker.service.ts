@@ -1,39 +1,18 @@
+import { CompilerConfigContext, TwinNodeContext } from '@native-twin/compiler';
+import { ensureBuffer } from '@native-twin/helpers/server';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
-import * as Option from 'effect/Option';
-import fsAsync from 'fs/promises';
-import worker from 'metro-transform-worker';
-import nodePath from 'path';
-import { TWIN_CACHE_DIR, TWIN_OUT_CSS_FILE } from '@native-twin/babel/jsx-babel';
-import {
+import * as worker from 'metro-transform-worker';
+import type {
+  MetroWorkerInput,
   NativeTwinTransformerOpts,
-  TwinTransformFn,
-} from '@native-twin/babel/jsx-babel/models';
-import {
-  MetroCompilerContext,
-  NativeTwinService,
-} from '@native-twin/babel/jsx-babel/services';
-import { ensureBuffer } from '@native-twin/helpers/server';
-import { MetroWorkerInput } from './models/metro.models';
-import { metroWorkerInputToCompilerCtx } from './utils/metroWorker.maps';
+} from '../models/Metro.models.js';
 
 export class MetroWorkerService extends Context.Tag('metro/worker/context')<
   MetroWorkerService,
   {
     input: MetroWorkerInput;
-    config: {
-      cssOutput: string;
-      isReactServer: boolean;
-      isServer: boolean;
-      clientBoundaries: string[];
-      dom: string;
-      isCSS: boolean;
-      isClientEnvironment: boolean;
-      isWeb: boolean;
-    };
-    readCSSOutput: Effect.Effect<string>;
     runWorker: (config: MetroWorkerInput) => Effect.Effect<worker.TransformResponse>;
   }
 >() {
@@ -41,58 +20,42 @@ export class MetroWorkerService extends Context.Tag('metro/worker/context')<
     Layer.scoped(MetroWorkerService, createWorkerService(input));
 }
 
+type MetroTransformFn = typeof worker.transform;
 export const createWorkerService = (input: MetroWorkerInput) => {
   return Effect.gen(function* () {
-    const { options, filename, projectRoot } = input;
-    const cssOutput = nodePath.join(projectRoot, TWIN_CACHE_DIR, TWIN_OUT_CSS_FILE);
-    const environment = options.customTransformOptions?.environment;
-    const clientBoundaries = options.customTransformOptions?.clientBoundaries ?? [];
-    const dom = options.customTransformOptions?.dom;
-    const isClientEnvironment = environment !== 'node' && environment !== 'react-server';
-    const isCSS = options.type !== 'asset' && /\.(s?css|sass)$/.test(filename);
-    const isServer = environment === 'node' || environment === 'react-server';
-    const isReactServer = environment === 'react-server';
-    const isWeb = options.platform === 'web';
+    const ctx = yield* TwinNodeContext;
+    const env = yield* CompilerConfigContext;
+    const config = yield* ctx.state.twinConfig.get;
+    const allowedPaths = yield* ctx.getProjectFilesFromConfig(config);
+    const allowedPathsGlob = allowedPaths;
+    const transform: MetroTransformFn = input.config.twinConfig.originalTransformerPath
+      ? require(input.config.twinConfig.originalTransformerPath).transform
+      : worker.transform;
 
     return {
       input,
-      config: {
-        isWeb,
-        cssOutput,
-        isReactServer,
-        isServer,
-        clientBoundaries,
-        dom,
-        isCSS,
-        isClientEnvironment,
+      runWorker: (config) => {
+        return Effect.promise(() =>
+          transform(config.config, config.projectRoot, config.filename, config.data, {
+            ...config.options,
+            customTransformOptions: {
+              ...config.options.customTransformOptions,
+              outputDir: env.outputDir,
+              allowedPaths: allowedPaths,
+              allowedPathsGlob: allowedPathsGlob,
+              debug: env.logLevel,
+              inputCSS: env.inputCSS,
+              projectRoot: env.projectRoot,
+              twinConfigPath: env.twinConfigPath,
+              outputCSS: ctx.getOutputCSSPath(config.options.platform ?? 'native'),
+              platform: config.options.platform ?? 'native',
+            },
+          }),
+        );
       },
-      readCSSOutput: readCSSOutput(cssOutput),
-      runWorker: runWorker,
     } as MetroWorkerService['Type'];
   });
 };
-
-const readCSSOutput = (cssOutput: string) =>
-  Effect.promise(() => {
-    // setupCssOutput(cssOutput);
-    return fsAsync.readFile(cssOutput, { encoding: 'utf-8' });
-  });
-
-const runWorker = (config: MetroWorkerInput) =>
-  Effect.promise(() => {
-    const transformer: TwinTransformFn = pipe(
-      Option.fromNullable(config.config.transformerPath),
-      Option.map((path) => require(path).transform),
-      Option.getOrElse(() => worker.transform),
-    );
-    return transformer(
-      config.config,
-      config.projectRoot,
-      config.filename,
-      config.data,
-      config.options,
-    );
-  });
 
 export const makeWorkerLayers = (
   config: NativeTwinTransformerOpts,
@@ -101,30 +64,11 @@ export const makeWorkerLayers = (
   data: Buffer | string,
   options: worker.JsTransformOptions,
 ) => {
-  const ctx = metroWorkerInputToCompilerCtx({
+  return MetroWorkerService.make({
     config,
-    projectRoot,
-    filename,
     data: ensureBuffer(data),
+    filename,
     options,
+    projectRoot,
   });
-  return pipe(
-    MetroCompilerContext.make(ctx.options, ctx.generate),
-    Layer.provideMerge(
-      NativeTwinService.make({
-        dev: options.dev,
-        platform: options.platform ?? 'native',
-        projectRoot,
-      }),
-    ),
-    Layer.provideMerge(
-      MetroWorkerService.make({
-        config,
-        data: ensureBuffer(data),
-        filename,
-        options,
-        projectRoot,
-      }),
-    ),
-  );
 };

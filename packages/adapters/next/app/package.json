@@ -1,0 +1,5 @@
+{
+  "main": "../../build/next/app/index.js",
+  "module": "../../build/esm/next/app/index.js",
+  "types": "../../build/next/app/index.d.ts"
+}

@@ -1,6 +1,6 @@
 import util from 'util';
-import { CssResolver } from '../src';
-import { createCssParserContext } from '../src/utils.parser';
+import { CssResolver } from '../src/css/parser/css.parser.js';
+import { createCssParserContext } from '../src/utils.parser.js';
 
 export const inspectTestElement = (msg: string, target: string[], result: any) => {
   console.log(
@@ -53,7 +53,7 @@ export const generateStylesFor = (classNames: string, debug = false) => {
   const parserData = getTestParserData(debug);
   const parsed = CssResolver(target, {
     ...parserData.context,
-    debug,
+    // debug,
   });
   return parsed;
 };

@@ -9,48 +9,36 @@
       "path": "../packages/builder"
     },
     {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/styled",
-      "path": "../packages/styled"
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
     },
     {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
     },
     {
+      "name": "📦 @lib/compiler",
+      "path": "../packages/compiler"
+    },
+    {
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
       "name": "📦 @lib/css",
       "path": "../packages/css"
     },
     {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/preset-tw",
-      "path": "../packages/preset-tailwind"
-    },
-    {
-      "name": "📦 @lib/with-nextjs",
-      "path": "../packages/native-twin-nextjs"
-    },
-    {
-      "name": "📦 @lib/arc-parser",
-      "path": "../packages/arc-parser"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
     },
     {
       "name": "📦 @lib/language-service",
@@ -61,8 +49,36 @@
       "path": "../packages/language-server"
     },
     {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/preset-tw",
+      "path": "../packages/preset-tailwind"
+    },
+    {
+      "name": "📦 @lib/vite-plugin",
+      "path": "../packages/vite-plugin"
+    },
+    {
+      "name": "📦 @lib/adapters",
+      "path": "../packages/adapters"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
       "name": "expo-app",
       "path": "../apps/expo-app"
+    },
+    {
+      "name": "expo-router",
+      "path": "../apps/expo-router"
+    },
+    {
+      "name": "twin.run",
+      "path": "../sites/twin.run"
     },
     {
       "name": "next-pages-example",
@@ -75,6 +91,10 @@
     {
       "name": "docs-site",
       "path": "../apps/docs-site"
+    },
+    {
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
     }
   ],
   "settings": {
@@ -95,25 +115,6 @@
       "comments": true,
       "strings": true
     },
-    "files.exclude": {
-      "**/.git": true,
-      "**/.svn": true,
-      "**/.hg": true,
-      "**/CVS": true,
-      "**/.DS_Store": true,
-      "**/Thumbs.db": true,
-      ".turbo": true,
-      ".nx": true,
-      "**/CHANGELOG.md": true,
-      "**/jest.config.js": false,
-      "**/LICENSE": true,
-      "**/babel.config.js": false,
-      "**/build": false,
-      "**/turbo.json": false,
-      "**/.eslintrc.json": false,
-      "**/.eslintignore": true,
-      "**/README.md": true
-    },
     "search.exclude": {
       "**/node_modules": true,
       "**/bower_components": true,
@@ -131,14 +132,27 @@
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/builder",
-      "📦 @lib/metro",
-      "📦 @lib/with-nextjs",
+      "📦 @lib/jsx",
+      "📦 @lib/babel",
+      "📦 @lib/compiler",
+      "📦 @lib/helpers",
+      "📦 @lib/css",
+      "📦 @lib/arc-parser",
+      "📦 @lib/preset-tw",
+      "📦 @lib/dev-tools",
+      "📦 @lib/styled",
+      "📦 @lib/native-twin",
+      "📦 @lib/adapters",
       "📦 @lib/vscode",
       "📦 @lib/language-service",
       "📦 @lib/language-server",
+      "📦 @lib/metro",
+      "📦 @lib/vite-plugin",
       "expo-app",
+      "expo-router",
       "next-pages-example",
       "next-app-dir",
+      "twin.run",
       "docs-site"
     ]
   }

@@ -1,0 +1,5 @@
+{
+  "main": "../build/cjs/react.js",
+  "module": "../build/esm/react.js",
+  "types": "../build/dts/react.d.ts"
+}

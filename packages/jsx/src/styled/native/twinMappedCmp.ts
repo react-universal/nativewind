@@ -1,8 +1,11 @@
 import { createElement, forwardRef } from 'react';
-import { globalStyles, opaqueStyles } from '../../store/styles.store';
-import { ReactComponent, StylableComponentConfigOptions } from '../../types/styled.types';
-import { getNormalizeConfig } from '../../utils/config.utils';
-import { stylizedComponents } from './createTwinCmp';
+import { globalStyles, opaqueStyles } from '../../store/styles.store.js';
+import type {
+  ReactComponent,
+  StylableComponentConfigOptions,
+} from '../../types/styled.types.js';
+import { getNormalizeConfig } from '../../utils/config.utils.js';
+import { stylizedComponents } from './createTwinCmp.js';
 
 export const withMappedProps = <
   const T extends ReactComponent<any>,

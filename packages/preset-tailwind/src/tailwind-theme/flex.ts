@@ -1,6 +1,6 @@
 import { createPercentRatios } from '@native-twin/helpers';
-import { TailwindPresetTheme } from '../types/theme.types';
-import { spacing } from './mixed';
+import type { TailwindPresetTheme } from '../types/theme.types.js';
+import { spacing } from './mixed.js';
 
 export const flexGrow = {
   DEFAULT: '1',

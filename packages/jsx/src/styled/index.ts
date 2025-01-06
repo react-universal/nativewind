@@ -3,4 +3,4 @@ export {
   withMappedProps,
   twinComponent,
   stylizedComponents,
-} from './native';
+} from './native/index.js';

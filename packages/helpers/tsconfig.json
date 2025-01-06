@@ -1,17 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declarationMap": false,
-    "noImplicitAny": true,
-    "resolveJsonModule": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["node", "react-native"],
+    "exactOptionalPropertyTypes": false,
     "module": "ESNext",
-    "moduleResolution": "node",
-    "noEmit": false,
+    "noImplicitAny": false,
+    "alwaysStrict": false,
     "strict": true,
-    "target": "esnext"
+    "moduleResolution": "node",
+    "rootDir": "src"
   },
-  "include": ["src", "test", "./*.d.ts"],
-  "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js"]
+  "include": ["src"],
+  "exclude": ["build"]
 }

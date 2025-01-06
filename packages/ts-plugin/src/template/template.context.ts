@@ -1,12 +1,12 @@
 import * as Context from 'effect/Context';
-import * as Option from 'effect/Option';
-import ts from 'typescript';
-import {
+import type * as Option from 'effect/Option';
+import type ts from 'typescript';
+import type {
   TemplateContext,
   TemplateSettings,
 } from 'typescript-template-language-service-decorator';
-import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
-import { Matcher } from '../utils/match';
+import type StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
+import type { Matcher } from '../utils/match';
 
 export interface TemplateSourceHelperServiceShape {
   helper: StandardScriptSourceHelper;

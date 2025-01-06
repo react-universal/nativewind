@@ -1,0 +1,61 @@
+{
+  "name": "@native-twin/adapters",
+  "version": "7.0.0-next.3",
+  "description": "React Native Web Tailwindcss for nextjs",
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "tailwind-native",
+    "react-native-web",
+    "universal-labs",
+    "react-native",
+    "react",
+    "nextjs"
+  ],
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/adapters"
+  },
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "build",
+    "src",
+    "app",
+    "_app",
+    "_document",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "npx twin pack-dev",
+    "clean": "rm -rf build",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "lint": "biome lint"
+  },
+  "devDependencies": {
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*"
+  },
+  "peerDependencies": {
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
+    "next": "^14.2.3",
+    "react": "~18.2.0"
+  },
+  "optionalDependencies": {
+    "@native-twin/cli": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  }
+}

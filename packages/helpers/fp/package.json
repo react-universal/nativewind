@@ -1,0 +1,5 @@
+{
+  "main": "../build/cjs/fp/index.js",
+  "module": "../build/esm/fp/index.js",
+  "types": "../build/dts/fp/index.d.ts"
+}

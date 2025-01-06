@@ -1,4 +1,4 @@
-import type { OmitUndefined, StyledComponentProps } from '../types/styled.types';
+import type { OmitUndefined, StyledComponentProps } from '../types/styled.types.js';
 
 type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
 
@@ -64,5 +64,5 @@ export const createVariants = <T>(config: VariantsConfig<T>) => {
   };
 };
 
-const falsyToString = <T extends unknown>(value: T) =>
+const falsyToString = <T>(value: T) =>
   typeof value === 'boolean' ? `${value}` : value === 0 ? '0' : value;

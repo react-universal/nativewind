@@ -1,32 +1,66 @@
-/** RUNTIME */
-export { createTailwind } from './native-twin';
-export { cx } from './runtime/cx';
-export { install } from './runtime/install';
-export { type ExtractResult, consume, extract } from './runtime/ssr';
-export { setup, tw, observe } from './runtime/tw';
-export { type TxFunction, tx } from './runtime/tx';
-export { mutationObserver } from './runtime/mutation-observer';
+import { defineConfig } from './config/define-config.js';
+import { convert } from './convert/convertRule.js';
+import { parsedRuleToEntry } from './convert/ruleToEntry.js';
+import { createTailwind } from './native-twin.js';
+import { parseCssValue } from './parsers/values.parser.js';
+import { cx } from './runtime/cx.js';
+import { install } from './runtime/install.js';
+import { mutationObserver } from './runtime/mutation-observer.js';
+import { consume, extract } from './runtime/ssr.js';
+import { observe, setup, tw } from './runtime/tw.js';
+import { tx } from './runtime/tx.js';
+import { createVariants } from './runtime/variants.js';
+import { createThemeContext } from './theme/theme.context.js';
+import { createThemeFunction } from './theme/theme.function.js';
+import {
+  matchAnimation,
+  matchCssObject,
+  matchThemeColor,
+  matchThemeValue,
+} from './theme/theme.match.js';
 
-/** CSS */
-export { parsedRuleToEntry } from './convert/ruleToEntry';
-export { convert } from './convert/convertRule';
+/** TYPES */
+export type { ExtractResult } from './runtime/ssr.js';
+export type { TxFunction } from './runtime/tx.js';
+export type { ConfigVariants, VariantProps, VariantsConfig } from './runtime/variants.js';
+export type * from './types/config.types.js';
+export type * from './types/theme.types.js';
+export type { PropsFrom } from '@native-twin/helpers';
 
-/** CONFIG */
-export { defineConfig } from './config/define-config';
-
-/** THEME */
-export { createThemeContext } from './theme/theme.context';
-export { createThemeFunction } from './theme/theme.function';
 export {
+  tw,
+  tx,
+  cx,
+  parseCssValue,
+  createThemeContext,
+  createThemeFunction,
   matchCssObject,
   matchThemeColor,
   matchThemeValue,
   matchAnimation,
-} from './theme/theme.match';
+  createVariants,
+  createTailwind,
+  install,
+  setup,
+  observe,
+  consume,
+  extract,
+  mutationObserver,
+  parsedRuleToEntry,
+  convert,
+  defineConfig,
+};
 
-// PARSERS
-export { parseCssValue } from './parsers/values.parser';
+export {
+  type TwinRuntimeProp,
+  getSheetEntryStyles,
+  sheetEntryToStyle,
+  composeDeclarations,
+} from './runtime/SheetHandler.js';
 
-/** TYPES */
-export type * from './types/config.types';
-export type * from './types/theme.types';
+export type { TwinRuntimeContext, Units } from './runtime/runtime.context.js';
+
+export {
+  StyleSheetAdapter,
+  type StyleSheetProcessor,
+} from './runtime/TwinStyleSheet.js';

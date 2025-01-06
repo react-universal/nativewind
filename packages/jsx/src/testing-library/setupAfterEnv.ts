@@ -3,15 +3,6 @@ import matchers from 'expect/build/matchers';
 
 require('react-native-reanimated').setUpTests();
 
-jest.mock('@native-twin/dev-tools', () => {
-  return {
-    useNativeTwinDevTools: () => ({
-      addListener: () => () => {},
-      registerTree: () => {},
-    }),
-  };
-});
-
 matchers.customTesters = [];
 
 expect.extend({

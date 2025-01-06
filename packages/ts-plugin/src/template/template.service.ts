@@ -2,13 +2,13 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import ts from 'typescript';
-import { TemplateContext } from 'typescript-template-language-service-decorator';
+import type { TemplateContext } from 'typescript-template-language-service-decorator';
 import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import { TSPluginService } from '../plugin/TSPlugin.service';
-import { match, getSourceMatchers } from '../utils/match';
+import { getSourceMatchers, match } from '../utils/match';
 import { TemplateSourceHelperService } from './template.context';
-import { getValidTemplateNode, StandardTemplateContext } from './template.utils';
+import { StandardTemplateContext, getValidTemplateNode } from './template.utils';
 
 export const TemplateSourceHelperServiceLive = Layer.scoped(
   TemplateSourceHelperService,

@@ -1,5 +1,5 @@
-import type { StyleProp } from 'react-native';
 import type { Falsey, StringLike } from '@native-twin/helpers';
+import type { StyleProp } from 'react-native';
 import type {
   AppearancePseudoSelectors,
   ChildPseudoSelectors,
@@ -8,7 +8,7 @@ import type {
   InteractionPseudoSelectors,
   PlatformPseudoSelectors,
   simplePseudoMap,
-} from './css.constants';
+} from './css.constants.js';
 
 export type ValidInteractionPseudoSelector = (typeof InteractionPseudoSelectors)[number];
 export type ValidAppearancePseudoSelector = (typeof AppearancePseudoSelectors)[number];

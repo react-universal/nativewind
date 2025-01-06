@@ -1,6 +1,6 @@
-import { createContext, Context } from 'react';
 import type * as Layer from 'effect/Layer';
 import type * as ManagedRuntime from 'effect/ManagedRuntime';
+import { type Context, createContext } from 'react';
 
 export const createRuntimeContext = <T>(layer: Layer.Layer<T>) => {
   return createContext<

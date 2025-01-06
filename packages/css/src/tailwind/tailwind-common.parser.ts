@@ -1,5 +1,5 @@
 import * as P from '@native-twin/arc-parser';
-import type { ArbitrarySegmentToken, SegmentToken } from './tailwind.types';
+import type { ArbitrarySegmentToken, SegmentToken } from './tailwind.types.js';
 
 /**
  * @description Parse the `-` symbol at starts of any rule that can be negative

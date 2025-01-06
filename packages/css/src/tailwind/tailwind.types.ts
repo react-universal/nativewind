@@ -48,7 +48,7 @@ export interface GroupToken {
   type: 'GROUP';
   value: {
     /**
-     * The group root creator can be: 
+     * The group root creator can be:
      * - className based like `bg()` or `text()`
      * - variant based like `md:()` or `sm:()`
      * * Any of them without `:` or `()`

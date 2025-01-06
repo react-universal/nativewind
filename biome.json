@@ -1,0 +1,114 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "include": ["*/src/**/*.ts", "*/src/**/*.tsx", "*/test/**/*"],
+    "ignore": [
+      "packages/*/build/**/*",
+      "*/test/fixtures/**/*",
+      "*/test/project-fixture/**/*",
+      "*/test/server-fixture/**/*"
+    ]
+  },
+  "organizeImports": {
+    "ignore": [
+      "*/twin.run/**/*"
+    ]
+  },
+  "linter": {
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noSwitchDeclarations": "off",
+        "noEmptyCharacterClassInRegex": "off",
+        "noChildrenProp": "off",
+        "noInnerDeclarations": "off"
+      },
+      "a11y": {
+        "useValidAnchor": "off",
+        "useMediaCaption": "off"
+      },
+      "style": {
+        "useSelfClosingElements": "off",
+        "noUselessElse": "off",
+        "useNodejsImportProtocol": "off",
+        "noVar": "off",
+        "noArguments": "off",
+        "noParameterAssign": "off",
+        "useDefaultParameterLast": "off",
+        "noNonNullAssertion": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noImplicitAnyLet": "off",
+        "noAssignInExpressions": "off",
+        "noArrayIndexKey": "off",
+        "noConfusingVoidType": "off",
+        "noFocusedTests": "off",
+        "noControlCharactersInRegex": "off",
+        "noShadowRestrictedNames": "off",
+        "noFunctionAssign": "off"
+      },
+      "performance": {
+        "noDelete": "off",
+        "noAccumulatingSpread": "off"
+      },
+      "complexity": {
+        "useOptionalChain": "off",
+        "useRegexLiterals": "off",
+        "noThisInStatic": "off",
+        "noBannedTypes": "off",
+        "noStaticOnlyClass": "off",
+        "noUselessConstructor": "off",
+        "noForEach": "off",
+        "noUselessSwitchCase": "off",
+        "useLiteralKeys": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": false,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 90,
+    "attributePosition": "multiline",
+    "bracketSpacing": true,
+    "ignore": [
+      "**/.eslintrc.json",
+      "**/*.json",
+      "./.nx/cache",
+      "./.nx/workspace-data"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto",
+      "bracketSpacing": true,
+      "enabled": true
+    }
+  },
+  "json": {
+    "linter": {
+      "enabled": false
+    }
+  }
+}

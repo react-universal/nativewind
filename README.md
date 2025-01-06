@@ -11,9 +11,9 @@
   <a href="http://commitizen.github.io/cz-cli/" target="_blank">
     <img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg">
   </a>
-  <a href="https://www.npmjs.com/package/@universal-labs/styled" target="_blank">
-    <img alt="npm version" src="https://img.shields.io/npm/v/@universal-labs/styled">
-    <img alt="npm downloads" src="https://img.shields.io/npm/dt/@universal-labs/styled">
+  <a href="https://www.npmjs.com/package/@native-twin/styled" target="_blank">
+    <img alt="npm version" src="https://img.shields.io/npm/v/@native-twin/styled">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dt/@native-twin/styled">
   </a>
   <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/react-universal/tailwind">
   <img alt="GitHub" src="https://img.shields.io/github/license/react-universal/tailwind">
@@ -37,9 +37,66 @@
 Install the package with yarn or npm:
 
 ```sh
-npm install @universal-labs/styled @universal-labs/native-twin
+npm install @native-twin/core @native-twin/babel @native-twin/jsx @native-twin/metro
 # or
-yarn add @universal-labs/styled @universal-labs/native-twin
+yarn add @native-twin/core @native-twin/babel @native-twin/jsx @native-twin/metro
+```
+Edit your babel config file
+
+```js
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: [
+      [
+        'babel-preset-expo',
+        {
+          // To enable our custom transformations in build time
+          jsxImportSource: '@native-twin/jsx',
+        },
+      ],
+      // Must be placed as last preset
+      [
+        '@native-twin/babel/babel',
+        {
+          twinConfigPath: './tailwind.config.ts',
+          cssInput: 'globals.css',
+        },
+      ],
+    ],
+
+    plugins: ['react-native-reanimated/plugin'],
+  };
+};
+```
+
+Edit you `metro.config.js` file:
+```js
+const { getDefaultConfig } = require('expo/metro-config');
+const { withNativeTwin } = require('@native-twin/metro');
+const path = require('path');
+
+const projectRoot = __dirname;
+const workspaceRoot = path.resolve(__dirname, '../..');
+
+const config = getDefaultConfig(projectRoot);
+config.watchFolders = [workspaceRoot];
+
+// This step is only for monorepos
+config.resolver.nodeModulesPaths = [
+  path.resolve(projectRoot, 'node_modules'),
+  path.resolve(workspaceRoot, 'node_modules'),
+];
+
+// Learn more https://docs.expo.io/guides/customizing-metro
+/**
+ * @type {import('expo/metro-config')}
+ */
+
+module.exports = withNativeTwin(config, {
+  configPath: path.join(__dirname, 'tailwind.config.ts'),
+  inputCSS: 'global.css',
+});
 ```
 
 It is ready to use, no need to configure anything else.
@@ -53,8 +110,8 @@ It is ready to use, no need to configure anything else.
 1. Create a config file
 
 ```ts
-import { defineConfig } from '@universal-labs/native-twin';
-import { presetTailwind } from '@universal-labs/preset-tailwind';
+import { defineConfig } from '@native-twin/core';
+import { presetTailwind } from '@native-twin/preset-tailwind';
 
 export default defineConfig({
   mode: 'native',
@@ -62,6 +119,7 @@ export default defineConfig({
     rem: 16,
   },
   theme: {
+    // Almost same theme extension we already have on original tw
     extend: {
       colors: {
         primary: 'blue',
@@ -75,6 +133,7 @@ export default defineConfig({
       },
     },
   },
+  // Enable the tailwind utilities
   presets: [presetTailwind()],
 });
 ```
@@ -82,7 +141,7 @@ export default defineConfig({
 2. In your App.tsx entry point you need to setup the package
 
 ```ts
-import { setup } from '@universal-labs/native-twin';
+import { setup } from '@native-twin/core';
 import tailwindConfig from './tailwind.config';
 
 setup(tailwindConfig);
@@ -93,8 +152,8 @@ setup(tailwindConfig);
 1. Create a config file
 
 ```ts
-import { defineConfig } from '@universal-labs/native-twin';
-import { presetTailwind } from '@universal-labs/preset-tailwind';
+import { defineConfig } from '@native-twin/core';
+import { presetTailwind } from '@native-twin/preset-tailwind';
 
 export default defineConfig({
   mode: 'web',
@@ -122,8 +181,8 @@ export default defineConfig({
 2. In your \_app.tsx you need to setup the package
 
 ```ts
-import { setup } from '@universal-labs/native-twin';
-import { installApp } from '@universal-labs/native-twin-nextjs';
+import { setup } from '@native-twin/core';
+import { installApp } from '@native-twin/nextjs';
 import tailwindConfig from './tailwind.config';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -148,7 +207,7 @@ export default installApp(twConfig, MyApp);
 ```tsx
 import React from 'react';
 import { AppRegistry } from 'react-native';
-import { installDocument } from '@universal-labs/native-twin-nextjs/_document';
+import { installDocument } from '@native-twin/core-nextjs/_document';
 import Document, {
   Html,
   Head,
@@ -232,7 +291,7 @@ cx`!(text-(sm green-500))`
 ### A Primitive RN Component
 
 ```tsx
-import { Pressable, Text } from '@universal-labs/styled';
+import { Pressable, Text } from 'react-native';
 
 const Button = () => {
   return (
@@ -243,12 +302,10 @@ const Button = () => {
 };
 ```
 
-`styled` returns a new React component with the styles you defined. It works with any component that accepts a `style` prop.
-
 ### Universal components with CVA
 
 ```tsx
-import { createVariants } from '@universal-labs/styled';
+import { createVariants } from '@native-twin/core';
 
 // This component does not have function initialization use as it returns
 const buttonVariants = createVariants({
@@ -285,11 +342,11 @@ By default, this library support Tailwind CSS classes adapted to mobile styles.
 
 ## TypeScript
 
-`@universal-labs/styled` is written in TypeScript with complete definitions, so you don't need to install any other packages to use it with TypeScript. Also, it offers a `PropsFrom` helper to extract the props from any valid React component. and `VariantProps` to infer props from `createVariants` utility.
+`@native-twin/core` is written in TypeScript with complete definitions, so you don't need to install any other packages to use it with TypeScript. Also, it offers a `PropsFrom` helper to extract the props from any valid React component. and `VariantProps` to infer props from `createVariants` utility.
 
 ```tsx
-import { PressableProps } from 'react-native';
-import { Pressable, createVariants, VariantProps } from '@universal-labs/styled';
+import { PressableProps, Pressable } from 'react-native';
+import { createVariants, VariantProps } from '@native-twin/styled';
 
 const buttonVariants = createVariants({
   base: 'font-semibold border rounded',
@@ -321,17 +378,6 @@ const Button = (props: ButtonProps & PressableProps) => {
     </Pressable>
   );
 };
-```
-
-## API Reference
-
-### `styled`
-
-```tsx
-import { View } from 'react-native';
-import { styled } from '@universal-labs/styled';
-
-styled(View);
 ```
 
 ## Supported units:

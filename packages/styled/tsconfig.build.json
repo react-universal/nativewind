@@ -1,11 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "build",
-    "noEmit": false,
-    "declarationMap": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["./test/"]
+    
+    "outDir": "build/esm",
+    "declarationDir": "build/dts",
+    "stripInternal": true
+  }
 }

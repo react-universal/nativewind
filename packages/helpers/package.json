@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/helpers",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Helpers for common utilities",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -13,33 +13,76 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/dts/index.d.ts",
+      "import": "./build/esm/index.js",
+      "default": "./build/cjs/index.js"
+    },
+    "./tree": {
+      "types": "./build/dts/tree.d.ts",
+      "import": "./build/esm/tree.js",
+      "default": "./build/cjs/tree.js"
+    },
+    "./server": {
+      "types": "./build/dts/server.d.ts",
+      "import": "./build/esm/server.js",
+      "default": "./build/cjs/server.js"
+    },
+    "./fp": {
+      "types": "./build/dts/fp/index.d.ts",
+      "import": "./build/esm/fp/index.js",
+      "default": "./build/cjs/fp/index.js"
+    },
+    "./react": {
+      "types": "./build/dts/react.d.ts",
+      "import": "./build/esm/react.js",
+      "default": "./build/cjs/react.js"
+    }
+  },
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/dts/index.d.ts",
   "files": [
     "build",
+    "src",
+    "KeyMap",
+    "react",
+    "server",
+    "tree",
     "LICENSE",
     "CHANGELOG.md",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:twin": "twin-build",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "npx twin pack-dev",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "jest"
+    "lint": "biome lint",
+    "test": "npx vitest"
   },
-  "dependencies": {
-    "effect": "^3.7.2"
+  "devDependencies": {
+    "@types/react": "~18.2.79"
+  },
+  "peerDependencies": {
+    "react": "~18.2.0"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist",
+    "provenance": true
+  },
+  "effect": {
+    "generateExports": {
+      "include": [
+        "*.ts"
+      ]
+    }
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
 }

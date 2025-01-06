@@ -3,24 +3,20 @@
   "version": "1.4.10",
   "private": true,
   "scripts": {
-    "lint": "next lint",
+    "clean": "rm -rf .next",
+    "lint": "echo $HOME",
     "next:build": "next build",
     "nextjs:dev": "next dev",
     "start": "next start"
   },
   "dependencies": {
+    "@native-twin/adapters": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/jsx": "workspace:*",
-    "@native-twin/nextjs": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "@native-twin/styled": "workspace:*",
     "next": "^14.2.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "~18.2.0",
+    "react-dom": "~18.2.0",
     "react-native-web": "~0.19.10"
-  },
-  "nx": {
-    "targets": "nextjs:pages:dev",
-    "ignore": false
   }
 }

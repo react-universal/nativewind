@@ -1,4 +1,3 @@
-// const production = process.argv[2] === '--production';
 import esbuild from 'esbuild';
 import minimist from 'minimist';
 
@@ -7,15 +6,15 @@ const args = minimist(process.argv.slice(2), {
 });
 
 const ctxServer = await esbuild.context({
-  entryPoints: ['./src/index.ts'],
+  entryPoints: ['./src/index.ts', './src/browser.ts'],
   bundle: true,
   outdir: 'build',
   external: ['vscode'],
-  
-  format: 'esm',
+  tsconfig: 'tsconfig.build.json',
+  format: 'cjs',
   logLevel: 'info',
   platform: 'node',
-  sourcemap: 'both',
+  sourcemap: true,
   minify: false,
 });
 
@@ -24,7 +23,9 @@ await ctxServer.rebuild();
 
 if (args.watch) {
   console.log('- Watching');
-  await ctxServer.watch();
+  await ctxServer.watch().then(() => {
+    console.log('WATCH_FINALIZE');
+  });
 } else {
   console.log('- Cleaning up');
   await ctxServer.dispose();

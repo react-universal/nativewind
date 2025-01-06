@@ -1,6 +1,6 @@
 import * as Effect from 'effect/Effect';
 import * as Runtime from 'effect/Runtime';
-import * as vscode from 'vscode-languageserver/node';
+import type * as vscode from 'vscode-languageserver/node.js';
 
 export const runWithToken = <R>(runtime: Runtime.Runtime<R>) => {
   const runCallback = Runtime.runCallback(runtime);

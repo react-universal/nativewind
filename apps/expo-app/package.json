@@ -5,26 +5,28 @@
   "main": "index.js",
   "scripts": {
     "android": "expo start --android -c",
+    "clean": "rm -rf .expo && rm -rf node_modules",
     "ios": "expo start --ios -c",
     "lint": "echo $HOME",
     "mobile:dev": "expo start --clear",
     "start": "expo start -c"
   },
   "dependencies": {
-    "@native-twin/babel": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/dev-tools": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
     "@native-twin/jsx": "workspace:*",
     "@native-twin/metro": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@native-twin/styled": "workspace:*",
-    "expo": "^51.0.28",
+    "expo": "~51.0.39",
     "expo-build-properties": "~0.12.5",
-    "expo-font": "~12.0.9",
-    "expo-image": "~1.12.13",
+    "expo-font": "~12.0.10",
+    "expo-image": "~1.13.0",
     "expo-status-bar": "~1.12.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "~18.2.0",
+    "react-compiler-runtime": "19.0.0-beta-8a03594-20241020",
+    "react-dom": "~18.2.0",
     "react-native": "0.74.5",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-pager-view": "6.3.0",
@@ -38,6 +40,8 @@
   "devDependencies": {
     "@types/react": "~18.2.79",
     "@types/react-dom": "~18.2.25",
+    "expo-atlas": "^0.3.0",
+    "next": "^14.2.3",
     "sharp-cli": "2.1.0"
   }
 }

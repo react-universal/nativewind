@@ -1,3 +1,5 @@
 {
-  "main": "../build/jsx-runtime"
+  "main": "../build/cjs/jsx-runtime.js",
+  "module": "../build/esm/jsx-runtime.js",
+  "types": "../build/dts/jsx-runtime.d.ts"
 }

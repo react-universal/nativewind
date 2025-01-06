@@ -1,12 +1,17 @@
-import type { FlexStyle } from 'react-native';
 import * as P from '@native-twin/arc-parser';
 import {
   declarationValueWithUnitParser,
   getPropertyValueType,
   unitlessCssProps,
-  type ParserRuntimeContext,
 } from '@native-twin/css';
 import { hasOwnProperty } from '@native-twin/helpers';
+import type { FlexStyle } from 'react-native';
+
+interface ParserRuntimeContext {
+  rem: number;
+  deviceHeight: number;
+  deviceWidth: number;
+}
 
 export const parseCssValue = (
   prop: string,
@@ -27,12 +32,12 @@ export const parseCssValue = (
   const type = getPropertyValueType(
     prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
   );
-  if (type == 'DIMENSION') {
+  if (type === 'DIMENSION') {
     const data = ParseDimensionWithUnits(context).run(value);
     if (!data.isError) return data.result;
     return value;
   }
-  if (type == 'FLEX') {
+  if (type === 'FLEX') {
     const data = ParseFlexValue(context).run(value);
     if (!data.isError) return data.result;
     return value;
@@ -86,7 +91,7 @@ export const ParseDimensionWithUnits = (context: {
     //   return P.succeedWith(result);
     // })
     .map((result) => {
-      const value = parseFloat(result[0]);
+      const value = Number.parseFloat(result[0]);
       switch (result[1]?.value) {
         case 'px':
           return value;

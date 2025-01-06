@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "build",
+      "group": "build",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "never"
+      },
+      "problemMatcher": [
+        "$tsc",
+        "$esbuild"
+      ]
+    },
+    {
+      "type": "npm",
+      "script": "build:tsc:watch",
+      "label": "Build watch language service",
+      "isBackground": true,
+      "group": "build",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "never"
+      },
+      "problemMatcher": ["$rollup-ts-watch"]
+    }
+  ]
+}

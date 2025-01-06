@@ -1,6 +1,6 @@
 {
-  "name": "@native-twin/builder",
-  "version": "2.3.0",
+  "name": "@native-twin/cli",
+  "version": "7.0.0-next.3",
   "description": "Native Twin packages bundler",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -13,30 +13,39 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
   "type": "module",
+  "main": "./build/main.js",
   "bin": {
-    "twin-build": "./build/twin-build.js"
+    "twin": "./build/main.js"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "build",
+    "src"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
-    "lint": "eslint"
+    "build": "node esbuild.mjs",
+    "postbuild": "yarn",
+    "build:compiler": "node esbuild.mjs",
+    "clean": "rm -rf build",
+    "gen:schema": "node --loader ts-node/esm -r ts-node/register --no-warnings ./src/config/twin.schema",
+    "lint": "biome lint"
   },
   "dependencies": {
-    "@effect/cli": "^0.42.3",
-    "@effect/platform": "^0.63.3",
-    "@effect/platform-node": "^0.58.3",
-    "effect": "^3.7.2",
-    "esbuild": "^0.20.2",
-    "fs-extra": "11.2.0",
-    "minimist": "^1.2.8"
+    "@effect/cli": "^0.48.3",
+    "@effect/platform": "^0.69.3",
+    "@effect/platform-node": "^0.64.4",
+    "effect": "^3.10.0",
+    "lodash.merge": "4.6.2",
+    "ts-morph": "^24.0.0"
   },
   "devDependencies": {
-    "@types/fs-extra": "11.0.4"
+    "@types/lodash.merge": "^4.6.9"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   }
 }

@@ -1,8 +1,8 @@
-import type { DocumentSelector } from 'vscode-languageserver-protocol';
 import type { RuleMeta } from '@native-twin/core';
-import type { InternalTwinConfig } from '../native-twin/native-twin.types';
+import type { DocumentSelector } from 'vscode-languageserver-protocol';
+import type { InternalTwinConfig } from '../models/twin/native-twin.types.js';
 
-export const DOCUMENT_SELECTORS: DocumentSelector = [
+export const DOCUMENT_SELECTORS = [
   {
     scheme: 'file',
     language: 'typescript',
@@ -19,7 +19,7 @@ export const DOCUMENT_SELECTORS: DocumentSelector = [
     scheme: 'file',
     language: 'javascriptreact',
   },
-];
+] satisfies DocumentSelector;
 export const configurationSection = 'nativeTwin';
 
 export const DEFAULT_RULE_META: RuleMeta = {
@@ -46,15 +46,24 @@ export const DEFAULT_TWIN_CONFIG = {
   animations: [],
 } as InternalTwinConfig;
 
+// TODO: Moved to compiler
 export const DEFAULT_PLUGIN_CONFIG = {
-  tags: ['tw', 'apply', 'css', 'variants'],
-  attributes: ['tw', 'class', 'className', 'variants'],
-  styles: ['style', 'styled', 'variants'],
+  jsxAttributes: ['tw', 'class', 'className', 'variants'],
+  functions: ['tw', 'apply', 'css', 'variants', 'style', 'styled', 'createVariants'],
   debug: false,
   enable: true,
   trace: {
     server: 'off',
-  },
+  } as const,
 };
 
 export type NativeTwinPluginConfiguration = typeof DEFAULT_PLUGIN_CONFIG;
+
+export const typeScriptExtensionId = 'vscode.typescript-language-features';
+export const pluginId = '@native-twin/ts-plugin';
+const packageName = 'native-twin-vscode';
+const publisher = 'native-twin';
+export const extensionChannelName = 'Native Twin Language Client';
+export const extensionServerChannelName = 'Native Twin Language Server';
+export const extensionName = `${publisher}.${packageName}`;
+export const diagnosticProviderSource = 'NativeTwin';

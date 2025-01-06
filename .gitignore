@@ -18,7 +18,7 @@
 # ESLint
 lint-results/
 
-**build/
+**/build/
 **dist/
 
 **.next/
@@ -42,7 +42,7 @@ out
 # TypeScript cache
 *.tsbuildinfo
 
-.nx/cache
+.nx/
 *.vsix
 # Turborepo
 .turbo
@@ -51,3 +51,8 @@ metro-test/
 bck
 .expo/
 docs/
+.tsup
+
+
+.nx/cache
+.nx/workspace-data

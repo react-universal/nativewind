@@ -1,3 +1,5 @@
 {
-  "main": "../build/sheet/index.js"
+  "main": "../build/cjs/sheet",
+  "module": "../build/esm/sheet",
+  "types": "../../build/dts/sheet/index.d.ts"
 }

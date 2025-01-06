@@ -1,13 +1,13 @@
 import type { Platform } from 'react-native';
-import { AnyStyle, FinalSheet } from '../../react-native/rn.types';
-import {
+import type { AnyStyle } from '../../react-native/rn.types.js';
+import type {
   SelectorGroup,
   ValidAppearancePseudoSelector,
   ValidCssChildPseudoSelector,
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
   ValidPlatformPseudoSelector,
-} from '../css.types';
+} from '../css.types.js';
 
 export interface CssParserData {
   context: {
@@ -16,7 +16,6 @@ export interface CssParserData {
     deviceHeight: number;
     platform: Platform['OS'];
   };
-  styles: FinalSheet;
   cache: {
     get: (selector: string) => AnyStyle | null;
     set: (selector: string, style: AnyStyle) => void;

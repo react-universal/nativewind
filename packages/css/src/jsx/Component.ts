@@ -1,39 +1,7 @@
-import type { AnyStyle, FinalSheet, GetChildStylesArgs } from '../react-native/rn.types';
-import type { SheetInteractionState } from '../sheets/sheet.types';
-import { RuntimeGroupSheet } from './Sheet';
-import type { RuntimeSheetEntry } from './SheetEntry';
-
-/** @category jsxComponent */
-export interface RegisteredComponent {
-  id: string;
-  sheets: ComponentSheet[];
-  metadata: {
-    isGroupParent: boolean;
-    hasGroupEvents: boolean;
-    hasPointerEvents: boolean;
-    hasAnimations: boolean;
-  };
-}
-
-/** @category jsxComponent */
-export interface ComponentSheet {
-  prop: string;
-  target: string;
-  sheet: FinalSheet;
-  getChildStyles(input: Partial<GetChildStylesArgs>): AnyStyle;
-  getStyles: (
-    input: Partial<SheetInteractionState>,
-    templateEntries?: RuntimeSheetEntry[],
-  ) => AnyStyle;
-  compiledSheet: RuntimeComponentEntry;
-  metadata: {
-    isGroupParent: boolean;
-    hasGroupEvents: boolean;
-    hasPointerEvents: boolean;
-    hasAnimations: boolean;
-  };
-  recompute(compiledSheet: RuntimeComponentEntry): ComponentSheet;
-}
+import type { SelectorGroup } from '../css/css.types.js';
+import type { SheetEntry } from '../sheets/sheet.types.js';
+import type { SheetEntryHandler } from './SheetEntry.js';
+import type { RuntimeSheetDeclaration } from './SheetEntryDeclaration.js';
 
 /** @category jsxComponent */
 export interface RuntimeComponentEntry {
@@ -41,8 +9,64 @@ export interface RuntimeComponentEntry {
   prop: string;
   target: string;
   templateLiteral: string | null;
-  rawSheet: RuntimeGroupSheet;
+  templateEntries: SheetEntry[];
   // childEntries: RuntimeSheetEntry[];
-  entries: RuntimeSheetEntry[];
+  entries: SheetEntryHandler[];
   // precompiled: FinalSheet;
+}
+
+/**
+ * @version 7.0.0
+ */
+export interface RuntimeJSXStyle {
+  group: SelectorGroup;
+  className: string;
+  important: boolean;
+  inherited: boolean;
+  precedence: number;
+  declarations: RuntimeSheetDeclaration[];
+}
+/**
+ * @version 7.0.0
+ */
+export interface RuntimeTwinMappedProp {
+  target: string;
+  prop: string;
+  // templateEntries: string | null;
+  entries: RuntimeJSXStyle[];
+}
+
+export interface TwinInjectedProp {
+  id: string;
+  index: number;
+  parentID: 'NO_PARENT' | (string & {});
+  parentSize: number;
+  templateEntries: {
+    prop: string;
+    target: string;
+    value: string;
+  }[];
+}
+
+/**
+ * @version 7.0.0
+ */
+export interface TwinInjectedObject {
+  id: string;
+  index: number;
+  parentSize: number;
+  parentID: string;
+  metadata: {
+    isGroupParent: boolean;
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
+  };
+  props: RuntimeTwinMappedProp[];
+  childStyles: RuntimeJSXStyle[];
+}
+/**
+ * @version 7.0.0
+ */
+export interface RuntimeTwinComponentProps {
+  _twinInjected?: TwinInjectedProp;
 }

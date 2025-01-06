@@ -1,8 +1,9 @@
-import { ComponentType, createElement, forwardRef, useId } from 'react';
-import { groupContext } from '../../context';
-import type { ComponentConfig } from '../../types/styled.types';
-import { getComponentType } from '../../utils/react.utils';
-import { useStyledProps } from '../hooks/useStyledProps';
+import { type ComponentType, createElement, forwardRef, useId } from 'react';
+import { groupContext } from '../../context/styled.context.js';
+// import { groupContext } from '../../context/index.js';
+import type { ComponentConfig } from '../../types/styled.types.js';
+import { getComponentType } from '../../utils/react.utils.js';
+import { useStyledProps } from '../hooks/useStyledProps.js';
 
 export function twinComponent(
   baseComponent: ComponentType<any>,
@@ -14,7 +15,8 @@ export function twinComponent(
   const reactID = useId();
   const componentID = props?.['_twinComponentID'];
   const id = componentID ?? reactID;
-  const { componentStyles } = useStyledProps(id, props ?? {}, configs);
+  // TODO: USE COMPONENT STYLES
+  const { componentHandler } = useStyledProps(props ?? {}, configs);
 
   props = Object.assign({ ref }, props);
 
@@ -25,9 +27,9 @@ export function twinComponent(
   }
 
   // if (
-  //   componentStyles.metadata.hasPointerEvents ||
-  //   componentStyles.metadata.hasGroupEvents ||
-  //   componentStyles.metadata.isGroupParent
+  //   componentHandler?.metadata.hasPointerEvents ||
+  //   componentHandler?.metadata.hasGroupEvents ||
+  //   componentHandler?.metadata.isGroupParent
   // ) {
   //   if (!props['onTouchStart']) {
   //     props['onTouchStart'] = (event: unknown) => {
@@ -43,11 +45,11 @@ export function twinComponent(
   //   }
   // }
 
-  if (componentStyles.metadata.hasAnimations && 1 === Number(2)) {
-    component = createAnimatedComponent(component);
-  }
+  // if (componentStyles.metadata.hasAnimations && 1 === Number(2)) {
+  //   component = createAnimatedComponent(component);
+  // }
 
-  if (componentStyles.metadata.isGroupParent) {
+  if (componentHandler?.metadata.isGroupParent) {
     props = {
       value: componentID ?? id,
       children: createElement(component, props),
@@ -77,7 +79,7 @@ export function twinComponent(
 
 const animatedCache = new Map<ComponentType<any> | string, ComponentType<any>>();
 
-function createAnimatedComponent(Component: ComponentType<any>): any {
+export function createAnimatedComponent(Component: ComponentType<any>): any {
   if (animatedCache.has(Component)) {
     return animatedCache.get(Component)!;
   } else if (Component.displayName?.startsWith('AnimatedComponent')) {
@@ -98,7 +100,7 @@ function createAnimatedComponent(Component: ComponentType<any>): any {
   const { default: Animated, useAnimatedStyle } =
     require('react-native-reanimated') as typeof import('react-native-reanimated');
 
-  let AnimatedComponent = Animated.createAnimatedComponent(
+  const AnimatedComponent = Animated.createAnimatedComponent(
     Component as React.ComponentClass,
   );
 

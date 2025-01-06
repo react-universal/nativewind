@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 export function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;
 

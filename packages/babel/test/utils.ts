@@ -1,4 +1,4 @@
-import { Tree } from '../src/utils/Tree';
+import { Tree } from '../bck/utils/Tree';
 
 const tree = new Tree('root');
 const root = tree.root;

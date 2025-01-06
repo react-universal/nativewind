@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/arc-parser",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Parser combinators library",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -13,21 +13,44 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./build/dts/index.d.ts",
+      "import": "./build/esm/index.js",
+      "default": "./build/cjs/index.js"
+    },
+    "./types": {
+      "types": "./build/dts/types.d.ts",
+      "import": "./build/esm/types.js",
+      "default": "./build/cjs/types.js"
+    }
+  },
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/dts/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "build",
+    "src"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "npx twin pack-dev",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "lint": "biome lint",
     "test": "jest"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist",
+    "provenance": true
   }
 }

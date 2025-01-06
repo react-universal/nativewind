@@ -1,17 +1,13 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declarationMap": false,
-    "noImplicitAny": true,
-    "resolveJsonModule": true,
-    "lib": ["ESNext"],
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "noEmit": false,
-    "strict": true,
-    "target": "esnext"
-  },
   "include": ["src"],
-  "exclude": ["build"]
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": false,
+    "moduleResolution": "node",
+    "resolvePackageJsonExports": false,
+    "module": "ES2022",
+    "rootDir": "src",
+    "declarationDir": "build/dts",
+    "outDir": "build/esm"
+  }
 }

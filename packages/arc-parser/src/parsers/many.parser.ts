@@ -1,4 +1,4 @@
-import { Parser, updateParserResult, updateParserError } from './Parser';
+import { Parser, updateParserError, updateParserResult } from './Parser.js';
 
 export const many = <A>(parser: Parser<A>): Parser<A[]> => {
   return new Parser((state) => {
@@ -6,7 +6,6 @@ export const many = <A>(parser: Parser<A>): Parser<A[]> => {
 
     const results = [];
     let nextState = state;
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       const out = parser.transform(nextState);
 

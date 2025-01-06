@@ -1,13 +1,13 @@
 {
+  "extends": "./tsconfig",
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "WebWorker"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "outDir": "build",
     "rootDir": "src",
-    "moduleResolution": "bundler",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
@@ -17,10 +17,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "baseUrl": ".",
     "experimentalDecorators": true,
     "noUncheckedIndexedAccess": true
   },
-  "exclude": ["src/content"],
+  "exclude": ["src/fixtures/**/*"],
   "include": ["src"]
 }

@@ -2,9 +2,9 @@ name: Pages
 on:
   workflow_dispatch:
   pull_request:
-    branches: [main]
+    branches: [noop]
   push:
-    branches: [main]
+    branches: [noop]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

@@ -1,10 +1,10 @@
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import type { HierarchyPointNode } from 'd3-hierarchy';
+import { select as d3Select } from 'd3-selection';
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from 'react';
-import { HierarchyPointNode } from 'd3-hierarchy';
-import { select as d3Select } from 'd3-selection';
 import { Circle, G, Rect, Text } from 'react-native-svg';
-import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { SvgPoint } from './json.types';
+import type { SvgPoint } from './json.types';
 
 interface TreeNodeViewProps {
   index: number;

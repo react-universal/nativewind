@@ -2,13 +2,13 @@
   "name": "@native-twin/dev-tools-webui",
   "version": "0.0.1-private",
   "private": true,
+  "type": "module",
   "main": "expo-router/entry",
   "scripts": {
     "dev-tools:dev": "expo start -c"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
-    "@native-twin/babel": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/jsx": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
@@ -17,15 +17,14 @@
     "d3-selection": "^3.0.0",
     "d3-shape": "^3.2.0",
     "d3-zoom": "^3.0.0",
-    "effect": "^3.7.2",
-    "expo": "^51.0.28",
+    "effect": "^3.10.0",
     "expo-constants": "~16.0.2",
-    "expo-font": "~12.0.9",
+    "expo-font": "~12.0.10",
     "expo-linking": "~6.3.1",
-    "expo-router": "~3.5.23",
+    "expo-router": "~3.5.24",
     "expo-status-bar": "~1.12.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "~18.2.0",
+    "react-dom": "~18.2.0",
     "react-native": "0.74.5",
     "react-native-reanimated": "~3.10.1",
     "react-native-safe-area-context": "4.10.5",
@@ -35,9 +34,14 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
+    "@babel/core": "^7.24.0",
     "@types/d3": "^7.4.3",
-    "@types/react": "~18.2.45",
+    "@types/react": "~18.2.79",
     "@types/uuid": "^10.0.0"
+  },
+  "peerDependencies": {
+    "expo": "~51.0.39",
+    "react": "~18.2.0",
+    "react-dom": "~18.2.0"
   }
 }

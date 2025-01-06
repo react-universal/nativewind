@@ -13,16 +13,15 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "main": "build/index.js",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:tsc:watch": "tsc -p tsconfig.build.json -w",
     "circular": "madge --extensions ts --circular --no-color --no-spinner --warning src",
     "clean": "rm -rf build",
+    "deprecated": "tsc -p tsconfig.build.json -w",
+    "deprecated:bbb": "tsc -p tsconfig.build.json",
     "esbuild:build": "node ./build.js --production",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "biome lint",
     "test": "jest",
-    "vscode:dev": "tsc -p tsconfig.build.json -w"
+    "ts____b": "tsc -p tsconfig.build.json -w"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.1.0",
@@ -30,7 +29,7 @@
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "effect": "^3.7.2",
+    "effect": "^3.10.0",
     "typescript-template-language-service-decorator": "2.3.2",
     "vscode-css-languageservice": "^6.2.14",
     "vscode-languageserver-textdocument": "^1.0.11"
@@ -43,16 +42,6 @@
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
-  },
-  "nx": {
-    "includedScripts": [
-      "build",
-      "build:watch",
-      "clean",
-      "esbuild:build",
-      "lint",
-      "vscode:dev"
-    ]
+    "directory": "dist"
   }
 }

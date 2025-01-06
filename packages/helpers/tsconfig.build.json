@@ -1,11 +1,10 @@
 {
   "extends": "./tsconfig.json",
+  "include": ["src"],
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "build",
-    "module": "CommonJS",
-    "noEmit": false,
-    "declarationMap": true
-  },
-  "exclude": ["./test/"]
+    "moduleResolution": "node",
+    "module": "ES2022",
+    "outDir": "build/esm",
+    "declarationDir": "build/dts"
+  }
 }

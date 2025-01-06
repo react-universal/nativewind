@@ -1,3 +1,5 @@
 {
-  "main": "../../build/testing-library/setupAfterEnv"
+  "main": "../../build/testing-library/setupAfterEnv",
+  "module": "../../build/esm/testing-library/setupAfterEnv",
+  "types": "../../build/testing-library/setupAfterEnv.d.ts"
 }

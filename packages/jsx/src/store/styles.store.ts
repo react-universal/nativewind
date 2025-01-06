@@ -1,10 +1,10 @@
-import type { RuntimeSheetEntry } from '@native-twin/css/jsx';
-import { Atom, atom } from '@native-twin/helpers';
+import type { SheetEntryHandler } from '@native-twin/css/jsx';
+import { type Atom, atom } from '@native-twin/helpers/react';
 
-export const globalStyles = new Map<string, Atom<RuntimeSheetEntry>>();
-export const opaqueStyles = new WeakMap<object, RuntimeSheetEntry>();
+export const globalStyles = new Map<string, Atom<SheetEntryHandler>>();
+export const opaqueStyles = new WeakMap<object, SheetEntryHandler>();
 
-export function upsertGlobalStyle(name: string, ruleSet: RuntimeSheetEntry) {
+export function upsertGlobalStyle(name: string, ruleSet: SheetEntryHandler) {
   let styleObservable = globalStyles.get(name);
 
   if (!styleObservable) {

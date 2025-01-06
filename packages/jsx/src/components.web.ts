@@ -1,4 +1,4 @@
-import { withMappedProps, createStylableComponent } from './styled';
+import { createStylableComponent, withMappedProps } from './styled/index.js';
 
 const {
   ActivityIndicator: RNActivityIndicator,
@@ -20,52 +20,50 @@ const {
   VirtualizedList: RNVirtualizedList,
 } = require('react-native');
 
-if (typeof window !== 'undefined') {
-  createStylableComponent(RNImage, { className: 'style' });
-  createStylableComponent(RNPressable, { className: 'style' });
-  createStylableComponent(RNSafeAreaView, { className: 'style' });
-  createStylableComponent(RNSwitch, { className: 'style' });
-  createStylableComponent(RNText, { className: 'style' });
-  createStylableComponent(RNTouchableHighlight, { className: 'style' });
-  createStylableComponent(RNTouchableOpacity, { className: 'style' });
-  createStylableComponent(RNTouchableWithoutFeedback, { className: 'style' });
-  createStylableComponent(RNView, { className: 'style' });
-  createStylableComponent(RNActivityIndicator, {
-    className: { target: 'style', nativeStyleToProp: { color: true } },
-  });
-  createStylableComponent(RNStatusBar, {
-    className: { target: false, nativeStyleToProp: { backgroundColor: true } },
-  });
-  createStylableComponent(RNScrollView, {
-    className: 'style',
-    contentContainerClassName: 'contentContainerStyle',
-    indicatorClassName: 'indicatorStyle',
-  });
-  createStylableComponent(RNTextInput, {
-    className: { target: 'style', nativeStyleToProp: { textAlign: true } },
-  });
+createStylableComponent(RNImage, { className: 'style' });
+createStylableComponent(RNPressable, { className: 'style' });
+createStylableComponent(RNSafeAreaView, { className: 'style' });
+createStylableComponent(RNSwitch, { className: 'style' });
+createStylableComponent(RNText, { className: 'style' });
+createStylableComponent(RNTouchableHighlight, { className: 'style' });
+createStylableComponent(RNTouchableOpacity, { className: 'style' });
+createStylableComponent(RNTouchableWithoutFeedback, { className: 'style' });
+createStylableComponent(RNView, { className: 'style' });
+createStylableComponent(RNActivityIndicator, {
+  className: { target: 'style', nativeStyleToProp: { color: true } },
+});
+createStylableComponent(RNStatusBar, {
+  className: { target: false, nativeStyleToProp: { backgroundColor: true } },
+});
+createStylableComponent(RNScrollView, {
+  className: 'style',
+  contentContainerClassName: 'contentContainerStyle',
+  indicatorClassName: 'indicatorStyle',
+});
+createStylableComponent(RNTextInput, {
+  className: { target: 'style', nativeStyleToProp: { textAlign: true } },
+});
 
-  withMappedProps(RNFlatList, {
-    className: 'style',
-    ListFooterComponentClassName: 'ListFooterComponentStyle',
-    ListHeaderComponentClassName: 'ListHeaderComponentStyle',
-    columnWrapperClassName: 'columnWrapperStyle',
-    contentContainerClassName: 'contentContainerStyle',
-    indicatorClassName: 'indicatorStyle',
-  });
-  withMappedProps(RNImageBackground, {
-    className: 'style',
-    imageClassName: 'imageStyle',
-  });
-  withMappedProps(RNKeyboardAvoidingView, {
-    className: 'style',
-    contentContainerClassName: 'contentContainerStyle',
-  });
-  withMappedProps(RNVirtualizedList, {
-    className: 'style',
-    ListFooterComponentClassName: 'ListFooterComponentStyle',
-    ListHeaderComponentClassName: 'ListHeaderComponentStyle',
-    contentContainerClassName: 'contentContainerStyle',
-    indicatorClassName: 'indicatorStyle',
-  });
-}
+withMappedProps(RNFlatList, {
+  className: 'style',
+  ListFooterComponentClassName: 'ListFooterComponentStyle',
+  ListHeaderComponentClassName: 'ListHeaderComponentStyle',
+  columnWrapperClassName: 'columnWrapperStyle',
+  contentContainerClassName: 'contentContainerStyle',
+  indicatorClassName: 'indicatorStyle',
+});
+withMappedProps(RNImageBackground, {
+  className: 'style',
+  imageClassName: 'imageStyle',
+});
+withMappedProps(RNKeyboardAvoidingView, {
+  className: 'style',
+  contentContainerClassName: 'contentContainerStyle',
+});
+withMappedProps(RNVirtualizedList, {
+  className: 'style',
+  ListFooterComponentClassName: 'ListFooterComponentStyle',
+  ListHeaderComponentClassName: 'ListHeaderComponentStyle',
+  contentContainerClassName: 'contentContainerStyle',
+  indicatorClassName: 'indicatorStyle',
+});

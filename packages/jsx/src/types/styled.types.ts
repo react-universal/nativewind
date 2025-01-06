@@ -1,4 +1,11 @@
 import type {
+  AnyStyle,
+  CompleteStyle,
+  ValidGroupPseudoSelector,
+  ValidInteractionPseudoSelector,
+} from '@native-twin/css';
+import type { Atom } from '@native-twin/helpers/react';
+import type {
   ClassicComponentClass,
   ComponentClass,
   ComponentProps,
@@ -6,15 +13,6 @@ import type {
   FunctionComponent,
   JSXElementConstructor,
 } from 'react';
-import type {
-  AnyStyle,
-  CompleteStyle,
-  ValidGroupPseudoSelector,
-  ValidInteractionPseudoSelector,
-} from '@native-twin/css';
-import { Atom } from '@native-twin/helpers';
-import { createComponentSheet } from '../sheet/StyleSheet';
-import { createPropState } from '../utils/styled.utils';
 
 export interface RegisteredComponent {
   id: string;
@@ -31,7 +29,7 @@ export type ComponentInteractionState = {
   [K in keyof InteractionState]: Atom<InteractionState[K]>;
 };
 
-export type StyledComponentSheet = ReturnType<typeof createComponentSheet>;
+// export type StyledComponentSheet = ReturnType<typeof createComponentSheet>;
 
 //** Used */
 export interface StyledComponentState {
@@ -48,7 +46,7 @@ export interface StyledComponentState {
   //   pressable?: number;
   //   canWarn?: boolean;
   // };
-  propStates: ReturnType<typeof createPropState>[];
+  // propStates: ReturnType<typeof createPropState>[];
 }
 
 export type StyledSubscription = 'vh' | 'vw' | 'rem' | 'em' | 'appearance';
@@ -95,7 +93,7 @@ export type PropState = ComponentConfig & {
 
   classNames?: string;
 
-  sheet: StyledComponentSheet | null;
+  // sheet: StyledComponentSheet | null;
   currentStyles: AnyStyle;
 
   // declarationEffect: Effect;

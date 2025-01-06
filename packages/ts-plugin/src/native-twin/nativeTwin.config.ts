@@ -1,18 +1,18 @@
-import ts from 'typescript';
 import {
-  __Theme__,
+  type RuntimeTW,
+  type TailwindConfig,
+  type ThemeContext,
+  type __Theme__,
   createTailwind,
   createThemeContext,
   defineConfig,
-  RuntimeTW,
-  TailwindConfig,
-  ThemeContext,
 } from '@native-twin/core';
+import type ts from 'typescript';
 import '@native-twin/core';
-import { createVirtualSheet, SheetEntry } from '@native-twin/css';
+import { type SheetEntry, createVirtualSheet } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import { NativeTwinPluginConfiguration } from '../plugin.types';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
+import type { NativeTwinPluginConfiguration } from '../plugin.types';
 import { requireJS } from '../utils/load-config';
 
 export type InternalTwinConfig = TailwindConfig<__Theme__ & TailwindPresetTheme>;

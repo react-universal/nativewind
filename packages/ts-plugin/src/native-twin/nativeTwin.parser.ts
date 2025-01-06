@@ -1,12 +1,12 @@
 import * as P from '@native-twin/arc-parser';
-import {
+import type {
   ArbitraryToken,
   ClassNameToken,
   VariantClassToken,
   VariantToken,
 } from '@native-twin/css';
 import * as TwParser from '@native-twin/css/tailwind-parser';
-import {
+import type {
   LocatedGroupToken,
   LocatedParser,
   TemplateToken,
@@ -72,9 +72,11 @@ const parseRuleGroupWeak: P.Parser<LocatedParser<LocatedGroupToken>> = P.choice(
     ),
 );
 
-export const parseTemplate = (template: string): TemplateTokenWithText[] => {  
+export const parseTemplate = (template: string): TemplateTokenWithText[] => {
   const parsed = P.many(
-    P.whitespaceSurrounded(P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName])),
+    P.whitespaceSurrounded(
+      P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
+    ),
   ).run(template);
 
   if (parsed.isError) {
@@ -93,25 +95,25 @@ function addTextToTemplateTokens(
 ): TemplateTokenWithText[] {
   const nextToken = groupContent.shift();
   if (!nextToken) return results;
-  if (nextToken.type == 'ARBITRARY') {
+  if (nextToken.type === 'ARBITRARY') {
     results.push({
       ...nextToken,
       text: text.slice(nextToken.start, nextToken.end),
     });
   }
-  if (nextToken.type == 'CLASS_NAME') {
+  if (nextToken.type === 'CLASS_NAME') {
     results.push({
       ...nextToken,
       text: text.slice(nextToken.start, nextToken.end),
     });
   }
-  if (nextToken.type == 'VARIANT_CLASS') {
+  if (nextToken.type === 'VARIANT_CLASS') {
     results.push({
       ...nextToken,
       text: text.slice(nextToken.start, nextToken.end),
     });
   }
-  if (nextToken.type == 'GROUP') {
+  if (nextToken.type === 'GROUP') {
     const newContent = addTextToTemplateTokens(nextToken.value.content, text).map(
       (x): TemplateTokenWithText => {
         return {

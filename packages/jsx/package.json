@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/jsx",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Native Twin JSX runtime",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -13,15 +13,76 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/dts/index.d.ts",
+      "import": "./build/esm/index.js",
+      "default": "./build/cjs/index.js"
+    },
+    "./components": {
+      "types": "./build/dts/components.d.ts",
+      "import": "./build/esm/components.js",
+      "default": "./build/cjs/components.js"
+    },
+    "./components.web": {
+      "types": "./build/dts/components.web.d.ts",
+      "import": "./build/esm/components.web.js",
+      "default": "./build/cjs/components.web.js"
+    },
+    "./index.web": {
+      "types": "./build/dts/index.web.d.ts",
+      "import": "./build/esm/index.web.js",
+      "default": "./build/cjs/index.web.js"
+    },
+    "./jsx-dev-runtime": {
+      "types": "./build/dts/jsx-dev-runtime.d.ts",
+      "import": "./build/esm/jsx-dev-runtime.js",
+      "default": "./build/cjs/jsx-dev-runtime.js"
+    },
+    "./jsx-runtime": {
+      "types": "./build/dts/jsx-runtime.d.ts",
+      "import": "./build/esm/jsx-runtime.js",
+      "default": "./build/cjs/jsx-runtime.js"
+    },
+    "./jsx-wrapper": {
+      "types": "./build/dts/jsx-wrapper.d.ts",
+      "import": "./build/esm/jsx-wrapper.js",
+      "default": "./build/cjs/jsx-wrapper.js"
+    },
+    "./jsx-wrapper.web": {
+      "types": "./build/dts/jsx-wrapper.web.d.ts",
+      "import": "./build/esm/jsx-wrapper.web.js",
+      "default": "./build/cjs/jsx-wrapper.web.js"
+    },
+    "./third-party-declarations.d": {
+      "types": "./build/dts/third-party-declarations.d.d.ts",
+      "import": "./build/esm/third-party-declarations.d.js",
+      "default": "./build/cjs/third-party-declarations.d.js"
+    }
+  },
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/dts/index.d.ts",
+  "files": [
+    "build",
+    "jsx-dev-runtime",
+    "jsx-runtime",
+    "LICENSE",
+    "sheet",
+    "src",
+    "testing-library",
+    "rn-svg.d.ts",
+    "third-party-declarations.d.ts",
+    "types.d.ts",
+    "CHANGELOG.md",
+    "README.md"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "npx twin pack-dev",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "lint": "biome lint",
     "test": "jest",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand --silent false --watch",
     "test:watch": "jest --watch"
@@ -29,22 +90,30 @@
   "dependencies": {
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
-    "@native-twin/dev-tools": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*"
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-methods": "^7.24.7"
+    "@types/react": "~18.2.79"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-native": "*"
+    "react": "~18.2.0",
+    "react-native-reanimated": "*"
   },
   "optionalDependencies": {
+    "@jest/globals": "*",
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
+  },
+  "effect": {
+    "generateExports": {
+      "include": [
+        "*.ts"
+      ]
+    }
   }
 }

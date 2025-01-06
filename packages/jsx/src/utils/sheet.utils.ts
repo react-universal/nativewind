@@ -1,17 +1,15 @@
-import { parseCssValue, tw } from '@native-twin/core';
+import { type TwinRuntimeContext, parseCssValue, tw } from '@native-twin/core';
 import {
-  AnyStyle,
-  CompleteStyle,
-  FinalSheet,
+  type AnyStyle,
+  type CompleteStyle,
+  type SheetEntryDeclaration,
   getRuleSelectorGroup,
-  SheetEntryDeclaration,
 } from '@native-twin/css';
-import { RuntimeSheetEntry } from '@native-twin/css/jsx';
-import type { StyledContext } from '../store/observables';
 
+// TODO: PLACE THIS INTO GLOBAL SHEET
 export const sheetEntryToStyle = (
-  entry: RuntimeSheetEntry,
-  context: StyledContext,
+  entry: any,
+  context: TwinRuntimeContext,
 ): CompleteStyle | null => {
   const validRule = isApplicativeRule(entry.selectors, context);
   if (!validRule) return null;
@@ -20,8 +18,8 @@ export const sheetEntryToStyle = (
 };
 
 export const sheetEntriesToStyles = (
-  entries: RuntimeSheetEntry[],
-  context: StyledContext,
+  entries: any[],
+  context: TwinRuntimeContext,
 ): CompleteStyle => {
   return entries.reduce((prev, current) => {
     const style = sheetEntryToStyle(current, context);
@@ -37,8 +35,8 @@ export const sheetEntriesToStyles = (
   }, {} as AnyStyle);
 };
 export function getSheetEntryStyles(
-  entries: RuntimeSheetEntry[] = [],
-  context: StyledContext,
+  entries: any[] = [],
+  context: TwinRuntimeContext,
 ) {
   return entries.reduce(
     (prev, current) => {
@@ -53,21 +51,21 @@ export function getSheetEntryStyles(
       return prev;
     },
     {
-      base: {},
-      even: {},
-      first: {},
-      group: {},
-      last: {},
-      odd: {},
-      pointer: {},
-      dark: {},
-    } as FinalSheet,
+      base: {} as AnyStyle,
+      even: {}  as AnyStyle,
+      first: {}  as AnyStyle,
+      group: {}  as AnyStyle,
+      last: {}  as AnyStyle,
+      odd: {}  as AnyStyle,
+      pointer: {}  as AnyStyle,
+      dark: {}  as AnyStyle,
+    },
   );
 }
 
 export function composeDeclarations(
   declarations: SheetEntryDeclaration[],
-  context: StyledContext,
+  context: TwinRuntimeContext,
 ) {
   const styledCtx = {
     rem: context.units.rem,
@@ -108,7 +106,7 @@ export function composeDeclarations(
 }
 
 const platformVariants = ['web', 'native', 'ios', 'android'];
-export function isApplicativeRule(variants: string[], context: StyledContext) {
+export function isApplicativeRule(variants: string[], context: TwinRuntimeContext) {
   if (variants.length === 0) return true;
   const screens = tw.theme('screens');
 

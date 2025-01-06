@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { cx } from '@native-twin/core';
-import { Text, Image, Pressable, TextInput, View } from 'react-native';
+import { useState } from 'react';
+import { Image, Pressable, Text, TextInput, View } from 'react-native';
 
 const TextField = () => {
   const [text, setText] = useState('');

@@ -1,6 +1,6 @@
 import type { CSSValue, SheetEntry } from '@native-twin/css';
 import { interpolate } from '@native-twin/css';
-import { tw as tw$ } from './tw';
+import { tw as tw$ } from './tw.js';
 
 export interface TxFunction {
   (...classes: CSSValue[]): SheetEntry[];
@@ -32,6 +32,6 @@ export const tx: TxFunction = function tx(
   strings: TemplateStringsArray | CSSValue,
   ...interpolations: CSSValue[]
 ): SheetEntry[] {
-  const tw = typeof this == 'function' ? this : tw$;
+  const tw = typeof this === 'function' ? this : tw$;
   return tw(interpolate(strings, interpolations))!;
 };

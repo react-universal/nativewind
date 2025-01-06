@@ -1,39 +1,12 @@
-import { PixelRatio, Platform, PlatformOSType } from 'react-native';
-import { atom } from '@native-twin/helpers';
-import { colorScheme } from './colorScheme.obs';
-import { viewport } from './viewport.obs';
-
-export type Units = {
-  '%'?: number;
-  vw?: number;
-  vh?: number;
-  vmin?: number;
-  vmax?: number;
-  em: number;
-  rem: number;
-  px: number;
-  pt: number;
-  pc: number;
-  in: number;
-  cm: number;
-  mm: number;
-};
-
-export type StyledContext = {
-  orientation: 'portrait' | 'landscape';
-  resolution: number;
-  fontScale: number;
-  deviceWidth: number;
-  deviceHeight: number;
-  deviceAspectRatio: number;
-  platform: PlatformOSType;
-  colorScheme: 'dark' | 'light';
-  units: Units;
-};
+import type { TwinRuntimeContext } from '@native-twin/core';
+import { atom } from '@native-twin/helpers/react';
+import { PixelRatio, Platform } from 'react-native';
+import { colorScheme } from './colorScheme.obs.js';
+import { viewport } from './viewport.obs.js';
 
 export const remObs = atom(14);
 
-export const styledContext = atom((get): StyledContext => {
+export const styledContext = atom((get): TwinRuntimeContext => {
   const { height: vh$, width: vw$ } = get(viewport);
   const rem = get(remObs);
   const colorSc = get(colorScheme) ?? 'light';

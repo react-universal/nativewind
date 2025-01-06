@@ -1,10 +1,11 @@
 {
+  "extends": "../../tsconfig.base",
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "WebWorker"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "moduleResolution": "Bundler",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -16,10 +17,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "baseUrl": ".",
     "experimentalDecorators": true,
     "noUncheckedIndexedAccess": true
   },
-  "exclude": ["src/content"],
-  "include": ["src", "vite.config.mts"]
+  "include": ["src", "vite.config.ts", "tailwind.config.ts"]
 }

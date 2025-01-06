@@ -1,35 +1,37 @@
 import {
-  type TWParsedRule,
   type SheetEntry,
+  type TWParsedRule,
   parsedRuleToClassName,
 } from '@native-twin/css';
-import { flattenColorPalette, type MaybeArray } from '@native-twin/helpers';
-import { createRuleResolver } from '../parsers/rule-handler';
-import { createVariantResolver } from '../parsers/variant-handler';
+import { type MaybeArray, flattenColorPalette } from '@native-twin/helpers';
+import { createRuleResolver } from '../parsers/rule-handler.js';
+import { createVariantResolver } from '../parsers/variant-handler.js';
 import type {
   RuleResult,
   TailwindConfig,
   ThemeContext,
   Variant,
   VariantResult,
-} from '../types/config.types';
-import type { __Theme__ } from '../types/theme.types';
-import { createThemeFunction } from './theme.function';
+} from '../types/config.types.js';
+import type { __Theme__ } from '../types/theme.types.js';
+import { createThemeFunction } from './theme.function.js';
 
-interface RuleHandlerFn<Theme extends __Theme__ = __Theme__> {
-  (token: TWParsedRule, ctx: ThemeContext<Theme>): RuleResult;
-}
+type RuleHandlerFn<Theme extends __Theme__ = __Theme__> = (
+  token: TWParsedRule,
+  ctx: ThemeContext<Theme>,
+) => RuleResult;
 
-interface VariantHandlerFn<Theme extends __Theme__ = __Theme__> {
-  (token: string, ctx: ThemeContext<Theme>): VariantResult;
-}
+type VariantHandlerFn<Theme extends __Theme__ = __Theme__> = (
+  token: string,
+  ctx: ThemeContext<Theme>,
+) => VariantResult;
 
 export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
   mode,
   variants = [],
-  animations
+  animations,
 }: TailwindConfig<Theme>): ThemeContext<Theme> {
   const variantCache = new Map<string, MaybeArray<string>>();
   const variantsHandlers = new Map<Variant<Theme>, VariantHandlerFn<Theme>>();
@@ -40,7 +42,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   //   if (ignoredRules.has(rule.n)) return true;
   //   return ignorelist.some((x) => x.startsWith(rule.n));
   // };
-  const ctx: ThemeContext = {
+  const ctx: ThemeContext<Theme> = {
     get colors() {
       return flattenColorPalette(
         Object.assign(
@@ -78,7 +80,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
           return nextToken;
         }
       }
-      variantCache.set(value, '&:' + value);
+      variantCache.set(value, `&:${value}`);
       return variantCache.get(value);
     },
 

@@ -1,4 +1,0 @@
-{
-  "main": "../build/_app",
-  "types": "../build/app.d.ts"
-}

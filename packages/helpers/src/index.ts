@@ -1,13 +1,13 @@
-export { hash, createHash, getBitMask, getHashMask } from './hash.utils';
+export { hash, createHash, getBitMask, getHashMask, simpleHash } from './hash.utils.js';
 
-export { createStore, createValueStore } from './store.utils';
+export { createStore, createValueStore } from './store.utils.js';
 
 export {
   getNonce,
   escapeSelector,
   fixHTMLTagClassNamesList,
   compareClassNames,
-} from './browser.utils';
+} from './browser.utils.js';
 
 export {
   asRegExp,
@@ -16,18 +16,35 @@ export {
   asArray,
   identity,
   keysOf,
-} from './identity.utils';
+} from './identity.utils.js';
 
-export { toColorValue } from './color.utils';
+export { toColorValue } from './color.utils.js';
 
-export { hasOwnProperty, isObject, isString, noop, uniq } from './function.utils';
+export { hasOwnProperty, isObject, isString, noop, uniq } from './function.utils.js';
 
 export {
   toCamelCase,
   toHyphenCase,
   toTailDashed,
   generateAlphabeticName,
-} from './string.utils';
+  escapeBackticksAndOctals,
+  splitBySpace,
+  assertString,
+} from './string.utils.js';
+
+export { warn, type WarningEventMap } from './warn.js';
+
+export {
+  createExponentialUnits,
+  createLinearUnits,
+  createPercentRatios,
+} from './create-value.utils.js';
+
+export { flattenObjectByPath, flattenColorPalette } from './object.utils.js';
+
+export { isUndefined, isNotUndefined } from './guards.utils.js';
+
+export * as Base64Utils from './base64.js';
 
 export type {
   ArrayType,
@@ -39,23 +56,11 @@ export type {
   UnionToIntersection,
   ColorsRecord,
   AnyPrimitive,
-} from './utility.types';
-
-export { warn, WarningEventMap } from './warn';
-
-export {
-  createExponentialUnits,
-  createLinearUnits,
-  createPercentRatios,
-} from './create-value.utils';
-
-export { flattenObjectByPath, flattenColorPalette } from './object.utils';
-
-export {
-  Atom,
-  AtomGetter,
-  atom,
-  atomStateMap,
-  useAtom,
-  useAtomValue,
-} from './atom.store';
+  PropsFrom,
+  OmitUndefined,
+  ClassNameProps,
+  StyledComponentProps,
+  Prettify,
+  NegativeInteger,
+  PositiveInteger,
+} from './utility.types.js';

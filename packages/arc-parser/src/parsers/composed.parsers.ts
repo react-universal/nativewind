@@ -1,7 +1,7 @@
-import type { Parser } from './Parser';
-import { between } from './between.parser';
-import { separatedBy } from './separated-by.parser';
-import { char, optionalWhitespace, whitespace } from './string.parser';
+import type { Parser } from './Parser.js';
+import { between } from './between.parser.js';
+import { separatedBy } from './separated-by.parser.js';
+import { char, optionalWhitespace, whitespace } from './string.parser.js';
 
 export const betweenBrackets = between(char('{'))(char('}'));
 

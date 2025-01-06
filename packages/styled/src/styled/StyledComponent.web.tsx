@@ -1,8 +1,8 @@
-import { forwardRef, type ComponentType } from 'react';
-import type { StyleProp } from 'react-native';
 import { cx } from '@native-twin/core';
-import type { StyledComponentProps } from '../types/styled.types';
-import { getComponentDisplayName } from '../utils/getComponentDisplayName';
+import { type ComponentType, forwardRef } from 'react';
+import type { StyleProp } from 'react-native';
+import type { StyledComponentProps } from '../types/styled.types.js';
+import { getComponentDisplayName } from '../utils/getComponentDisplayName.js';
 
 function styledComponentsFactory<
   StyleType,

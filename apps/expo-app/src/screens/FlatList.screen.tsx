@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Text, Pressable, View, FlatList, SafeAreaView } from 'react-native';
+import { FlatList, Pressable, SafeAreaView, Text, View } from 'react-native';
 
 const data = [
   {

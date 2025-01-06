@@ -1,12 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "build",
-    "module": "NodeNext",
-    "declarationMap": true,
-    "noEmit": false,
-    "sourceMap": true
-  },
-  "exclude": ["./src/__tests__/", "build", "test", "bck"]
+    "outDir": "build/esm",
+    "declarationDir": "build/dts",
+    "stripInternal": true
+  }
 }

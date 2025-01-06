@@ -1,6 +1,6 @@
-import { defineConfig, setup, tx } from '@native-twin/core';
 import { sheetEntriesToCss } from '@native-twin/css';
-import { presetTailwind } from '../src';
+import { defineConfig, setup, tx } from '@native-twin/core';
+import { presetTailwind } from '../src/index.js';
 
 setup(defineConfig({ content: [], presets: [presetTailwind()], mode: 'web' }));
 

@@ -2,6 +2,7 @@ import { defineConfig } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 
 export default defineConfig({
+  content: ['app/**/*.{js,ts,tsx,jsx}'],
   root: {
     rem: 14,
   },

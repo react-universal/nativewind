@@ -1,5 +1,5 @@
-import type { Parser } from './Parser';
-import { sequenceOf } from './sequence-of';
+import type { Parser } from './Parser.js';
+import { sequenceOf } from './sequence-of.js';
 
 export const between =
   <L>(leftParser: Parser<L>) =>

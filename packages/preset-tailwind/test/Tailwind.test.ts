@@ -1,6 +1,6 @@
-import { createTailwind } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
-import { presetTailwind } from '../src';
+import { createTailwind } from '@native-twin/core';
+import { presetTailwind } from '../src/index.js';
 
 const tailwind = createTailwind(
   {
@@ -14,7 +14,9 @@ const tailwind = createTailwind(
 
 describe('@native-twin/preset-tailwind - TW call', () => {
   it('Insert rules', () => {
-    const result = tailwind('px-2 p-10 mx-2.5 text(center 2xl) bg-blue-200 justify-center');
+    const result = tailwind(
+      'px-2 p-10 mx-2.5 text(center 2xl) bg-blue-200 justify-center',
+    );
     expect(result).toStrictEqual([
       {
         animations: [],
@@ -32,6 +34,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
       {
         animations: [],
@@ -45,6 +48,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
       {
         animations: [],
@@ -62,6 +66,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
       {
         animations: [],
@@ -75,6 +80,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
       {
         animations: [],
@@ -88,6 +94,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
       {
         animations: [],
@@ -95,6 +102,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
         declarations: [
           {
             prop: 'backgroundColor',
@@ -114,6 +122,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });

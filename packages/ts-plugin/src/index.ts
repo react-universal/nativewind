@@ -1,7 +1,7 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import ts from 'typescript/lib/tsserverlibrary';
+import type ts from 'typescript/lib/tsserverlibrary';
 import {
   LanguageProviderService,
   LanguageProviderServiceLive,

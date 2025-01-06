@@ -1,6 +1,6 @@
 import { type ComponentType, forwardRef } from 'react';
 import { Platform, type TextProps } from 'react-native';
-import Text from './Text.primitive';
+import Text from './Text.primitive.js';
 
 function createHeadingComponent(level: number): ComponentType<TextProps> {
   const nativeProps: any = Platform.select({

@@ -1,9 +1,0 @@
-{
-  "workbench.colorTheme": "Default Dark Modern",
-  "editor.scrollBeyondLastLine": true,
-  "editor.mouseWheelZoom": true,
-  "editor.wordBasedSuggestions": "off",
-  "editor.acceptSuggestionOnEnter": "on",
-  "files.autoSave": "off",
-  "workbench.sideBar.location": "left"
-}

@@ -1,5 +1,5 @@
-import { ParserState } from '../types';
-import { Parser, updateParserError, updateParserResult } from './Parser';
+import type { ParserState } from '../types.js';
+import { Parser, updateParserError, updateParserResult } from './Parser.js';
 
 export const fail = (errorData: string) => {
   return new Parser<any>((state) => {
@@ -22,7 +22,7 @@ export const succeedWith = Parser.of;
 export const endOfInput = new Parser<null>((state) => {
   if (state.isError) return state;
   const { cursor, target } = state;
-  if (cursor != target.length) {
+  if (cursor !== target.length) {
     return updateParserError(state, `Expected end of input but got '${target[cursor]}'`);
   }
 

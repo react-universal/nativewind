@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/preset-tailwind",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
     "tailwind",
@@ -20,42 +20,56 @@
     "url": "https://github.com/react-universal/native-twin",
     "directory": "packages/preset-tailwind"
   },
-  "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "license": "MIT",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./build/dts/index.d.ts",
+      "import": "./build/esm/index.js",
+      "default": "./build/cjs/index.js"
+    },
+    "./colors": {
+      "types": "./build/dts/tailwind-theme/colors.d.ts",
+      "import": "./build/esm/tailwind-theme/colors.js",
+      "default": "./build/cjs/tailwind-theme/colors.js"
+    }
+  },
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/dts/index.d.ts",
   "files": [
     "build",
-    "index.d.ts",
-    "tailwind",
-    "tailwind.d.ts",
-    "types.d.ts",
+    "colors",
+    "src",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "npx twin pack-dev",
+    "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "lint": "biome lint",
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@native-twin/core": "workspace:*"
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=18.0",
-    "react-native": ">=0.71.0"
+    "react": "~18.2.0"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   },
   "nx": {
     "includedScripts": [

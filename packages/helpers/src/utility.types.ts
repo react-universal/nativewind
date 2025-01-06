@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 /**
  * @description Represents a type that includes `false`, `null`, `undefined`, `void`, and empty string.
  */
@@ -51,3 +53,44 @@ export interface ColorsRecord {
 }
 
 export type AnyPrimitive = string | number | boolean;
+
+export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
+  ? Props
+  : TComponent extends React.Component<infer Props>
+    ? Props
+    : TComponent extends React.ComponentType<infer Props>
+      ? Props
+      : never;
+
+export type OmitUndefined<T extends object> = T extends undefined ? never : T;
+
+export interface ClassNameProps {
+  className?: string;
+  tw?: string;
+}
+
+export interface StyledComponentProps extends ClassNameProps {
+  nthChild?: number;
+  isFirstChild?: boolean;
+  isLastChild?: boolean;
+  parentID?: string;
+  children?: ReactNode;
+  groupID?: string;
+}
+
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
+export type PositiveInteger<T extends number = 1> = `${T}` extends
+  | '0'
+  | `-${any}`
+  | `${any}.${any}`
+  ? never
+  : T;
+
+export type NegativeInteger<T extends number = 1> = `${T}` extends '0' | `${any}.${any}`
+  ? never
+  : `${T}` extends `-${any}`
+    ? T
+    : never;

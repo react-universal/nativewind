@@ -20,7 +20,8 @@ const ChildProp = () => {
       selectors: [],
       precedence: 805306368,
       important: false,
-      animations: []
+      animations: [],
+      preflight: false
     }, {
       className: "first:bg-blue-600",
       declarations: [{
@@ -31,7 +32,8 @@ const ChildProp = () => {
       selectors: ["first", "&:first"],
       precedence: 805437440,
       important: false,
-      animations: []
+      animations: [],
+      preflight: false
     }, {
       className: "last:bg-red-500",
       declarations: [{
@@ -42,7 +44,8 @@ const ChildProp = () => {
       selectors: ["last", "&:last"],
       precedence: 805437440,
       important: false,
-      animations: []
+      animations: [],
+      preflight: false
     }],
     rawSheet: {
       base: [{
@@ -59,7 +62,8 @@ const ChildProp = () => {
         selectors: [],
         precedence: 805306368,
         important: false,
-        animations: []
+        animations: [],
+        preflight: false
       }],
       dark: [],
       pointer: [],
@@ -133,7 +137,8 @@ const ChildProp = () => {
         selectors: [],
         precedence: 805306368,
         important: false,
-        animations: []
+        animations: [],
+        preflight: false
       }],
       rawSheet: {
         base: [{
@@ -150,7 +155,8 @@ const ChildProp = () => {
           selectors: [],
           precedence: 805306368,
           important: false,
-          animations: []
+          animations: [],
+          preflight: false
         }, {
           className: "first:bg-blue-600",
           declarations: [{
@@ -161,7 +167,8 @@ const ChildProp = () => {
           selectors: ["first", "&:first"],
           precedence: 805437440,
           important: false,
-          animations: []
+          animations: [],
+          preflight: false
         }],
         dark: [],
         pointer: [],
@@ -205,7 +212,8 @@ const ChildProp = () => {
           selectors: ["last", "&:last"],
           precedence: 805437440,
           important: false,
-          animations: []
+          animations: [],
+          preflight: false
         }],
         dark: [],
         pointer: [],

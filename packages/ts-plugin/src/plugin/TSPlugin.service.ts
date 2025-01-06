@@ -1,13 +1,13 @@
 import * as Context from 'effect/Context';
 import * as Layer from 'effect/Layer';
 // import * as Effect from 'effect/Effect';
-import ts from 'typescript/lib/tsserverlibrary';
-import {
+import type ts from 'typescript/lib/tsserverlibrary';
+import type {
   InternalTwFn,
   InternalTwinConfig,
   InternalTwinThemeContext,
 } from '../native-twin/nativeTwin.config';
-import { NativeTwinPluginConfiguration } from '../plugin.types';
+import type { NativeTwinPluginConfiguration } from '../plugin.types';
 
 interface TSPluginContext {
   readonly plugin: {

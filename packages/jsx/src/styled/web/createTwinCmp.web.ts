@@ -1,14 +1,19 @@
-import { Component, createElement, forwardRef } from 'react';
 import { cx, tw } from '@native-twin/core';
-import type { JSXFunction, JSXInternalProps } from '../../types/jsx.types';
-import { getNormalizeConfig } from '../../utils/config.utils';
-import { REACT_FORWARD_REF_SYMBOL } from '../../utils/constants';
+import { createElement, forwardRef } from 'react';
+import type { JSXFunction, JSXInternalProps } from '../../types/jsx.types.js';
+import { getNormalizeConfig } from '../../utils/config.utils.js';
+import { REACT_FORWARD_REF_SYMBOL } from '../../utils/constants.js';
 
 // TODO: Check this on every react web fmw
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 
+type JSXTarget = Record<string, any> | Record<string, any>[];
 export const createStylableComponent = (baseComponent: any, mapping: any): any => {
   const configs = getNormalizeConfig(mapping);
+
+  if (configs.length === 0) {
+    configs.push({ source: 'className', target: 'style' });
+  }
 
   /**
    * Turns this:
@@ -24,25 +29,37 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
       return createElement(baseComponent, props);
     }
 
+    // if (typeof baseComponent === 'string') {
+    //   return createElement(baseComponent, props);
+    // }
+
     props = { ...props, ref };
     for (const config of configs) {
-      const newStyles: any = [];
+      const originalTarget: JSXTarget = props[config.target] ?? {};
+
+      let target: JSXTarget = Array.isArray(originalTarget)
+        ? [...originalTarget]
+        : { ...originalTarget, $$css: true };
       let source = props[config.source];
 
       // Ensure we only add non-empty strings
-      if (typeof source === 'string' && source) {
+      if (source && typeof source === 'string' && source.length > 0) {
         source = cx`${source}`;
-        tw(`${source}`);
-        newStyles.push({
-          $$css: true,
-          [source]: source,
-        } as any);
-      } else if (source) {
-        newStyles.push(source);
-      }
-
-      if (newStyles.length > 0) {
-        props[config.target] = Object.assign(props[config.target], newStyles);
+        const injected = tw(`${source}`);
+        if (injected && injected.length > 0) {
+          if (Array.isArray(target)) {
+            target.push({
+              $$css: true,
+              [source]: source,
+            });
+          } else {
+            target = {
+              ...target,
+              [source]: source,
+            };
+          }
+        }
+        props[config.target] = target;
       }
     }
 
@@ -53,19 +70,19 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
     ) {
       delete props?.['twEnabled'];
       return (baseComponent as any).render(props, props['ref']);
-    } else if (
-      typeof baseComponent === 'function' &&
-      !(baseComponent.prototype instanceof Component)
-    ) {
+    } else if (typeof baseComponent === 'function') {
       delete props?.['twEnabled'];
       return (baseComponent as any)(props);
     } else {
       return createElement(baseComponent, props);
     }
   });
+  // if (typeof window !== 'undefined') {
   twinComponent.displayName = `Twin.${
     baseComponent.displayName ?? baseComponent.name ?? 'unknown'
   }`;
+  // }
+
   stylizedComponents.set(baseComponent, twinComponent);
   return twinComponent;
 };

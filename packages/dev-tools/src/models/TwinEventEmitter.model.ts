@@ -1,6 +1,6 @@
-import { DevToolsPluginClient, EventSubscription } from 'expo/devtools';
-import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { PLUGIN_EVENTS } from '../constants/event.constants';
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import type { DevToolsPluginClient, EventSubscription } from 'expo/devtools.js';
+import type { PLUGIN_EVENTS } from '../constants/event.constants.js';
 
 export type EventSubscriptionFn<T> = (data: T) => void;
 export type TwinEventsShape = typeof PLUGIN_EVENTS;

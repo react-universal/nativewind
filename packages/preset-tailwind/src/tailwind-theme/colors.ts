@@ -3,8 +3,8 @@
 //
 // and Windi CSS
 // https://github.com/windicss/windicss/blob/main/src/config/colors.ts
-import { ColorsRecord } from '@native-twin/helpers';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { ColorsRecord } from '@native-twin/helpers';
+import type { TailwindPresetTheme } from '../types/theme.types.js';
 
 export const colors = {
   inherit: 'inherit',
@@ -326,19 +326,19 @@ export const colors = {
     950: '#080808',
   },
   get lightBlue() {
-    return this['sky'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
+    return this['sky'] as string | (ColorsRecord & { DEFAULT?: string });
   },
   get warmGray() {
-    return this['stone'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
+    return this['stone'] as string | (ColorsRecord & { DEFAULT?: string });
   },
   get trueGray() {
-    return this['neutral'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
+    return this['neutral'] as string | (ColorsRecord & { DEFAULT?: string });
   },
   get coolGray() {
-    return this['gray'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
+    return this['gray'] as string | (ColorsRecord & { DEFAULT?: string });
   },
   get blueGray() {
-    return this['slate'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
+    return this['slate'] as string | (ColorsRecord & { DEFAULT?: string });
   },
 } satisfies TailwindPresetTheme['colors'];
 

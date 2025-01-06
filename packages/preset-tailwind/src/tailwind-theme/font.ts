@@ -1,5 +1,5 @@
 import { createLinearUnits } from '@native-twin/helpers';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { TailwindPresetTheme } from '../types/theme.types.js';
 
 export const fontFamily = {
   sans: [
@@ -18,7 +18,9 @@ export const fontFamily = {
     '"Segoe UI Symbol"',
     '"Noto Color Emoji"',
   ].join(','),
-  serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'].join(','),
+  serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'].join(
+    ',',
+  ),
   mono: [
     'ui-monospace',
     'SFMono-Regular',
@@ -114,6 +116,13 @@ export const textDecorationStyle = {
   double: 'double',
   dotted: 'dotted',
 } satisfies TailwindPresetTheme['textDecorationStyle'];
+
+export const textDecorationLine = {
+  thought: 'line-through',
+  'under-through': 'underline line-through',
+  none: 'none',
+  underline: 'underline',
+} satisfies TailwindPresetTheme['textDecorationLine'];
 
 export const textTransform = {
   capitalize: 'capitalize',

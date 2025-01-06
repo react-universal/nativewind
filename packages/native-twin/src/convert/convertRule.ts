@@ -1,13 +1,13 @@
 import {
+  type TWParsedRule,
   atRulePrecedence,
+  mql,
   parsedRuleToClassName,
   pseudoPrecedence,
-  mql,
-  type TWParsedRule,
 } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import type { ThemeContext } from '../types/config.types';
-import type { __Theme__ } from '../types/theme.types';
+import type { ThemeContext } from '../types/config.types.js';
+import type { __Theme__ } from '../types/theme.types.js';
 
 /**
  * Converts provided parsed CSS rule to a specific format and applies necessary conditions.
@@ -40,7 +40,13 @@ export function convert<Theme extends __Theme__ = __Theme__>(
   conditions?: string[],
 ): TWParsedRule {
   if (name) {
-    name = parsedRuleToClassName({ n: name, i: important, v: variants, m: modifier, p: 0 });
+    name = parsedRuleToClassName({
+      n: name,
+      i: important,
+      v: variants,
+      m: modifier,
+      p: 0,
+    });
   }
 
   conditions = [...asArray(conditions)];
@@ -61,9 +67,9 @@ export function convert<Theme extends __Theme__ = __Theme__>(
 
       precedence |= screen
         ? (1 << 26) /* Shifts.screens */ | atRulePrecedence(condition)
-        : variant == 'dark'
+        : variant === 'dark'
           ? 1 << 30 /* Shifts.darkMode */
-          : condition[0] == '@'
+          : condition[0] === '@'
             ? atRulePrecedence(condition)
             : pseudoPrecedence(condition);
     }

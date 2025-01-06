@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "module": "ES2022",
+    "resolvePackageJsonExports": false,
+    "noImplicitOverride": false,
+    "esModuleInterop": true
+  },
+  "include": ["src"],
+  "exclude": ["build"]
+}

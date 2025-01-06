@@ -1,8 +1,8 @@
 import type { Preset } from '@native-twin/core';
-import { themeRules } from './tailwind-rules';
-import * as tailwindTheme from './tailwind-theme';
-import { preflight } from './tailwind-theme/preflight';
-import { TailwindPresetTheme } from './types/theme.types';
+import { themeRules } from './tailwind-rules/index.js';
+import * as tailwindTheme from './tailwind-theme/index.js';
+import { preflight } from './tailwind-theme/preflight.js';
+import type { TailwindPresetTheme } from './types/theme.types.js';
 
 export type { TailwindPresetTheme };
 export interface TailwindPresetBaseOptions {

@@ -1,5 +1,5 @@
 import { compareClassNames } from '@native-twin/helpers';
-import type { RuntimeTW, __Theme__ } from '../types/theme.types';
+import type { RuntimeTW, __Theme__ } from '../types/theme.types.js';
 
 export interface TailwindMutationObserver {
   observe: (target: Node) => void;
@@ -42,7 +42,7 @@ export function mutationObserver<Theme extends __Theme__ = __Theme__>(
 
   function handleMutationRecords(records: MinimalMutationRecord[]): void {
     for (const { type, target } of records) {
-      if (type[0] == 'a' /* attribute */) {
+      if (type[0] === 'a' /* attribute */) {
         // class attribute has been changed
         handleClassAttributeChange(target as Element);
       } else {

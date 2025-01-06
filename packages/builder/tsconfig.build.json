@@ -1,10 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
     "outDir": "build",
-    "noEmit": false,
-    "module": "ESNext",
-    "declarationMap": true
+    "declarationDir": "build",
+    "stripInternal": true
   }
 }

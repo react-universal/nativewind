@@ -1,21 +1,44 @@
-import { ComponentProps, ComponentType, forwardRef } from 'react';
-import { render as tlRender } from '@testing-library/react-native';
-import * as JSX from 'react/jsx-runtime';
 import { setup } from '@native-twin/core';
+import { defineConfig } from '@native-twin/core';
 import type { CompleteStyle } from '@native-twin/css';
+import { presetTailwind } from '@native-twin/preset-tailwind';
+import { render as tlRender } from '@testing-library/react-native';
+import { type ComponentProps, type ComponentType, forwardRef } from 'react';
+import * as JSX from 'react/jsx-runtime';
 import '../components';
-import wrapJSX from '../jsx-wrapper';
-import { StyleSheet } from '../sheet/StyleSheet';
-import { createStylableComponent, stylizedComponents } from '../styled';
+import wrapJSX from '../jsx-wrapper.js';
+import { StyleSheet } from '../sheet/StyleSheet.js';
+import { createStylableComponent, stylizedComponents } from '../styled/index.js';
 import type {
-  StylableComponentConfigOptions,
-  ReactComponent,
   NativeTwinGeneratedProps,
-} from '../types/styled.types';
-import { INTERNAL_RESET } from '../utils/constants';
-import tailwindConfig from './tailwind.config';
+  ReactComponent,
+  StylableComponentConfigOptions,
+} from '../types/styled.types.js';
+import { INTERNAL_RESET } from '../utils/constants.js';
 
-setup(tailwindConfig);
+const testingConfig = defineConfig({
+  content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
+  root: {
+    rem: 16,
+  },
+  theme: {
+    extend: {
+      colors: {
+        primary: 'blue',
+      },
+      fontFamily: {
+        DEFAULT: 'Inter-Regular',
+        inter: 'Inter-Regular',
+        'inter-bold': 'Inter-Bold',
+        'inter-medium': 'Inter-Medium',
+        sans: 'Inter-Regular',
+      },
+    },
+  },
+  presets: [presetTailwind()],
+});
+
+setup(testingConfig);
 
 declare global {
   namespace jest {
@@ -48,7 +71,7 @@ export const createMockComponent = <
   // return createStylableComponent(Component, mapping);
 
   const mock: any = jest.fn(({ ...props }, ref) => {
-    props.ref = ref;
+    props['ref'] = ref;
     return renderJSX(Component, props, '', false, undefined, undefined);
   });
 
@@ -83,6 +106,7 @@ export const createMockComponent = <
 // };
 
 export const resetStyles = () => {
+  // @ts-expect-error
   StyleSheet[INTERNAL_RESET]();
 };
 

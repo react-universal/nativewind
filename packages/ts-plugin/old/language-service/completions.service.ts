@@ -17,7 +17,7 @@ export function getCompletionsAtPosition(
   const textOffset = context.toOffset(position);
   const parsedRule = parse(text, textOffset, true);
 
-  ts.SyntaxKind.NoSubstitutionTemplateLiteral
+  // ts.SyntaxKind.NoSubstitutionTemplateLiteral
   // ts.SyntaxKind.TemplateExpression
   return {
     isGlobalCompletion: false,

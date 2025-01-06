@@ -7,7 +7,7 @@ if (typeof TextEncoder !== 'undefined') {
     const util = require('util');
     text = { Encoder: util.TextEncoder, Decoder: util.TextDecoder };
   } catch (ex) {
-    throw new Error('Arcsecond requires TextEncoder and TextDecoder to be polyfilled.');
+    throw new Error('requires TextEncoder and TextDecoder to be polyfilled.');
   }
 }
 

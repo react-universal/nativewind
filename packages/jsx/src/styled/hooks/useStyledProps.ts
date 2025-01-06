@@ -1,86 +1,102 @@
-import { useEffect, useMemo } from 'react';
-import {
-  getGroupedEntries,
-  RegisteredComponent,
-  RuntimeComponentEntry,
-  RuntimeSheetDeclaration,
-  RuntimeSheetEntry,
-} from '@native-twin/css/jsx';
-import { useAtomValue } from '@native-twin/helpers';
-import { StyleSheet } from '../../sheet/StyleSheet';
-import { tw } from '../../sheet/native-tw';
-import { styledContext, twinConfigObservable } from '../../store/observables';
-import { ComponentTemplateEntryProp } from '../../types/jsx.types';
-import { ComponentConfig } from '../../types/styled.types';
-import { INTERNAL_RESET } from '../../utils/constants';
-import { composeDeclarations } from '../../utils/sheet.utils';
-import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps';
+import { composeDeclarations } from '@native-twin/core';
+import type { TwinInjectedProp } from '@native-twin/css/jsx';
+import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
+import { useCallback, useContext, useId, useMemo, useRef } from 'react';
+import type {
+  NativeSyntheticEvent,
+  PressableProps,
+  TextInputFocusEventData,
+  Touchable,
+} from 'react-native';
+import { groupContext } from '../../context/styled.context.js';
+import { StyleSheet } from '../../sheet/StyleSheet.js';
+import { styledContext } from '../../store/observables';
+import type { JSXInternalProps } from '../../types/jsx.types.js';
+import type { ComponentConfig } from '../../types/styled.types.js';
+import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
 
-export const useStyledProps = (
-  id: string,
-  props: Record<string, any>,
-  configs: ComponentConfig[],
-) => {
-  const compiledSheet: RegisteredComponent | null =
-    props?.['_twinComponentSheet'] ?? null;
-
-  const templateEntries: ComponentTemplateEntryProp[] = props?.[
-    '_twinComponentTemplateEntries'
-  ] as ComponentTemplateEntryProp[];
-  // const _debug: boolean = props?.['debug'] ?? false;
-
-  const templateEntriesObj = templatePropsToSheetEntriesObject(templateEntries ?? []);
-
+export const useStyledProps = (props: JSXInternalProps, configs: ComponentConfig[]) => {
+  const injectedProps: TwinInjectedProp | undefined = props?.['_twinInjected'];
+  const reactID = useId();
+  const id = injectedProps?.id ?? reactID;
   const styledCtx = useAtomValue(styledContext);
+  const handlers: Touchable & PressableProps = {};
+  const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 
-  const componentStyles = useMemo(() => {
-    if (compiledSheet) {
-      return StyleSheet.registerComponent(
-        id,
-        compiledSheet.sheets.map((x) => x.compiledSheet),
-        styledCtx,
-      );
-    }
-    const entries = configs.map((config): RuntimeComponentEntry => {
-      const source = props[config.source];
-      const entries = tw(source ?? '').map(
-        (entry): RuntimeSheetEntry => ({
-          animations: [],
-          className: entry.className,
-          declarations: entry.declarations.map(
-            (decl): RuntimeSheetDeclaration => ({
-              _tag: 'NOT_COMPILED',
-              prop: config.target,
-              value: composeDeclarations([decl], styledCtx),
-            }),
-          ),
-          important: entry.important,
-          precedence: entry.precedence,
-          selectors: entry.selectors,
-        }),
-      );
+  const componentHandler = useMemo(() => {
+    return StyleSheet.getComponentByID(id, injectedProps?.templateEntries);
+  }, [id, injectedProps]);
+
+  const context = useContext(groupContext);
+  const parentState = useAtomValue(
+    atom((get) => {
+      if (!context || !componentHandler.metadata.isGroupParent) {
+        return DEFAULT_INTERACTIONS;
+      }
+      return get(StyleSheet.getComponentState(context)).interactions;
+    }),
+  );
+
+  const interactionsRef = useRef<
+    Touchable &
+      PressableProps & {
+        onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+        onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+      }
+  >(props as any);
+
+  const onChange = useCallback(
+    (active: boolean) => {
+      if (
+        componentHandler.metadata.hasPointerEvents ||
+        componentHandler.metadata.isGroupParent
+      ) {
+        setState({
+          interactions: {
+            isLocalActive: active,
+            isGroupActive: active,
+          },
+          meta: state.meta,
+        });
+      }
+    },
+    [componentHandler, setState, state],
+  );
+
+  if (
+    componentHandler.metadata.hasPointerEvents ||
+    componentHandler.metadata.hasGroupEvents ||
+    componentHandler.metadata.isGroupParent
+  ) {
+    handlers.onTouchStart = (event) => {
+      if (interactionsRef.current.onTouchStart) {
+        interactionsRef.current.onTouchStart(event);
+      }
+      onChange(true);
+    };
+    handlers.onTouchEnd = (event) => {
+      if (interactionsRef.current.onTouchEnd) {
+        interactionsRef.current.onTouchEnd(event);
+      }
+      onChange(false);
+    };
+  }
+
+  const compiledProps = useMemo(() => {
+    return componentHandler.props.map(({ prop, target, declarations }) => {
+      const compileDecls = [...declarations.base];
+
+      if (state.interactions.isLocalActive) compileDecls.push(...declarations.pointer);
+      if (state.interactions.isGroupActive) compileDecls.push(...declarations.group);
+
+      const styles = composeDeclarations(compileDecls, styledCtx);
       return {
-        classNames: props?.[source] ?? '',
-        entries,
-        prop: config.target,
-        rawSheet: getGroupedEntries(entries),
-        target: config.target,
-        templateLiteral: null,
+        prop,
+        target,
+        styles,
       };
     });
-    return StyleSheet.registerComponent(id, entries, styledCtx);
-  }, [compiledSheet, styledCtx, id, configs, props]);
+  }, [componentHandler, styledCtx, state.interactions]);
 
-  useEffect(() => {
-    if (StyleSheet.getFlag('STARTED') === 'NO') {
-      StyleSheet[INTERNAL_RESET](tw.config);
-    }
-    const obs = tw.observeConfig((c) => {
-      if (twinConfigObservable.get() !== c) {
-        StyleSheet[INTERNAL_RESET](c);
-      }
-    });
-    return () => obs();
-  }, []);
-  return { componentStyles, styledCtx, templateEntriesObj };
+  return { componentHandler, compiledProps, handlers, styledCtx, parentState };
 };

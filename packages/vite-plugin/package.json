@@ -1,0 +1,44 @@
+{
+  "name": "@native-twin/vite-plugin",
+  "version": "7.0.0-next.3",
+  "private": true,
+  "description": "Vite extractor plugin for native twin",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/vite-plugin"
+  },
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "type": "module",
+  "files": [
+    "build",
+    "LICENSE",
+    "src",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "dependencies": {
+    "@effect/cli": "^0.48.3",
+    "@effect/platform": "^0.69.3",
+    "@effect/platform-node": "^0.64.4",
+    "@effect/platform-node-shared": "^0.19.3",
+    "@effect/printer-ansi": "^0.38.0",
+    "@native-twin/compiler": "workspace:*",
+    "effect": "^3.10.0"
+  },
+  "devDependencies": {
+    "@babel/parser": "^7.26.2"
+  },
+  "optionalDependencies": {
+    "@native-twin/cli": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  }
+}

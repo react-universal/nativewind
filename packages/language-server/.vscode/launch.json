@@ -1,9 +1,8 @@
-// A launch configuration that compiles the extension and then opens it inside a new window
 {
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Extension Server",
+      "name": "Build Extension Server",
       "type": "node",
       "request": "attach",
       "sourceMaps": true,
@@ -11,10 +10,6 @@
         "hidden": true,
         "group": "",
         "order": 1
-      },
-      "preLaunchTask": {
-        "type": "npm",
-        "script": "build:tsc:watch"
       },
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"

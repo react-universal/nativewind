@@ -1,15 +1,19 @@
-import { Text, View } from 'react-native';
-import { fireEvent, render, screen } from '@testing-library/react-native';
-import { act } from 'react-test-renderer';
 import { defineConfig, setup } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { colorScheme } from '../store/observables/colorScheme.obs';
-import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
+import { fireEvent, render, screen } from '@testing-library/react-native';
+import { Text, View } from 'react-native';
+import { act } from 'react-test-renderer';
+import { colorScheme } from '../store/observables/colorScheme.obs.js';
+import {
+  createMockComponent,
+  resetComponents,
+  resetStyles,
+} from '../testing-library/index.js';
 
 const testID = 'native-twin-element';
 
 beforeAll(() => {
-  setup(defineConfig({ content: [], presets: [presetTailwind()] }));
+  setup(defineConfig({ content: [''], presets: [presetTailwind()] }));
 });
 
 beforeEach(() => {
@@ -85,6 +89,8 @@ test('multiple mapping', () => {
 
   expect(component.props).toEqual({
     testID,
+    a: 'bg-black',
+    b: 'text-white',
     styleA: {
       backgroundColor: 'rgba(0,0,0,1)',
     },

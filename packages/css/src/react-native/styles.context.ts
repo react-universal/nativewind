@@ -1,4 +1,4 @@
-import type { PlatformOSType, ColorSchemeName } from 'react-native';
+import type { ColorSchemeName, PlatformOSType } from 'react-native';
 
 export type CssUnitsContext = {
   '%'?: number;

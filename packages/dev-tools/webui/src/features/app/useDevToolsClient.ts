@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import {
-  useDevToolsPluginClient,
-  DevToolsPluginClient,
+  type DevToolsPluginClient,
   type EventSubscription,
+  useDevToolsPluginClient,
 } from 'expo/devtools';
+import { useEffect } from 'react';
 
 type EventSubscriptionFn<T> = (client: DevToolsPluginClient, data: T) => void;
 

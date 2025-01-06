@@ -1,6 +1,7 @@
-import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
+// TODO: restore Keyframe types
+// import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type { MaybeArray } from '@native-twin/helpers';
-import type { AnyStyle } from '../react-native/rn.types';
+import type { AnyStyle } from '../react-native/rn.types.js';
 
 export type Preflight = false | MaybeArray<Record<string, any>>;
 
@@ -22,14 +23,19 @@ export interface Sheet<Target = unknown> {
 export interface SheetEntryRegistry extends SheetEntry {
   index: number;
 }
-export interface SheetEntry {
-  className: string;
-  declarations: SheetEntryDeclaration[];
-  animations: ReanimatedKeyframe[];
-  /** The rule sets (selectors and at-rules). expanded variants `@media ...`, `@supports ...`, `&:focus`, `.dark &` */
-  selectors: string[];
+
+export type SortableEntry = {
   precedence: number;
   important: boolean;
+};
+
+export interface SheetEntry extends SortableEntry {
+  className: string;
+  declarations: SheetEntryDeclaration[];
+  animations: any[];
+  /** The rule sets (selectors and at-rules). expanded variants `@media ...`, `@supports ...`, `&:focus`, `.dark &` */
+  selectors: string[];
+  preflight: boolean;
 }
 
 export type SheetEntryDeclaration = {

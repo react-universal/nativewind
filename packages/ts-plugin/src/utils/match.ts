@@ -1,5 +1,5 @@
 import type ts from 'typescript/lib/tsserverlibrary';
-import { NativeTwinPluginConfiguration } from '../plugin.types';
+import type { NativeTwinPluginConfiguration } from '../plugin.types';
 
 export type Predicate =
   | ((
@@ -50,11 +50,11 @@ export function match(
     return predicate.some((item) => match(value, item, key, object, matcher));
   }
 
-  if (typeof predicate == 'function') {
+  if (typeof predicate === 'function') {
     return Boolean(predicate.call(matcher, value, key, object, matcher));
   }
 
-  if (typeof value == 'string' && isRegExpLike(predicate)) {
+  if (typeof value === 'string' && isRegExpLike(predicate)) {
     return predicate.test(value);
   }
 
@@ -88,11 +88,11 @@ function isEqual(value: unknown, other: unknown): boolean {
  * @param value to check
  */
 function isObjectLike(value: unknown): value is object {
-  return value != null && typeof value == 'object';
+  return value != null && typeof value === 'object';
 }
 
 function isRegExpLike(value: unknown): value is RegExpLike {
-  return isObjectLike(value) && typeof (value as RegExp).test == 'function';
+  return isObjectLike(value) && typeof (value as RegExp).test === 'function';
 }
 
 export const getSourceMatchers = (
@@ -147,7 +147,7 @@ export const getSourceMatchers = (
       text: 'base',
     },
     // Do not match CSS objects: `base: { color: 'blue' }`
-    initializer: (node: ts.Node) => node.kind != SyntaxKind.ObjectLiteralExpression,
+    initializer: (node: ts.Node) => node.kind !== SyntaxKind.ObjectLiteralExpression,
     // https://github.com/microsoft/typescript-template-language-service-decorator/blob/main/src/nodes.ts#L62
     // TODO styled.button, styled()
     parent: {
@@ -200,7 +200,7 @@ export const getSourceMatchers = (
   {
     kind: SyntaxKind.PropertyAssignment,
     // Do not match CSS objects
-    initializer: (node: ts.Node) => node.kind != SyntaxKind.ObjectLiteralExpression,
+    initializer: (node: ts.Node) => node.kind !== SyntaxKind.ObjectLiteralExpression,
     parent: {
       kind: SyntaxKind.ObjectLiteralExpression,
       parent: {

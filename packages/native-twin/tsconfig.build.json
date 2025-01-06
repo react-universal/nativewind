@@ -1,12 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "build",
-    "declarationMap": true,
-    "verbatimModuleSyntax": false,
-    "module": "CommonJS",
-    "noEmit": false,
-    "importHelpers": true
-  },
-  "exclude": ["./test/", "build"]
+    "outDir": "build/esm",
+    "declarationDir": "build/dts",
+    "stripInternal": true
+  }
 }

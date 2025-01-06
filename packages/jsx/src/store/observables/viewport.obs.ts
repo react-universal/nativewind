@@ -1,5 +1,5 @@
+import { atom } from '@native-twin/helpers/react';
 import { Dimensions } from 'react-native';
-import { atom } from '@native-twin/helpers';
 
 /**
  * ViewPort

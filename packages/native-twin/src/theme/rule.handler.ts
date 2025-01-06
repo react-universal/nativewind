@@ -1,7 +1,7 @@
-import type { TWParsedRule, SheetEntry, SheetEntryDeclaration } from '@native-twin/css';
-import { createRuleResolver } from '../parsers/rule-handler';
-import type { Rule, ThemeContext } from '../types/config.types';
-import type { __Theme__ } from '../types/theme.types';
+import type { SheetEntry, SheetEntryDeclaration, TWParsedRule } from '@native-twin/css';
+import { createRuleResolver } from '../parsers/rule-handler.js';
+import type { Rule, ThemeContext } from '../types/config.types.js';
+import type { __Theme__ } from '../types/theme.types.js';
 
 export function createRuleController<Theme extends __Theme__ = __Theme__>(
   themeRule: Rule<Theme>,

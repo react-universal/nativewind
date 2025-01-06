@@ -1,6 +1,6 @@
-import { runTests } from '@vscode/test-electron';
 import os from 'os';
 import * as path from 'path';
+import { runTests } from '@vscode/test-electron';
 
 async function main() {
   try {
@@ -23,7 +23,7 @@ async function main() {
         './project-fixture',
       ],
     });
-  } catch (err) {
+  } catch {
     console.error('Failed to run tests');
     process.exit(1);
   }

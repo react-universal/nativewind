@@ -21,6 +21,7 @@
         "${workspaceFolder}/**",
         "${workspaceFolder}/../**",
         "${workspaceFolder}/../babel/**/*",
+        "${workspaceFolder}/../compiler/**/*",
         "!**/node_modules/**"
       ],
       "sourceMaps": true,

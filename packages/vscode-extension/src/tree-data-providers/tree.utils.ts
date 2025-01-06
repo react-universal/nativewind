@@ -1,0 +1,60 @@
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
+import type * as Scope from 'effect/Scope';
+import * as vscode from 'vscode';
+import { VscodeContext } from '../extension/extension.service.js';
+import { emitterOptional, runWithTokenDefault } from '../extension/extension.utils.js';
+import type { TwinTextDocument } from '../language/index.js';
+import type { TreeDataProvider } from './models/VscodeTree.models.js';
+
+const uriToID = (uri: vscode.Uri) => uri.toString();
+
+export const getTwinDocumentID = (doc: TwinTextDocument) => uriToID(doc.document.uri);
+
+export const makeTreeDataProvider =
+  <A>(name: string) =>
+  <R, E>(
+    create: (
+      refresh: (data: Option.Option<A | Array<A>>) => Effect.Effect<void>,
+    ) => Effect.Effect<TreeDataProvider<A>, E, R>,
+  ): Layer.Layer<never, E, Exclude<R, Scope.Scope> | VscodeContext> =>
+    Effect.gen(function* () {
+      const onChange = yield* emitterOptional<A | Array<A>>();
+      const provider = yield* create(onChange.fire);
+      const vscodeProvider: vscode.TreeDataProvider<A> = {
+        onDidChangeTreeData: onChange.event,
+        getTreeItem(element) {
+          return Effect.runPromise(provider.treeItem(element));
+        },
+        getChildren(element) {
+          return Effect.runPromise(
+            Effect.map(
+              provider.children(Option.fromNullable(element)),
+              Option.getOrUndefined,
+            ),
+          );
+        },
+        getParent: provider.parent
+          ? (element) =>
+              Effect.runPromise(
+                Effect.map(provider.parent!(element), Option.getOrUndefined),
+              )
+          : undefined,
+        resolveTreeItem: (item, element, token) => {
+          if (provider.resolve) {
+            return runWithTokenDefault(
+              Effect.map(provider.resolve!(item, element), Option.getOrUndefined),
+              token,
+            );
+          }
+          return undefined;
+        },
+      };
+      const context = yield* VscodeContext;
+      const treeView = vscode.window.createTreeView(name, {
+        treeDataProvider: vscodeProvider,
+        showCollapseAll: true,
+      });
+      context.subscriptions.push(treeView);
+    }).pipe(Layer.scopedDiscard);

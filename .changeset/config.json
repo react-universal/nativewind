@@ -1,28 +1,46 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "react-universal/native-twin" }],
+  "$schema": "https://unpkg.com/@changesets/config@3.0.3/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "react-universal/native-twin"
+    }
+  ],
   "commit": false,
   "fixed": [
     [
-      "@native-twin/helpers",
-      "@native-twin/styled",
-      "@native-twin/css",
-      "@native-twin/core",
-      "@native-twin/nextjs",
-      "@native-twin/preset-tailwind",
       "@native-twin/arc-parser",
-      "@native-twin/jsx",
-      "@native-twin/babel",
-      "@native-twin/metro",
+      "@native-twin/cli",
+      "@native-twin/css",
+      "@native-twin/compiler",
       "@native-twin/dev-tools",
+      "@native-twin/helpers",
+      "@native-twin/babel",
+      "@native-twin/jsx",
       "@native-twin/language-server",
-      "@native-twin/language-service"
+      "@native-twin/language-service",
+      "@native-twin/metro",
+      "@native-twin/core",
+      "@native-twin/adapters",
+      "@native-twin/preset-tailwind",
+      "@native-twin/styled"
     ]
   ],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-pages-example", "expo-app", "native-twin-vscode"],
+  "ignore": [
+    "next-pages-example",
+    "@native-twin/vite-plugin",
+    "@native-twin/ts-plugin",
+    "twin-run",
+    "native-twin-docs",
+    "@native-twin/dev-tools-webui",
+    "expo-app-web",
+    "next-app-dir",
+    "expo-app",
+    "native-twin-vscode"
+  ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }

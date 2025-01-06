@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { flattenObjectByPath } from '../src';
 
 describe('Object utils', () => {
@@ -11,8 +12,7 @@ describe('Object utils', () => {
         },
       },
     };
-    const flatten = flattenObjectByPath(testObj); //?+
-    flatten; //?
+    const flatten = flattenObjectByPath(testObj);
     expect(flatten).toStrictEqual({
       ...testObj,
       'b-c': 2,

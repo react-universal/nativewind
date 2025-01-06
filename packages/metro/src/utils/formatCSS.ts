@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 export const formatCSS = (css: string) => ({
   extractCSS(content: string, nested = false) {
     const propValueRegex = /(?:[\s\r\n]*)?(?<prop>[\w-]+)\s*:\s*(?<value>[^;\r\n]+)/gm;
@@ -11,7 +10,7 @@ export const formatCSS = (css: string) => ({
     }
 
     return Object.entries(props).reduce(
-      (acc, [prop, value]) => acc + `${nested ? '\t' : ''}${prop}: ${value}; \n\r`,
+      (acc, [prop, value]) => `${acc}${nested ? '\t' : ''}${prop}: ${value}; \n\r`,
       '',
     );
   },
@@ -19,7 +18,7 @@ export const formatCSS = (css: string) => ({
     // const blockContentRegex =
     //   /(?<=\.)[^{]+\s*\{(?<content>[^{}]*(?:(?<=;)\s*\n\r?[^{}]*)*)\s*\}/gm;
     // let matchBlock: RegExpExecArray | null;
-    let blockContent = '';
+    const blockContent = '';
 
     // while ((matchBlock = blockContentRegex.exec(css)) !== null) {
     //   const { content } = matchBlock.groups!;
@@ -67,7 +66,6 @@ export const formatCSS = (css: string) => ({
     parts.push(
       ...Array.from(medias, ([condition, content]) => `@media${condition}{${content}}`),
     );
-
     css = parts.join('');
 
     return this;
@@ -99,7 +97,7 @@ export const formatCSS = (css: string) => ({
 
     while ((match = regex.exec(css)) !== null) {
       const [matchString] = match;
-      let { red, green, blue, alpha = 1 } = match.groups!;
+      const { red, green, blue, alpha = 1 } = match.groups!;
       css = css.replace(
         matchString,
         alpha === '1' || alpha === 1

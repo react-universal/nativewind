@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/dev-tools",
-  "version": "0.0.1",
+  "version": "7.0.0-next.3",
   "description": "Native Twin Expo dev tools",
   "keywords": [
     "expo",
@@ -17,33 +17,43 @@
     "directory": "packages/dev-tools"
   },
   "license": "MIT",
-  "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "type": "module",
   "files": [
     "build",
     "dist",
+    "src",
+    "webui",
+    "tsconfig.build.json",
+    "tsconfig.json",
+    "babel.config.js",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
     "expo-module.config.json"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:all": "cd webui && npx expo export -p web --output-dir ../dist",
-    "build:watch": "tsc -p tsconfig.build.json --watch",
-    "clean": "expo-module clean",
-    "prepublishOnly": "expo-module prepublishOnly && cd webui && npx expo export -p web --output-dir ../dist",
+    "_____build": "yarn build:all",
+    "_____build:all": "cd webui && npx expo export -p web --output-dir ../dist",
+    "_____build:watch": "tsc -p tsconfig.build.json --watch",
+    "clean": "expo-module clean && rm -rf dist && rm -rf .expo",
     "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
   },
   "dependencies": {
+    "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
-    "effect": "^3.7.2",
+    "@native-twin/jsx": "workspace:*",
+    "@native-twin/metro": "workspace:*",
+    "effect": "^3.10.0",
     "eventemitter3": "^5.0.1"
   },
-  "devDependencies": {
-    "expo-module-scripts": "^3.1.0"
-  },
   "peerDependencies": {
-    "expo": "*",
-    "react": "*"
+    "expo": "~51.0.39",
+    "react": "~18.2.0",
+    "react-dom": "~18.2.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
   }
 }

@@ -1,7 +1,7 @@
 import * as P from '@native-twin/arc-parser';
-import { ident } from '../css-common.parser';
-import { SelectorGroup } from '../css.types';
-import { SelectorPayload } from './css-parser.types';
+import { ident } from '../css-common.parser.js';
+import type { SelectorGroup } from '../css.types.js';
+import type { SelectorPayload } from './css-parser.types.js';
 
 /*
  ************ SELECTOR STRICT ***********
@@ -66,26 +66,26 @@ export const ParseSelectorStrict = P.coroutine((run) => {
     result: SelectorPayload = { pseudoSelectors: [], selectorName: '', group: 'base' },
   ): SelectorPayload {
     const nextToken = run(P.peek);
-    if (nextToken == '{') {
+    if (nextToken === '{') {
       return result;
     }
-    if (nextToken == '\\') {
+    if (nextToken === '\\') {
       run(P.skip(P.many(P.char('\\'))));
       return parseNextPart(result);
     }
-    if (nextToken == ':') {
+    if (nextToken === ':') {
       run(P.skip(P.char(':')));
     }
 
-    if (nextToken == '.') {
+    if (nextToken === '.') {
       run(P.skip(P.char('.')));
     }
-    if (nextToken == '#') {
+    if (nextToken === '#') {
       run(P.skip(P.char('#')));
     }
     const nextPart = run(ParseSelectorPart);
-    if (nextPart.type == 'IDENT_PSEUDO_CLASS') {
-      if (result.selectorName == '') {
+    if (nextPart.type === 'IDENT_PSEUDO_CLASS') {
+      if (result.selectorName === '') {
         result.selectorName = nextPart.value;
       }
     } else {
@@ -93,8 +93,8 @@ export const ParseSelectorStrict = P.coroutine((run) => {
         result.pseudoSelectors.push(nextPart.value);
       }
     }
-    if (result.group == 'base') {
-      if (nextPart.type == 'CHILD_PSEUDO_CLASS') {
+    if (result.group === 'base') {
+      if (nextPart.type === 'CHILD_PSEUDO_CLASS') {
         switch (nextPart.value) {
           case 'even':
             result.group = 'even';
@@ -110,10 +110,10 @@ export const ParseSelectorStrict = P.coroutine((run) => {
             break;
         }
       }
-      if (nextPart.type == 'GROUP_PSEUDO_CLASS') {
+      if (nextPart.type === 'GROUP_PSEUDO_CLASS') {
         result.group = 'group';
       }
-      if (nextPart.type == 'POINTER_PSEUDO_CLASS') {
+      if (nextPart.type === 'POINTER_PSEUDO_CLASS') {
         result.group = 'pointer';
       }
     }

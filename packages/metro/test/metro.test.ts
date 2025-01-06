@@ -7,17 +7,17 @@ const exampleProjectFixture = {
   configPath: require.resolve(
     path.join(__dirname, '../../../apps/expo-app', 'metro.config.js'),
   ),
-  rootEntry: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'index.js')),
+  rootEntry: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'src/screens/index.js')),
   screenComponentPath: path.resolve(
-    path.join(__dirname, '../../../apps/expo-app', 'src/screens/Home.screen.tsx'),
+    path.join(__dirname, '../../../apps/expo-app', 'App.tsx'),
   ),
   bundleOut: path.join(__dirname, '../../../apps/expo-app', 'metro-test/bundled.js'),
   babelConfig: require.resolve(
     path.join(__dirname, '../../../apps/expo-app', 'babel.config.js'),
   ),
 };
-describe.skip('Metro bundler test', () => {
-  it.skip('Metro build Native/iOS', async () => {
+describe('Metro bundler test', () => {
+  it('Metro build Native/iOS', async () => {
     const outDir = path.dirname(exampleProjectFixture.bundleOut);
     await fs.mkdir(outDir, { recursive: true });
     await fs.writeFile(exampleProjectFixture.bundleOut, '');
@@ -30,16 +30,16 @@ describe.skip('Metro bundler test', () => {
         cwd: exampleProjectFixture.cwd,
         config: exampleProjectFixture.configPath,
       },
-      {
-        // transformerPath: require.resolve('../src/transformer/metro.transformer'),
-        projectRoot: exampleProjectFixture.cwd,
-        resetCache: true,
-      },
+      // {
+      //   // transformerPath: require.resolve('../src/transformer/metro.transformer'),
+      //   projectRoot: exampleProjectFixture.cwd,
+      //   resetCache: true,
+      // },
     );
     await Metro.runBuild(config, {
       entry: exampleProjectFixture.screenComponentPath,
       out: exampleProjectFixture.bundleOut,
-      dev: true,
+      dev: false,
       minify: false,
       sourceMap: false,
       platform: 'ios',
@@ -54,10 +54,10 @@ describe.skip('Metro bundler test', () => {
             bundleType: 'delta',
             customResolverOptions: config.resolver,
             customTransformOptions: config.transformer,
-            dev: true,
+            dev: false,
             entryFile: options.entryFile,
             excludeSource: true,
-            hot: true,
+            hot: false,
             inlineSourceMap: false,
             lazy: false,
             minify: false,

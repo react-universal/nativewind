@@ -1,3 +1,5 @@
 {
-  "main": "../build/testing-library/index.js"
+  "main": "../build/testing-library",
+  "module": "../build/testing-library",
+  "types": "../../build/testing-library/index.d.ts"
 }

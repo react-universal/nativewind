@@ -1,14 +1,15 @@
 import type { ClassAttributes, ComponentProps, ComponentType } from 'react';
 import {
   type AccessibilityRole,
-  type StyleProp,
   Text as NativeText,
   type TextStyle as NativeTextStyle,
+  type StyleProp,
 } from 'react-native';
 
 // https://github.com/necolas/react-native-web/issues/832
 
-type NativeTextProps = ComponentProps<typeof NativeText> & ClassAttributes<typeof NativeText>;
+type NativeTextProps = ComponentProps<typeof NativeText> &
+  ClassAttributes<typeof NativeText>;
 
 export interface WebTextStyle {
   /** string is only available on web */

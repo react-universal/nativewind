@@ -1,5 +1,5 @@
-import type { ParserState } from '../types';
-import { Parser } from './Parser';
+import type { ParserState } from '../types.js';
+import { Parser } from './Parser.js';
 
 export function choice<A>([p1]: [Parser<A>]): Parser<A>;
 export function choice<A, B>([p1, p2]: [Parser<A>, Parser<B>]): Parser<A | B>;
@@ -335,7 +335,7 @@ export function choice<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R>([
 ]): Parser<A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R>;
 export function choice(parsers: Parser<any>[]): Parser<any>;
 export function choice(parsers: Parser<any>[]): Parser<any> {
-  if (parsers.length == 0) throw new Error(`List of parsers can't be empty.`);
+  if (parsers.length === 0) throw new Error(`List of parsers can't be empty.`);
   return new Parser((state) => {
     if (state.isError) return state;
 

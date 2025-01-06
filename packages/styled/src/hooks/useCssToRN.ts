@@ -1,17 +1,15 @@
-import { useId, useMemo } from 'react';
-import { Platform } from 'react-native';
 import { parseCssValue, tw } from '@native-twin/core';
 import {
-  AnyStyle,
-  FinalSheet,
-  GetChildStylesArgs,
-  SheetInteractionState,
-  SheetEntry,
-  SheetEntryDeclaration,
+  type AnyStyle,
+  type RuntimeContext,
+  type SheetEntry,
+  type SheetEntryDeclaration,
+  type SheetInteractionState,
   getRuleSelectorGroup,
-  RuntimeContext,
 } from '@native-twin/css';
-import { useStyledContext } from './useStyledContext';
+import { useId, useMemo } from 'react';
+import { Platform } from 'react-native';
+import { useStyledContext } from './useStyledContext.js';
 
 export function useCssToRN(className: string) {
   const componentID = useId();
@@ -30,7 +28,7 @@ export function createComponentSheet(entries: SheetEntry[], context: RuntimeCont
     getStyles,
     sheet,
     metadata: {
-      isGroupParent: entries.some((x) => x.className == 'group'),
+      isGroupParent: entries.some((x) => x.className === 'group'),
       hasGroupEvents: Object.keys(sheet.group).length > 0,
       hasPointerEvents: Object.keys(sheet.pointer).length > 0,
     },
@@ -42,7 +40,7 @@ export function createComponentSheet(entries: SheetEntry[], context: RuntimeCont
     return styles;
   }
 
-  function getChildStyles(input: GetChildStylesArgs) {
+  function getChildStyles(input: any) {
     const result: AnyStyle = {};
     if (input.isFirstChild) {
       Object.assign(result, sheet.first);
@@ -81,7 +79,7 @@ function getSheetEntryStyles(entries: SheetEntry[], context: RuntimeContext) {
       last: {},
       odd: {},
       pointer: {},
-    } as FinalSheet,
+    } as any,
   );
 }
 
@@ -94,7 +92,7 @@ function composeDeclarations(
     if (Array.isArray(current.value)) {
       value = [];
       for (const t of current.value) {
-        if (typeof t.value == 'string') {
+        if (typeof t.value === 'string') {
           value.push({
             [t.prop]: parseCssValue(t.prop, t.value, {
               rem: tw.config.root?.rem ?? context.units.rem,
@@ -109,14 +107,14 @@ function composeDeclarations(
       });
       return prev;
     }
-    if (typeof value == 'string') {
+    if (typeof value === 'string') {
       value = parseCssValue(current.prop, value, {
         rem: tw.config.root?.rem ?? context.units.rem,
         deviceHeight: context.deviceHeight,
         deviceWidth: context.deviceWidth,
       });
     }
-    if (typeof value == 'object') {
+    if (typeof value === 'object') {
       Object.assign(prev, value);
     } else {
       Object.assign(prev, {
@@ -130,23 +128,23 @@ function composeDeclarations(
 
 const platformVariants = ['web', 'native', 'ios', 'android'];
 function isApplicativeRule(variants: string[], context: RuntimeContext) {
-  if (variants.length == 0) return true;
+  if (variants.length === 0) return true;
   const screens = tw.theme('screens');
   for (let v of variants) {
     v = v.replace('&:', '');
     if (platformVariants.includes(v)) {
-      if (v == 'web' && Platform.OS != 'web') return false;
-      if (v == 'native' && Platform.OS == 'web') return false;
-      if (v == 'ios' && Platform.OS != 'ios') return false;
-      if (v == 'android' && Platform.OS != 'android') return false;
+      if (v === 'web' && Platform.OS !== 'web') return false;
+      if (v === 'native' && Platform.OS === 'web') return false;
+      if (v === 'ios' && Platform.OS !== 'ios') return false;
+      if (v === 'android' && Platform.OS !== 'android') return false;
     }
     for (let v of variants) {
       v = v.replace('&:', '');
       if (platformVariants.includes(v)) {
-        if (v == 'web' && Platform.OS != 'web') return false;
-        if (v == 'native' && Platform.OS == 'web') return false;
-        if (v == 'ios' && Platform.OS != 'ios') return false;
-        if (v == 'android' && Platform.OS != 'android') return false;
+        if (v === 'web' && Platform.OS !== 'web') return false;
+        if (v === 'native' && Platform.OS === 'web') return false;
+        if (v === 'ios' && Platform.OS !== 'ios') return false;
+        if (v === 'android' && Platform.OS !== 'android') return false;
       }
       // if (
       //   (v === 'dark' && context.colorScheme === 'light') ||
@@ -168,7 +166,7 @@ function isApplicativeRule(variants: string[], context: RuntimeContext) {
           }
         }
 
-        if (typeof variant == 'object') {
+        if (typeof variant === 'object') {
           let min: null | number = null;
           let max: null | number = null;
           // if ('raw' in variant && !(width >= Number(variant.raw))) {

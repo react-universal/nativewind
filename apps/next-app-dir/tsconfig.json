@@ -9,6 +9,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "jsxImportSource": "@native-twin/jsx",
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

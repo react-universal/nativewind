@@ -7,6 +7,7 @@ export const mapAsType =
     };
   };
 
+export type DeclarationPropertyValueType = ReturnType<typeof getPropertyValueType>;
 export const getPropertyValueType = (property: string) => {
   switch (property) {
     case 'color':
@@ -86,7 +87,7 @@ export const getPropertyValueType = (property: string) => {
 };
 
 export const unsupportedStyles = (property: string) => {
-  if (property == 'display') {
+  if (property === 'display') {
     return {
       fallback: 'flex',
     };

@@ -1,6 +1,6 @@
-import { createTailwind } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
-import { presetTailwind } from '../src';
+import { createTailwind } from '@native-twin/core';
+import { presetTailwind } from '../src/index.js';
 
 const tailwind = createTailwind(
   {
@@ -34,6 +34,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
     expect(tailwind('px-2')).toStrictEqual([
@@ -47,6 +48,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
     expect(tailwind('absolute')).toStrictEqual([
@@ -57,6 +59,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
     expect(tailwind('py-2')).toStrictEqual([
@@ -70,6 +73,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });
@@ -87,6 +91,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
     expect(tailwind('-m-2')).toStrictEqual([
@@ -102,6 +107,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
     expect(tailwind('mx-2')).toStrictEqual([
@@ -115,6 +121,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
     expect(tailwind('my-2')).toStrictEqual([
@@ -134,6 +141,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });
@@ -151,6 +159,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
     expect(tailwind('-mx-[20px]')).toStrictEqual([
@@ -170,6 +179,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });
@@ -190,6 +200,7 @@ describe('@native-twin/core - Color Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });
@@ -207,6 +218,7 @@ describe('@native-twin/core - Color Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });
@@ -224,6 +236,7 @@ describe('@native-twin/core - Color Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });
@@ -241,6 +254,7 @@ describe('@native-twin/core - Color Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });
@@ -261,6 +275,7 @@ describe('@native-twin/preset-tailwind - Position Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });
@@ -279,6 +294,7 @@ describe('@native-twin/preset-tailwind - Border Utilities', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });
