@@ -1,8 +1,3 @@
-import compilerWorker from '@/editor/workers/compiler.worker?worker&url';
-import typingsWorker from '@/editor/workers/typings.worker?worker&url';
-import { setTypescriptDefaults } from '@/utils/editor.utils';
-import { traceLayerLogs } from '@/utils/logger.utils';
-import type { GetPackageTypings } from '@/utils/twin.schemas';
 import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
 import * as EffectWorker from '@effect/platform/Worker';
 import * as Console from 'effect/Console';
@@ -10,6 +5,11 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
+import compilerWorker from '../../editor/workers/compiler.worker?worker&url';
+import typingsWorker from '../../editor/workers/typings.worker?worker&url';
+import { setTypescriptDefaults } from '../../utils/editor.utils';
+import { traceLayerLogs } from '../../utils/logger.utils';
+import type { GetPackageTypings } from '../../utils/twin.schemas';
 import type { CompileCodeRequestSchema } from '../workers/shared.schemas';
 
 const typingsInstallerWorkerLayer = BrowserWorker.layer(
@@ -21,36 +21,41 @@ const compilerWorkerLayer = BrowserWorker.layer(
 
 const make = Effect.gen(function* () {
   return {
-    installDefinitions: (packages: GetPackageTypings[]) =>
-      Effect.gen(function* () {
-        const pool = yield* EffectWorker.makePoolSerialized({
-          size: 1,
-          concurrency: 10,
-        });
-        return yield* Stream.fromIterable(packages).pipe(
-          Stream.flatMap((x) => pool.execute(x)),
-          Stream.filter((x) => x.typings.length > 1),
-          Stream.runCollect,
-          Effect.map((_libraries) => {
-            setTypescriptDefaults();
-            // monaco.languages.typescript.typescriptDefaults.
-            // fileSystem.getOrCreateModel(x.filePath, x.contents);
-            return _libraries;
-          }),
-        );
-      }).pipe(Effect.scoped, Effect.provide(typingsInstallerWorkerLayer)),
-    compileCode: (code: CompileCodeRequestSchema) =>
-      Effect.gen(function* () {
-        const pool = yield* EffectWorker.makePoolSerialized({
-          size: 1,
-          concurrency: 1,
-        });
-        return yield* pool.execute(code).pipe(
-          Stream.tap((result) => Console.log(result)),
-          Stream.runCollect,
-        );
-      }).pipe(Effect.scoped, Effect.provide(compilerWorkerLayer)),
+    installDefinitions,
+    compileCode,
   };
+
+  function compileCode(code: CompileCodeRequestSchema) {
+    return Effect.gen(function* () {
+      const pool = yield* EffectWorker.makePoolSerialized({
+        size: 1,
+        concurrency: 1,
+      });
+      return yield* pool.execute(code).pipe(
+        Stream.tap((result) => Console.log(result)),
+        Stream.runCollect,
+      );
+    }).pipe(Effect.scoped, Effect.provide(compilerWorkerLayer));
+  }
+
+  function installDefinitions(packages: GetPackageTypings[]) {
+    return Effect.gen(function* () {
+      const pool = yield* EffectWorker.makePoolSerialized({
+        size: 1,
+        concurrency: 10,
+      });
+      return yield* Stream.fromIterable(packages).pipe(
+        Stream.flatMap((x) => pool.execute(x)),
+        Stream.filter((x) => x.typings.length > 1),
+        Stream.runCollect,
+        Effect.map((_libraries) => {
+          setTypescriptDefaults();
+          return _libraries;
+        }),
+      );
+    }).pipe(Effect.scoped, Effect.provide(typingsInstallerWorkerLayer));
+  }
+
 });
 
 export class AppWorkersService extends Context.Tag('app/workers')<

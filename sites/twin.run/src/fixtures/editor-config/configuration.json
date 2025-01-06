@@ -4,6 +4,7 @@
   "typescript.tsserver.web.projectWideIntellisense.enabled": true,
   "typescript.tsserver.web.projectWideIntellisense.suppressSemanticErrors": false,
   "diffEditor.renderSideBySide": false,
+  "editor.fontSize": 18,
   "editor.guides.bracketPairsHorizontal": true,
   "editor.experimental.asyncTokenization": false
 }

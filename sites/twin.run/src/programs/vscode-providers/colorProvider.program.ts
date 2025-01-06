@@ -1,5 +1,4 @@
-import { TwinTextDocument } from '@/editor/models/TwinTextDocument.model';
-import { getColorDecoration } from '@/utils/languageClient.utils';
+import * as vscode from 'vscode';
 import { type Numberify, type RGBA, TinyColor } from '@ctrl/tinycolor';
 import { CSS_COLORS } from '@native-twin/css';
 import {
@@ -13,7 +12,8 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import * as vscode from 'vscode';
+import { TwinTextDocument } from '../../editor/models/TwinTextDocument.model';
+import { getColorDecoration } from '../../utils/languageClient.utils';
 
 const colorNames = Object.keys(CSS_COLORS);
 export const InstallColorProvider = Effect.gen(function* () {

@@ -1,4 +1,4 @@
-import { GetPackageTypings } from '@/editor/workers/shared.schemas';
+import { GetPackageTypings } from '../editor/workers/shared.schemas';
 
 export const MONACO_BASE_FILE_URI = 'file:///';
 

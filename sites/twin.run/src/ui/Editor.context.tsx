@@ -1,17 +1,23 @@
-import type { TwinEditorConfigService } from '@/editor/services/EditorConfig.service';
-import type { FileSystemService } from '@/editor/services/FileSystem.service';
-import type { MonacoContext } from '@/editor/services/MonacoContext.service';
 import type { IDisposable } from 'monaco-editor';
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { useEditorBoot } from './useEditorBoot';
+import type { FileSystemService } from '../editor/services/FileSystem.service';
+import type { MonacoContext } from '../editor/services/MonacoContext.service';
+import * as Effect from 'effect/Effect';
+import * as Stream from 'effect/Stream';
+import * as Fiber from 'effect/Fiber';
+import {
+  type TwinEditorState,
+  TwinEditorStateCtx,
+} from '../editor/services/TwinEditorState.service';
+import { EditorMainRuntime } from '../editor/editor.runtime';
 
 interface IEditorUIContext {
-  app: MonacoContext['Type'];
-  config: TwinEditorConfigService['Type'];
+  app: MonacoContext;
   fs: FileSystemService['Type'];
   addSubscription: (x: IDisposable) => void;
   isReady: boolean;
-  bootEditor: () => Promise<void>;
+  bootEditor: (element: HTMLElement) => Promise<void>;
+  state: TwinEditorState;
 }
 
 const EditorUIContext = createContext<IEditorUIContext>({
@@ -21,14 +27,13 @@ const EditorUIContext = createContext<IEditorUIContext>({
 } as any);
 
 interface EditorUIProviderProps {
-  app: MonacoContext['Type'];
-  config: TwinEditorConfigService['Type'];
+  app: MonacoContext;
   fs: FileSystemService['Type'];
   children: ReactNode;
 }
 
 export const EditorUIProvider = (props: EditorUIProviderProps) => {
-  const { isReady, bootEditor } = useEditorBoot(props.app, props.config);
+  const [editorState, dispatch] = useState<TwinEditorState | null>(null);
   const [subscriptions, setSubscriptions] = useState(new Set<IDisposable>());
 
   useEffect(() => {
@@ -39,22 +44,45 @@ export const EditorUIProvider = (props: EditorUIProviderProps) => {
     };
   }, [subscriptions]);
 
+  useEffect(() => {
+    const fiber = Effect.gen(function* () {
+      const { state } = yield* TwinEditorStateCtx;
+      yield* state.changes.pipe(
+        Stream.runForEach((x) => Effect.sync(() => dispatch(x))),
+        Effect.forkDaemon,
+      );
+    }).pipe(EditorMainRuntime.runFork);
+
+    return () => {
+      EditorMainRuntime.runPromise(Fiber.interrupt(fiber));
+    };
+  }, []);
+
   const addSubscription = (sub: IDisposable) => {
     setSubscriptions((x) => x.add(sub));
   };
 
+  const bootEditor = (element: HTMLElement) =>
+    EditorMainRuntime.runPromise(
+      TwinEditorStateCtx.pipe(
+        Effect.map((x) => x.bootEditor(element)),
+        Effect.andThen(() => Effect.void),
+      ),
+    );
+
+  if (!editorState) return null;
   return (
     <EditorUIContext.Provider
       value={{
         app: props.app,
-        config: props.config,
         fs: props.fs,
         addSubscription,
-        isReady,
+        isReady: editorState.isReady,
         bootEditor,
+        state: editorState,
       }}
     >
-      {!isReady ? (
+      {!editorState.isReady ? (
         <div
           className={`
             absolute w-[100vw] h-[100vh] bg-black

@@ -28,7 +28,6 @@ export function cx(strings: TemplateStringsArray, ...interpolations: CSSValue[])
  * @param input
  */
 export function cx(...input: CSSValue[]): string;
-
 export function cx(
   strings: TemplateStringsArray | CSSValue,
   ...interpolations: CSSValue[]

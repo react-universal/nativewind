@@ -1,4 +1,3 @@
-import { traceLayerLogs } from '@/utils/logger.utils';
 import {
   MonacoNativeTwinManager,
   NativeTwinManagerService,
@@ -6,10 +5,11 @@ import {
 import * as Layer from 'effect/Layer';
 import * as Logger from 'effect/Logger';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
+import { traceLayerLogs } from '../utils/logger.utils';
 import { AppWorkersService } from './services/AppWorkers.service';
-import { TwinEditorConfigService } from './services/EditorConfig.service';
 import { FileSystemService } from './services/FileSystem.service';
-import { MonacoContext } from './services/MonacoContext.service';
+import { MonacoContextLive } from './services/MonacoContext.service';
+import { TwinEditorStateCtxLive } from './services/TwinEditorState.service';
 
 const loggerLayer = Logger.replace(
   Logger.defaultLogger,
@@ -19,21 +19,13 @@ const loggerLayer = Logger.replace(
   }),
 );
 
-// const baseLayers = Layer.mergeAll(
-//   TwinEditorService.Live,
-//   NativeTwinManagerService.Live,
-//   FileSystemService.Live,
-//   TwinEditorConfigService.Live,
-// );
-
 export const EditorMainLive = Layer.empty.pipe(
-  // Layer.provideMerge(TwinEditorService.Live),
   Layer.provideMerge(AppWorkersService.Live),
   Layer.provideMerge(FileSystemService.Live),
-  Layer.provideMerge(TwinEditorConfigService.Live),
-  Layer.provideMerge(MonacoContext.Live),
+  Layer.provideMerge(MonacoContextLive),
+  Layer.provideMerge(TwinEditorStateCtxLive),
   Layer.provideMerge(
-    NativeTwinManagerService.Live(new MonacoNativeTwinManager()).pipe(
+    Layer.succeed(NativeTwinManagerService, new MonacoNativeTwinManager()).pipe(
       traceLayerLogs('twin manager'),
     ),
   ),

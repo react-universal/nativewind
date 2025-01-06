@@ -5,8 +5,6 @@ import * as fs from 'fs';
 import path from 'path';
 import { createLogger, defineConfig, UserConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
-import tsconfigPaths from 'vite-tsconfig-paths';
-// import nativeTwinVite from '@native-twin/vite-plugin';
 import { esbuildPluginMetaUrl } from './remaps/esbuild.plugins/plugin-import-meta';
 
 const pkg = JSON.parse(
@@ -89,7 +87,6 @@ export default defineConfig((): UserConfig => {
       nodePolyfills({
         include: ['process', 'path'],
       }),
-      tsconfigPaths(),
       vsixPlugin(),
       assetsJSON(),
       // nativeTwinVite({

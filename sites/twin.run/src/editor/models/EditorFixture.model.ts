@@ -1,9 +1,9 @@
-import npmPkgRaw from '@/fixtures/typescript/package.editor.json?raw';
-import tsconfigRaw from '@/fixtures/typescript/tsconfig.editor.json?raw';
-import type * as monaco from 'monaco-editor';
-import type { CodeResources, EditorAppConfigExtended } from 'monaco-editor-wrapper';
 import * as vscode from 'vscode';
+import type * as monaco from 'monaco-editor';
+import type { CodeResources, EditorAppConfig } from 'monaco-editor-wrapper';
 import type { IStoredWorkspace } from 'vscode/service-override/configuration';
+import npmPkgRaw from '../../fixtures/typescript/package.editor.json?raw';
+import tsconfigRaw from '../../fixtures/typescript/tsconfig.editor.json?raw';
 
 export interface FixtureFile {
   uri: vscode.Uri;
@@ -41,7 +41,7 @@ export class WorkspaceConfig {
     return document.getElementById('monaco-editor-root')!;
   }
 
-  get initialResources(): CodeResources['main'] {
+  get initialResources(): CodeResources['original'] {
     return {
       uri: this.projectFiles.jsx.uri.path,
       text: this.projectFiles.jsx.contents,
@@ -96,30 +96,17 @@ export class WorkspaceConfig {
     };
   };
 
-  getExtendedAppConfig = (): EditorAppConfigExtended => {
+  getExtendedAppConfig = (): EditorAppConfig => {
     return {
-      $type: 'extended',
       editorOptions: this.getMonacoDefaultConfig(),
       codeResources: {
-        main: {
+        original: {
           text: this.projectFiles.jsx.contents,
           uri: this.projectFiles.jsx.uri.path,
         },
       },
       useDiffEditor: false,
-      extensions: [
-        {
-          config: {
-            name: this.twinExtensionID,
-            publisher: this.twinExtensionPublisher,
-            version: '1.0.0',
-            engines: {
-              vscode: '*',
-            },
-          },
-        },
-      ],
-      htmlContainer: this.editorDomElement,
+      // htmlContainer: this.editorDomElement,
     };
   };
 }
@@ -129,6 +116,7 @@ const getWorkspaceFileRaw = (workspacePath: string) => {
     {
       folders: [
         {
+          name: 'workspace',
           path: workspacePath,
         },
       ],

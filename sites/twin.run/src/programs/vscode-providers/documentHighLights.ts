@@ -1,11 +1,11 @@
-import { TwinTextDocument } from '@/editor/models/TwinTextDocument.model';
+import * as vscode from 'vscode';
 import { Constants, parseTemplate } from '@native-twin/language-service/browser';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import * as vscode from 'vscode';
+import { TwinTextDocument } from '../../editor/models/TwinTextDocument.model';
 
 const provideDocumentHightLight = (selector: vscode.DocumentSelector) =>
   Effect.gen(function* () {

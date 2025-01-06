@@ -1,5 +1,5 @@
-import { CSS_COLORS } from '@native-twin/css';
 import * as vscode from 'vscode';
+import { CSS_COLORS } from '@native-twin/css';
 import {
   CloseAction,
   ErrorAction,

@@ -10,7 +10,11 @@ export {
 export { DocumentLanguageRegion } from './models/documents/LanguageRegion.model.js';
 export { TemplateTokenData } from './models/twin/template-token.model.js';
 export type { TwinRuleCompletion } from './models/twin/native-twin.types.js';
-export { extractLanguageRegions } from './utils/babel/extractLanguageRegions.web.js';
+export {
+  type BabelLanguageRegionData,
+  extractLanguageRegions,
+  traverseLanguageRegions,
+} from './utils/babel/extractLanguageRegions.web.js';
 /** Twin Services */
 export { NativeTwinManagerService } from './services/NativeTwinManager.service.js';
 export { parseTemplate } from './utils/twin/native-twin.parser.js';

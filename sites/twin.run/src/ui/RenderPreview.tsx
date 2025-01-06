@@ -11,7 +11,7 @@ interface RenderPreviewProps {
 export const RenderPreview = (props: RenderPreviewProps) => {
   const [stage, setStage] = useState('preview');
   return (
-    <div className='flex flex-1 flex-col gap-2 px-2 bg-[#1f1f1f] border-l-white border-l-1'>
+    <div className='flex flex-1 flex-col gap-2 px-2 bg-gray-200 border-l-white border-l-1'>
       <div className='flex gap-2 px-2 border-b-1 py-2 items-center'>
         <a
           href='#'

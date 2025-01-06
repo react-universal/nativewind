@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "twin.run",
+      "path": "../sites/twin.run"
+    },
+    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
     },
@@ -51,10 +55,6 @@
     {
       "name": "expo-app",
       "path": "../apps/expo-app"
-    },
-    {
-      "name": "twin.run",
-      "path": "../sites/twin.run"
     }
   ],
   "settings": {

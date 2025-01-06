@@ -71,42 +71,42 @@ export const setup = () => {
       }
     },
   };
+  console.debug(monaco.languages);
+  // monaco.languages.typescript.typescriptDefaults.setEagerModelSync(false);
+  // monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+  //   ...monaco.languages.typescript.typescriptDefaults.getCompilerOptions(),
+  //   module: monaco.languages.typescript.ModuleKind.ESNext,
+  //   target: monaco.languages.typescript.ScriptTarget.ESNext,
+  //   moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+  //   lib: ['ESNext', 'DOM'],
+  //   jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
+  //   // typeRoots: ['node_modules/@types'],
+  //   isolatedModules: true,
+  //   allowJs: false,
+  //   strict: false,
+  //   skipLibCheck: true,
+  //   allowSyntheticDefaultImports: true,
+  //   disableSourceOfProjectReferenceRedirect: true,
+  //   esModuleInterop: true,
+  //   declarationMap: false,
+  //   types: ['react'],
+  //   skipDefaultLibCheck: true,
+  // });
 
-  monaco.languages.typescript.typescriptDefaults.setEagerModelSync(false);
-  monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-    ...monaco.languages.typescript.typescriptDefaults.getCompilerOptions(),
-    module: monaco.languages.typescript.ModuleKind.ESNext,
-    target: monaco.languages.typescript.ScriptTarget.ESNext,
-    moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-    lib: ['ESNext', 'DOM'],
-    jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
-    // typeRoots: ['node_modules/@types'],
-    isolatedModules: true,
-    allowJs: false,
-    strict: false,
-    skipLibCheck: true,
-    allowSyntheticDefaultImports: true,
-    disableSourceOfProjectReferenceRedirect: true,
-    esModuleInterop: true,
-    declarationMap: false,
-    types: ['react'],
-    skipDefaultLibCheck: true,
-  });
-
-  monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-    noSuggestionDiagnostics: true,
-    onlyVisible: true,
-  });
-  monaco.languages.css.cssDefaults.setModeConfiguration({
-    hovers: true,
-    colors: true,
-    completionItems: true,
-    documentHighlights: true,
-  });
-  monaco.languages.html.razorLanguageService.defaults.setModeConfiguration({
-    hovers: true,
-    completionItems: true,
-    colors: true,
-    documentHighlights: true,
-  });
+  // monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+  //   noSuggestionDiagnostics: true,
+  //   onlyVisible: true,
+  // });
+  // monaco.languages.css.cssDefaults.setModeConfiguration({
+  //   hovers: true,
+  //   colors: true,
+  //   completionItems: true,
+  //   documentHighlights: true,
+  // });
+  // monaco.languages.html.razorLanguageService.defaults.setModeConfiguration({
+  //   hovers: true,
+  //   completionItems: true,
+  //   colors: true,
+  //   documentHighlights: true,
+  // });
 };

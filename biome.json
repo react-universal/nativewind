@@ -16,6 +16,11 @@
       "*/test/server-fixture/**/*"
     ]
   },
+  "organizeImports": {
+    "ignore": [
+      "*/twin.run/**/*"
+    ]
+  },
   "linter": {
     "rules": {
       "recommended": true,
@@ -80,7 +85,12 @@
     "lineWidth": 90,
     "attributePosition": "multiline",
     "bracketSpacing": true,
-    "ignore": ["**/.eslintrc.json", "**/*.json", "./.nx/cache", "./.nx/workspace-data"]
+    "ignore": [
+      "**/.eslintrc.json",
+      "**/*.json",
+      "./.nx/cache",
+      "./.nx/workspace-data"
+    ]
   },
   "javascript": {
     "formatter": {

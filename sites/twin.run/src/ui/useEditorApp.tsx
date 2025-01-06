@@ -1,6 +1,6 @@
+import * as vscode from 'vscode';
 import { useEffect, useRef, useState } from 'react';
 // import { attachPart, Parts } from '@codingame/monaco-vscode-views-service-override';
-import * as vscode from 'vscode';
 import { useTwinEditor } from './Editor.context';
 
 export const useEditorApp = () => {
@@ -18,10 +18,11 @@ export const useEditorApp = () => {
       );
 
       if (initialDoc) {
-        const data = app.getDocumentPreview(initialDoc);
-        setPreviewState({
-          code: data.code,
-          css: data.css,
+        app.getDocumentPreview(initialDoc).then((data) => {
+          setPreviewState({
+            code: data.code,
+            css: data.css,
+          });
         });
       }
     }
@@ -31,10 +32,11 @@ export const useEditorApp = () => {
     if (isReady) {
       addSubscription(
         vscode.workspace.onDidChangeTextDocument(async (doc) => {
-          const data = app.getDocumentPreview(doc.document);
-          setPreviewState({
-            code: data.code,
-            css: data.css,
+          app.getDocumentPreview(doc.document).then((data) => {
+            setPreviewState({
+              code: data.code,
+              css: data.css,
+            });
           });
         }),
       );
@@ -43,10 +45,10 @@ export const useEditorApp = () => {
 
   useEffect(() => {
     if (editorRef.current) {
-      bootEditor();
-      app.wrapper.getMonacoEditorApp()?.updateHtmlContainer(editorRef.current);
+      bootEditor(editorRef.current);
+      // app.wrapper.getMonacoEditorApp()?.updateHtmlContainer(editorRef.current);
     }
-  }, [app.wrapper, bootEditor]);
+  }, [bootEditor]);
 
   return { editorRef, previewState, isReady };
 };

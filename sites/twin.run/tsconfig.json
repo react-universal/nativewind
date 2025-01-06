@@ -17,12 +17,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "baseUrl": ".",
     "experimentalDecorators": true,
-    "noUncheckedIndexedAccess": true,
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "noUncheckedIndexedAccess": true
   },
   "include": ["src", "vite.config.ts", "tailwind.config.ts"]
 }
