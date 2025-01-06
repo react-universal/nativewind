@@ -45,6 +45,7 @@
     "test": "jest"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

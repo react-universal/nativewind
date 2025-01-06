@@ -3932,8 +3932,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/arc-parser@workspace:packages/arc-parser"
   dependencies:
+    "@native-twin/cli": "workspace:*"
     jest: "npm:*"
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -3958,7 +3961,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@native-twin/cli@workspace:packages/builder":
+"@native-twin/cli@workspace:*, @native-twin/cli@workspace:packages/builder":
   version: 0.0.0-use.local
   resolution: "@native-twin/cli@workspace:packages/builder"
   dependencies:
