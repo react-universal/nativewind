@@ -102,6 +102,7 @@
   },
   "optionalDependencies": {
     "@jest/globals": "*",
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

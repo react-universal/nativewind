@@ -24,7 +24,7 @@ const compilerContext = Layer.succeed(
   }),
 );
 // const tw = createTailwind(tailwindConfig, createVirtualSheet());
-const TestMainLive = Layer.empty.pipe(
+export const TestMainLive = Layer.empty.pipe(
   Layer.provideMerge(TwinNodeContextLive),
   Layer.provideMerge(TwinFSContextLive),
   Layer.provideMerge(BabelCompilerContextLive),

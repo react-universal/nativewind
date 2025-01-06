@@ -19,6 +19,8 @@ export * as TwinPath from './internal/fs/fs.path.js';
 
 export * as FSUtils from './internal/fs/fs.utils.js';
 
+export {transformTwinDocument} from './programs/document.programs.js'
+
 export { listenForkedStreamChanges } from './utils/effect.utils.js';
 
 export { TwinCustomLogger, twinLoggerLayer } from './internal/Logger.service.js';

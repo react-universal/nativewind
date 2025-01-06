@@ -58,6 +58,7 @@
     "madge": "7.0.0"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "engines": {

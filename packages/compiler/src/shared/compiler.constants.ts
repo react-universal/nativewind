@@ -72,6 +72,27 @@ const createHandler = () => {
 export const mappedComponents = createHandler();
 export const commonMappedAttribute = { className: 'style' };
 
+const componentAttrs = Array.from(
+  new Set([
+    'tw',
+    'class',
+    'className',
+    'variants',
+    ...mappedComponents.flatMap((x) => Object.keys(x)),
+  ]),
+);
+export const TWIN_DEFAULT_PLUGIN_CONFIG = {
+  jsxAttributes: componentAttrs,
+  functions: ['tw', 'apply', 'css', 'variants', 'style', 'styled', 'createVariants'],
+  debug: false,
+  enable: true,
+  trace: {
+    server: 'off',
+  } as const,
+};
+
+export type NativeTwinPluginConfiguration = typeof TWIN_DEFAULT_PLUGIN_CONFIG;
+
 export const createCommonMappedAttribute = (tagName: string) => {
   return createStylableComponent(tagName, commonMappedAttribute);
 };

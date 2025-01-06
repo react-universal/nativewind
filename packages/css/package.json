@@ -67,6 +67,7 @@
     "@native-twin/helpers": "workspace:*"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

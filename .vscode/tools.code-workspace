@@ -5,12 +5,12 @@
       "path": ".."
     },
     {
-      "name": "twin.run",
-      "path": "../sites/twin.run"
-    },
-    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
+    },
+    {
+      "name": "twin.run",
+      "path": "../sites/twin.run"
     },
     {
       "name": "📦 @lib/metro",

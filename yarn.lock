@@ -3916,6 +3916,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/adapters@workspace:packages/adapters"
   dependencies:
+    "@native-twin/cli": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
@@ -3925,6 +3926,9 @@ __metadata:
     "@native-twin/helpers": "workspace:*"
     next: ^14.2.3
     react: ~18.2.0
+  dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3948,6 +3952,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.24.0"
     "@babel/helper-module-imports": "npm:^7.25.9"
+    "@native-twin/cli": "workspace:*"
     "@native-twin/compiler": "workspace:^"
     "@native-twin/helpers": "workspace:^"
     "@types/babel__core": "npm:^7.20.5"
@@ -3956,6 +3961,8 @@ __metadata:
     effect: "npm:^3.10.0"
     jest: "npm:*"
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -3988,6 +3995,7 @@ __metadata:
     "@effect/platform-node-shared": "npm:^0.19.3"
     "@effect/printer-ansi": "npm:^0.38.0"
     "@effect/typeclass": "npm:^0.29.19"
+    "@native-twin/cli": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
@@ -4005,6 +4013,9 @@ __metadata:
     micromatch: "npm:4.0.5"
     sucrase: "npm:^3.35.0"
     vscode-languageserver-textdocument: "npm:^1.0.12"
+  dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -4013,12 +4024,15 @@ __metadata:
   resolution: "@native-twin/core@workspace:packages/native-twin"
   dependencies:
     "@native-twin/arc-parser": "workspace:*"
+    "@native-twin/cli": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     jest: "npm:*"
   peerDependencies:
     react: ~18.2.0
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -4029,9 +4043,12 @@ __metadata:
   resolution: "@native-twin/css@workspace:packages/css"
   dependencies:
     "@native-twin/arc-parser": "workspace:*"
+    "@native-twin/cli": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     jest: "npm:*"
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -4098,11 +4115,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/helpers@workspace:packages/helpers"
   dependencies:
+    "@native-twin/cli": "workspace:*"
     "@types/react": "npm:~18.2.79"
     jest: "npm:*"
   peerDependencies:
     react: ~18.2.0
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -4113,6 +4133,7 @@ __metadata:
   resolution: "@native-twin/jsx@workspace:packages/jsx"
   dependencies:
     "@jest/globals": "npm:*"
+    "@native-twin/cli": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
@@ -4125,6 +4146,8 @@ __metadata:
   dependenciesMeta:
     "@jest/globals":
       optional: true
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -4135,6 +4158,7 @@ __metadata:
   resolution: "@native-twin/language-server@workspace:packages/language-server"
   dependencies:
     "@ctrl/tinycolor": "npm:^4.1.0"
+    "@native-twin/cli": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/language-service": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
@@ -4155,6 +4179,8 @@ __metadata:
     vscode-languageserver-textdocument: "npm:^1.0.11"
     vscode-languageserver-types: "npm:^3.17.5"
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -4168,6 +4194,7 @@ __metadata:
     "@babel/preset-typescript": "npm:7.23.3"
     "@ctrl/tinycolor": "npm:^4.1.0"
     "@native-twin/arc-parser": "workspace:*"
+    "@native-twin/cli": "workspace:*"
     "@native-twin/compiler": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
@@ -4192,6 +4219,8 @@ __metadata:
     vscode-languageserver-textdocument: "npm:^1.0.11"
     vscode-languageserver-types: "npm:^3.17.5"
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -4201,6 +4230,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/metro@workspace:packages/metro"
   dependencies:
+    "@native-twin/cli": "workspace:*"
     "@native-twin/compiler": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
@@ -4210,6 +4240,8 @@ __metadata:
   peerDependencies:
     "@babel/cli": "*"
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   peerDependenciesMeta:
@@ -4222,6 +4254,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/preset-tailwind@workspace:packages/preset-tailwind"
   dependencies:
+    "@native-twin/cli": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
@@ -4229,6 +4262,8 @@ __metadata:
   peerDependencies:
     react: ~18.2.0
   dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
     jest:
       optional: true
   languageName: unknown
@@ -4288,8 +4323,12 @@ __metadata:
     "@effect/platform-node": "npm:^0.64.4"
     "@effect/platform-node-shared": "npm:^0.19.3"
     "@effect/printer-ansi": "npm:^0.38.0"
+    "@native-twin/cli": "workspace:*"
     "@native-twin/compiler": "workspace:*"
     effect: "npm:^3.10.0"
+  dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -15546,6 +15585,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "native-twin-vscode@workspace:packages/vscode-extension"
   dependencies:
+    "@native-twin/cli": "workspace:*"
     "@native-twin/compiler": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     "@native-twin/language-server": "workspace:*"
@@ -15555,6 +15595,9 @@ __metadata:
     "@vscode/test-electron": "npm:^2.4.0"
     effect: "npm:^3.10.0"
     vscode-languageclient: "npm:^9.0.1"
+  dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
   languageName: unknown
   linkType: soft
 

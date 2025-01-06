@@ -46,6 +46,7 @@ export const DEFAULT_TWIN_CONFIG = {
   animations: [],
 } as InternalTwinConfig;
 
+// TODO: Moved to compiler
 export const DEFAULT_PLUGIN_CONFIG = {
   jsxAttributes: ['tw', 'class', 'className', 'variants'],
   functions: ['tw', 'apply', 'css', 'variants', 'style', 'styled', 'createVariants'],
